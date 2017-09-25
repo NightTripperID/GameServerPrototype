@@ -21,7 +21,7 @@ public class Pudgie extends Mob implements Serializable {
     }
 
     public void initialize(@NotNull GameState gs) {
-        gameState = gs;
+        super.initialize(gs);
         keyboard = gameState.getKeyboard();
     }
 

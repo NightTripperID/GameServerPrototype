@@ -7,4 +7,8 @@ import graphics.Screen;
 public abstract class Entity  {
 
     protected GameState gameState;
+
+    public void initialize(@NotNull GameState gameState) {
+        this.gameState = gameState;
+    }
 }

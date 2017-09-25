@@ -2,7 +2,6 @@ package gamestate;
 
 import com.sun.istack.internal.NotNull;
 import exception.EmptyGSMException;
-import gamestate.GameState;
 
 import java.util.Stack;
 

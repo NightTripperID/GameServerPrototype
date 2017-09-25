@@ -5,11 +5,13 @@ import gamestate.GameState;
 import gamestate.Intent;
 import graphics.Screen;
 import server.Server;
+import test.mobs.MouseCursor;
 import test.mobs.Pudgie;
 
 public class LevelOne extends GameState {
 
     private Pudgie pudgie;
+    private MouseCursor cursor;
     private int count = 0;
 
     public LevelOne(@NotNull Server server) {
@@ -19,8 +21,10 @@ public class LevelOne extends GameState {
     @Override
     public void onCreate() {
         pudgie = (Pudgie) getIntent().getSerializableExtra("pudgie");
-
         pudgie.initialize(this);
+
+        cursor = (MouseCursor) getIntent().getSerializableExtra("cursor");
+        cursor.initialize(this);
     }
 
     @Override
@@ -35,6 +39,7 @@ public class LevelOne extends GameState {
         if(count++ == MAX_TICK) {
             Intent intent = new Intent(LevelTwo.class);
             intent.putExtra("pudgie", pudgie);
+            intent.putExtra("cursor", cursor);
             swapGameState(intent);
         }
     }
@@ -43,6 +48,8 @@ public class LevelOne extends GameState {
     public void onRender(@NotNull Screen screen) {
         screen.renderString8x8(20, 20, 0xff00ff, "level 1");
         pudgie.onRender(screen);
+
+        cursor.onRender(screen);
     }
 
     @Override

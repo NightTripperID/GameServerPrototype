@@ -3,6 +3,7 @@ package gamestate;
 import com.sun.istack.internal.NotNull;
 import graphics.Screen;
 import input.Keyboard;
+import input.Mouse;
 import server.Server;
 
 public abstract class GameState {
@@ -24,16 +25,16 @@ public abstract class GameState {
 
     public abstract void onDestroy();
 
-    public final void swapGameState(@NotNull Intent intent) {
-        server.swapGameState(intent);
+    public final void startGameState(@NotNull Intent intent) {
+        server.pushGameState(intent);
     }
 
     public final void finish() {
-        server.finishGameState();
+        server.popGameState();
     }
 
-    public final void startGameState(@NotNull Intent intent) {
-        server.startNewGameState(intent);
+    public final void swapGameState(@NotNull Intent intent) {
+        server.swapGameState(intent);
     }
 
     @NotNull
@@ -53,7 +54,15 @@ public abstract class GameState {
         return server.getScreenHeight();
     }
 
+    public final int getScreenScale() {
+        return server.getScreenScale();
+    }
+
     public final Keyboard getKeyboard() {
         return server.getKeyboard();
+    }
+
+    public final Mouse getMouse() {
+        return server.getMouse();
     }
 }

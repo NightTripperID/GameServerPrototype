@@ -6,6 +6,7 @@ import gamestate.GameStateManager;
 import gamestate.Intent;
 import graphics.Screen;
 import input.Keyboard;
+import input.Mouse;
 
 import javax.swing.*;
 
@@ -32,28 +33,33 @@ public class Server extends Canvas implements Runnable {
 
     private final GameStateManager gsm = new GameStateManager();
     private final Keyboard keyboard = new Keyboard();
+    private final Mouse mouse = new Mouse();
 
-    private final int windowWidth;
-    private final int windowHeight;
-    private final int windowScale;
+    private final int screenWidth;
+    private final int screenHeight;
+    private final int screenScale;
 
-    public Server(int windowWidth, int windowHeight, int windowScale, String title) {
-        this.windowWidth = windowWidth;
-        this.windowHeight = windowHeight;
-        this.windowScale = windowScale;
+    public Server(int screenWidth, int screenHeight, int screenScale, String title) {
+        this.screenWidth = screenWidth;
+        this.screenHeight = screenHeight;
+        this.screenScale = screenScale;
 
         this.title = title;
 
-        image = new BufferedImage(windowWidth, windowHeight, BufferedImage.TYPE_INT_RGB);
+        image = new BufferedImage(screenWidth, screenHeight, BufferedImage.TYPE_INT_RGB);
         pixels = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
 
-        Dimension size = new Dimension(windowWidth * windowScale, windowHeight * windowScale);
+        Dimension size = new Dimension(screenWidth * screenScale, screenHeight * screenScale);
         setPreferredSize(size);
 
-        screen = new Screen(windowWidth, windowHeight);
+        screen = new Screen(screenWidth, screenHeight);
         frame = new JFrame();
 
         addKeyListener(keyboard);
+
+        addMouseListener(mouse);
+        addMouseMotionListener(mouse);
+        addMouseWheelListener(mouse);
     }
 
     private synchronized void start() {
@@ -133,8 +139,8 @@ public class Server extends Canvas implements Runnable {
 
         Graphics g = bs.getDrawGraphics();
         g.setColor(Color.MAGENTA);
-        g.fillRect(0, 0, windowWidth, windowHeight);
-        g.drawImage(image, 0, 0, windowWidth * windowScale, windowHeight * windowScale, null);
+        g.fillRect(0, 0, screenWidth, screenHeight);
+        g.drawImage(image, 0, 0, screenWidth * screenScale, screenHeight * screenScale, null);
         g.dispose();
         bs.show();
     }
@@ -148,17 +154,26 @@ public class Server extends Canvas implements Runnable {
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
 
+        pushGameState(intent);
+
+        start();
+    }
+
+    public void pushGameState(@NotNull Intent intent) {
+
         try {
             GameState gs = intent.getGsc().getConstructor(Server.class).newInstance(this);
             gs.setIntent(intent);
             gs.onCreate();
             gsm.push(gs);
-        } catch (NoSuchMethodException | InstantiationException |
+        } catch(NoSuchMethodException | InstantiationException |
                 IllegalAccessException | InvocationTargetException e) {
-            System.out.println("Exception in " + getClass().getSimpleName() + ".startServer(intent): " + e.getMessage());
+            System.out.println("Exception in " + getClass().getSimpleName() + ".pushGameState(intent):" + e.getMessage());
         }
+    }
 
-        start();
+    public void popGameState() {
+        gsm.pop().onDestroy();
     }
 
     public void swapGameState(@NotNull Intent intent) {
@@ -170,36 +185,27 @@ public class Server extends Canvas implements Runnable {
             gsm.swap(gs).onDestroy();
         } catch(NoSuchMethodException | InstantiationException |
                 IllegalAccessException | InvocationTargetException e) {
-            System.out.println("Exception in " + getClass().getSimpleName() + ".finishGameState(intent): " + e.getMessage());
-        }
-    }
-
-    public void finishGameState() {
-        gsm.pop().onDestroy();
-    }
-
-    public void startNewGameState(@NotNull Intent intent) {
-
-        try {
-            GameState gs = intent.getGsc().getConstructor(Server.class).newInstance(this);
-            gs.setIntent(intent);
-            gs.onCreate();
-            gsm.push(gs);
-        } catch(NoSuchMethodException | InstantiationException |
-                IllegalAccessException | InvocationTargetException e) {
-            System.out.println("Exception in " + getClass().getSimpleName() + ".startnewGameState(intent)" + e.getMessage());
+            System.out.println("Exception in " + getClass().getSimpleName() + ".swapGameState(intent): " + e.getMessage());
         }
     }
 
     public int getScreenWidth() {
-        return screen.getWidth();
+        return screenWidth;
     }
 
     public int getScreenHeight() {
-        return screen.getHeight();
+        return screenHeight;
+    }
+
+    public int getScreenScale() {
+        return screenScale;
     }
 
     public Keyboard getKeyboard() {
         return keyboard;
+    }
+
+    public Mouse getMouse() {
+        return mouse;
     }
 }

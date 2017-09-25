@@ -1,7 +1,6 @@
 package graphics;
 
 import com.sun.istack.internal.NotNull;
-import graphics.Sprite;
 
 /**
  * Object that contains a pixel buffer matching specified dimensions and methods for rendering
@@ -17,8 +16,8 @@ public class Screen {
 
     /**
      * Creates a screen with specified dimensions.
-     * @param width
-     * @param height
+     * @param width The width of the screen.
+     * @param height The height of the screen.
      */
     public Screen(int width, int height) {
         this.width = width;
@@ -28,7 +27,7 @@ public class Screen {
 
     /**
      * Fills screen buffer with specified color.
-     * @param col
+     * @param col The color to fill the screen with.
      */
     public void fill(int col) {
         for (int i = 0; i < pixels.length; i++)
@@ -40,17 +39,17 @@ public class Screen {
      */
     public void clear() {
         for (int i = 0; i < pixels.length; i++) {
-            pixels[i] = 0x000000;;
+            pixels[i] = 0x000000;
         }
     }
 
     /**
      * Draws a hollow rectangle at specified coordinates using specified width, height, and color.
-     * @param x
-     * @param y
-     * @param width
-     * @param height
-     * @param col
+     * @param x The x coordinate of the rectangle's top left corner.
+     * @param y The y coordinate of the rectangle's top left corner.
+     * @param width The width of the rectangle.
+     * @param height The height of the rectangle.
+     * @param col The specified color for the rectangle's outline using rgb hex notation (e.g. 0xaabbcc)
      */
     public void drawRect(double x, double y, int width, int height, int col) {
         for (int yy = (int)y; yy < (int)y + height; yy++) {
@@ -64,11 +63,11 @@ public class Screen {
 
     /**
      * Draws a solid rectangle at specified coordinates using specified width, height, and color.
-     * @param x
-     * @param y
-     * @param width
-     * @param height
-     * @param col
+     * @param x The x coordinate of the rectangle's top left corner.
+     * @param y The y coordinate of the rectangle's top left corner.
+     * @param width The width of the rectangle.
+     * @param height The height of the rectangle.
+     * @param col The specified color of the rectangle using rgb hex notation (e.g. 0xaabbcc)
      */
     public void fillRect(double x, double y, int width, int height, int col) {
         for (int yy = (int)y; yy < y + height; yy++) {
@@ -82,10 +81,10 @@ public class Screen {
      * Renders an 8x8 character at specified coordinates using specified color and character array representation.
      * Use with included class Font8x8 only.
      *
-     * @param x
-     * @param y
-     * @param col
-     * @param character
+     * @param x The x coordinate of the character's top left corner.
+     * @param y The y coordinate of the character's top right corner.
+     * @param col The specified color of the character using rgb hex notation (e.g. 0xaabbcc)
+     * @param character The character to be rendered.
      */
     private void renderChar8x8(double x, double y, int col, char[] character) {
 
@@ -102,10 +101,10 @@ public class Screen {
      * Renders a 5x5 character at specified coordinates using specified color and character array representation.
      * Use with included class Font5x5 only.
      *
-     * @param x
-     * @param y
-     * @param col
-     * @param character
+     * @param x The x coordinate of the character's top left corner.
+     * @param y The y coordinate of the character's top left corner.
+     * @param col The specified color of the character using rgb hex notation (e.g. 0xaabbcc)
+     * @param character The character to be rendered.
      */
     private void renderChar5x5(double x, double y, int col, int[] character) {
 
@@ -120,10 +119,10 @@ public class Screen {
 
     /**
      * Renders specified string using specified color and included 8x8 font at specified coordinates.
-     * @param x
-     * @param y
-     * @param col
-     * @param string
+     * @param x The x coordinate of the string's top left corner.
+     * @param y The y coordinate of the string's top left corner.
+     * @param col The specified color for the string using rgb hex notation (e.g. 0xaabbcc)
+     * @param string The string to be rendered.
      */
     public void renderString8x8(double x, double y, int col, @NotNull String string) {
 
@@ -134,10 +133,10 @@ public class Screen {
 
     /**
      * Renders specified string using specified color and included 5x5 font at specified coordinates.
-     * @param x
-     * @param y
-     * @param col
-     * @param string
+     * @param x The x coordinate of the string's top left corner.
+     * @param y The y coordinate of the string's top left corner.
+     * @param col The specified color for the string using rgb hex notation (e.g. 0xaabbcc)
+     * @param string The string to be rendered.
      */
     public void renderString5x5(double x, double y, int col, @NotNull String string) {
 
@@ -148,8 +147,8 @@ public class Screen {
 
     /**
      * Renders pixel at specified index using specified color.
-     * @param index
-     * @param col
+     * @param index The screen buffer index of the pixel.
+     * @param col The specified color for the pixel using rgb hex notation (e.g. 0xaabbcc)
      */
     public void renderPixel(int index, int col) {
         pixels[index] = col;
@@ -157,9 +156,9 @@ public class Screen {
 
     /**
      * Renders pixel at specified coordinates using specified color.
-     * @param x
-     * @param y
-     * @param col
+     * @param x The x coordinate of the pixel.
+     * @param y The y coordinate of the pixel.
+     * @param col The specified color for the pixel using rgb hex notation (e.g. 0xaabbcc).
      */
     public void renderPixel(double x, double y, int col) {
         pixels[(int)x * (int)y] = col;
@@ -167,7 +166,7 @@ public class Screen {
 
     /**
      * Renders specified sprite at its contained coordinates.
-     * @param sprite
+     * @param sprite The sprite to render.
      */
     public void renderSprite(@NotNull Sprite sprite) {
         for (int y = 0; y < sprite.height; y++) {
@@ -181,11 +180,11 @@ public class Screen {
 
     /**
      * Renders specified sprite at specified coordinates using specified width, height, and pixels.
-     * @param x
-     * @param y
-     * @param width
-     * @param height
-     * @param pixels
+     * @param x The x coordinate of the sprite's top left corner.
+     * @param y The y coordinate of the sprite's top left corner.
+     * @param width The width of the sprite.
+     * @param height The height of the sprite.
+     * @param pixels The pixels that comprise the sprite.
      */
     public void renderSprite(double x, double y, int width, int height, int[] pixels) {
 
@@ -201,31 +200,22 @@ public class Screen {
 
     /**
      * Gets pixel specified at index.
-     * @param index
-     * @return
+     * @param index The index of the pixel.
+     * @return The pixel, represented by an rgb color (0x000000 thru 0xffffff).
      */
     public int getPixel(int index) {
         return pixels[index];
     }
 
-    /**
-     * Sets pixel specified at index to specified color.
-     * @param index
-     * @param col
-     */
-    public void setPixel(int index, int col) {
-        pixels[index] = col;
-    }
-
-    /**
-     * Returns a reference to the screen's pixel buffer. This method must be callable from outside the onRender loop, and is
-     * therefore static. As such, pixels must be static, implying that all instances of screen will have the same pixel buffer
-     * and contain the same image.
-     * @return
-     */
-    public int[] getPixels() {
-        return pixels;
-    }
+//    /**
+//     * Returns a reference to the screen's pixel buffer. This method must be callable from outside the onRender loop, and is
+//     * therefore static. As such, pixels must be static, implying that all instances of screen will have the same pixel buffer
+//     * and contain the same image.
+//     * @return The screen's pixel buffer.
+//     */
+//    public int[] getPixels() {
+//        return pixels;
+//    }
 
     /**
      * Gets the screen's width
