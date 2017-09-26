@@ -51,12 +51,24 @@ public class Pudgie extends Mob implements Serializable {
         x += (xSpeed * xDir);
         y += (ySpeed * yDir);
 
-        if(x < 0 || x > (gameState.getScreenWidth() - width)) {
-            xDir *= -1;
+        if (x < 0) {
+            xSpeed = 0;
+            x = 0;
         }
 
-        if(y < 0 || y > (gameState.getScreenHeight() - height)) {
-            yDir *= -1;
+        if (x > (gameState.getScreenWidth() - width)) {
+            xSpeed = 0;
+            x = gameState.getScreenWidth() - width;
+        }
+
+        if (y < 0) {
+            ySpeed = 0;
+            y = 0;
+        }
+
+        if (y > (gameState.getScreenHeight() - height)) {
+            ySpeed = 0;
+            y = gameState.getScreenHeight() - height;
         }
     }
 

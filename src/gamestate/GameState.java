@@ -6,6 +6,8 @@ import input.Keyboard;
 import input.Mouse;
 import server.Server;
 
+import java.awt.*;
+
 public abstract class GameState {
 
     private Server server;
@@ -64,5 +66,12 @@ public abstract class GameState {
 
     public final Mouse getMouse() {
         return server.getMouse();
+    }
+
+    public final void setCustomMouseCursor(String imagePath, Point cursorHotspot, String name) {
+        server.setCustomMouseCursor(imagePath, cursorHotspot, name);
+    }
+
+    public void onClick(int x, int y) {
     }
 }
