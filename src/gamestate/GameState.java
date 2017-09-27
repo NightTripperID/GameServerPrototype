@@ -76,9 +76,9 @@ public abstract class GameState {
         this.intent = intent;
     }
 
-    public final void setCustomMouseCursor(@NotNull String imagePath, @NotNull Point cursorHotspot,
+    public final void setCustomMouseCursor(@NotNull Image image, @NotNull Point cursorHotspot,
                                            @NotNull String name) {
-        server.setCustomMouseCursor(imagePath, cursorHotspot, name);
+        server.setCustomMouseCursor(image, cursorHotspot, name);
     }
 
     public final int getScreenWidth() {

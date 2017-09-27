@@ -8,15 +8,25 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class MouseCursor extends Entity implements Serializable, Mouse.MouseCallback {
 
     public static final long serialVersionUID = 201709251738L;
 
-    protected Point cursorHotSpot;
+    protected List<Image> images = new ArrayList<>();
 
-    public MouseCursor(Point cursorHotSpot) {
+    protected Point cursorHotSpot;
+    protected String name;
+
+    public MouseCursor(@NotNull Point cursorHotSpot, @NotNull String name, @NotNull String ... imagePaths) {
+        Toolkit toolkit = Toolkit.getDefaultToolkit();
+        for(String path: imagePaths)
+            images.add(toolkit.getImage(path));
+
         this.cursorHotSpot = cursorHotSpot;
+        this.name = name;
     }
 
     @Override
@@ -63,5 +73,17 @@ public abstract class MouseCursor extends Entity implements Serializable, Mouse.
     @Override
     public void mouseMoved(MouseEvent event) {
         gameState.mouseMoved(event);
+    }
+
+    public final Image getImage(int index) {
+        return images.get(index);
+    }
+
+    public final Point getCursorHotSpot() {
+        return cursorHotSpot;
+    }
+
+    public final String getName() {
+        return name;
     }
 }

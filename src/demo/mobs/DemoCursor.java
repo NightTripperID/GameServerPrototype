@@ -1,5 +1,6 @@
 package demo.mobs;
 
+import com.sun.istack.internal.NotNull;
 import input.MouseCursor;
 
 import java.awt.*;
@@ -7,19 +8,22 @@ import java.awt.event.MouseEvent;
 
 public class DemoCursor extends MouseCursor {
 
-    public DemoCursor(Point cursorHotSpot) {
-        super(cursorHotSpot);
+    public static final int CURSOR_UP = 0;
+    public static final int CURSOR_DOWN = 1;
+
+    public DemoCursor(@NotNull Point cursorHotSpot, @NotNull String name, @NotNull String... imagePaths ) {
+        super(cursorHotSpot, name, imagePaths);
     }
 
     @Override
     public void mousePressed(MouseEvent event) {
         super.mousePressed(event);
-        gameState.setCustomMouseCursor("res/pointerdown.png", cursorHotSpot, "demo");
+        gameState.setCustomMouseCursor(images.get(CURSOR_DOWN), cursorHotSpot, name);
     }
 
     @Override
     public void mouseReleased(MouseEvent event) {
         super.mouseReleased(event);
-        gameState.setCustomMouseCursor("res/pointerup.png", cursorHotSpot, "demo");
+        gameState.setCustomMouseCursor(images.get(CURSOR_UP), cursorHotSpot, name);
     }
 }

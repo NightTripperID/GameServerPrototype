@@ -13,10 +13,16 @@ public class Main {
 
         Intent intent = new Intent(LevelOne.class);
         intent.putExtra("pudgie", new Pudgie(0, 0));
-        intent.putExtra("cursor", new DemoCursor(new Point(16, 16)));
+
+        DemoCursor cursor = new DemoCursor(new Point(16, 16), "demo", "res/pointerup.png", "res/pointerdown.png");
+        intent.putExtra("cursor", cursor);
+
         intent.putExtra("blotty", new Blotty(20, 20));
-        Server server = new Server(321, 240, 3, "Test");
-        server.setCustomMouseCursor("res/pointerup.png", new Point(16, 16), "demo");
+
+        Server server = new Server(320, 240, 3, "Test");
+
+        server.setCustomMouseCursor(cursor.getImage(DemoCursor.CURSOR_UP), cursor.getCursorHotSpot(), cursor.getName());
+
         server.startServer(intent);
     }
 }
