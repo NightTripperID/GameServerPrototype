@@ -1,17 +1,13 @@
-package test.gamestates;
+package demo.gamestates;
 
 import com.sun.istack.internal.NotNull;
 import gamestate.GameState;
 import gamestate.Intent;
 import graphics.Screen;
-import input.Clickable;
 import server.Server;
-import test.mobs.Blotty;
-import test.mobs.MouseCursor;
-import test.mobs.Pudgie;
-
-import java.util.ArrayList;
-import java.util.List;
+import demo.mobs.Blotty;
+import input.MouseCursor;
+import demo.mobs.Pudgie;
 
 public class LevelTwo extends GameState {
 
@@ -20,24 +16,22 @@ public class LevelTwo extends GameState {
     private MouseCursor cursor;
     private int count;
 
-    private List<Clickable> clickables = new ArrayList<>();
-
-    public LevelTwo(@NotNull Server server) {
-        super(server);
-    }
-
     @Override
-    public void onCreate() {
+    public void onCreate(@NotNull Server server) {
+
+        super.onCreate(server);
 
         blotty = (Blotty) getIntent().getSerializableExtra("blotty");
         blotty.initialize(this);
-        clickables.add(blotty);
+        populate(blotty);
 
         pudgie = (Pudgie) getIntent().getSerializableExtra("pudgie");
         pudgie.initialize(this);
+        populate(pudgie);
 
         cursor = (MouseCursor) getIntent().getSerializableExtra("cursor");
         cursor.initialize(this);
+        populate(cursor);
     }
 
     @Override
@@ -65,16 +59,5 @@ public class LevelTwo extends GameState {
         screen.renderString8x8(40, 40, 0x00ff00, "Level 2");
         pudgie.onRender(screen);
         blotty.onRender(screen);
-    }
-
-    @Override
-    public void onDestroy() {
-
-    }
-
-    @Override
-    public void onClick(int x, int y) {
-        super.onClick(x, y);
-        clickables.forEach((clickable) -> onClick(x, y));
     }
 }

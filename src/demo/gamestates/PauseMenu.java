@@ -1,20 +1,10 @@
-package test.gamestates;
+package demo.gamestates;
 
 import com.sun.istack.internal.NotNull;
 import gamestate.GameState;
 import graphics.Screen;
-import server.Server;
 
 public class PauseMenu extends GameState {
-
-    public PauseMenu(@NotNull Server server) {
-        super(server);
-    }
-
-    @Override
-    public void onCreate() {
-
-    }
 
     @Override
     public void onUpdate() {

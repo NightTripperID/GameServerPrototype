@@ -1,51 +1,84 @@
 package gamestate;
 
 import com.sun.istack.internal.NotNull;
+import entity.Entity;
+import entity.MouseInteractive;
+import entity.Renderable;
+import entity.Updatable;
 import graphics.Screen;
 import input.Keyboard;
 import input.Mouse;
 import server.Server;
 
 import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class GameState {
 
     private Server server;
     private Intent intent;
 
+    private List<Updatable> updatables = new ArrayList<>();
+    private List<Renderable> renderables = new ArrayList<>();
+    private List<MouseInteractive> mouseInteractives = new ArrayList<>();
+
     protected static final int MAX_TICK = 10 * 60;
 
-    public GameState(@NotNull Server server) {
+    public void onCreate(@NotNull Server server) {
         this.server = server;
     }
 
-    public abstract void onCreate();
+    public void onDestroy() {
+    }
 
-    public abstract void onUpdate();
+    public void onUpdate() {
+        updatables.forEach(Updatable::onUpdate);
+    }
 
-    public abstract void onRender(@NotNull Screen screen);
+    public void onRender(@NotNull Screen screen) {
+        for(Renderable r : renderables)
+            r.onRender(screen);
+    }
 
-    public abstract void onDestroy();
-
-    public final void startGameState(@NotNull Intent intent) {
+    protected final void startGameState(@NotNull Intent intent) {
         server.pushGameState(intent);
     }
 
-    public final void finish() {
+    protected final void finish() {
         server.popGameState();
     }
 
-    public final void swapGameState(@NotNull Intent intent) {
+    protected final void swapGameState(@NotNull Intent intent) {
         server.swapGameState(intent);
     }
 
     @NotNull
-    public final Intent getIntent() {
+    protected final Intent getIntent() {
         return intent;
+    }
+
+    protected void populate(@NotNull Entity entity) {
+
+        if (entity instanceof Updatable)
+            updatables.add((Updatable) entity);
+
+        if (entity instanceof Renderable)
+            renderables.add((Renderable) entity);
+
+        if (entity instanceof MouseInteractive)
+            mouseInteractives.add((MouseInteractive) entity);
     }
 
     public final void setIntent(@NotNull Intent intent) {
         this.intent = intent;
+    }
+
+    public final void setCustomMouseCursor(@NotNull String imagePath, @NotNull Point cursorHotspot,
+                                           @NotNull String name) {
+        server.setCustomMouseCursor(imagePath, cursorHotspot, name);
     }
 
     public final int getScreenWidth() {
@@ -68,10 +101,43 @@ public abstract class GameState {
         return server.getMouse();
     }
 
-    public final void setCustomMouseCursor(String imagePath, Point cursorHotspot, String name) {
-        server.setCustomMouseCursor(imagePath, cursorHotspot, name);
+    public final void mouseClicked(MouseEvent mouseEvent) {
+        for(MouseInteractive m : mouseInteractives)
+            m.mouseClicked(mouseEvent);
     }
 
-    public void onClick(int x, int y) {
+    public final void mousePressed(MouseEvent mouseEvent) {
+        for(MouseInteractive m : mouseInteractives)
+            m.mousePressed(mouseEvent);
+    }
+
+    public final void mouseReleased(MouseEvent mouseEvent) {
+        for(MouseInteractive m : mouseInteractives)
+            m.mouseReleased(mouseEvent);
+    }
+
+    public final void mouseEntered(MouseEvent mouseEvent) {
+        for(MouseInteractive m : mouseInteractives)
+            m.mouseEntered(mouseEvent);
+    }
+
+    public final void mouseExited(MouseEvent mouseEvent) {
+        for(MouseInteractive m : mouseInteractives)
+            m.mouseExited(mouseEvent);
+    }
+
+    public final void mouseWheelMoved(MouseWheelEvent mouseWheelEvent) {
+        for(MouseInteractive m : mouseInteractives)
+            m.mouseWheelMoved(mouseWheelEvent);
+    }
+
+    public final void mouseDragged(MouseEvent mouseEvent) {
+        for(MouseInteractive m : mouseInteractives)
+            m.mouseDragged(mouseEvent);
+    }
+
+    public final void mouseMoved(MouseEvent mouseEvent) {
+        for(MouseInteractive m : mouseInteractives)
+            m.mouseMoved(mouseEvent);
     }
 }

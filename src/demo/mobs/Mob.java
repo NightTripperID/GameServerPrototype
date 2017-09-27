@@ -1,4 +1,4 @@
-package test.mobs;
+package demo.mobs;
 
 import com.sun.istack.internal.NotNull;
 import entity.Entity;

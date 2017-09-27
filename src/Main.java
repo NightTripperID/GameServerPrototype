@@ -1,9 +1,9 @@
+import demo.mobs.DemoCursor;
 import gamestate.Intent;
 import server.Server;
-import test.gamestates.LevelOne;
-import test.mobs.Blotty;
-import test.mobs.MouseCursor;
-import test.mobs.Pudgie;
+import demo.gamestates.LevelOne;
+import demo.mobs.Blotty;
+import demo.mobs.Pudgie;
 
 import java.awt.*;
 
@@ -13,10 +13,10 @@ public class Main {
 
         Intent intent = new Intent(LevelOne.class);
         intent.putExtra("pudgie", new Pudgie(0, 0));
-        intent.putExtra("cursor", new MouseCursor());
+        intent.putExtra("cursor", new DemoCursor(new Point(16, 16)));
         intent.putExtra("blotty", new Blotty(20, 20));
         Server server = new Server(321, 240, 3, "Test");
-        server.setCustomMouseCursor("res/pointerup.png", new Point(0, 0), "test");
+        server.setCustomMouseCursor("res/pointerup.png", new Point(16, 16), "demo");
         server.startServer(intent);
     }
 }

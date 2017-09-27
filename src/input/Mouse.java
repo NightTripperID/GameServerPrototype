@@ -1,65 +1,54 @@
 package input;
 
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseWheelEvent;
+import java.awt.event.*;
 
 public class Mouse extends MouseAdapter {
 
-    private MouseCallbacks mouseCallbacks;
+    private MouseCallback mouseCallback;
+
+    public interface MouseCallback extends MouseListener, MouseWheelListener, MouseMotionListener { }
 
     @Override
     public void mouseClicked(MouseEvent mouseEvent) {
-        mouseCallbacks.mouseClicked(mouseEvent);
+        mouseCallback.mouseClicked(mouseEvent);
     }
 
     @Override
     public void mousePressed(MouseEvent mouseEvent) {
-        mouseCallbacks.mousePressed(mouseEvent);
+        mouseCallback.mousePressed(mouseEvent);
     }
 
     @Override
     public void mouseReleased(MouseEvent mouseEvent) {
-        mouseCallbacks.mouseReleased(mouseEvent);
+        mouseCallback.mouseReleased(mouseEvent);
     }
 
     @Override
     public void mouseMoved(MouseEvent mouseEvent) {
-        mouseCallbacks.mouseMoved(mouseEvent);
+        mouseCallback.mouseMoved(mouseEvent);
     }
 
     @Override
     public void mouseDragged(MouseEvent mouseEvent) {
-        mouseCallbacks.mouseDragged(mouseEvent);
+        mouseCallback.mouseDragged(mouseEvent);
     }
 
     @Override
     public void mouseEntered(MouseEvent mouseEvent) {
-        mouseCallbacks.mouseEntered(mouseEvent);
+        mouseCallback.mouseEntered(mouseEvent);
     }
 
     @Override
     public void mouseExited(MouseEvent mouseEvent) {
-        mouseCallbacks.mouseExited(mouseEvent);
+        mouseCallback.mouseExited(mouseEvent);
     }
 
     @Override
     public void mouseWheelMoved(MouseWheelEvent mouseWheelEvent) {
-        mouseCallbacks.mouseWheelMoved(mouseWheelEvent);
+        mouseCallback.mouseWheelMoved(mouseWheelEvent);
     }
 
-    public void setMouseCallbacks(MouseCallbacks mouseCallbacks) {
-        this.mouseCallbacks = mouseCallbacks;
-    }
-
-    public interface MouseCallbacks {
-        default void mouseClicked(MouseEvent mouseEvent) {}
-        default void mousePressed(MouseEvent mouseEvent) {}
-        default void mouseReleased(MouseEvent mouseEvent) {}
-        default void mouseMoved(MouseEvent mouseEvent) {}
-        default void mouseDragged(MouseEvent mouseEvent) {}
-        default void mouseEntered(MouseEvent mouseEvent) {}
-        default void mouseExited(MouseEvent mouseEvent) {}
-        default void mouseWheelMoved(MouseWheelEvent mouseWheelEvent) {}
+    public void setMouseCallback(MouseCallback mouseCallback) {
+        this.mouseCallback = mouseCallback;
     }
 }

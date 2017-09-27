@@ -162,13 +162,13 @@ public class Server extends Canvas implements Runnable {
     public void pushGameState(@NotNull Intent intent) {
 
         try {
-            GameState gs = intent.getGsc().getConstructor(Server.class).newInstance(this);
+            GameState gs = intent.getGsc().newInstance();
             gs.setIntent(intent);
-            gs.onCreate();
+            gs.onCreate(this);
             gsm.push(gs);
-        } catch(NoSuchMethodException | InstantiationException |
-                IllegalAccessException | InvocationTargetException e) {
-            System.out.println("Exception in " + getClass().getSimpleName() + ".pushGameState(intent):" + e.getMessage());
+        } catch(InstantiationException | IllegalAccessException e) {
+            System.out.println("Exception in " + getClass().getSimpleName() +
+                    ".pushGameState(intent):" + e.getMessage());
         }
     }
 
@@ -179,13 +179,13 @@ public class Server extends Canvas implements Runnable {
     public void swapGameState(@NotNull Intent intent) {
 
         try {
-            GameState gs = intent.getGsc().getConstructor(Server.class).newInstance(this);
+            GameState gs = intent.getGsc().newInstance();
             gs.setIntent(intent);
-            gs.onCreate();
+            gs.onCreate(this);
             gsm.swap(gs).onDestroy();
-        } catch(NoSuchMethodException | InstantiationException |
-                IllegalAccessException | InvocationTargetException e) {
-            System.out.println("Exception in " + getClass().getSimpleName() + ".swapGameState(intent): " + e.getMessage());
+        } catch(InstantiationException | IllegalAccessException e) {
+            System.out.println("Exception in " + getClass().getSimpleName() +
+                    ".swapGameState(intent): " + e.getMessage());
         }
     }
 
