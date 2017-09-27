@@ -24,7 +24,6 @@ public abstract class Mob extends Entity implements Updatable, Renderable {
 
         this(x, y, xSpeed, ySpeed, xDir, yDir);
         gameState = gs;
-
     }
 
     protected Mob(double x, double y, double xSpeed, double ySpeed, int xDir, int yDir) {
