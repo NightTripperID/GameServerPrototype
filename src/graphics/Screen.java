@@ -168,15 +168,15 @@ public class Screen {
      * Renders specified sprite at its contained coordinates.
      * @param sprite The sprite to render.
      */
-    public void renderSprite(@NotNull Sprite sprite) {
-        for (int y = 0; y < sprite.height; y++) {
-            for (int x = 0; x < sprite.width; x++) {
-                if (x + sprite.getX() < this.width && y + sprite.getY() < this.height)
-                    if (sprite.pixels[x + y * sprite.width] != 0xffff00ff)
-                        pixels[x + sprite.getX() + (y + sprite.getY()) * width] = sprite.pixels[x + y * sprite.width];
-            }
-        }
-    }
+//    public void renderSprite(@NotNull Sprite sprite) {
+//        for (int y = 0; y < sprite.height; y++) {
+//            for (int x = 0; x < sprite.width; x++) {
+//                if (x + sprite.getX() < this.width && y + sprite.getY() < this.height)
+//                    if (sprite.pixels[x + y * sprite.width] != 0xffff00ff)
+//                        pixels[x + sprite.getX() + (y + sprite.getY()) * width] = sprite.pixels[x + y * sprite.width];
+//            }
+//        }
+//    }
 
     /**
      * Renders specified sprite at specified coordinates using specified width, height, and pixels.
@@ -187,12 +187,11 @@ public class Screen {
      * @param pixels The pixels that comprise the sprite.
      */
     public void renderSprite(double x, double y, int width, int height, int[] pixels) {
-
         for (int yy = 0; yy < height; yy++) {
             for (int xx = 0; xx < width; xx++) {
                 if (xx + x < this.width && yy + y < this.height) {
                     if (pixels[xx + yy * width] != 0xffff00ff)
-                        pixels[xx + (int)x + (yy + (int)y) * this.width] = pixels[xx + yy * width];
+                        this.pixels[xx + (int)x + (yy + (int)y) * this.width] = pixels[xx + yy * width];
                 }
             }
         }

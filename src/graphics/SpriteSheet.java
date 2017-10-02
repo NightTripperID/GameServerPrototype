@@ -7,7 +7,7 @@ import java.net.URL;
 import javax.imageio.ImageIO;
 
 /**
- * graphics.SpriteSheet is an image that contains images that can be selected to make graphics.Sprite objects. Image data is loaded from a png file
+ * SpriteSheet is an image that contains images that can be selected to make graphics.Sprite objects. Image data is loaded from a png file
  * that is typically comprised of multiple sprite images, e.g. the animation frames for a video game character such as Mario.
  * @author Noah
  *
@@ -15,7 +15,6 @@ import javax.imageio.ImageIO;
 public class SpriteSheet {
 
     private URL url;
-    public final int size; // pixel precision
     public final int spriteWidth, spriteHeight;// pixel precision
     private int width, height; // pixel precision
     public int[] pixels;
@@ -23,86 +22,66 @@ public class SpriteSheet {
     private Sprite[] sprites;
 
     /**
-     * Creates a graphics.SpriteSheet object of specified size dimensions in pixel precision. A size of 16 means
-     * a graphics.SpriteSheet object 16 pixels wide and 16 pixels tall.
-     * @param path
-     * @param size
-     */
-    public SpriteSheet(String path, int size) {
-        url = getClass().getClassLoader().getResource(path);
-        this.size = size;
-        spriteWidth = size;
-        spriteHeight = size;
-        pixels = new int[size * size];
-        load();
-    }
-
-    /**
-     * Creates a graphics.SpriteSheet object of specified width and height in pixel precision. A width = 16 and a height = 32 means
-     * a graphics.SpriteSheet object 16 pixels wide and 32 pixels tall.
+     * Creates a SpriteSheet object of specified width and height in pixel precision. A width = 16 and a height = 32 means
+     * a SpriteSheet object 16 pixels wide and 32 pixels tall.
      * @param path: The url path of the image file.
-     * @param width: Width in tiles.
-     * @param height: Height in tiles.
+     * @param spriteWidth: Width in pixels.
+     * @param spriteHeight: Height in pixels.
      */
-    public SpriteSheet(String path, int width, int height) {
+    public SpriteSheet(String path, int spriteWidth, int spriteHeight) {
         url = getClass().getClassLoader().getResource(path);
-        size = -1;
-        spriteWidth = width;
-        spriteHeight = height;
-        pixels = new int[spriteWidth * spriteHeight];
+        this.spriteWidth = spriteWidth;
+        this.spriteHeight = spriteHeight;
         load();
     }
 
     /**
-     * Creates a new graphics.SpriteSheet object from another graphics.SpriteSheet. This constructor is typically used to create
-     * a smaller graphics.SpriteSheet object from a larger one. Width and height are in tile precision, meaning width = 5 and
-     * height = 5 creates a graphics.SpriteSheet object 5 sprite tiles wide and 5 sprite tiles tall, each sprite being spriteSize
+     * Creates a new SpriteSheet object from another SpriteSheet. This constructor is typically used to create
+     * a smaller SpriteSheet object from a larger one. Width and height are in tile precision, meaning width = 5 and
+     * height = 5 creates a SpriteSheet object 5 sprite tiles wide and 5 sprite tiles tall, each sprite being spriteSize
      * pixels wide and spriteSize pixels tall.
-     * @param sheet: the graphics.SpriteSheet object to copy from.
-     * @param x: the starting x coordinate to copy from in tile precision.
-     * @param y: the starting y coordinate to copy from in tile precision.
-     * @param width: the width of the new graphics.SpriteSheet in tile precision.
-     * @param height: the height of the new graphics.SpriteSheet in tile precision.
-     * @param spriteSize: the width and height of the sprite tiles in pixel precision.
+     * @param sheet: the SpriteSheet object to copy from.
+     * @param xOfs: the starting x coordinate to copy from in tile precision.
+     * @param yOfs: the starting y coordinate to copy from in tile precision.
+     * @param width: the width of the new SpriteSheet in tile precision.
+     * @param height: the height of the new SpriteSheet in tile precision.
+     * @param spriteWidth: the width of the sprite tiles in pixel precision.
+     * @param spriteHeight: the height of the sprite tiles in pixel precision.
      */
-    public SpriteSheet(SpriteSheet sheet, int x, int y, int width, int height, int spriteSize) {
-        int xx = x * spriteSize;
-        int yy = y * spriteSize;
-        int w = width * spriteSize;
-        int h = height * spriteSize;
-        spriteWidth = w;
-        spriteHeight = h;
-        if (spriteWidth == spriteHeight)
-            size = spriteWidth;
-        else
-            size = -1;
-        pixels = new int[(w * h)];
-        for (int y0 = 0; y0 < h; y0++) {
-            int yp = yy + y0;
-            for (int x0 = 0; x0 < w; x0++) {
-                int xp = xx + x0;
-                pixels[x0 + y0 * w] = sheet.pixels[xp + yp * sheet.spriteWidth];
+    public SpriteSheet(SpriteSheet sheet, int xOfs, int yOfs, int width, int height, int spriteWidth, int spriteHeight) {
+        int x = xOfs * spriteWidth;
+        int y = yOfs * spriteHeight;
+        int w = width * spriteWidth;
+        int h = height * spriteHeight;
+        this.spriteWidth = w;
+        this.spriteHeight = h;
+        pixels = new int[w * h];
+        for (int yy = 0; yy < h; yy++) {
+            int yp = y + yy;
+            for (int xx = 0; xx < w; xx++) {
+                int xp = x + xx;
+                pixels[xx + yy * w] = sheet.pixels[xp + yp * sheet.spriteWidth];
             }
         }
         int frame = 0;
         sprites = new Sprite[width * height];
-        for (int ya = 0; ya < height; ya++) {
-            for (int xa = 0; xa < width; xa++) {
-                int[] spritePixels = new int[spriteSize * spriteSize];
-                for (int y0 = 0; y0 < spriteSize; y0++) {
-                    for (int x0 = 0; x0 < spriteSize; x0++) {
-                        spritePixels[x0 + y0 * spriteSize] = pixels[(x0 + xa * spriteSize)
-                                + (y0 + ya * spriteSize) * spriteWidth];
+        for (int yTile = 0; yTile < height; yTile++) {
+            for (int xTile = 0; xTile < width; xTile++) {
+                int[] spritePixels = new int[spriteWidth * spriteHeight];
+                for (int yPixel = 0; yPixel < spriteHeight; yPixel++) {
+                    for (int xPixel = 0; xPixel < spriteWidth; xPixel++) {
+                        spritePixels[xPixel + yPixel * spriteWidth] = pixels[(xPixel + xTile * spriteWidth)
+                                + (yPixel + yTile * spriteHeight) * this.spriteWidth];
                     }
                 }
-                Sprite sprite = new Sprite(spritePixels, spriteSize, spriteSize);
+                Sprite sprite = new Sprite(spritePixels, spriteWidth, spriteHeight);
                 sprites[frame++] = sprite;
             }
         }
     }
 
     /**
-     * Loads image from specified URL to graphics.SpriteSheet object's pixel buffer.
+     * Loads image from specified URL to SpriteSheet object's pixel buffer.
      */
     private void load() {
 
@@ -117,8 +96,6 @@ public class SpriteSheet {
         } catch (IOException e) {
             System.err.println("failed!");
             e.printStackTrace();
-        } catch (Exception e) {
-            System.err.println("failed!");
         }
     }
 

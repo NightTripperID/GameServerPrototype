@@ -8,82 +8,39 @@ package graphics;
  */
 public class Sprite {
 
-    public final int size;
-    private int x, y;
+    private int xOfs, yOfs;
     public final int width;
     public final int height;
     public int[] pixels;
     protected SpriteSheet sheet;
 
     /**
-     * Used by AnimSprite extension to create a graphics.Sprite that represents a sprite strip to be animated.
+     * Used by AnimSprite extension to create a Sprite that represents a sprite strip to be animated.
      * @param sheet: The sheet from which the sprite strip is grabbed.
      * @param width: The width of the sprite strip.
      * @param height: The height of the sprite strip.
      */
     protected Sprite(SpriteSheet sheet, int width, int height) {
-        size = (width == height) ? width : -1;
         this.width = width;
         this.height = height;
         this.sheet = sheet;
     }
 
-    /**
-     * Creates a sprite of size dimensions starting at specified x and y coordinates from specified graphics.SpriteSheet.
-     * @param size: Width and height of sprite in pixel precision.
-     * @param x: x coordinate of graphics.Sprite on graphics.SpriteSheet in pixel precision.
-     * @param y: y coordinate of graphics.Sprite on graphics.SpriteSheet in pixel precision.
-     * @param sheet: graphics.SpriteSheet from which new graphics.Sprite object is grabbed.
-     */
-    public Sprite(int size, int x, int y, SpriteSheet sheet) {
-        this.size = size;
-        width = size;
-        height = size;
-        pixels = new int[size * size];
-        this.x = x * size;
-        this.y = y * size;
-        this.sheet = sheet;
-        load();
-    }
-
-    /**
-     * Creates new graphics.Sprite of specified solid color.
-     * @param width: Width of graphics.Sprite in pixel precision.
-     * @param height: Height of graphics.Sprite in pixel precision.
-     * @param color: Color with which to fill the entire graphics.Sprite.
-     */
-    public Sprite(int width, int height, int color) {
-        size = -1;
-        this.width = width;
-        this.height = height;
-        pixels = new int[width * height];
-        setColor(color);
-    }
-
-    /** Creates new graphics.Sprite of specified solid color.
-     * @param size: Width and height of graphics.Sprite in pixel precision.
-     * @param color: Color with which to fill the entire graphics.Sprite.
-     */
-    public Sprite(int size, int color) {
-        this.size = size;
-        width = size;
-        height = size;
-        pixels = new int[size * size];
-        setColor(color);
-    }
-
-    /**
-     * Creates new sprite from specified pixel buffer.
-     * @param pixels: Pixel buffer from which to create graphics.Sprite.
-     * @param width: Width of graphics.Sprite in pixel precision.
-     * @param height: Height of graphics.Sprite in pixel precision.
-     */
     public Sprite(int[] pixels, int width, int height) {
-        size = (width == height) ? width : -1;
         this.width = width;
         this.height = height;
         this.pixels = new int[pixels.length];
         System.arraycopy(pixels, 0, this.pixels, 0, pixels.length);
+    }
+
+    public Sprite(SpriteSheet sheet, int width, int height, int xOfs, int yOfs) {
+        this.sheet = sheet;
+        this.width = width;
+        this.height = height;
+        this.xOfs = xOfs * width;
+        this.yOfs = yOfs * height;
+        this.pixels = new int[width * height];
+        load();
     }
 
     public static Sprite[] split(SpriteSheet sheet) {
@@ -164,25 +121,11 @@ public class Sprite {
         return x * sin + y * cos;
     }
 
-    private void setColor(int color) {
-        for (int i = 0; i < width * height; i++) {
-            pixels[i] = color;
-        }
-    }
-
     private void load() {
-        for (int y = 0; y < size; y++) {
-            for (int x = 0; x < size; x++) {
-                pixels[x + y * size] = sheet.pixels[(x + this.x) + (y + this.y) * sheet.size];
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                pixels[x + y * width] = sheet.pixels[(x + xOfs) + (y + yOfs) * sheet.getWidth()];
             }
         }
-    }
-
-    public int getX() {
-        return x;
-    }
-
-    public int getY(){
-        return y;
     }
 }

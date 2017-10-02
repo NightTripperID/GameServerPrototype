@@ -1,0 +1,30 @@
+package demo.level;
+
+import demo.mob.Player;
+import gamestate.GameState;
+import input.MouseCursor;
+
+import server.Server;
+
+public class Level extends GameState {
+
+    private Player player;
+
+    @Override
+    public void onCreate(Server server) {
+        super.onCreate(server);
+
+        Player player = (Player) getIntent().getSerializableExtra("player");
+        player.initialize(this);
+        populate(player);
+
+        MouseCursor cursor = (MouseCursor) getIntent().getSerializableExtra("cursor");
+        cursor.initialize(this);
+        populate(cursor);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+    }
+}
