@@ -33,4 +33,13 @@ public class AnimSprite extends Sprite {
     public void setFrameRate(int rate) {
         this.rate = rate;
     }
+
+    public void setFrame(int frame) {
+        if(frame < 0 || frame > sheet.getSprites().length) {
+            ArrayIndexOutOfBoundsException e = new ArrayIndexOutOfBoundsException("frame index is out of bounds!");
+            e.printStackTrace();
+        }
+
+        this.frame = frame;
+    }
 }

@@ -14,7 +14,6 @@ import java.awt.*;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
-import java.lang.reflect.InvocationTargetException;
 
 public class Server extends Canvas implements Runnable {
 
@@ -117,7 +116,7 @@ public class Server extends Canvas implements Runnable {
 
     private void update() {
         keyboard.update();
-        gsm.peek().onUpdate();
+        gsm.peek().update();
     }
 
     private void render() {
@@ -131,7 +130,7 @@ public class Server extends Canvas implements Runnable {
 
         screen.clear();
 
-        gsm.peek().onRender(screen);
+        gsm.peek().render(screen);
 
         for(int i = 0; i < pixels.length; i++) {
             pixels[i] = screen.getPixel(i);

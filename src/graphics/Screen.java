@@ -207,7 +207,7 @@ public class Screen {
     }
 
 //    /**
-//     * Returns a reference to the screen's pixel buffer. This method must be callable from outside the onRender loop, and is
+//     * Returns a reference to the screen's pixel buffer. This method must be callable from outside the render loop, and is
 //     * therefore static. As such, pixels must be static, implying that all instances of screen will have the same pixel buffer
 //     * and contain the same image.
 //     * @return The screen's pixel buffer.

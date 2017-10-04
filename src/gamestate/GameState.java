@@ -34,13 +34,13 @@ public abstract class GameState {
     public void onDestroy() {
     }
 
-    public void onUpdate() {
-        updatables.forEach(Updatable::onUpdate);
+    public void update() {
+        updatables.forEach(Updatable::update);
     }
 
-    public void onRender(@NotNull Screen screen) {
+    public void render(@NotNull Screen screen) {
         for(Renderable r : renderables)
-            r.onRender(screen);
+            r.render(screen);
     }
 
     protected final void startGameState(@NotNull Intent intent) {

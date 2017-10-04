@@ -1,6 +1,6 @@
 package demo.level;
 
-import demo.mob.Player;
+import demo.player.Player;
 import gamestate.GameState;
 import input.MouseCursor;
 

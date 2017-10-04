@@ -1,5 +1,5 @@
 package entity;
 
 public interface Updatable {
-    void onUpdate();
+    void update();
 }
