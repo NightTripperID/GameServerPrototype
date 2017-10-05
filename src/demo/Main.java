@@ -13,7 +13,7 @@ public class Main {
     public static void main(String[] args) {
 
         Intent intent = new Intent(Level.class);
-        intent.putExtra("player", new Player(10, 10));
+        intent.putExtra("player", new Player(320 / 2, 240 / 2));
 
         DemoCursor cursor = new DemoCursor(new Point(8, 8), "cursor", "res/pointerup.png", "res/pointerdown.png");
         intent.putExtra("cursor", cursor);

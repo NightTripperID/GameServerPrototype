@@ -1,6 +1,7 @@
 package graphics;
 
 import com.sun.istack.internal.NotNull;
+import demo.tile.Tile;
 
 /**
  * Object that contains a pixel buffer matching specified dimensions and methods for rendering
@@ -13,6 +14,8 @@ public class Screen {
     private int width, height;
 
     private int[] pixels;
+
+    private int xOfs, yOfs;
 
     /**
      * Creates a screen with specified dimensions.
@@ -60,15 +63,11 @@ public class Screen {
     public void drawRect(double x, double y, int width, int height, int col) {
 
         for (int yy = (int)y; yy < (int)y + height; yy++) {
-
             if (yy < 0 || yy > this.height)
                 continue;
-
             for (int xx = (int)x; xx < (int)x + width; xx++) {
-
                 if (xx < 0 || xx > this.width)
                    continue;
-
                 if (xx == (int)x || xx == (int)x + width - 1 || yy == (int)y || yy == (int)y + height - 1)
                     pixels[xx + yy * this.width] = col;
             }
@@ -86,15 +85,11 @@ public class Screen {
     public void fillRect(double x, double y, int width, int height, int col) {
 
         for (int yy = (int)y; yy < y + height; yy++) {
-
             if(yy < 0 || yy > this.height)
                 continue;
-
             for (int xx = (int)x; xx < x + width; xx++) {
-
                 if (xx < 0 || xx > this.width)
                     continue;
-
                 pixels[xx + yy * this.width] = col;
             }
         }
@@ -218,17 +213,27 @@ public class Screen {
     public void renderSprite(double x, double y, int width, int height, int[] pixels) {
 
         for (int yy = 0; yy < height; yy++) {
-
             if (yy + y < 0 || yy + y > this.height)
                 continue;
-
             for (int xx = 0; xx < width; xx++) {
-
                 if (xx + x < 0 || xx + x > this.width)
                     continue;
-
                 if (pixels[xx + yy * width] != 0xffff00ff)
                         this.pixels[xx + (int)x + (yy + (int)y) * this.width] = pixels[xx + yy * width];
+            }
+        }
+    }
+
+    public void renderTile(int xp, int yp, Tile tile) {
+        xp -= xOfs;
+        yp -= yOfs;
+        for(int y = 0; y < tile.getSprite().getHeight(); y++) {
+            int ya = y + yp;
+            for(int x = 0; x < tile.getSprite().getWidth(); x++) {
+                int xa = x + xp;
+                if(xa < 0 || xa >= width || ya < 0 || ya >= height)
+                    break;
+                pixels[xa + ya * width] = tile.getSprite().pixels[x + y * tile.getSprite().getWidth()];
             }
         }
     }
@@ -266,5 +271,10 @@ public class Screen {
      */
     public int getHeight() {
         return height;
+    }
+
+    public void setOffset(int xOfs, int yOfs) {
+        this.xOfs = xOfs;
+        this.yOfs = yOfs;
     }
 }

@@ -1,10 +1,9 @@
 package demo.tile;
 
-import entity.Renderable;
-import entity.Updatable;
+import graphics.Screen;
 import graphics.Sprite;
 
-public abstract class Tile implements Updatable, Renderable {
+public class Tile {
 
     public int x, y;
 
@@ -18,6 +17,10 @@ public abstract class Tile implements Updatable, Renderable {
     public Tile(Sprite sprite, boolean solid) {
         this.sprite = sprite;
         this.solid = solid;
+    }
+
+    public void render(Screen screen, int x, int y) {
+        screen.renderTile(x, y, this);
     }
 
     public Sprite getSprite() {

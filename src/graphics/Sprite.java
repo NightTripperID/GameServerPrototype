@@ -9,8 +9,9 @@ package graphics;
 public class Sprite {
 
     private int xOfs, yOfs;
-    public final int width;
-    public final int height;
+    private int width;
+    private int height;
+
     public int[] pixels;
     protected SpriteSheet sheet;
 
@@ -21,26 +22,33 @@ public class Sprite {
      * @param height: The height of the sprite strip.
      */
     protected Sprite(SpriteSheet sheet, int width, int height) {
-        this.width = width;
-        this.height = height;
+        setWidth(width);
+        setHeight(height);
         this.sheet = sheet;
     }
 
     public Sprite(int[] pixels, int width, int height) {
-        this.width = width;
-        this.height = height;
+        setWidth(width);
+        setHeight(height);
         this.pixels = new int[pixels.length];
         System.arraycopy(pixels, 0, this.pixels, 0, pixels.length);
     }
 
     public Sprite(SpriteSheet sheet, int width, int height, int xOfs, int yOfs) {
         this.sheet = sheet;
-        this.width = width;
-        this.height = height;
+        setWidth(width);
+        setHeight(height);
         this.xOfs = xOfs * width;
         this.yOfs = yOfs * height;
-        this.pixels = new int[width * height];
+        pixels = new int[width * height];
         load();
+    }
+
+    public Sprite(int col, int width, int height) {
+        setWidth(width);
+        setHeight(height);
+        pixels = new int[width * height];
+        setColor(col);
     }
 
     public static Sprite[] split(SpriteSheet sheet) {
@@ -127,5 +135,31 @@ public class Sprite {
                 pixels[x + y * width] = sheet.pixels[(x + xOfs) + (y + yOfs) * sheet.getWidth()];
             }
         }
+    }
+
+    private void setWidth(int width) {
+        if(width < 1)
+            throw new IllegalArgumentException("width must be 1 or greater");
+
+        this.width = width;
+    }
+
+    private void setHeight(int height) {
+        if (height < 1)
+            throw new IllegalArgumentException("height must be 1 or greater");
+        this.height = height;
+    }
+
+    private void setColor(int col) {
+        for(int i = 0; i < pixels.length; i++)
+        pixels[i] = col;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
     }
 }

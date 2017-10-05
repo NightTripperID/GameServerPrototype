@@ -1,6 +1,7 @@
 package demo.player;
 
 import com.sun.istack.internal.NotNull;
+import demo.level.Level;
 import demo.mob.MobState;
 import demo.spritesheets.PlayerSprites;
 import input.Mouse;
@@ -38,8 +39,9 @@ public class PlayerStateWalking extends PlayerState {
         mob.xa = mob.getxSpeed() * mob.getxDir();
         mob.ya = mob.getySpeed() * mob.getyDir();
 
-        mob.x += mob.xa;
-        mob.y += mob.ya;
+        Level level = (Level) mob.getGameState();
+        level.scrollX((int) mob.xa);
+        level.scrollY((int) mob.ya);
 
         return nextState;
     }

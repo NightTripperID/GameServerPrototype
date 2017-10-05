@@ -208,7 +208,7 @@ public class Server extends Canvas implements Runnable {
         return mouse;
     }
 
-    public void setCustomMouseCursor(Image image, Point cursorHotspot, String name) {
+    public void setCustomMouseCursor(@NotNull Image image, @NotNull Point cursorHotspot, @NotNull String name) {
         Cursor custom = Toolkit.getDefaultToolkit().createCustomCursor(image, cursorHotspot, name);
         frame.setCursor(custom);
     }
