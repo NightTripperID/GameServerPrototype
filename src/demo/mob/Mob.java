@@ -6,7 +6,11 @@ import entity.Renderable;
 import entity.Updatable;
 import graphics.AnimSprite;
 
-public abstract class Mob extends Entity implements Updatable, Renderable {
+import java.io.Serializable;
+
+public abstract class Mob extends Entity implements Updatable, Renderable, Serializable {
+
+    public static final long serialVersionUID = 201709271703L;
 
     protected AnimSprite currSprite;
 
@@ -28,7 +32,7 @@ public abstract class Mob extends Entity implements Updatable, Renderable {
     private int height;
 
 
-    protected Mob(int x, int y, int xDir, int yDir, int width, int height) {
+    protected Mob(double x, double y, int xDir, int yDir, int width, int height) {
 
         this.x = x;
         this.y = y;
@@ -37,6 +41,11 @@ public abstract class Mob extends Entity implements Updatable, Renderable {
         setyDir(yDir);
         setWidth(width);
         setHeight(height);
+    }
+
+    @Override
+    public void update() {
+        currState = currState.update();
     }
 
     public AnimSprite getCurrSprite() {

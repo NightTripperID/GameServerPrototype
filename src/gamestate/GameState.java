@@ -60,7 +60,7 @@ public abstract class GameState {
         return intent;
     }
 
-    protected void populate(@NotNull Entity entity) {
+    public void addEntity(@NotNull Entity entity) {
 
         if (entity instanceof Updatable)
             updatables.add((Updatable) entity);
@@ -70,6 +70,18 @@ public abstract class GameState {
 
         if (entity instanceof MouseInteractive)
             mouseInteractives.add((MouseInteractive) entity);
+    }
+
+    public void removeEntity(@NotNull Entity entity) {
+
+        if(entity instanceof Updatable)
+            updatables.remove(entity);
+
+        if(entity instanceof Renderable)
+            renderables.remove(entity);
+
+        if(entity instanceof MouseInteractive)
+            mouseInteractives.remove(entity);
     }
 
     public final void setIntent(@NotNull Intent intent) {

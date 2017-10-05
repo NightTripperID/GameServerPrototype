@@ -2,6 +2,7 @@ package demo.player;
 
 import demo.mob.Mob;
 import demo.mob.MobState;
+import demo.spritesheets.AnimSprites;
 import demo.spritesheets.SpriteSheets;
 import entity.MouseInteractive;
 import gamestate.GameState;
@@ -11,29 +12,22 @@ import graphics.Screen;
 import java.awt.event.MouseEvent;
 import java.io.Serializable;
 
-public class Player extends Mob implements MouseInteractive, Serializable {
-
-    public static final long serialVersionUID = 201709271703L;
+public class Player extends Mob implements MouseInteractive {
 
     public Player(int x, int y) {
-        super(x, y, 1, 1, 8, 8);
+        super(x, y, 1, 1, 16, 16);
     }
 
     @Override
     public void initialize(GameState gameState) {
         super.initialize(gameState);
-        currSprite = PlayerState.PLAYER_DOWN;
+        currSprite = AnimSprites.PLAYER_DOWN;
         currState = new PlayerStateStanding(this);
     }
 
     @Override
-    public void update() {
-        currState = currState.update();
-    }
-
-    @Override
     public void render(Screen screen) {
-        screen.renderSprite(x, y, 16, 16, currSprite.getSprite().pixels);
+        screen.renderSprite(x, y, getWidth(), getHeight(), currSprite.getSprite().pixels);
     }
 
     @Override

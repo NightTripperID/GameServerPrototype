@@ -16,11 +16,11 @@ public class Level extends GameState {
 
         Player player = (Player) getIntent().getSerializableExtra("player");
         player.initialize(this);
-        populate(player);
+        addEntity(player);
 
         MouseCursor cursor = (MouseCursor) getIntent().getSerializableExtra("cursor");
         cursor.initialize(this);
-        populate(cursor);
+        addEntity(cursor);
     }
 
     @Override

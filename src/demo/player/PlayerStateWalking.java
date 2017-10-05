@@ -2,6 +2,7 @@ package demo.player;
 
 import com.sun.istack.internal.NotNull;
 import demo.mob.MobState;
+import demo.spritesheets.AnimSprites;
 
 import java.awt.event.MouseEvent;
 
@@ -79,8 +80,8 @@ public class PlayerStateWalking extends PlayerState {
         int mouseX = mouseEvent.getX() / screenScale;
         int mouseY = mouseEvent.getY() / screenScale;
 
-        int xCenter = (int) mob.x + mob.getWidth();
-        int yCenter = (int) mob.y + mob.getHeight();
+        int xCenter = (int) mob.x + mob.getWidth() / 2;
+        int yCenter = (int) mob.y + mob.getHeight() / 2;
 
         if ((mouseEvent.getModifiersEx() & b3) == b3) {
             if (mouseY < yCenter - 1)
@@ -110,25 +111,25 @@ public class PlayerStateWalking extends PlayerState {
     }
 
     private void walkUp() {
-        mob.setCurrSprite(PlayerState.PLAYER_UP);
+        mob.setCurrSprite(AnimSprites.PLAYER_UP);
         mob.setySpeed(WALK_SPEED);
         mob.setyDir(-1);
     }
 
     private void walkDown() {
-        mob.setCurrSprite(PlayerState.PLAYER_DOWN);
+        mob.setCurrSprite(AnimSprites.PLAYER_DOWN);
         mob.setySpeed(WALK_SPEED);
         mob.setyDir(1);
     }
 
     private void walkLeft() {
-        mob.setCurrSprite(PlayerState.PLAYER_LEFT);
+        mob.setCurrSprite(AnimSprites.PLAYER_LEFT);
         mob.setxSpeed(WALK_SPEED);
         mob.setxDir(-1);
     }
 
     private void walkRight() {
-        mob.setCurrSprite(PlayerState.PLAYER_RIGHT);
+        mob.setCurrSprite(AnimSprites.PLAYER_RIGHT);
         mob.setxSpeed(WALK_SPEED);
         mob.setxDir(1);
     }
