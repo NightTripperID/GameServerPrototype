@@ -1,13 +1,13 @@
 package demo.projectile;
 
-import demo.spritesheets.AnimSprites;
+import demo.spritesheets.ProjectileSprites;
 
 public class Arrow extends Projectile {
 
     public Arrow(double x, double y, double angle) {
         super(x, y, 16, 16, angle);
 
-        currSprite = AnimSprites.ARROW;
+        currSprite = ProjectileSprites.ARROW;
         currState = new ArrowStateFlying(this);
 
         double angleVelocity = Math.sqrt(8); // sqrt(2^2 + 2^2), i.e. hypotenuse from  pythagorean theorem

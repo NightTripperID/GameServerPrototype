@@ -16,30 +16,21 @@ public class PlayerStateStanding extends PlayerState {
         mob.setySpeed(0);
     }
 
+    public PlayerStateStanding(@NotNull Player player, int count) {
+        this(player);
+        this.count = count;
+    }
+
     @Override
     public MobState update() {
 
+        super.update();
+
         if(keyboard.upHeld || keyboard.downHeld || keyboard.leftHeld || keyboard.rightHeld)
-            return new PlayerStateWalking((Player) mob);
-
-        if(Mouse.button1) {
-            int screenScale = mob.getGameState().getScreenScale();
-
-            int mouseX = Mouse.mouseX / screenScale;
-            int mouseY = Mouse.mouseY / screenScale;
-
-            double dx = mouseX - mob.x;
-            double dy = mouseY - mob.y;
-
-            double angle = Math.atan2(dy, dx);
-
-            Arrow arrow = new Arrow(mob.x, mob.y, angle);
-            arrow.initialize(mob.getGameState());
-            mob.getGameState().addEntity(arrow);
-        }
+            return new PlayerStateWalking((Player) mob, count);
 
         if (Mouse.button3)
-            return new PlayerStateWalking((Player) mob);
+            return new PlayerStateWalking((Player) mob, count);
 
         return this;
     }

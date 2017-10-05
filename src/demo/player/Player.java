@@ -1,11 +1,9 @@
 package demo.player;
 
 import demo.mob.Mob;
-import demo.spritesheets.AnimSprites;
+import demo.spritesheets.PlayerSprites;
 import gamestate.GameState;
 import graphics.Screen;
-
-import java.awt.event.MouseEvent;
 
 public class Player extends Mob {
 
@@ -16,7 +14,7 @@ public class Player extends Mob {
     @Override
     public void initialize(GameState gameState) {
         super.initialize(gameState);
-        currSprite = AnimSprites.PLAYER_DOWN;
+        currSprite = PlayerSprites.PLAYER_DOWN;
         currState = new PlayerStateStanding(this);
     }
 

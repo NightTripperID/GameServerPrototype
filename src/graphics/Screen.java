@@ -20,6 +20,12 @@ public class Screen {
      * @param height The height of the screen.
      */
     public Screen(int width, int height) {
+
+        if(width < 1)
+            throw new IllegalArgumentException("Screen width must be at least 1 pixel");
+        if(height < 1)
+            throw new IllegalArgumentException("Screen height must be at least 1 pixel");
+
         this.width = width;
         this.height = height;
         pixels = new int[width * height];
@@ -52,11 +58,19 @@ public class Screen {
      * @param col The specified color for the rectangle's outline using rgb hex notation (e.g. 0xaabbcc)
      */
     public void drawRect(double x, double y, int width, int height, int col) {
+
         for (int yy = (int)y; yy < (int)y + height; yy++) {
+
+            if (yy < 0 || yy > this.height)
+                continue;
+
             for (int xx = (int)x; xx < (int)x + width; xx++) {
 
+                if (xx < 0 || xx > this.width)
+                   continue;
+
                 if (xx == (int)x || xx == (int)x + width - 1 || yy == (int)y || yy == (int)y + height - 1)
-                    if (xx > 0 && xx < this.width && yy > 0 && yy < this.height) pixels[xx + yy * this.width] = col;
+                    pixels[xx + yy * this.width] = col;
             }
         }
     }
@@ -70,9 +84,18 @@ public class Screen {
      * @param col The specified color of the rectangle using rgb hex notation (e.g. 0xaabbcc)
      */
     public void fillRect(double x, double y, int width, int height, int col) {
+
         for (int yy = (int)y; yy < y + height; yy++) {
+
+            if(yy < 0 || yy > this.height)
+                continue;
+
             for (int xx = (int)x; xx < x + width; xx++) {
-                if (xx > 0 && xx < this.width && yy > 0 && yy < this.height) pixels[xx + yy * this.width] = col;
+
+                if (xx < 0 || xx > this.width)
+                    continue;
+
+                pixels[xx + yy * this.width] = col;
             }
         }
     }
@@ -151,6 +174,9 @@ public class Screen {
      * @param col The specified color for the pixel using rgb hex notation (e.g. 0xaabbcc)
      */
     public void renderPixel(int index, int col) {
+        if(index < 0 || index > width * height)
+            return;
+
         pixels[index] = col;
     }
 
@@ -161,6 +187,9 @@ public class Screen {
      * @param col The specified color for the pixel using rgb hex notation (e.g. 0xaabbcc).
      */
     public void renderPixel(double x, double y, int col) {
+        if(x < 0 || x > width || y < 0 || y > height)
+            return;
+
         pixels[(int)x * (int)y] = col;
     }
 
@@ -187,12 +216,19 @@ public class Screen {
      * @param pixels The pixels that comprise the sprite.
      */
     public void renderSprite(double x, double y, int width, int height, int[] pixels) {
+
         for (int yy = 0; yy < height; yy++) {
+
+            if (yy + y < 0 || yy + y > this.height)
+                continue;
+
             for (int xx = 0; xx < width; xx++) {
-                if (xx + x < this.width && yy + y < this.height) {
-                    if (pixels[xx + yy * width] != 0xffff00ff)
+
+                if (xx + x < 0 || xx + x > this.width)
+                    continue;
+
+                if (pixels[xx + yy * width] != 0xffff00ff)
                         this.pixels[xx + (int)x + (yy + (int)y) * this.width] = pixels[xx + yy * width];
-                }
             }
         }
     }
