@@ -14,16 +14,4 @@ public class DemoCursor extends MouseCursor {
     public DemoCursor(@NotNull Point cursorHotSpot, @NotNull String name, @NotNull String... imagePaths) {
         super(cursorHotSpot, name, imagePaths);
     }
-
-    @Override
-    public void mousePressed(MouseEvent event) {
-        super.mousePressed(event);
-        gameState.setCustomMouseCursor(images.get(CURSOR_DOWN), cursorHotSpot, name);
-    }
-
-    @Override
-    public void mouseReleased(MouseEvent event) {
-        super.mouseReleased(event);
-        gameState.setCustomMouseCursor(images.get(CURSOR_UP), cursorHotSpot, name);
-    }
 }

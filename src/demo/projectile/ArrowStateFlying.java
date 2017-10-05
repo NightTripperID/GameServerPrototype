@@ -13,8 +13,8 @@ public class ArrowStateFlying extends ProjectileState {
     @Override
     public MobState update() {
 
-        mob.xa = mob.getxSpeed();
-        mob.ya = mob.getySpeed();
+        mob.xa = mob.getxSpeed() * mob.getxDir();
+        mob.ya = mob.getySpeed() * mob.getyDir();
 
         mob.x += mob.xa;
         mob.y += mob.ya;

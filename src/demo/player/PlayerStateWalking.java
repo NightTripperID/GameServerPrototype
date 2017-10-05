@@ -3,22 +3,15 @@ package demo.player;
 import com.sun.istack.internal.NotNull;
 import demo.mob.MobState;
 import demo.spritesheets.AnimSprites;
-
-import java.awt.event.MouseEvent;
+import input.Mouse;
 
 public class PlayerStateWalking extends PlayerState {
 
-    private static final double WALK_SPEED = 1.3;
+    private static final double MOVE_SPEED = 1.3;
 
-    private MouseEvent mouseEvent;
 
     public PlayerStateWalking(@NotNull Player player) {
         super(player);
-    }
-
-    public PlayerStateWalking(@NotNull Player player, @NotNull MouseEvent mouseEvent) {
-        super(player);
-        this.mouseEvent = mouseEvent;
     }
 
     @Override
@@ -28,19 +21,13 @@ public class PlayerStateWalking extends PlayerState {
 
         mob.setxSpeed(0);
         mob.setySpeed(0);
+        
+        MobState nextState;
 
-
-        if (mouseEvent != null) {
-
-            doMouseLogic();
-
-        } else {
-
-            if (!keyboard.upHeld && !keyboard.downHeld && !keyboard.leftHeld &&!keyboard.rightHeld)
-                return new PlayerStateStanding((Player) mob);
-
-            doKeyLogic();
-        }
+        if(!moveWithMouse() && !moveWithKeyboard())
+            nextState = new PlayerStateStanding((Player) mob);
+        else
+            nextState = this;
 
         mob.xa = mob.getxSpeed() * mob.getxDir();
         mob.ya = mob.getySpeed() * mob.getyDir();
@@ -48,89 +35,75 @@ public class PlayerStateWalking extends PlayerState {
         mob.x += mob.xa;
         mob.y += mob.ya;
 
-        return this;
+        return nextState;
     }
 
-    @Override
-    public MobState mousePressed(MouseEvent e) {
-        mouseEvent = e;
-        return this;
-    }
+    private boolean moveWithMouse() {
 
-    @Override
-    public MobState mouseDragged(MouseEvent e) {
-        mouseEvent = e;
-        return this;
-    }
+        if(!Mouse.button3)
+            return false;
 
-    @Override
-    public MobState mouseReleased(MouseEvent e) {
-
-        if (e.getButton() == MouseEvent.BUTTON3)
-            return new PlayerStateStanding((Player) mob);
-
-        return this;
-    }
-
-    private void doMouseLogic() {
         int screenScale = mob.getGameState().getScreenScale();
 
-        int b3 = MouseEvent.BUTTON3_DOWN_MASK;
-
-        int mouseX = mouseEvent.getX() / screenScale;
-        int mouseY = mouseEvent.getY() / screenScale;
+        int mouseX = Mouse.mouseX / screenScale;
+        int mouseY = Mouse.mouseY / screenScale;
 
         int xCenter = (int) mob.x + mob.getWidth() / 2;
         int yCenter = (int) mob.y + mob.getHeight() / 2;
 
-        if ((mouseEvent.getModifiersEx() & b3) == b3) {
-            if (mouseY < yCenter - 1)
-                walkUp();
-            if (mouseY > yCenter + 1)
-                walkDown();
-            if (mouseX < xCenter - 1)
-                walkLeft();
-            if (mouseX > xCenter + 1)
-                walkRight();
-        }
+        if (mouseY < yCenter - 1)
+            moveUp();
+        if (mouseY > yCenter + 1)
+            moveDown();
+        if (mouseX < xCenter - 1)
+            moveLeft();
+        if (mouseX > xCenter + 1)
+            moveRight();
+
+        return true;
     }
 
-    private void doKeyLogic() {
+    private boolean moveWithKeyboard() {
+
+        if(!keyboard.upHeld && !keyboard.downHeld && !keyboard.leftHeld && !keyboard.rightHeld)
+            return false;
 
         if (keyboard.upHeld)
-            walkUp();
+            moveUp();
 
         if (keyboard.downHeld)
-            walkDown();
+            moveDown();
 
         if (keyboard.leftHeld)
-            walkLeft();
+            moveLeft();
 
         if (keyboard.rightHeld)
-            walkRight();
+            moveRight();
+
+        return true;
     }
 
-    private void walkUp() {
+    private void moveUp() {
         mob.setCurrSprite(AnimSprites.PLAYER_UP);
-        mob.setySpeed(WALK_SPEED);
+        mob.setySpeed(MOVE_SPEED);
         mob.setyDir(-1);
     }
 
-    private void walkDown() {
+    private void moveDown() {
         mob.setCurrSprite(AnimSprites.PLAYER_DOWN);
-        mob.setySpeed(WALK_SPEED);
+        mob.setySpeed(MOVE_SPEED);
         mob.setyDir(1);
     }
 
-    private void walkLeft() {
+    private void moveLeft() {
         mob.setCurrSprite(AnimSprites.PLAYER_LEFT);
-        mob.setxSpeed(WALK_SPEED);
+        mob.setxSpeed(MOVE_SPEED);
         mob.setxDir(-1);
     }
 
-    private void walkRight() {
+    private void moveRight() {
         mob.setCurrSprite(AnimSprites.PLAYER_RIGHT);
-        mob.setxSpeed(WALK_SPEED);
+        mob.setxSpeed(MOVE_SPEED);
         mob.setxDir(1);
     }
 }

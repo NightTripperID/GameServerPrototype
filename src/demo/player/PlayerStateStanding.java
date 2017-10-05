@@ -3,6 +3,7 @@ package demo.player;
 import com.sun.istack.internal.NotNull;
 import demo.mob.MobState;
 import demo.projectile.Arrow;
+import input.Mouse;
 
 import java.awt.event.MouseEvent;
 
@@ -21,33 +22,25 @@ public class PlayerStateStanding extends PlayerState {
         if(keyboard.upHeld || keyboard.downHeld || keyboard.leftHeld || keyboard.rightHeld)
             return new PlayerStateWalking((Player) mob);
 
-        return this;
-    }
-
-    @Override
-    public MobState mousePressed(MouseEvent e) {
-
-        if(e.getButton() == MouseEvent.BUTTON1) {
-
+        if(Mouse.button1) {
             int screenScale = mob.getGameState().getScreenScale();
 
-            int mouseX = e.getX() / screenScale;
-            int mouseY = e.getY() / screenScale;
+            int mouseX = Mouse.mouseX / screenScale;
+            int mouseY = Mouse.mouseY / screenScale;
 
-            double dx = mob.x - mouseX;
-            double dy = mob.y - mouseY;
+            double dx = mouseX - mob.x;
+            double dy = mouseY - mob.y;
 
             double angle = Math.atan2(dy, dx);
 
             Arrow arrow = new Arrow(mob.x, mob.y, angle);
             arrow.initialize(mob.getGameState());
             mob.getGameState().addEntity(arrow);
-
-            System.out.println(angle);
         }
 
-        if(e.getButton() == MouseEvent.BUTTON3)
-            return new PlayerStateWalking((Player) mob, e);
+        if (Mouse.button3)
+            return new PlayerStateWalking((Player) mob);
+
         return this;
     }
 }

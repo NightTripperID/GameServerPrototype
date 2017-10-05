@@ -2,7 +2,6 @@ package gamestate;
 
 import com.sun.istack.internal.NotNull;
 import entity.Entity;
-import entity.MouseInteractive;
 import entity.Renderable;
 import entity.Updatable;
 import graphics.Screen;
@@ -23,7 +22,6 @@ public abstract class GameState {
 
     private List<Updatable> updatables = new ArrayList<>();
     private List<Renderable> renderables = new ArrayList<>();
-    private List<MouseInteractive> mouseInteractives = new ArrayList<>();
 
     protected static final int MAX_TICK = 10 * 60;
 
@@ -35,12 +33,13 @@ public abstract class GameState {
     }
 
     public void update() {
-        updatables.forEach(Updatable::update);
+        for(int i = 0; i < updatables.size(); i++)
+            updatables.get(i).update();
     }
 
     public void render(@NotNull Screen screen) {
-        for(Renderable r : renderables)
-            r.render(screen);
+        for(int i = 0; i < renderables.size(); i++)
+            renderables.get(i).render(screen);
     }
 
     protected final void startGameState(@NotNull Intent intent) {
@@ -67,9 +66,6 @@ public abstract class GameState {
 
         if (entity instanceof Renderable)
             renderables.add((Renderable) entity);
-
-        if (entity instanceof MouseInteractive)
-            mouseInteractives.add((MouseInteractive) entity);
     }
 
     public void removeEntity(@NotNull Entity entity) {
@@ -79,9 +75,6 @@ public abstract class GameState {
 
         if(entity instanceof Renderable)
             renderables.remove(entity);
-
-        if(entity instanceof MouseInteractive)
-            mouseInteractives.remove(entity);
     }
 
     public final void setIntent(@NotNull Intent intent) {
@@ -111,45 +104,5 @@ public abstract class GameState {
 
     public final Mouse getMouse() {
         return server.getMouse();
-    }
-
-    public final void mouseClicked(MouseEvent mouseEvent) {
-        for(MouseInteractive m : mouseInteractives)
-            m.mouseClicked(mouseEvent);
-    }
-
-    public final void mousePressed(MouseEvent mouseEvent) {
-        for(MouseInteractive m : mouseInteractives)
-            m.mousePressed(mouseEvent);
-    }
-
-    public final void mouseReleased(MouseEvent mouseEvent) {
-        for(MouseInteractive m : mouseInteractives)
-            m.mouseReleased(mouseEvent);
-    }
-
-    public final void mouseEntered(MouseEvent mouseEvent) {
-        for(MouseInteractive m : mouseInteractives)
-            m.mouseEntered(mouseEvent);
-    }
-
-    public final void mouseExited(MouseEvent mouseEvent) {
-        for(MouseInteractive m : mouseInteractives)
-            m.mouseExited(mouseEvent);
-    }
-
-    public final void mouseWheelMoved(MouseWheelEvent mouseWheelEvent) {
-        for(MouseInteractive m : mouseInteractives)
-            m.mouseWheelMoved(mouseWheelEvent);
-    }
-
-    public final void mouseDragged(MouseEvent mouseEvent) {
-        for(MouseInteractive m : mouseInteractives)
-            m.mouseDragged(mouseEvent);
-    }
-
-    public final void mouseMoved(MouseEvent mouseEvent) {
-        for(MouseInteractive m : mouseInteractives)
-            m.mouseMoved(mouseEvent);
     }
 }
