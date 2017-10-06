@@ -15,7 +15,7 @@ public class Main {
         Intent intent = new Intent(Level.class);
         intent.putExtra("player", new Player(320 / 2, 240 / 2));
 
-        DemoCursor cursor = new DemoCursor(new Point(8, 8), "cursor", "res/pointerup.png", "res/pointerdown.png");
+        DemoCursor cursor = new DemoCursor(new Point(8, 8), "cursor", "src/resource/pointerup.png", "src/resource/pointerdown.png");
         intent.putExtra("cursor", cursor);
 
         Server server = new Server(320, 240, 3, "Demo");

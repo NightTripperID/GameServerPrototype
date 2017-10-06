@@ -19,8 +19,8 @@ public class ArrowStateFlying extends ProjectileState {
         mob.x += mob.xa;
         mob.y += mob.ya;
 
-        if (mob.x < 0 || mob.xa + mob.getWidth() > mob.getGameState().getScreenWidth()
-                || mob.y < 0 || mob.ya + mob.getHeight() > mob.getGameState().getScreenHeight()) {
+        if (mob.x + mob.getWidth() < 0 || mob.x > mob.getGameState().getScreenWidth()
+                || mob.y + mob.getHeight() < 0 || mob.y > mob.getGameState().getScreenHeight()) {
 
             mob.getGameState().removeEntity(mob);
         }

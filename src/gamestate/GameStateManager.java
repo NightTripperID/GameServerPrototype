@@ -13,7 +13,6 @@ public class GameStateManager {
         gameStateStack.push(gs);
     }
 
-    @NotNull
     public GameState pop() {
 
         if(gameStateStack.size() > 1)
@@ -21,12 +20,10 @@ public class GameStateManager {
         else throw new EmptyGSMException();
     }
 
-    @NotNull
     public GameState peek() {
         return gameStateStack.peek();
     }
 
-    @NotNull
     public GameState swap(@NotNull GameState gs) {
         GameState old = gameStateStack.pop();
         gameStateStack.push(gs);

@@ -6,16 +6,11 @@ import demo.mob.MobState;
 import demo.spritesheets.PlayerSprites;
 import input.Mouse;
 
-public class PlayerStateWalking extends PlayerState {
+class PlayerStateWalking extends PlayerState {
 
     private static final double MOVE_SPEED = 1.3;
 
-
-    public PlayerStateWalking(@NotNull Player player) {
-        super(player);
-    }
-
-    public PlayerStateWalking(@NotNull Player player, int count) {
+    PlayerStateWalking(@NotNull Player player, int count) {
         super(player, count);
     }
 

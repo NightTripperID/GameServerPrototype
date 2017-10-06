@@ -47,9 +47,8 @@ public class Screen {
      * Overwrites screen buffer with black (0x000000).
      */
     public void clear() {
-        for (int i = 0; i < pixels.length; i++) {
+        for (int i = 0; i < pixels.length; i++)
             pixels[i] = 0x000000;
-        }
     }
 
     /**
@@ -104,15 +103,12 @@ public class Screen {
      * @param col The specified color of the character using rgb hex notation (e.g. 0xaabbcc)
      * @param character The character to be rendered.
      */
-    private void renderChar8x8(double x, double y, int col, char[] character) {
+    private void renderChar8x8(double x, double y, int col, @NotNull char[] character) {
 
-        for (int yy = 0; yy < 8; yy++) {
-            for (int xx = 0; xx < 8; xx++) {
-                if (character[xx + (yy << 3)] == '#') {
+        for (int yy = 0; yy < 8; yy++)
+            for (int xx = 0; xx < 8; xx++)
+                if (character[xx + (yy << 3)] == '#')
                     drawRect(x + xx, y + yy, 1, 1, col);
-                }
-            }
-        }
     }
 
     /**
@@ -124,15 +120,12 @@ public class Screen {
      * @param col The specified color of the character using rgb hex notation (e.g. 0xaabbcc)
      * @param character The character to be rendered.
      */
-    private void renderChar5x5(double x, double y, int col, int[] character) {
+    private void renderChar5x5(double x, double y, int col, @NotNull char[] character) {
 
-        for (int yy = 0; yy < 5; yy++) {
-            for (int xx = 0; xx < 5; xx++) {
-                if (character[xx + (yy * 5)] == '#') {
+        for (int yy = 0; yy < 5; yy++)
+            for (int xx = 0; xx < 5; xx++)
+                if (character[xx + (yy * 5)] == '#')
                     drawRect(x + xx, y + yy, 1, 1, col);
-                }
-            }
-        }
     }
 
     /**
@@ -144,9 +137,8 @@ public class Screen {
      */
     public void renderString8x8(double x, double y, int col, @NotNull String string) {
 
-        for (int i = 0; i < string.length(); i++) {
+        for (int i = 0; i < string.length(); i++)
             renderChar8x8(x + (i << 3), y, col, Font8x8.getChar(string.charAt(i)));
-        }
     }
 
     /**
@@ -158,9 +150,8 @@ public class Screen {
      */
     public void renderString5x5(double x, double y, int col, @NotNull String string) {
 
-        for (int i = 0; i < string.length(); i++) {
+        for (int i = 0; i < string.length(); i++)
             renderChar5x5(x + (i * 5), y, col, Font5x5.getChar(string.charAt(i)));
-        }
     }
 
     /**
@@ -189,51 +180,60 @@ public class Screen {
     }
 
     /**
-     * Renders specified sprite at its contained coordinates.
+     * Renders specified sprite at specified screen coordinates.
+     * @param x The x coordinate on screen.
+     * @param y The y coordinate on screen.
      * @param sprite The sprite to render.
      */
-//    public void renderSprite(@NotNull Sprite sprite) {
-//        for (int y = 0; y < sprite.height; y++) {
-//            for (int x = 0; x < sprite.width; x++) {
-//                if (x + sprite.getX() < this.width && y + sprite.getY() < this.height)
-//                    if (sprite.pixels[x + y * sprite.width] != 0xffff00ff)
-//                        pixels[x + sprite.getX() + (y + sprite.getY()) * width] = sprite.pixels[x + y * sprite.width];
-//            }
-//        }
-//    }
+    public void renderSprite(double x, double y, @NotNull Sprite sprite) {
 
-    /**
-     * Renders specified sprite at specified coordinates using specified width, height, and pixels.
-     * @param x The x coordinate of the sprite's top left corner.
-     * @param y The y coordinate of the sprite's top left corner.
-     * @param width The width of the sprite.
-     * @param height The height of the sprite.
-     * @param pixels The pixels that comprise the sprite.
-     */
-    public void renderSprite(double x, double y, int width, int height, int[] pixels) {
-
-        for (int yy = 0; yy < height; yy++) {
-            if (yy + y < 0 || yy + y > this.height)
+        for (int yy = 0; yy < sprite.getHeight(); yy++) {
+            if (yy + y <  0 || yy + y > this.height)
                 continue;
-            for (int xx = 0; xx < width; xx++) {
+            for (int xx = 0; xx < sprite.getWidth(); xx++) {
                 if (xx + x < 0 || xx + x > this.width)
                     continue;
-                if (pixels[xx + yy * width] != 0xffff00ff)
-                        this.pixels[xx + (int)x + (yy + (int)y) * this.width] = pixels[xx + yy * width];
+                if (sprite.pixels[xx + yy * sprite.getWidth()] != 0xffff00ff)
+                    pixels[xx + (int) x + (yy + (int) y) * width] = sprite.pixels[xx + yy * sprite.getWidth()];
             }
         }
     }
 
-    public void renderTile(int xp, int yp, Tile tile) {
+//    /**
+//     * Renders specified sprite at specified coordinates using specified width, height, and pixels.
+//     * @param x The x coordinate of the sprite's top left corner.
+//     * @param y The y coordinate of the sprite's top left corner.
+//     * @param width The width of the sprite.
+//     * @param height The height of the sprite.
+//     * @param pixels The pixels that comprise the sprite.
+//     */
+//    public void renderSprite(double x, double y, int width, int height, @NotNull int[] pixels) {
+//
+//        for (int yy = 0; yy < height; yy++) {
+//            if (yy + y < 0 || yy + y > this.height)
+//                continue;
+//            for (int xx = 0; xx < width; xx++) {
+//                if (xx + x < 0 || xx + x > this.width)
+//                    continue;
+//                if (pixels[xx + yy * width] != 0xffff00ff)
+//                        this.pixels[xx + (int) x + (yy + (int) y) * this.width] = pixels[xx + yy * width];
+//            }
+//        }
+//    }
+
+    public void renderTile(int xp, int yp, @NotNull Tile tile) {
+        int tileW = tile.getSprite().getWidth();
+        int tileH = tile.getSprite().getHeight();
+
         xp -= xOfs;
         yp -= yOfs;
-        for(int y = 0; y < tile.getSprite().getHeight(); y++) {
+        for(int y = 0; y < tileH; y++) {
             int ya = y + yp;
-            for(int x = 0; x < tile.getSprite().getWidth(); x++) {
+            for(int x = 0; x < tileW; x++) {
                 int xa = x + xp;
                 if(xa < 0 || xa >= width || ya < 0 || ya >= height)
-                    break;
-                pixels[xa + ya * width] = tile.getSprite().pixels[x + y * tile.getSprite().getWidth()];
+                    continue;
+                pixels[xa + ya * width] = tile.getSprite().pixels[x + y * tileW];
             }
         }
     }
@@ -246,16 +246,6 @@ public class Screen {
     public int getPixel(int index) {
         return pixels[index];
     }
-
-//    /**
-//     * Returns a reference to the screen's pixel buffer. This method must be callable from outside the render loop, and is
-//     * therefore static. As such, pixels must be static, implying that all instances of screen will have the same pixel buffer
-//     * and contain the same image.
-//     * @return The screen's pixel buffer.
-//     */
-//    public int[] getPixels() {
-//        return pixels;
-//    }
 
     /**
      * Gets the screen's width

@@ -7,16 +7,16 @@ import input.Mouse;
 
 import java.awt.event.MouseEvent;
 
-public class PlayerStateStanding extends PlayerState {
+class PlayerStateStanding extends PlayerState {
 
-    public PlayerStateStanding(@NotNull Player player) {
+     PlayerStateStanding(@NotNull Player player) {
         super(player);
         mob.getCurrSprite().setFrame(0);
         mob.setxSpeed(0);
         mob.setySpeed(0);
     }
 
-    public PlayerStateStanding(@NotNull Player player, int count) {
+    PlayerStateStanding(@NotNull Player player, int count) {
         this(player);
         this.count = count;
     }

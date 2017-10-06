@@ -1,5 +1,6 @@
 package demo.player;
 
+import com.sun.istack.internal.NotNull;
 import demo.mob.Mob;
 import demo.spritesheets.PlayerSprites;
 import gamestate.GameState;
@@ -12,14 +13,14 @@ public class Player extends Mob {
     }
 
     @Override
-    public void initialize(GameState gameState) {
+    public void initialize(@NotNull GameState gameState) {
         super.initialize(gameState);
         currSprite = PlayerSprites.PLAYER_DOWN;
         currState = new PlayerStateStanding(this);
     }
 
     @Override
-    public void render(Screen screen) {
-        screen.renderSprite(x, y, getWidth(), getHeight(), currSprite.getSprite().pixels);
+    public void render(@NotNull Screen screen) {
+        screen.renderSprite(x, y, currSprite.getSprite());
     }
 }
