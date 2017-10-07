@@ -14,7 +14,7 @@ public class Main {
     public static void main(String[] args) {
 
         Intent intent = new Intent(Level.class);
-        TileCoord tileCoord = new TileCoord(12, 8, 16);
+        TileCoord tileCoord = new TileCoord(11, 7, 16);
         intent.putExtra("player", new Player(tileCoord.getX(), tileCoord.getY()));
 
         DemoCursor cursor = new DemoCursor(new Point(8, 8), "cursor", "src/resource/pointerup.png", "src/resource/pointerdown.png");

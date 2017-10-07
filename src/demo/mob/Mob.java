@@ -49,8 +49,13 @@ public abstract class Mob extends Entity implements Updatable, Renderable, Seria
     }
 
     public boolean tileCollision(int xa, int ya) {
-        System.out.println((int) x + xa + ", " +  (int) y + ya);
-        return gameState.getTile(((int) x + xa) / 16, ((int) y + ya) / 16).isSolid();
+        boolean solid = false;
+        for (int corner = 0; corner < 4; corner++) {
+            int xt = ((int) (x + xa) + corner % 2 * 2 + 6) / 16;
+            int yt = ((int) (y + ya) + corner / 2 * 2 + 12) / 16;
+            if(gameState.getTile(xt, yt).isSolid()) solid = true;
+        }
+        return solid;
     }
 
     public AnimSprite getCurrSprite() {

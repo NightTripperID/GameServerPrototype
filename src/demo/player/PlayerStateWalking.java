@@ -9,7 +9,7 @@ import input.Mouse;
 
 class PlayerStateWalking extends PlayerState {
 
-    private static final double MOVE_SPEED = 1.3;
+    private static final double MOVE_SPEED = 1.0;
 
     PlayerStateWalking(@NotNull Player player, @NotNull GameState gameState, int count) {
         super(player, gameState, count);
@@ -35,12 +35,7 @@ class PlayerStateWalking extends PlayerState {
         mob.xa = mob.getxSpeed() * mob.getxDir();
         mob.ya = mob.getySpeed() * mob.getyDir();
 
-        if(!mob.tileCollision((int) mob.xa, (int) mob.ya)) {
-            mob.x += mob.xa;
-            mob.y += mob.ya;
-            gameState.scrollX(mob.xa);
-            gameState.scrollY(mob.ya);
-        }
+        commitMove(mob.xa, mob.ya);
 
         return nextState;
     }
@@ -110,5 +105,20 @@ class PlayerStateWalking extends PlayerState {
         mob.setCurrSprite(PlayerSprites.PLAYER_RIGHT);
         mob.setxSpeed(MOVE_SPEED);
         mob.setxDir(1);
+    }
+
+    private void commitMove(double xa, double ya) {
+        if(xa !=0 && ya != 0) {
+            commitMove(xa, 0);
+            commitMove(0, ya);
+            return;
+        }
+
+        if(!mob.tileCollision((int) xa, (int) ya)) {
+            mob.x += xa;
+            mob.y += ya;
+            gameState.scrollX(xa);
+            gameState.scrollY(ya);
+        }
     }
 }
