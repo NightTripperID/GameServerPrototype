@@ -4,14 +4,15 @@ import com.sun.istack.internal.NotNull;
 import demo.level.Level;
 import demo.mob.MobState;
 import demo.spritesheets.PlayerSprites;
+import gamestate.GameState;
 import input.Mouse;
 
 class PlayerStateWalking extends PlayerState {
 
     private static final double MOVE_SPEED = 1.3;
 
-    PlayerStateWalking(@NotNull Player player, int count) {
-        super(player, count);
+    PlayerStateWalking(@NotNull Player player, @NotNull GameState gameState, int count) {
+        super(player, gameState, count);
     }
 
     @Override
@@ -27,16 +28,19 @@ class PlayerStateWalking extends PlayerState {
         MobState nextState;
 
         if(!moveWithMouse() && !moveWithKeyboard())
-            nextState = new PlayerStateStanding((Player) mob, count);
+            nextState = new PlayerStateStanding((Player) mob, gameState, count);
         else
             nextState = this;
 
         mob.xa = mob.getxSpeed() * mob.getxDir();
         mob.ya = mob.getySpeed() * mob.getyDir();
 
-        Level level = (Level) mob.getGameState();
-        level.scrollX((int) mob.xa);
-        level.scrollY((int) mob.ya);
+        if(!mob.tileCollision((int) mob.xa, (int) mob.ya)) {
+            mob.x += mob.xa;
+            mob.y += mob.ya;
+            gameState.scrollX(mob.xa);
+            gameState.scrollY(mob.ya);
+        }
 
         return nextState;
     }
@@ -46,10 +50,8 @@ class PlayerStateWalking extends PlayerState {
         if(!Mouse.button3)
             return false;
 
-        int screenScale = mob.getGameState().getScreenScale();
-
-        int mouseX = Mouse.mouseX / screenScale;
-        int mouseY = Mouse.mouseY / screenScale;
+        int mouseX = Mouse.mouseX + (int) gameState.getScrollX();
+        int mouseY = Mouse.mouseY + (int) gameState.getScrollY();
 
         int xCenter = (int) mob.x + mob.getWidth() / 2;
         int yCenter = (int) mob.y + mob.getHeight() / 2;

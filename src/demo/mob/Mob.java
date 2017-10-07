@@ -48,6 +48,11 @@ public abstract class Mob extends Entity implements Updatable, Renderable, Seria
         currState = currState.update();
     }
 
+    public boolean tileCollision(int xa, int ya) {
+        System.out.println((int) x + xa + ", " +  (int) y + ya);
+        return gameState.getTile(((int) x + xa) / 16, ((int) y + ya) / 16).isSolid();
+    }
+
     public AnimSprite getCurrSprite() {
         return currSprite;
     }

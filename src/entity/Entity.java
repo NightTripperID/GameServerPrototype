@@ -11,8 +11,4 @@ public abstract class Entity  {
     public void initialize(@NotNull GameState gameState) {
         this.gameState = gameState;
     }
-
-    public GameState getGameState() {
-        return gameState;
-    }
 }

@@ -1,6 +1,8 @@
 package demo.projectile;
 
+import com.sun.istack.internal.NotNull;
 import demo.spritesheets.ProjectileSprites;
+import gamestate.GameState;
 
 public class Arrow extends Projectile {
 
@@ -8,7 +10,6 @@ public class Arrow extends Projectile {
         super(x, y, 16, 16, angle);
 
         currSprite = ProjectileSprites.ARROW;
-        currState = new ArrowStateFlying(this);
 
         double angleVelocity = Math.sqrt(8); // sqrt(2^2 + 2^2), i.e. hypotenuse from  pythagorean theorem
 
@@ -23,5 +24,12 @@ public class Arrow extends Projectile {
 
         setxSpeed(xSpeed);
         setySpeed(ySpeed);
+    }
+
+    @Override
+    public void initialize(@NotNull GameState gameState) {
+        super.initialize(gameState);
+
+        currState = new ArrowStateFlying(this, gameState);
     }
 }

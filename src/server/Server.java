@@ -30,18 +30,11 @@ public class Server extends Canvas implements Runnable {
 
     private Screen screen;
 
-    private final GameStateManager gsm = new GameStateManager();
-    private final Keyboard keyboard = new Keyboard();
-    private final Mouse mouse = new Mouse();
-
-    private final int screenWidth;
-    private final int screenHeight;
-    private final int screenScale;
+    private final GameStateManager gsm;
+    private final Keyboard keyboard;
+    private final Mouse mouse;
 
     public Server(int screenWidth, int screenHeight, int screenScale, String title) {
-        this.screenWidth = screenWidth;
-        this.screenHeight = screenHeight;
-        this.screenScale = screenScale;
 
         this.title = title;
 
@@ -51,11 +44,15 @@ public class Server extends Canvas implements Runnable {
         Dimension size = new Dimension(screenWidth * screenScale, screenHeight * screenScale);
         setPreferredSize(size);
 
-        screen = new Screen(screenWidth, screenHeight);
+        screen = new Screen(screenWidth, screenHeight, screenScale);
         frame = new JFrame();
 
+        gsm = new GameStateManager();
+
+        keyboard = new Keyboard();
         addKeyListener(keyboard);
 
+         mouse = new Mouse(screenScale);
         addMouseListener(mouse);
         addMouseMotionListener(mouse);
         addMouseWheelListener(mouse);
@@ -138,8 +135,8 @@ public class Server extends Canvas implements Runnable {
 
         Graphics g = bs.getDrawGraphics();
         g.setColor(Color.MAGENTA);
-        g.fillRect(0, 0, screenWidth, screenHeight);
-        g.drawImage(image, 0, 0, screenWidth * screenScale, screenHeight * screenScale, null);
+        g.fillRect(0, 0, screen.getWidth(), screen.getHeight());
+        g.drawImage(image, 0, 0, screen.getWidth() * screen.getScale(), screen.getHeight() * screen.getScale(), null);
         g.dispose();
         bs.show();
     }
@@ -188,18 +185,6 @@ public class Server extends Canvas implements Runnable {
         }
     }
 
-    public int getScreenWidth() {
-        return screenWidth;
-    }
-
-    public int getScreenHeight() {
-        return screenHeight;
-    }
-
-    public int getScreenScale() {
-        return screenScale;
-    }
-
     public Keyboard getKeyboard() {
         return keyboard;
     }
@@ -211,5 +196,17 @@ public class Server extends Canvas implements Runnable {
     public void setCustomMouseCursor(@NotNull Image image, @NotNull Point cursorHotspot, @NotNull String name) {
         Cursor custom = Toolkit.getDefaultToolkit().createCustomCursor(image, cursorHotspot, name);
         frame.setCursor(custom);
+    }
+
+    public int getScreenWidth() {
+        return screen.getWidth();
+    }
+
+    public int getScreenHeight() {
+        return screen.getHeight();
+    }
+
+    public int getScreenScale() {
+        return screen.getScale();
     }
 }

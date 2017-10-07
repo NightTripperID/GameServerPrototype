@@ -28,4 +28,18 @@ public class Tile {
     public boolean isSolid() {
         return solid;
     }
+
+    public enum TileSize {
+        X8(8), X16(16), X32(32), X64(64), X128(128);
+
+        private final int size;
+
+        TileSize(int size) {
+            this.size = size;
+        }
+
+        public int get() {
+            return size;
+        }
+    }
 }

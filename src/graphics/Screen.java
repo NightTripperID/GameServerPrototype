@@ -11,18 +11,18 @@ import demo.tile.Tile;
  */
 public class Screen {
 
-    private int width, height;
+    private final int width, height, scale;
 
     private int[] pixels;
 
-    private int xOfs, yOfs;
+    private double xOfs, yOfs;
 
     /**
      * Creates a screen with specified dimensions.
      * @param width The width of the screen.
      * @param height The height of the screen.
      */
-    public Screen(int width, int height) {
+    public Screen(int width, int height, int scale) {
 
         if(width < 1)
             throw new IllegalArgumentException("Screen width must be at least 1 pixel");
@@ -31,6 +31,7 @@ public class Screen {
 
         this.width = width;
         this.height = height;
+        this.scale = scale;
         pixels = new int[width * height];
     }
 
@@ -199,41 +200,19 @@ public class Screen {
         }
     }
 
-//    /**
-//     * Renders specified sprite at specified coordinates using specified width, height, and pixels.
-//     * @param x The x coordinate of the sprite's top left corner.
-//     * @param y The y coordinate of the sprite's top left corner.
-//     * @param width The width of the sprite.
-//     * @param height The height of the sprite.
-//     * @param pixels The pixels that comprise the sprite.
-//     */
-//    public void renderSprite(double x, double y, int width, int height, @NotNull int[] pixels) {
-//
-//        for (int yy = 0; yy < height; yy++) {
-//            if (yy + y < 0 || yy + y > this.height)
-//                continue;
-//            for (int xx = 0; xx < width; xx++) {
-//                if (xx + x < 0 || xx + x > this.width)
-//                    continue;
-//                if (pixels[xx + yy * width] != 0xffff00ff)
-//                        this.pixels[xx + (int) x + (yy + (int) y) * this.width] = pixels[xx + yy * width];
-//            }
-//        }
-//    }
-
-    public void renderTile(int xp, int yp, @NotNull Tile tile) {
+    public void renderTile(int xPos, int yPos, @NotNull Tile tile) {
         int tileW = tile.getSprite().getWidth();
         int tileH = tile.getSprite().getHeight();
 
-        xp -= xOfs;
-        yp -= yOfs;
+        xPos -= xOfs;
+        yPos -= yOfs;
         for(int y = 0; y < tileH; y++) {
-            int ya = y + yp;
+            int yAbs = y + yPos;
             for(int x = 0; x < tileW; x++) {
-                int xa = x + xp;
-                if(xa < 0 || xa >= width || ya < 0 || ya >= height)
+                int xAbs = x + xPos;
+                if(xAbs < 0 || xAbs >= width || yAbs < 0 || yAbs >= height)
                     continue;
-                pixels[xa + ya * width] = tile.getSprite().pixels[x + y * tileW];
+                pixels[xAbs + yAbs * width] = tile.getSprite().pixels[x + y * tileW];
             }
         }
     }
@@ -263,7 +242,15 @@ public class Screen {
         return height;
     }
 
-    public void setOffset(int xOfs, int yOfs) {
+    /**
+     * Gets the screen's screenScale
+     * @return the screenScale
+     */
+    public int getScale() {
+        return scale;
+    }
+
+    public void setOffset(double xOfs, double yOfs) {
         this.xOfs = xOfs;
         this.yOfs = yOfs;
     }

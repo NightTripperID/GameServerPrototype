@@ -17,6 +17,7 @@ public abstract class Projectile extends Mob {
 
     @Override
     public void render(@NotNull Screen screen) {
-        screen.renderSprite(x, y, Sprite.rotate(currSprite.getSprite(), angle));
+        screen.renderSprite(x - gameState.getScrollX(), y - gameState.getScrollY(),
+                Sprite.rotate(currSprite.getSprite(), angle));
     }
 }

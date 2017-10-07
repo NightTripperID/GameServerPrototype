@@ -1,6 +1,8 @@
 package input;
 
-import java.awt.event.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
 
 public class Mouse extends MouseAdapter {
 
@@ -10,6 +12,15 @@ public class Mouse extends MouseAdapter {
     public static int mouseX, mouseY;
 
     public static boolean dragged;
+
+    public final int screenScale;
+
+    public Mouse(int screenScale) {
+        if(screenScale < 1)
+            throw new IllegalArgumentException("Screen scale must be greater than 0");
+
+        this.screenScale = screenScale;
+    }
 
     @Override
     public void mousePressed(MouseEvent mouseEvent) {
@@ -48,15 +59,15 @@ public class Mouse extends MouseAdapter {
     @Override
     public void mouseMoved(MouseEvent mouseEvent) {
 
-        mouseX = mouseEvent.getX();
-        mouseY = mouseEvent.getY();
+        mouseX = mouseEvent.getX() / screenScale;
+        mouseY = mouseEvent.getY() / screenScale;
     }
 
     @Override
     public void mouseDragged(MouseEvent mouseEvent) {
 
-        mouseX = mouseEvent.getX();
-        mouseY = mouseEvent.getY();
+        mouseX = mouseEvent.getX() / screenScale;
+        mouseY = mouseEvent.getY() / screenScale;
     }
 
     @Override

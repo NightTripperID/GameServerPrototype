@@ -3,11 +3,14 @@ package demo.projectile;
 import com.sun.istack.internal.NotNull;
 import demo.mob.Mob;
 import demo.mob.MobState;
+import gamestate.GameState;
+import graphics.Screen;
+import server.Server;
 
 public class ArrowStateFlying extends ProjectileState {
 
-    public ArrowStateFlying(@NotNull Mob mob) {
-        super(mob);
+    public ArrowStateFlying(@NotNull Mob mob, @NotNull GameState gameState) {
+        super(mob, gameState);
     }
 
     @Override
@@ -19,10 +22,12 @@ public class ArrowStateFlying extends ProjectileState {
         mob.x += mob.xa;
         mob.y += mob.ya;
 
-        if (mob.x + mob.getWidth() < 0 || mob.x > mob.getGameState().getScreenWidth()
-                || mob.y + mob.getHeight() < 0 || mob.y > mob.getGameState().getScreenHeight()) {
+        if (mob.x + mob.getWidth() - gameState.getScrollX() < 0
+                || mob.x - gameState.getScrollX() > gameState.getScreenWidth()
+                || mob.y + mob.getHeight() - gameState.getScrollY() < 0
+                || mob.y - gameState.getScrollY() > gameState.getScreenHeight()) {
 
-            mob.getGameState().removeEntity(mob);
+            gameState.removeEntity(mob);
         }
 
         return this;
