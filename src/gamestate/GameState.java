@@ -196,18 +196,7 @@ public abstract class GameState {
     }
 
     public Tile getTile(int x, int y) {
-
-        if(x < 0 || y < 0 || x >= mapWidth || y >= mapHeight)
-            return Tiles.voidTile;
-
-        switch (tiles[x + y * mapWidth]) {
-            case 0xfffca75d:
-                return Tiles.dirtTile;
-            case 0xffc17e47:
-                return Tiles.mudTile;
-            default:
-                return Tiles.voidTile;
-        }
+        return null;
     }
 
     public int getScreenWidth() {
@@ -220,5 +209,17 @@ public abstract class GameState {
 
     public int getScreenScale() {
         return server.getScreenScale();
+    }
+
+    public int getMapWidth() {
+        return mapWidth;
+    }
+
+    public int getMapHeight() {
+        return mapHeight;
+    }
+
+    protected int[] getTiles() {
+        return tiles;
     }
 }

@@ -19,16 +19,17 @@ public class ArrowStateFlying extends ProjectileState {
         mob.xa = mob.getxSpeed() * mob.getxDir();
         mob.ya = mob.getySpeed() * mob.getyDir();
 
-        mob.x += mob.xa;
-        mob.y += mob.ya;
-
         if (mob.x + mob.getWidth() - gameState.getScrollX() < 0
                 || mob.x - gameState.getScrollX() > gameState.getScreenWidth()
                 || mob.y + mob.getHeight() - gameState.getScrollY() < 0
-                || mob.y - gameState.getScrollY() > gameState.getScreenHeight()) {
+                || mob.y - gameState.getScrollY() > gameState.getScreenHeight()
+                || mob.tileCollision((int) mob.xa, (int) mob.ya)) {
 
             gameState.removeEntity(mob);
         }
+
+        mob.x += mob.xa;
+        mob.y += mob.ya;
 
         return this;
     }
