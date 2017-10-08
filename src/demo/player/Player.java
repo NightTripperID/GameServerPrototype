@@ -1,7 +1,6 @@
 package demo.player;
 
 import com.sun.istack.internal.NotNull;
-import demo.level.Level;
 import demo.mob.Mob;
 import demo.spritesheets.PlayerSprites;
 import gamestate.GameState;

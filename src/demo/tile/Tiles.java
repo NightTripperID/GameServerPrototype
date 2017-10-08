@@ -14,6 +14,7 @@ public class Tiles {
     public static Tile pillarTopTile = new DemoTile(TileSprites.pillarTop, true);
     public static Tile pillarSideTile = new DemoTile(TileSprites.pillarSide, true);
     public static Tile stoneFloorTile = new DemoTile(TileSprites.stoneFloor, false);
+    public static Tile stoneThresholdTile = new DemoTile(TileSprites.stoneFloor, false, true);
     public static Tile stoneDoorwayTile = new DemoTile(TileSprites.stoneDoorway, true, true);
 
     private Tiles() {

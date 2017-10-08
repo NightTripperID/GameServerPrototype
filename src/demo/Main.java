@@ -1,6 +1,6 @@
 package demo;
 
-import demo.level.Level;
+import demo.level.Area_1_1;
 import demo.mob.DemoCursor;
 import demo.player.Player;
 import demo.tile.TileCoord;
@@ -13,7 +13,7 @@ import java.awt.*;
 public class Main {
     public static void main(String[] args) {
 
-        Intent intent = new Intent(Level.class);
+        Intent intent = new Intent(Area_1_1.class);
         TileCoord tileCoord = new TileCoord(11, 7, 16);
         intent.putExtra("player", new Player(tileCoord.getX(), tileCoord.getY()));
 
