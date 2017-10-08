@@ -1,7 +1,6 @@
 package demo.player;
 
 import com.sun.istack.internal.NotNull;
-import demo.level.Level;
 import demo.mob.MobState;
 import demo.spritesheets.PlayerSprites;
 import gamestate.GameState;
@@ -114,7 +113,15 @@ class PlayerStateWalking extends PlayerState {
             return;
         }
 
-        if(!mob.tileCollision((int) xa, (int) ya)) {
+        if(mob.tileCollision((int) xa, (int) ya)) {
+
+            int x = (int) (mob.x + xa) / 16;
+            int y = (int) (mob.y + ya) / 16;
+            
+            if(gameState.getMapTile(x, y).hasTrigger())
+                gameState.getTrigger(x, y).run();
+
+        } else {
             mob.x += xa;
             mob.y += ya;
             gameState.scrollX(xa);

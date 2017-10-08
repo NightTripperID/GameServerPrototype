@@ -12,9 +12,16 @@ public class Tile {
 
     private boolean solid;
 
+    private boolean trigger;
+
     public Tile(@NotNull Sprite sprite, boolean solid) {
         this.sprite = sprite;
         this.solid = solid;
+    }
+
+    public Tile(@NotNull Sprite sprite, boolean solid, boolean trigger) {
+        this(sprite, solid);
+        this.trigger = trigger;
     }
 
     public void render(@NotNull Screen screen, int x, int y) {
@@ -27,6 +34,10 @@ public class Tile {
 
     public boolean isSolid() {
         return solid;
+    }
+
+    public boolean hasTrigger() {
+        return trigger;
     }
 
     public enum TileSize {

@@ -2,7 +2,6 @@ package gamestate;
 
 import com.sun.istack.internal.NotNull;
 import demo.tile.Tile;
-import demo.tile.Tiles;
 import entity.Entity;
 import entity.Renderable;
 import entity.Updatable;
@@ -16,9 +15,8 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.List;
-import java.util.Random;
 
 public abstract class GameState {
 
@@ -34,7 +32,10 @@ public abstract class GameState {
 
     private int tileSize, tileBitShift;
 
-    private int[] tiles;
+    private int[] mapTiles;
+    private int[] triggerTiles;
+
+    protected Map<Integer, Runnable> triggers = new HashMap<>();
 
     private Random random = new Random();
 
@@ -45,19 +46,21 @@ public abstract class GameState {
     public void onDestroy() {
     }
 
-    private void generateTiles() {
-        for(int y = 0; y < mapHeight; y++)
-            for(int x = 0; x < mapWidth; x++)
-                tiles[x + y * mapWidth] = random.nextInt(2);
+    protected void loadMapTiles(@NotNull URL url) {
+        loadTiles(url, mapTiles);
     }
 
-    protected void loadTiles(@NotNull URL url) {
+    protected void loadTriggerTiles(@NotNull URL url) {
+        loadTiles(url, triggerTiles);
+    }
+
+    private void loadTiles(@NotNull URL url, @NotNull int[] dest) {
         try {
             System.out.println("Trying to load: " + url.toString() + "...");
             BufferedImage map = ImageIO.read(url);
             int[] pixels = new int[mapWidth * mapHeight];
             map.getRGB(0, 0, mapWidth, mapHeight, pixels, 0, mapWidth);
-            System.arraycopy(pixels, 0, tiles, 0, tiles.length);
+            System.arraycopy(pixels, 0, dest, 0, dest.length);
             System.out.println("Success!");
         } catch (IOException e) {
             System.out.println("failed...");
@@ -88,7 +91,7 @@ public abstract class GameState {
 
         for (int y = y0; y < y1; y++)
             for (int x = x0; x < x1; x++)
-                getTile(x, y).render(screen, x << tileBitShift, y << tileBitShift);
+                getMapTile(x, y).render(screen, x << tileBitShift, y << tileBitShift);
     }
 
     protected final void startGameState(@NotNull Intent intent) {
@@ -129,7 +132,8 @@ public abstract class GameState {
     protected void initMap(int mapWidth, int mapHeight, @NotNull Tile.TileSize tileSize) {
         this.mapWidth = mapWidth;
         this.mapHeight = mapHeight;
-        tiles = new int[mapWidth * mapHeight];
+        mapTiles = new int[mapWidth * mapHeight];
+        triggerTiles = new int[mapWidth * mapHeight];
 
         this.tileSize = tileSize.get();
 
@@ -195,8 +199,13 @@ public abstract class GameState {
         this.yScroll = yScroll;
     }
 
-    public Tile getTile(int x, int y) {
+    public Tile getMapTile(int x, int y) {
         return null;
+    }
+
+    public Runnable getTrigger(int x, int y) {
+        int key = triggerTiles[x + y * mapWidth];
+        return triggers.get(key);
     }
 
     public int getScreenWidth() {
@@ -219,7 +228,7 @@ public abstract class GameState {
         return mapHeight;
     }
 
-    protected int[] getTiles() {
-        return tiles;
+    protected int[] getMapTiles() {
+        return mapTiles;
     }
 }

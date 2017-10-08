@@ -3,8 +3,10 @@ package demo.level;
 import com.sun.istack.internal.NotNull;
 import demo.player.Player;
 import demo.tile.Tile;
+import demo.tile.TileCoord;
 import demo.tile.Tiles;
 import gamestate.GameState;
+import gamestate.Intent;
 import input.MouseCursor;
 import server.Server;
 
@@ -27,7 +29,27 @@ public class Level extends GameState {
         cursor.initialize(this);
         addEntity(cursor);
 
-        loadTiles(getClass().getClassLoader().getResource("resource/map.png"));
+        loadMapTiles(getClass().getClassLoader().getResource("resource/map.png"));
+        loadTriggerTiles(getClass().getClassLoader().getResource("resource/triggermap.png"));
+
+        triggers.put(0xffff0000, () -> {
+                Intent intent = new Intent(Level.class);
+
+                TileCoord tileCoord = new TileCoord(11, 7, 16);
+                player.x = tileCoord.getX();
+                player.y = tileCoord.getY();
+                intent.putExtra("player", player);
+                intent.putExtra("cursor", cursor);
+                swapGameState(intent);
+        });
+
+        triggers.put(0xff00ff00, () -> {
+            System.out.println("running green trigger");
+        });
+
+        triggers.put(0xff0000ff, () -> {
+            System.out.println("running blue trigger");
+        });
     }
 
     @Override
@@ -36,11 +58,11 @@ public class Level extends GameState {
     }
 
     @Override
-    public Tile getTile(int x, int y) {
+    public Tile getMapTile(int x, int y) {
         if(x < 0 || y < 0 || x >= getMapWidth() || y >= getMapHeight())
             return Tiles.voidTile;
 
-        switch (getTiles()[x + y * getMapWidth()]) {
+        switch (getMapTiles()[x + y * getMapWidth()]) {
             case 0xfffca75d:
                 return Tiles.dirtTile;
             case 0xff267f00:
