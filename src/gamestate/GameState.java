@@ -230,4 +230,8 @@ public abstract class GameState {
     protected int[] getMapTiles() {
         return mapTiles;
     }
+
+    public int[] getScreenPixels() {
+        return server.getScreenPixels();
+    }
 }

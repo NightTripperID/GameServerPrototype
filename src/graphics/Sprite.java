@@ -44,6 +44,16 @@ public class Sprite {
         load();
     }
 
+    public Sprite(SpriteSheet sheet, int size, int xOfs, int yOfs) {
+        this.sheet = sheet;
+        setWidth(size);
+        setHeight(size);
+        this.xOfs = xOfs * size;
+        this.yOfs = yOfs * size;
+        pixels = new int[size * size];
+        load();
+    }
+
     public Sprite(int col, int width, int height) {
         setWidth(width);
         setHeight(height);

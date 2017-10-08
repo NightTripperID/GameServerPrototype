@@ -1,6 +1,6 @@
 package demo;
 
-import demo.level.Area_1_1;
+import demo.area.Area_1_1;
 import demo.mob.DemoCursor;
 import demo.player.Player;
 import demo.tile.TileCoord;

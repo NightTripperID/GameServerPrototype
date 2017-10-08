@@ -1,4 +1,4 @@
-package demo.level;
+package demo.area;
 
 import demo.tile.Tile;
 import demo.tile.Tiles;
@@ -32,6 +32,8 @@ public class Area extends GameState {
                 return Tiles.stoneThresholdTile;
             case 0xff21007f:
                 return Tiles.stoneDoorwayTile;
+            case 0xff303030:
+                return Tiles.stoneStairsDownTile;
             default:
                 return Tiles.voidTile;
         }

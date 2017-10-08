@@ -209,4 +209,8 @@ public class Server extends Canvas implements Runnable {
     public int getScreenScale() {
         return screen.getScale();
     }
+
+    public int[] getScreenPixels() {
+        return screen.getPixels();
+    }
 }

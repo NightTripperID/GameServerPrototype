@@ -1,9 +1,10 @@
-package demo.level;
+package demo.area;
 
 import com.sun.istack.internal.NotNull;
 import demo.player.Player;
 import demo.tile.Tile;
 import demo.tile.TileCoord;
+import demo.transition.FadeOut;
 import gamestate.Intent;
 import input.MouseCursor;
 import server.Server;
@@ -31,7 +32,10 @@ public class Area_1_1 extends Area {
         loadTriggerTiles(getClass().getClassLoader().getResource("resource/triggermap_1-1.png"));
 
         triggers.put(0xffff0000, () -> {
-            Intent intent = new Intent(Area_1_2.class);
+
+            Intent intent = new Intent(FadeOut.class);
+            intent.putExtra("nextGameState", Area_1_2.class);
+            intent.putExtra("pixels", getScreenPixels());
             TileCoord tileCoord = new TileCoord(5, 22, 16);
             player.x = tileCoord.getX();
             player.y = tileCoord.getY();
@@ -41,7 +45,9 @@ public class Area_1_1 extends Area {
         });
 
         triggers.put(0xff00ff00, () -> {
-            Intent intent = new Intent(Area_1_2.class);
+            Intent intent = new Intent(FadeOut.class);
+            intent.putExtra("nextGameState", Area_1_2.class);
+            intent.putExtra("pixels", getScreenPixels());
             TileCoord tileCoord = new TileCoord(17, 34, 16);
             player.x = tileCoord.getX();
             player.y = tileCoord.getY();
@@ -51,7 +57,9 @@ public class Area_1_1 extends Area {
         });
 
         triggers.put(0xff0000ff, () -> {
-            Intent intent = new Intent(Area_1_2.class);
+            Intent intent = new Intent(FadeOut.class);
+            intent.putExtra("nextGameState", Area_1_2.class);
+            intent.putExtra("pixels", getScreenPixels());
             TileCoord tileCoord = new TileCoord(29, 22, 16);
             player.x = tileCoord.getX();
             player.y = tileCoord.getY();

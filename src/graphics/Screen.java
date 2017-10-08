@@ -155,6 +155,15 @@ public class Screen {
             renderChar5x5(x + (i * 5), y, col, Font5x5.getChar(string.charAt(i)));
     }
 
+    public void renderPixels(int[] pixels) {
+        if(pixels.length != this.pixels.length)
+            throw new IllegalArgumentException("pixel lengths (i.e. screen dimensions) must match.");
+
+        int index = 0;
+        for(int p : pixels)
+            this.pixels[index++] = p;
+    }
+
     /**
      * Renders pixel at specified index using specified color.
      * @param index The screen buffer index of the pixel.
@@ -253,5 +262,9 @@ public class Screen {
     public void setOffset(double xOfs, double yOfs) {
         this.xOfs = xOfs;
         this.yOfs = yOfs;
+    }
+
+    public int[] getPixels() {
+        return  pixels;
     }
 }
