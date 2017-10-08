@@ -34,7 +34,6 @@ public class Level extends GameState {
 
         triggers.put(0xffff0000, () -> {
                 Intent intent = new Intent(Level.class);
-
                 TileCoord tileCoord = new TileCoord(11, 7, 16);
                 player.x = tileCoord.getX();
                 player.y = tileCoord.getY();
@@ -55,6 +54,7 @@ public class Level extends GameState {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        System.out.println("DESTROYING OLD LEVEL");
     }
 
     @Override

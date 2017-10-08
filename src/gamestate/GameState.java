@@ -74,14 +74,13 @@ public abstract class GameState {
     }
 
     public void render(@NotNull Screen screen) {
-
         renderTiles(screen);
 
         for(int i = 0; i < renderables.size(); i++)
             renderables.get(i).render(screen);
     }
 
-    protected void renderTiles(@NotNull Screen screen) {
+    private void renderTiles(@NotNull Screen screen) {
         screen.setOffset(xScroll, yScroll);
 
         int x0 = (int) xScroll >> tileBitShift;

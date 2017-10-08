@@ -18,6 +18,7 @@ public class Player extends Mob {
         super.initialize(gameState);
 
         currSprite = PlayerSprites.PLAYER_DOWN;
+        System.out.println("instantiating PlayerStateStanding with " + gameState);
         currState = new PlayerStateStanding(this, gameState);
     }
 

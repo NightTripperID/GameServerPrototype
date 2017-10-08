@@ -13,5 +13,5 @@ public abstract class MobState {
         this.gameState = gameState;
     }
 
-    public abstract MobState update();
+    public abstract void update();
 }

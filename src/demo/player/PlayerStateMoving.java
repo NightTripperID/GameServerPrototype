@@ -6,16 +6,16 @@ import demo.spritesheets.PlayerSprites;
 import gamestate.GameState;
 import input.Mouse;
 
-class PlayerStateWalking extends PlayerState {
+class PlayerStateMoving extends PlayerState {
 
     private static final double MOVE_SPEED = 1.0;
 
-    PlayerStateWalking(@NotNull Player player, @NotNull GameState gameState, int count) {
+    PlayerStateMoving(@NotNull Player player, @NotNull GameState gameState, int count) {
         super(player, gameState, count);
     }
 
     @Override
-    public MobState update() {
+    public void update() {
 
         super.update();
 
@@ -24,24 +24,18 @@ class PlayerStateWalking extends PlayerState {
         mob.setxSpeed(0);
         mob.setySpeed(0);
 
-        MobState nextState;
-
-        if(!moveWithMouse() && !moveWithKeyboard())
-            nextState = new PlayerStateStanding((Player) mob, gameState, count);
-        else
-            nextState = this;
+        if (!moveWithMouse() && !moveWithKeyboard())
+            mob.setCurrState(new PlayerStateStanding((Player) mob, gameState, count));
 
         mob.xa = mob.getxSpeed() * mob.getxDir();
         mob.ya = mob.getySpeed() * mob.getyDir();
 
         commitMove(mob.xa, mob.ya);
-
-        return nextState;
     }
 
     private boolean moveWithMouse() {
 
-        if(!Mouse.button3)
+        if (!Mouse.button3)
             return false;
 
         int mouseX = Mouse.mouseX + (int) gameState.getScrollX();
@@ -64,7 +58,7 @@ class PlayerStateWalking extends PlayerState {
 
     private boolean moveWithKeyboard() {
 
-        if(!keyboard.upHeld && !keyboard.downHeld && !keyboard.leftHeld && !keyboard.rightHeld)
+        if (!keyboard.upHeld && !keyboard.downHeld && !keyboard.leftHeld && !keyboard.rightHeld)
             return false;
 
         if (keyboard.upHeld)
@@ -107,19 +101,15 @@ class PlayerStateWalking extends PlayerState {
     }
 
     private void commitMove(double xa, double ya) {
-        if(xa !=0 && ya != 0) {
+        if (xa != 0 && ya != 0) {
             commitMove(xa, 0);
             commitMove(0, ya);
             return;
         }
 
-        if(mob.tileCollision((int) xa, (int) ya)) {
-
-            int x = (int) (mob.x + xa) / 16;
-            int y = (int) (mob.y + ya) / 16;
-            
-            if(gameState.getMapTile(x, y).hasTrigger())
-                gameState.getTrigger(x, y).run();
+        if (mob.tileCollision((int) xa, (int) ya)) {
+            if (mob.triggerCollision((int) xa, (int) ya))
+                mob.getTileTrigger((int) xa, (int) ya).run();
 
         } else {
             mob.x += xa;

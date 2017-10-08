@@ -29,10 +29,10 @@ abstract class PlayerState extends MobState {
     }
 
     @Override
-    public MobState update() {
+    public void update() {
 
         if(++count < ATTACK_RATE)
-            return this;
+            return;
 
         count = 0;
 
@@ -53,6 +53,5 @@ abstract class PlayerState extends MobState {
             arrow.initialize(gameState);
             gameState.addEntity(arrow);
         }
-        return this;
     }
 }

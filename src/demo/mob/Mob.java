@@ -6,6 +6,7 @@ import entity.Renderable;
 import entity.Updatable;
 import graphics.AnimSprite;
 
+import java.awt.*;
 import java.io.Serializable;
 
 public abstract class Mob extends Entity implements Updatable, Renderable, Serializable {
@@ -45,17 +46,40 @@ public abstract class Mob extends Entity implements Updatable, Renderable, Seria
 
     @Override
     public void update() {
-        currState = currState.update();
+        currState.update();
     }
 
     public boolean tileCollision(int xa, int ya) {
-        boolean solid = false;
-        for (int corner = 0; corner < 4; corner++) {
-            int xt = ((int) (x + xa) + corner % 2 * 2 + 6) / 16;
-            int yt = ((int) (y + ya) + corner / 2 * 2 + 12) / 16;
-            if(gameState.getMapTile(xt, yt).isSolid()) solid = true;
+        for(int corner = 0; corner < 4; corner++) {
+            Point p = getTileCorner(xa, ya, corner);
+            if(gameState.getMapTile(p.x, p.y).isSolid())
+                return true;
         }
-        return solid;
+        return false;
+    }
+
+    public boolean triggerCollision(int xa, int ya) {
+        for(int corner = 0; corner < 4; corner++) {
+            Point p = getTileCorner(xa, ya, corner);
+            if(gameState.getMapTile(p.x, p.y).hasTrigger())
+                return true;
+        }
+        return false;
+    }
+
+    public Runnable getTileTrigger(int xa, int ya) {
+        for(int corner = 0; corner < 4; corner++) {
+            Point p = getTileCorner(xa, ya, corner);
+            if(gameState.getMapTile(p.x, p.y).hasTrigger())
+                return gameState.getTrigger(p.x, p.y);
+        }
+        return null;
+    }
+
+    private Point getTileCorner(int xa, int ya, int corner) {
+        int xt = ((int) (x + xa) + corner % 2 * 2 + 6) / 16;
+        int yt = ((int) (y + ya) + corner / 2 * 2 + 12) / 16;
+        return new Point(xt, yt);
     }
 
     public AnimSprite getCurrSprite() {
