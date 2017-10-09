@@ -1,6 +1,7 @@
 package demo.transition;
 
 import com.sun.istack.internal.NotNull;
+import gamestate.Bundle;
 import gamestate.GameState;
 import gamestate.Intent;
 import graphics.Screen;
@@ -37,16 +38,15 @@ public class FadeOut extends Fade {
         }
 
         if(count == pixels.length) {
+
             Class<? extends GameState> nextGameState =
                     (Class<? extends GameState>) getIntent().getSerializableExtra("nextGameState");
 
+            Bundle bundle = getIntent().getBundle();
+
             Intent intent = new Intent(nextGameState);
 
-            Serializable player = getIntent().getSerializableExtra("player");
-            intent.putExtra("player", player);
-
-            Serializable cursor = getIntent().getSerializableExtra("cursor");
-            intent.putExtra("cursor", cursor);
+            intent.setBundle(bundle);
 
             swapGameState(intent);
         }
