@@ -14,4 +14,17 @@ public abstract class MobState {
     }
 
     public abstract void update();
+
+    protected void commitMove(double xa, double ya) {
+        if (xa != 0 && ya != 0) {
+            commitMove(xa, 0);
+            commitMove(0, ya);
+            return;
+        }
+
+        if (!mob.tileCollision((int) xa, (int) ya)) {
+            mob.x += xa;
+            mob.y += ya;
+        }
+    }
 }

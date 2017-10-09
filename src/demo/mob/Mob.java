@@ -205,16 +205,23 @@ public abstract class Mob extends Entity implements Updatable, Renderable, Seria
         return false;
     }
 
-    private boolean isFriendly() {
+    public boolean isFriendly() {
         return friendly;
     }
 
-    private void assignDamage(int damage) {
+    protected void assignDamage(int damage) {
         health -= damage;
+    }
+
+    public int getHealth() {
+        return health;
     }
 
     @Override
     public void runCollision(@NotNull Updatable updatable) {
+        if(!(updatable instanceof Mob))
+            throw new IllegalArgumentException("updatable must be an instance of Mob");
+
         Mob target = (Mob) updatable;
         if(!(isFriendly() & target.isFriendly())) {
             target.assignDamage(damage);

@@ -2,7 +2,6 @@ package demo.projectile;
 
 import com.sun.istack.internal.NotNull;
 import demo.mob.Mob;
-import entity.Updatable;
 import graphics.Screen;
 import graphics.Sprite;
 

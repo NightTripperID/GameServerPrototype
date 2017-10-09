@@ -9,7 +9,7 @@ import gamestate.Bundle;
 import gamestate.Intent;
 import server.Server;
 
-public class Area_1_1 extends Area {
+public class Area_1_1 extends Area_1 {
 
     @Override
     public void onCreate(@NotNull Server server) {
@@ -28,8 +28,9 @@ public class Area_1_1 extends Area {
 
         loadMapTiles(getClass().getClassLoader().getResource("resource/map_1-1.png"));
         loadTriggerTiles(getClass().getClassLoader().getResource("resource/triggermap_1-1.png"));
+        loadMobs(getClass().getClassLoader().getResource("resource/spawnmap_1-1.png"));
 
-        triggers.put(0xffff0000, () -> {
+        putTrigger(0xffff0000, () -> {
 
             Intent intent = new Intent(FadeOut.class);
             intent.putExtra("nextGameState", Area_1_2.class);
@@ -46,7 +47,7 @@ public class Area_1_1 extends Area {
             swapGameState(intent);
         });
 
-        triggers.put(0xff00ff00, () -> {
+        putTrigger(0xff00ff00, () -> {
             Intent intent = new Intent(FadeOut.class);
             intent.putExtra("nextGameState", Area_1_2.class);
             intent.putExtra("pixels", getScreenPixels());
@@ -62,7 +63,7 @@ public class Area_1_1 extends Area {
             swapGameState(intent);
         });
 
-        triggers.put(0xff0000ff, () -> {
+        putTrigger(0xff0000ff, () -> {
             Intent intent = new Intent(FadeOut.class);
             intent.putExtra("nextGameState", Area_1_2.class);
             intent.putExtra("pixels", getScreenPixels());

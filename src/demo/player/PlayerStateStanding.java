@@ -23,10 +23,7 @@ class PlayerStateStanding extends PlayerState {
 
         super.update();
 
-        if(keyboard.upHeld || keyboard.downHeld || keyboard.leftHeld || keyboard.rightHeld)
-            mob.setCurrState(new PlayerStateMoving((Player) mob, gameState, count));
-
-        if (Mouse.button3)
+        if(keyboard.upHeld || keyboard.downHeld || keyboard.leftHeld || keyboard.rightHeld || Mouse.button3)
             mob.setCurrState(new PlayerStateMoving((Player) mob, gameState, count));
     }
 }

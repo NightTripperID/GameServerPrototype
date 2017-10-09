@@ -1,10 +1,35 @@
 package demo.area;
 
+import com.sun.istack.internal.NotNull;
+import demo.slime.Slime;
+import demo.tile.DemoTile;
 import demo.tile.Tile;
 import demo.tile.Tiles;
+import entity.Entity;
 import gamestate.GameState;
 
-public class Area extends GameState {
+import java.net.URL;
+
+public abstract class Area_1 extends GameState {
+
+    void loadMobs(@NotNull URL url) {
+        int [] mobSpawns = new int[getMapWidth() * getMapHeight()];
+
+        loadTiles(url, mobSpawns);
+        for(int x = 0; x < getMapWidth(); x++) {
+            for (int y = 0; y < getMapHeight(); y++) {
+                switch(mobSpawns[x + y * getMapWidth()]) {
+                    case 0xff00ff00:
+                        Entity slime = new Slime(x * DemoTile.SIZE, y * DemoTile.SIZE);
+                        slime.initialize(this);
+                        addEntity(slime);
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+    }
 
     @Override
     public Tile getMapTile(int x, int y) {

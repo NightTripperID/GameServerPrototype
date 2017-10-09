@@ -6,8 +6,6 @@ import gamestate.GameState;
 import gamestate.Intent;
 import graphics.Screen;
 
-import java.io.Serializable;
-
 public class FadeOut extends Fade {
 
     @Override

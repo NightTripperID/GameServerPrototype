@@ -2,10 +2,7 @@ package demo.projectile;
 
 import com.sun.istack.internal.NotNull;
 import demo.mob.Mob;
-import demo.mob.MobState;
 import gamestate.GameState;
-import graphics.Screen;
-import server.Server;
 
 public class AxeStateFlying extends ProjectileState {
 

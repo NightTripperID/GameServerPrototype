@@ -36,20 +36,37 @@ abstract class PlayerState extends MobState {
 
         if(Mouse.button1) {
 
-
             int mouseX = Mouse.mouseX + (int) gameState.getScrollX();
             int mouseY = Mouse.mouseY + (int) gameState.getScrollY();
 
             double dx = mouseX - mob.x;
             double dy = mouseY - mob.y;
 
-            System.out.println(mouseX + ", " + mob.x);
-
             double angle = Math.atan2(dy, dx);
 
             Axe axe = new Axe(mob.x, mob.y, angle);
             axe.initialize(gameState);
             gameState.addEntity(axe);
+        }
+    }
+
+    @Override
+    protected void commitMove(double xa, double ya) {
+        if (xa != 0 && ya != 0) {
+            commitMove(xa, 0);
+            commitMove(0, ya);
+            return;
+        }
+
+        if (mob.tileCollision((int) xa, (int) ya)) {
+            if (mob.triggerCollision((int) xa, (int) ya))
+                mob.getTileTrigger((int) xa, (int) ya).run();
+
+        } else {
+            mob.x += xa;
+            mob.y += ya;
+            gameState.scrollX(xa);
+            gameState.scrollY(ya);
         }
     }
 }

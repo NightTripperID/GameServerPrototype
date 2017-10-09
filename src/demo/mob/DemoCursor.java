@@ -4,7 +4,6 @@ import com.sun.istack.internal.NotNull;
 import input.MouseCursor;
 
 import java.awt.*;
-import java.awt.event.MouseEvent;
 
 public class DemoCursor extends MouseCursor {
 

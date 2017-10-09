@@ -1,6 +1,7 @@
 package gamestate;
 
 import com.sun.istack.internal.NotNull;
+import com.sun.istack.internal.Nullable;
 import demo.tile.Tile;
 import entity.Entity;
 import entity.Renderable;
@@ -33,7 +34,7 @@ public abstract class GameState {
     private int[] mapTiles;
     private int[] triggerTiles;
 
-    protected Map<Integer, Runnable> triggers = new HashMap<>();
+    private Map<Integer, Runnable> triggers = new HashMap<>();
 
     private Random random = new Random();
 
@@ -52,7 +53,7 @@ public abstract class GameState {
         loadTiles(url, triggerTiles);
     }
 
-    private void loadTiles(@NotNull URL url, @NotNull int[] dest) {
+    protected void loadTiles(@NotNull URL url, @Nullable int[] dest) {
         try {
             System.out.println("Trying to load: " + url.toString() + "...");
             BufferedImage map = ImageIO.read(url);
@@ -68,8 +69,8 @@ public abstract class GameState {
 
     public void update() {
         addEntities();
-        updatables.forEach(Updatable::update);
         checkCollision();
+        updatables.forEach(Updatable::update);
         removeEntities();
     }
 
@@ -91,15 +92,15 @@ public abstract class GameState {
                 getMapTile(x, y).render(screen, x << tileBitShift, y << tileBitShift);
     }
 
-    protected final void pushGameState(@NotNull Intent intent) {
+    public final void pushGameState(@NotNull Intent intent) {
         server.pushGameState(intent);
     }
 
-    protected final void popGameState() {
+    public final void popGameState() {
         server.popGameState();
     }
 
-    protected final void swapGameState(@NotNull Intent intent) {
+    public final void swapGameState(@NotNull Intent intent) {
         server.swapGameState(intent);
     }
 
@@ -202,6 +203,10 @@ public abstract class GameState {
         return null;
     }
 
+    public void putTrigger(int key, @NotNull Runnable trigger) {
+        triggers.put(key, trigger);
+    }
+
     public Runnable getTrigger(int x, int y) {
         int key = triggerTiles[x + y * mapWidth];
         return triggers.get(key);
@@ -231,17 +236,16 @@ public abstract class GameState {
         return mapTiles;
     }
 
-    protected int[] getScreenPixels() {
+    public int[] getScreenPixels() {
         return server.getScreenPixels();
     }
 
     private void checkCollision() {
         for(int i = 0; i < updatables.size(); i++) {
-            Updatable updatable =  updatables.get(i);
             for(int k = i + 1; k < updatables.size(); k++) {
-                if(updatable.collidesWith(updatables.get(k))) {
-                    updatable.runCollision(updatables.get(k));
-                    updatables.get(k).runCollision(updatable);
+                if(updatables.get(i).collidesWith(updatables.get(k))) {
+                    updatables.get(i).runCollision(updatables.get(k));
+                    updatables.get(k).runCollision(updatables.get(i));
                 }
             }
 

@@ -1,7 +1,6 @@
 package demo.player;
 
 import com.sun.istack.internal.NotNull;
-import demo.mob.MobState;
 import demo.spritesheets.PlayerSprites;
 import gamestate.GameState;
 import input.Mouse;
@@ -98,24 +97,5 @@ class PlayerStateMoving extends PlayerState {
         mob.setCurrSprite(PlayerSprites.PLAYER_RIGHT);
         mob.setxSpeed(MOVE_SPEED);
         mob.setxDir(1);
-    }
-
-    private void commitMove(double xa, double ya) {
-        if (xa != 0 && ya != 0) {
-            commitMove(xa, 0);
-            commitMove(0, ya);
-            return;
-        }
-
-        if (mob.tileCollision((int) xa, (int) ya)) {
-            if (mob.triggerCollision((int) xa, (int) ya))
-                mob.getTileTrigger((int) xa, (int) ya).run();
-
-        } else {
-            mob.x += xa;
-            mob.y += ya;
-            gameState.scrollX(xa);
-            gameState.scrollY(ya);
-        }
     }
 }
