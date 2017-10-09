@@ -63,10 +63,10 @@ public class Screen {
     public void drawRect(double x, double y, int width, int height, int col) {
 
         for (int yy = (int)y; yy < (int)y + height; yy++) {
-            if (yy < 0 || yy > this.height)
+            if (yy < 0 || yy >= this.height)
                 continue;
             for (int xx = (int)x; xx < (int)x + width; xx++) {
-                if (xx < 0 || xx > this.width)
+                if (xx < 0 || xx >= this.width)
                    continue;
                 if (xx == (int)x || xx == (int)x + width - 1 || yy == (int)y || yy == (int)y + height - 1)
                     pixels[xx + yy * this.width] = col;
@@ -85,10 +85,10 @@ public class Screen {
     public void fillRect(double x, double y, int width, int height, int col) {
 
         for (int yy = (int)y; yy < y + height; yy++) {
-            if(yy < 0 || yy > this.height)
+            if(yy < 0 || yy >= this.height)
                 continue;
             for (int xx = (int)x; xx < x + width; xx++) {
-                if (xx < 0 || xx > this.width)
+                if (xx < 0 || xx >= this.width)
                     continue;
                 pixels[xx + yy * this.width] = col;
             }
@@ -170,7 +170,7 @@ public class Screen {
      * @param col The specified color for the pixel using rgb hex notation (e.g. 0xaabbcc)
      */
     public void renderPixel(int index, int col) {
-        if(index < 0 || index > width * height)
+        if(index < 0 || index >= width * height)
             return;
 
         pixels[index] = col;
@@ -183,7 +183,7 @@ public class Screen {
      * @param col The specified color for the pixel using rgb hex notation (e.g. 0xaabbcc).
      */
     public void renderPixel(double x, double y, int col) {
-        if(x < 0 || x > width || y < 0 || y > height)
+        if(x < 0 || x >= width || y < 0 || y >= height)
             return;
 
         pixels[(int)x * (int)y] = col;
@@ -198,10 +198,10 @@ public class Screen {
     public void renderSprite(double x, double y, @NotNull Sprite sprite) {
 
         for (int yy = 0; yy < sprite.getHeight(); yy++) {
-            if (yy + y <  0 || yy + y > this.height)
+            if (yy + y <  0 || yy + y >= this.height)
                 continue;
             for (int xx = 0; xx < sprite.getWidth(); xx++) {
-                if (xx + x < 0 || xx + x > this.width)
+                if (xx + x < 0 || xx + x >= this.width)
                     continue;
                 if (sprite.pixels[xx + yy * sprite.getWidth()] != 0xffff00ff)
                     pixels[xx + (int) x + (yy + (int) y) * width] = sprite.pixels[xx + yy * sprite.getWidth()];

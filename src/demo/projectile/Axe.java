@@ -37,7 +37,7 @@ public class Axe extends Projectile {
     @Override
     public void update() {
         super.update();
-        angle += (angle / Math.abs(angle) / 10);
+        angle += (getxDir() > 0 ? .1 : -.1);
     }
 
     @Override
