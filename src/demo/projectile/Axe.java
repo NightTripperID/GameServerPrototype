@@ -9,7 +9,7 @@ import graphics.Sprite;
 public class Axe extends Projectile {
 
     public Axe(double x, double y, double angle) {
-        super(x, y, 16, 16, angle);
+        super(x, y, 16, 16, angle, 1, 1, true);
 
         currSprite = ProjectileSprites.ARROW;
 

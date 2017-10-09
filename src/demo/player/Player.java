@@ -2,14 +2,16 @@ package demo.player;
 
 import com.sun.istack.internal.NotNull;
 import demo.mob.Mob;
+import demo.slime.Slime;
 import demo.spritesheets.PlayerSprites;
+import entity.Updatable;
 import gamestate.GameState;
 import graphics.Screen;
 
 public class Player extends Mob {
 
     public Player(int x, int y) {
-        super(x, y, 1, 1, 16, 16);
+        super(x, y, 1, 1, 16, 16, 3, 1, true);
     }
 
     @Override
@@ -17,7 +19,6 @@ public class Player extends Mob {
         super.initialize(gameState);
 
         currSprite = PlayerSprites.PLAYER_DOWN;
-        System.out.println("instantiating PlayerStateStanding with " + gameState);
         currState = new PlayerStateStanding(this, gameState);
     }
 

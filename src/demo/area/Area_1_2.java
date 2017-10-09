@@ -8,7 +8,6 @@ import demo.tile.TileCoord;
 import demo.transition.FadeOut;
 import gamestate.Bundle;
 import gamestate.Intent;
-import input.MouseCursor;
 import server.Server;
 
 public class Area_1_2 extends Area {
@@ -27,10 +26,6 @@ public class Area_1_2 extends Area {
 
         setScrollX((int) player.x - getScreenWidth() / 2);
         setScrollY((int) player.y - getScreenHeight() / 2);
-
-        MouseCursor cursor = (MouseCursor) inBundle.getSerializableExtra("cursor");
-        cursor.initialize(this);
-        addEntity(cursor);
 
         TileCoord coord = new TileCoord(18, 18, 16);
         Slime slime = new Slime(coord.getX(), coord.getY());
@@ -51,7 +46,6 @@ public class Area_1_2 extends Area {
 
             Bundle outBundle = new Bundle();
             outBundle.putExtra("player", player);
-            outBundle.putExtra("cursor", cursor);
 
             intent.setBundle(outBundle);
             swapGameState(intent);
@@ -68,7 +62,6 @@ public class Area_1_2 extends Area {
 
             Bundle outBundle = new Bundle();
             outBundle.putExtra("player", player);
-            outBundle.putExtra("cursor", cursor);
 
             intent.setBundle(outBundle);
             swapGameState(intent);
@@ -85,7 +78,6 @@ public class Area_1_2 extends Area {
 
             Bundle outBundle = new Bundle();
             outBundle.putExtra("player", player);
-            outBundle.putExtra("cursor", cursor);
 
             intent.setBundle(outBundle);
             swapGameState(intent);

@@ -7,22 +7,20 @@ import entity.Renderable;
 import entity.Updatable;
 import graphics.Screen;
 import input.Keyboard;
-import input.Mouse;
 import server.Server;
 
 import javax.imageio.ImageIO;
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
 import java.util.*;
-import java.util.List;
 
 public abstract class GameState {
 
     private Server server;
     private Intent intent;
 
+    private List<Entity> pendingEntites = new ArrayList<>();
     private List<Updatable> updatables = new ArrayList<>();
     private List<Renderable> renderables = new ArrayList<>();
 
@@ -69,15 +67,15 @@ public abstract class GameState {
     }
 
     public void update() {
-        for(int i = 0; i < updatables.size(); i++)
-            updatables.get(i).update();
+        addEntities();
+        updatables.forEach(Updatable::update);
+        checkCollision();
+        removeEntities();
     }
 
     public void render(@NotNull Screen screen) {
         renderTiles(screen);
-
-        for(int i = 0; i < renderables.size(); i++)
-            renderables.get(i).render(screen);
+        renderables.forEach(r -> r.render(screen));
     }
 
     private void renderTiles(@NotNull Screen screen) {
@@ -93,11 +91,11 @@ public abstract class GameState {
                 getMapTile(x, y).render(screen, x << tileBitShift, y << tileBitShift);
     }
 
-    protected final void startGameState(@NotNull Intent intent) {
+    protected final void pushGameState(@NotNull Intent intent) {
         server.pushGameState(intent);
     }
 
-    protected final void finish() {
+    protected final void popGameState() {
         server.popGameState();
     }
 
@@ -111,21 +109,32 @@ public abstract class GameState {
     }
 
     public void addEntity(@NotNull Entity entity) {
-
-        if (entity instanceof Updatable)
-            updatables.add((Updatable) entity);
-
-        if (entity instanceof Renderable)
-            renderables.add((Renderable) entity);
+        if(!(entity instanceof Updatable) && !(entity instanceof Renderable))
+            throw new IllegalArgumentException("entity must implement either Updatable " +
+                    "or Renderable to be added to GameState");
+        pendingEntites.add(entity);
     }
 
-    public void removeEntity(@NotNull Entity entity) {
+    private void addEntities() {
+        pendingEntites.forEach(entity -> {
+            if(entity instanceof Updatable)
+                updatables.add((Updatable) entity);
+            if(entity instanceof Renderable)
+                renderables.add((Renderable) entity);
+        });
+        pendingEntites.clear();
+    }
 
-        if(entity instanceof Updatable)
-            updatables.remove(entity);
+    private void removeEntities() {
+        for(int i = 0; i < updatables.size(); i++) {
+            if(updatables.get(i).removed())
+                updatables.remove(updatables.get(i--));
+        }
 
-        if(entity instanceof Renderable)
-            renderables.remove(entity);
+        for(int i = 0; i < renderables.size(); i++) {
+            if(renderables.get(i).removed())
+                renderables.remove(renderables.get(i--));
+        }
     }
 
     protected void initMap(int mapWidth, int mapHeight, @NotNull Tile.TileSize tileSize) {
@@ -161,17 +170,8 @@ public abstract class GameState {
         this.intent = intent;
     }
 
-    public final void setCustomMouseCursor(@NotNull Image image, @NotNull Point cursorHotspot,
-                                           @NotNull String name) {
-        server.setCustomMouseCursor(image, cursorHotspot, name);
-    }
-
     public final Keyboard getKeyboard() {
         return server.getKeyboard();
-    }
-
-    public final Mouse getMouse() {
-        return server.getMouse();
     }
 
     public void scrollX(double xScroll) {
@@ -190,11 +190,11 @@ public abstract class GameState {
         return yScroll;
     }
 
-    public void setScrollX(int xScroll) {
+    protected void setScrollX(int xScroll) {
         this.xScroll = xScroll;
     }
 
-    public void setScrollY(int yScroll) {
+    protected void setScrollY(int yScroll) {
         this.yScroll = yScroll;
     }
 
@@ -219,11 +219,11 @@ public abstract class GameState {
         return server.getScreenScale();
     }
 
-    public int getMapWidth() {
+    protected int getMapWidth() {
         return mapWidth;
     }
 
-    public int getMapHeight() {
+    protected int getMapHeight() {
         return mapHeight;
     }
 
@@ -231,7 +231,20 @@ public abstract class GameState {
         return mapTiles;
     }
 
-    public int[] getScreenPixels() {
+    protected int[] getScreenPixels() {
         return server.getScreenPixels();
+    }
+
+    private void checkCollision() {
+        for(int i = 0; i < updatables.size(); i++) {
+            Updatable updatable =  updatables.get(i);
+            for(int k = i + 1; k < updatables.size(); k++) {
+                if(updatable.collidesWith(updatables.get(k))) {
+                    updatable.runCollision(updatables.get(k));
+                    updatables.get(k).runCollision(updatable);
+                }
+            }
+
+        }
     }
 }

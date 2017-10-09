@@ -8,7 +8,6 @@ class PlayerStateStanding extends PlayerState {
 
      PlayerStateStanding(@NotNull Player player, @NotNull GameState gameState) {
         super(player, gameState);
-         System.out.println("PlayerStateStanding instantiated with: " + gameState);
         mob.getCurrSprite().setFrame(0);
         mob.setxSpeed(0);
         mob.setySpeed(0);

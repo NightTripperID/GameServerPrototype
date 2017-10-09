@@ -17,6 +17,8 @@ public abstract class Mob extends Entity implements Updatable, Renderable, Seria
 
     protected MobState currState;
 
+    private boolean removed;
+
     public double x;
     public double y;
 
@@ -32,8 +34,13 @@ public abstract class Mob extends Entity implements Updatable, Renderable, Seria
     private int width;
     private int height;
 
+    private int health;
+    private int damage;
 
-    protected Mob(double x, double y, int xDir, int yDir, int width, int height) {
+    private boolean friendly;
+
+
+    protected Mob(double x, double y, int xDir, int yDir, int width, int height, int health, int damage, boolean friendly) {
 
         this.x = x;
         this.y = y;
@@ -42,35 +49,47 @@ public abstract class Mob extends Entity implements Updatable, Renderable, Seria
         setyDir(yDir);
         setWidth(width);
         setHeight(height);
+
+        if(health < 1)
+            throw new IllegalArgumentException("health must be at least 1");
+        this.health = health;
+
+        if(damage < 0)
+            throw new IllegalArgumentException("damage must be at least 0");
+        this.damage = damage;
+
+        this.friendly = friendly;
     }
 
     @Override
     public void update() {
         currState.update();
+        if(health <= 0)
+            setRemoved(true);
     }
 
     public boolean tileCollision(int xa, int ya) {
-        for(int corner = 0; corner < 4; corner++) {
+        for (int corner = 0; corner < 4; corner++) {
             Point p = getTileCorner(xa, ya, corner);
-            if(gameState.getMapTile(p.x, p.y).isSolid())
+            if (gameState.getMapTile(p.x, p.y).isSolid())
                 return true;
         }
         return false;
     }
 
     public boolean triggerCollision(int xa, int ya) {
-        for(int corner = 0; corner < 4; corner++) {
+        for (int corner = 0; corner < 4; corner++) {
             Point p = getTileCorner(xa, ya, corner);
-            if(gameState.getMapTile(p.x, p.y).hasTrigger())
+            if (gameState.getMapTile(p.x, p.y).hasTrigger())
                 return true;
         }
         return false;
     }
 
     public Runnable getTileTrigger(int xa, int ya) {
-        for(int corner = 0; corner < 4; corner++) {
+        for (int corner = 0; corner < 4; corner++) {
             Point p = getTileCorner(xa, ya, corner);
-            if(gameState.getMapTile(p.x, p.y).hasTrigger())
+            if (gameState.getMapTile(p.x, p.y).hasTrigger())
                 return gameState.getTrigger(p.x, p.y);
         }
         return null;
@@ -123,44 +142,82 @@ public abstract class Mob extends Entity implements Updatable, Renderable, Seria
     }
 
     public void setxSpeed(double xSpeed) {
-        if(xSpeed < 0)
+        if (xSpeed < 0)
             throw new IllegalArgumentException("xSpeed must be set to 0 or greater");
 
         this.xSpeed = xSpeed;
     }
 
     public void setySpeed(double ySpeed) {
-        if(ySpeed < 0)
+        if (ySpeed < 0)
             throw new IllegalArgumentException("ySpeed must be set to 0 or greater");
 
         this.ySpeed = ySpeed;
     }
 
     public void setxDir(double xDir) {
-        if(xDir == 1 || xDir == -1)
+        if (xDir == 1 || xDir == -1)
             this.xDir = xDir;
         else
             throw new IllegalArgumentException("xDir must be set to 1 or -1");
     }
 
     public void setyDir(double yDir) {
-        if(yDir == 1 || yDir == -1)
+        if (yDir == 1 || yDir == -1)
             this.yDir = yDir;
         else
             throw new IllegalArgumentException("yDir must be set to 1 or -1");
     }
 
     public void setWidth(int width) {
-        if(width < 1)
+        if (width < 1)
             throw new IllegalArgumentException("width must be set to 1 or greater");
 
         this.width = width;
     }
 
     public void setHeight(int height) {
-        if(height < 1)
+        if (height < 1)
             throw new IllegalArgumentException("height must be set to 1 or greater");
 
         this.height = height;
+    }
+
+    public void setRemoved(boolean removed) {
+        this.removed = removed;
+    }
+
+    public boolean removed() {
+        return removed;
+    }
+
+    @Override
+    public boolean collidesWith(@NotNull Updatable updatable) {
+        if(!(updatable instanceof Mob))
+            throw new IllegalArgumentException("updatable must be an instance of Mob");
+
+        Mob mob = (Mob) updatable;
+
+        if(x + width > mob.x && x < mob.x + mob.getWidth())
+            if(y + height > mob.y && y < mob.y + mob.getHeight())
+                return true;
+
+        return false;
+    }
+
+    private boolean isFriendly() {
+        return friendly;
+    }
+
+    private void assignDamage(int damage) {
+        health -= damage;
+    }
+
+    @Override
+    public void runCollision(@NotNull Updatable updatable) {
+        Mob target = (Mob) updatable;
+        if(!(isFriendly() & target.isFriendly())) {
+            target.assignDamage(damage);
+        }
     }
 }

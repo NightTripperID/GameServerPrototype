@@ -7,7 +7,7 @@ import graphics.Screen;
 public class Slime extends Mob {
 
     public Slime(double x, double y) {
-        super(x, y, 1, 1, 16, 16);
+        super(x, y, 1, 1, 16, 16, 2, 1, false);
 
         currState = new SlimeStatePatrol(this, gameState);
         currSprite = SlimeSprites.SLIME;

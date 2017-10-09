@@ -25,7 +25,7 @@ public class AxeStateFlying extends ProjectileState {
                 || mob.y - gameState.getScrollY() > gameState.getScreenHeight()
                 || mob.tileCollision((int) mob.xa, (int) mob.ya)) {
 
-            gameState.removeEntity(mob);
+            mob.setRemoved(true);
         }
 
         mob.x += mob.xa;
