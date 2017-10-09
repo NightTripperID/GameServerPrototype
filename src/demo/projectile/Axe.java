@@ -3,10 +3,12 @@ package demo.projectile;
 import com.sun.istack.internal.NotNull;
 import demo.spritesheets.ProjectileSprites;
 import gamestate.GameState;
+import graphics.Screen;
+import graphics.Sprite;
 
-public class Arrow extends Projectile {
+public class Axe extends Projectile {
 
-    public Arrow(double x, double y, double angle) {
+    public Axe(double x, double y, double angle) {
         super(x, y, 16, 16, angle);
 
         currSprite = ProjectileSprites.ARROW;
@@ -29,7 +31,18 @@ public class Arrow extends Projectile {
     @Override
     public void initialize(@NotNull GameState gameState) {
         super.initialize(gameState);
+        currState = new AxeStateFlying(this, gameState);
+    }
 
-        currState = new ArrowStateFlying(this, gameState);
+    @Override
+    public void update() {
+        super.update();
+        angle += (angle / Math.abs(angle) / 10);
+    }
+
+    @Override
+    public void render(@NotNull Screen screen) {
+        screen.renderSprite(x - gameState.getScrollX(), y - gameState.getScrollY(),
+                Sprite.rotate(currSprite.getSprite(), angle));
     }
 }

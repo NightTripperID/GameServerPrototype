@@ -7,9 +7,9 @@ import gamestate.GameState;
 import graphics.Screen;
 import server.Server;
 
-public class ArrowStateFlying extends ProjectileState {
+public class AxeStateFlying extends ProjectileState {
 
-    public ArrowStateFlying(@NotNull Mob mob, @NotNull GameState gameState) {
+    public AxeStateFlying(@NotNull Mob mob, @NotNull GameState gameState) {
         super(mob, gameState);
     }
 

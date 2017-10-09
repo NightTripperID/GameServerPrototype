@@ -8,7 +8,7 @@ import graphics.Sprite;
 public abstract class Projectile extends Mob {
 
 
-    private double angle;
+    protected double angle;
 
     protected Projectile(double x, double y, int width, int height, double angle) {
         super(x, y, 1, 1, width, height);

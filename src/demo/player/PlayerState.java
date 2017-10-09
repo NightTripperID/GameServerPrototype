@@ -3,10 +3,8 @@ package demo.player;
 import com.sun.istack.internal.NotNull;
 import demo.mob.Mob;
 import demo.mob.MobState;
-import demo.projectile.Arrow;
-import demo.spritesheets.SpriteSheets;
+import demo.projectile.Axe;
 import gamestate.GameState;
-import graphics.AnimSprite;
 import input.Keyboard;
 import input.Mouse;
 
@@ -49,9 +47,9 @@ abstract class PlayerState extends MobState {
 
             double angle = Math.atan2(dy, dx);
 
-            Arrow arrow = new Arrow(mob.x, mob.y, angle);
-            arrow.initialize(gameState);
-            gameState.addEntity(arrow);
+            Axe axe = new Axe(mob.x, mob.y, angle);
+            axe.initialize(gameState);
+            gameState.addEntity(axe);
         }
     }
 }
