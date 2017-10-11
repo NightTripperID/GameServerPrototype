@@ -11,17 +11,28 @@ import demo.tile.Tiles;
 import entity.Entity;
 import gamestate.GameState;
 
-import java.net.URL;
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
 public abstract class Area_1 extends GameState {
 
-    void loadMobs(@NotNull URL url) {
-        int [] mobSpawns = new int[getMapWidth() * getMapHeight()];
+    private int[] mobSpawns;
 
-        loadTiles(url, mobSpawns);
-        for(int x = 0; x < getMapWidth(); x++) {
+    int[] getMobSpawns() {
+        return mobSpawns;
+    }
+
+    void loadMobs(@NotNull String path) {
+
+        mobSpawns = new int[getMapWidth() * getMapHeight()];
+
+        loadTiles(path, mobSpawns);
+        for (int x = 0; x < getMapWidth(); x++) {
             for (int y = 0; y < getMapHeight(); y++) {
-                switch(mobSpawns[x + y * getMapWidth()]) {
+                switch (mobSpawns[x + y * getMapWidth()]) {
                     case 0xffff0000:
                         Entity potion = new Potion(x * DemoTile.SIZE, y * DemoTile.SIZE);
                         potion.initialize(this);
@@ -37,7 +48,7 @@ public abstract class Area_1 extends GameState {
                         slime.initialize(this);
                         addEntity(slime);
                         break;
-                    case 0xffffffff:
+                    case 0xff0000ff:
                         Entity skelly = new Skelly(x * DemoTile.SIZE, y * DemoTile.SIZE);
                         skelly.initialize(this);
                         addEntity(skelly);
@@ -51,7 +62,7 @@ public abstract class Area_1 extends GameState {
 
     @Override
     public Tile getMapTileObject(int x, int y) {
-        if(x < 0 || y < 0 || x >= getMapWidth() || y >= getMapHeight())
+        if (x < 0 || y < 0 || x >= getMapWidth() || y >= getMapHeight())
             return Tiles.voidTile;
 
         switch (getMapTiles()[x + y * getMapWidth()]) {
@@ -88,5 +99,28 @@ public abstract class Area_1 extends GameState {
             default:
                 return Tiles.voidTile;
         }
+    }
+
+    protected void pixelsToPNG(int[] pixels, String fileName) {
+        BufferedImage image = new BufferedImage(getMapWidth(), getMapHeight(), BufferedImage.TYPE_INT_RGB);
+        Graphics g = image.getGraphics();
+
+        for (int y = 0; y < getMapHeight(); y++) {
+            for (int x = 0; x < getMapWidth(); x++) {
+                g.setColor(new Color(pixels[x + y * getMapWidth()]));
+                g.fillRect(x, y, 1, 1);
+            }
+        }
+
+        try {
+            File file = new File(fileName);
+            ImageIO.write(image, "PNG", file);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void setMobSpawn(int x, int y, int col) {
+        mobSpawns[x / DemoTile.SIZE + y / DemoTile.SIZE * getMapWidth()] = col;
     }
 }

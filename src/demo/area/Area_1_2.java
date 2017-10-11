@@ -12,15 +12,24 @@ import server.Server;
 
 public class Area_1_2 extends Area_1 {
 
+    private static boolean cached;
+
     @Override
     public void onCreate(@NotNull Server server) {
         super.onCreate(server);
 
         initMap(36, 36, Tile.TileSize.X16);
 
-        loadMapTiles(getClass().getClassLoader().getResource("resource/map_1-2.png"));
-        loadTriggerTiles(getClass().getClassLoader().getResource("resource/triggermap_1-2.png"));
-        loadMobs(getClass().getClassLoader().getResource("resource/spawnmap_1-2.png"));
+        if(!cached) {
+            loadMapTiles("/home/jeep/IdeaProjects/LittleEngine/res/map_1-2.png");
+            loadTriggerTiles("/home/jeep/IdeaProjects/LittleEngine/res/triggermap_1-2.png");
+            loadMobs("/home/jeep/IdeaProjects/LittleEngine/res/spawnmap_1-2.png");
+            cached = true;
+        } else {
+            loadMapTiles("/home/jeep/IdeaProjects/LittleEngine/res/cached/map_1-2.png");
+            loadTriggerTiles("/home/jeep/IdeaProjects/LittleEngine/res/cached/triggermap_1-2.png");
+            loadMobs("/home/jeep/IdeaProjects/LittleEngine/res/cached/spawnmap_1-2.png");
+        }
 
         Bundle inBundle = getIntent().getBundle();
 
@@ -118,5 +127,14 @@ public class Area_1_2 extends Area_1 {
             intent.setBundle(outBundle);
             swapGameState(intent);
         });
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        pixelsToPNG(getMapTiles(), "/home/jeep/IdeaProjects/LittleEngine/res/cached/map_1-2.png");
+        pixelsToPNG(getTriggerTiles(), "/home/jeep/IdeaProjects/LittleEngine/res/cached/triggermap_1-2.png");
+        pixelsToPNG(getMobSpawns(), "/home/jeep/IdeaProjects/LittleEngine/res/cached/spawnmap_1-2.png");
     }
 }
