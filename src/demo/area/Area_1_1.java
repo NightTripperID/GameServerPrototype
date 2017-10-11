@@ -1,7 +1,8 @@
 package demo.area;
 
 import com.sun.istack.internal.NotNull;
-import demo.player.Player;
+import demo.mob.Mob;
+import demo.mob.player.Player;
 import demo.tile.Tile;
 import demo.tile.TileCoord;
 import demo.transition.FadeOut;
@@ -17,18 +18,18 @@ public class Area_1_1 extends Area_1 {
 
         initMap(30, 20, Tile.TileSize.X16);
 
+        loadMapTiles(getClass().getClassLoader().getResource("resource/map_1-1.png"));
+        loadTriggerTiles(getClass().getClassLoader().getResource("resource/triggermap_1-1.png"));
+        loadMobs(getClass().getClassLoader().getResource("resource/spawnmap_1-1.png"));
+
         Bundle inBundle = getIntent().getBundle();
 
-        Player player = (Player) inBundle.getSerializableExtra("player");
+        Mob player = (Player) inBundle.getSerializableExtra("player");
         player.initialize(this);
         addEntity(player);
 
         setScrollX((int) player.x - getScreenWidth() / 2);
         setScrollY((int) player.y - getScreenHeight() / 2);
-
-        loadMapTiles(getClass().getClassLoader().getResource("resource/map_1-1.png"));
-        loadTriggerTiles(getClass().getClassLoader().getResource("resource/triggermap_1-1.png"));
-        loadMobs(getClass().getClassLoader().getResource("resource/spawnmap_1-1.png"));
 
         putTrigger(0xffff0000, () -> {
 

@@ -1,32 +1,41 @@
-package demo.player;
+package demo.mob.player;
 
 import com.sun.istack.internal.NotNull;
 import demo.area.Area_1_1;
 import demo.mob.Mob;
-import demo.spritesheets.PlayerSprites;
+import demo.mob.player.inventory.Inventory;
+import demo.spritesheets.SpriteSheets;
 import demo.tile.TileCoord;
 import demo.transition.FadeOut;
 import entity.Updatable;
 import gamestate.Bundle;
 import gamestate.GameState;
 import gamestate.Intent;
+import graphics.AnimSprite;
 import graphics.Screen;
 
 public class Player extends Mob {
 
-    private boolean damageGrace;
+    public final Inventory inventory = new Inventory();
+
     private int graceCount;
     private static final int MAX_GRACE_COUNT = 1 * 90;
 
+    private int numKeys = 0;
+    private int numPotions = 0;
+
+    private AnimSprite heartSprite = new AnimSprite(SpriteSheets.HEART, 8, 8, 1);
+    private AnimSprite doorkeySprite = new AnimSprite(SpriteSheets.DOORKEY, 8, 8, 1);
+
     public Player(int x, int y) {
-        super(x, y, 1, 1, 16, 16, 3, 0, true);
+        super(x, y, 1, 1, 16, 16, 3, 0, true, true);
     }
 
     @Override
     public void initialize(@NotNull GameState gameState) {
         super.initialize(gameState);
 
-        currSprite = PlayerSprites.PLAYER_DOWN;
+        currSprite = new AnimSprite(SpriteSheets.PLAYER_DOWN, 16, 16, 4);
         currState = new PlayerStateStanding(this, gameState);
     }
 
@@ -37,19 +46,19 @@ public class Player extends Mob {
         if(getHealth()<= 0) {
             Bundle bundle = new Bundle();
             TileCoord coord = new TileCoord(14, 17, 16);
-
             bundle.putExtra("player", new Player(coord.getX(), coord.getY()));
-
             Intent intent = new Intent(FadeOut.class);
             intent.setBundle(bundle);
             intent.putExtra("nextGameState", Area_1_1.class);
             intent.putExtra("pixels", gameState.getScreenPixels());
-
             gameState.swapGameState(intent);
         }
 
+        numKeys = inventory.getCount("doorkey");
+        numPotions = inventory.getCount("potion");
+
         if (graceCount == MAX_GRACE_COUNT)
-            damageGrace = false;
+            setVulnerable(true);
         else
             graceCount++;
     }
@@ -57,23 +66,32 @@ public class Player extends Mob {
     @Override
     public void render(@NotNull Screen screen) {
         screen.renderSprite(x - gameState.getScrollX(), y - gameState.getScrollY(), currSprite.getSprite());
+
+        screen.fillRect(0, 0, gameState.getScreenWidth(), 32, 0x000000);
+        screen.drawRect(0, 0, gameState.getScreenWidth(), 32, 0xffffff);
+
+        for (int i = 0; i < getHealth(); i++)
+            screen.renderSprite(16 + (i << 4), 12, heartSprite.getSprite());
+
+        screen.renderSprite(gameState.getScreenWidth() - 56, 12, doorkeySprite.getSprite());
+        screen.renderString8x8(gameState.getScreenWidth() - 48, 12, 0xffffff, "x" + numKeys);
     }
 
     @Override
     public void runCollision(@NotNull Updatable updatable) {
         super.runCollision(updatable);
-        Mob target = (Mob) updatable;
-        if(!(isFriendly() & target.isFriendly()))
-            if(!(currState instanceof PlayerStateKnockback) && !damageGrace)
-            currState = new PlayerStateKnockback(this, gameState, (PlayerState) currState);
+        Mob that = (Mob) updatable;
+        if(this.friendly() != that.friendly())
+            if(!(currState instanceof PlayerStateKnockback))
+                currState = new PlayerStateKnockback(this, gameState, (PlayerState) currState);
     }
 
     @Override
-    protected void assignDamage(int damage) {
-        if (!damageGrace) {
-            damageGrace = true;
+    public void assignDamage(int damage) {
+        if (vulnerable()) {
+            setVulnerable(false);
+            graceCount = 0;
             super.assignDamage(damage);
         }
-        System.out.println(getHealth());
     }
 }

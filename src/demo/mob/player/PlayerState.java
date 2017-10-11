@@ -1,9 +1,10 @@
-package demo.player;
+package demo.mob.player;
 
 import com.sun.istack.internal.NotNull;
 import demo.mob.Mob;
 import demo.mob.MobState;
-import demo.projectile.Axe;
+import demo.mob.projectile.Axe;
+import entity.Entity;
 import gamestate.GameState;
 import input.Keyboard;
 import input.Mouse;
@@ -44,7 +45,7 @@ abstract class PlayerState extends MobState {
 
             double angle = Math.atan2(dy, dx);
 
-            Axe axe = new Axe(mob.x, mob.y, angle);
+            Entity axe = new Axe(mob.x, mob.y, angle);
             axe.initialize(gameState);
             gameState.addEntity(axe);
         }
@@ -58,11 +59,10 @@ abstract class PlayerState extends MobState {
             return;
         }
 
-        if (mob.tileCollision((int) xa, (int) ya)) {
-            if (mob.triggerCollision((int) xa, (int) ya))
-                mob.getTileTrigger((int) xa, (int) ya).run();
+        if (mob.triggerCollision((int) xa, (int) ya))
+            mob.getTileTrigger((int) xa, (int) ya).run();
 
-        } else {
+        if (!mob.tileCollision((int) xa, (int) ya)) {
             mob.x += xa;
             mob.y += ya;
             gameState.scrollX(xa);

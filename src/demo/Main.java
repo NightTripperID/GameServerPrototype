@@ -2,11 +2,10 @@ package demo;
 
 import demo.area.Area_1_1;
 import demo.mob.DemoCursor;
-import demo.player.Player;
+import demo.mob.player.Player;
 import demo.tile.TileCoord;
 import gamestate.Bundle;
 import gamestate.Intent;
-
 import server.Server;
 
 import java.awt.*;

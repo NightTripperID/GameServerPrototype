@@ -1,17 +1,18 @@
-package demo.projectile;
+package demo.mob.projectile;
 
 import com.sun.istack.internal.NotNull;
-import demo.spritesheets.ProjectileSprites;
+import demo.spritesheets.SpriteSheets;
 import gamestate.GameState;
+import graphics.AnimSprite;
 import graphics.Screen;
 import graphics.Sprite;
 
 public class Axe extends Projectile {
 
     public Axe(double x, double y, double angle) {
-        super(x, y, 16, 16, angle, 1, 1, true);
+        super(x, y, 16, 16, 1, 1, true, true, angle);
 
-        currSprite = ProjectileSprites.ARROW;
+        currSprite = new AnimSprite(SpriteSheets.ARROW, 16, 16, 1);
 
         double angleVelocity = Math.sqrt(8); // sqrt(2^2 + 2^2), i.e. hypotenuse from  pythagorean theorem
 

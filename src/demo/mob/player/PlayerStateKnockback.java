@@ -1,8 +1,7 @@
-package demo.player;
+package demo.mob.player;
 
 import demo.mob.Mob;
 import demo.mob.MobState;
-import demo.spritesheets.PlayerSprites;
 import gamestate.GameState;
 
 public class PlayerStateKnockback extends PlayerState {
@@ -10,30 +9,28 @@ public class PlayerStateKnockback extends PlayerState {
     private MobState lastPlayerState;
     private int count;
 
-
-
     PlayerStateKnockback(Mob mob, GameState gameState, PlayerState lastPlayerState) {
         super(mob, gameState);
         this.lastPlayerState = lastPlayerState;
 
         final int knockbackSpeed = 7;
 
-        if (mob.getCurrSprite() == PlayerSprites.PLAYER_UP) {
+        if (mob.direction == Mob.Direction.UP) {
             mob.setySpeed(knockbackSpeed);
             mob.setyDir(1);
         }
 
-        else if (mob.getCurrSprite() == PlayerSprites.PLAYER_DOWN) {
+        else if (mob.direction == Mob.Direction.DOWN) {
             mob.setySpeed(knockbackSpeed);
             mob.setyDir(-1);
         }
 
-        else if (mob.getCurrSprite() == PlayerSprites.PLAYER_LEFT) {
+        else if (mob.direction == Mob.Direction.LEFT) {
             mob.setxSpeed(knockbackSpeed);
             mob.setxDir(1);
         }
 
-        else if (mob.getCurrSprite() == PlayerSprites.PLAYER_RIGHT) {
+        else if (mob.direction == Mob.Direction.RIGHT) {
             mob.setxSpeed(knockbackSpeed);
             mob.setxDir(-1);
         }

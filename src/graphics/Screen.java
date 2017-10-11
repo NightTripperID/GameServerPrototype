@@ -83,7 +83,6 @@ public class Screen {
      * @param col The specified color of the rectangle using rgb hex notation (e.g. 0xaabbcc)
      */
     public void fillRect(double x, double y, int width, int height, int col) {
-
         for (int yy = (int)y; yy < y + height; yy++) {
             if(yy < 0 || yy >= this.height)
                 continue;

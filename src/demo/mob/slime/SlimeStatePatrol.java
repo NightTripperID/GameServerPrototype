@@ -1,4 +1,4 @@
-package demo.slime;
+package demo.mob.slime;
 
 import demo.mob.Mob;
 import demo.mob.MobState;

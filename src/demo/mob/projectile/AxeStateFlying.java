@@ -1,4 +1,4 @@
-package demo.projectile;
+package demo.mob.projectile;
 
 import com.sun.istack.internal.NotNull;
 import demo.mob.Mob;

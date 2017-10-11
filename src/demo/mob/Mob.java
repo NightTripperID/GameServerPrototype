@@ -13,34 +13,27 @@ public abstract class Mob extends Entity implements Updatable, Renderable, Seria
 
     public static final long serialVersionUID = 201709271703L;
 
+    public enum Direction { UP, DOWN, LEFT, RIGHT }
+
+    public Direction direction;
+
     protected AnimSprite currSprite;
 
     protected MobState currState;
 
     private boolean removed;
 
-    public double x;
-    public double y;
-
-    public double xa;
-    public double ya;
-
-    private double xSpeed;
-    private double ySpeed;
-
-    private double xDir;
-    private double yDir;
-
-    private int width;
-    private int height;
-
-    private int health;
-    private int damage;
-
-    private boolean friendly;
+    public double x, y;
+    public double xa, ya;
+    private double xSpeed, ySpeed;
+    private double xDir, yDir;
+    private int width, height;
+    private int health, damage;
+    private boolean friendly, vulnerable;
 
 
-    protected Mob(double x, double y, int xDir, int yDir, int width, int height, int health, int damage, boolean friendly) {
+    public Mob(double x, double y, int xDir, int yDir, int width, int height,
+               int health, int damage, boolean friendly, boolean vulnerable) {
 
         this.x = x;
         this.y = y;
@@ -53,17 +46,17 @@ public abstract class Mob extends Entity implements Updatable, Renderable, Seria
         if(health < 1)
             throw new IllegalArgumentException("health must be at least 1");
         this.health = health;
-
-        if(damage < 0)
-            throw new IllegalArgumentException("damage must be at least 0");
         this.damage = damage;
-
         this.friendly = friendly;
+        this.vulnerable = vulnerable;
+
+        direction = Direction.DOWN;
     }
 
     @Override
     public void update() {
-        currState.update();
+        if(currState != null)
+            currState.update();
         if(health <= 0)
             setRemoved(true);
     }
@@ -71,7 +64,7 @@ public abstract class Mob extends Entity implements Updatable, Renderable, Seria
     public boolean tileCollision(int xa, int ya) {
         for (int corner = 0; corner < 4; corner++) {
             Point p = getTileCorner(xa, ya, corner);
-            if (gameState.getMapTile(p.x, p.y).isSolid())
+            if (gameState.getMapTileObject(p.x, p.y).isSolid())
                 return true;
         }
         return false;
@@ -80,7 +73,7 @@ public abstract class Mob extends Entity implements Updatable, Renderable, Seria
     public boolean triggerCollision(int xa, int ya) {
         for (int corner = 0; corner < 4; corner++) {
             Point p = getTileCorner(xa, ya, corner);
-            if (gameState.getMapTile(p.x, p.y).hasTrigger())
+            if (gameState.getMapTileObject(p.x, p.y).hasTrigger())
                 return true;
         }
         return false;
@@ -89,7 +82,7 @@ public abstract class Mob extends Entity implements Updatable, Renderable, Seria
     public Runnable getTileTrigger(int xa, int ya) {
         for (int corner = 0; corner < 4; corner++) {
             Point p = getTileCorner(xa, ya, corner);
-            if (gameState.getMapTile(p.x, p.y).hasTrigger())
+            if (gameState.getMapTileObject(p.x, p.y).hasTrigger())
                 return gameState.getTrigger(p.x, p.y);
         }
         return null;
@@ -205,16 +198,28 @@ public abstract class Mob extends Entity implements Updatable, Renderable, Seria
         return false;
     }
 
-    public boolean isFriendly() {
+    public boolean friendly() {
         return friendly;
     }
 
-    protected void assignDamage(int damage) {
+    public boolean vulnerable() {
+        return vulnerable;
+    }
+
+    public void setVulnerable(boolean vulnerable) {
+        this.vulnerable = vulnerable;
+    }
+
+    public void assignDamage(int damage) {
         health -= damage;
     }
 
     public int getHealth() {
         return health;
+    }
+
+    public int getDamage() {
+        return damage;
     }
 
     @Override
@@ -223,8 +228,8 @@ public abstract class Mob extends Entity implements Updatable, Renderable, Seria
             throw new IllegalArgumentException("updatable must be an instance of Mob");
 
         Mob target = (Mob) updatable;
-        if(!(isFriendly() & target.isFriendly())) {
-            target.assignDamage(damage);
-        }
+        if(friendly() != target.friendly())
+            if(target.vulnerable)
+                target.assignDamage(damage);
     }
 }

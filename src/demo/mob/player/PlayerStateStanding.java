@@ -1,4 +1,4 @@
-package demo.player;
+package demo.mob.player;
 
 import com.sun.istack.internal.NotNull;
 import gamestate.GameState;

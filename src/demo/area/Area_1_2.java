@@ -1,8 +1,8 @@
 package demo.area;
 
 import com.sun.istack.internal.NotNull;
-import demo.player.Player;
-import demo.slime.Slime;
+import demo.mob.player.Player;
+import demo.tile.DemoTile;
 import demo.tile.Tile;
 import demo.tile.TileCoord;
 import demo.transition.FadeOut;
@@ -18,6 +18,10 @@ public class Area_1_2 extends Area_1 {
 
         initMap(36, 36, Tile.TileSize.X16);
 
+        loadMapTiles(getClass().getClassLoader().getResource("resource/map_1-2.png"));
+        loadTriggerTiles(getClass().getClassLoader().getResource("resource/triggermap_1-2.png"));
+        loadMobs(getClass().getClassLoader().getResource("resource/spawnmap_1-2.png"));
+
         Bundle inBundle = getIntent().getBundle();
 
         Player player = (Player) inBundle.getSerializableExtra("player");
@@ -26,15 +30,6 @@ public class Area_1_2 extends Area_1 {
 
         setScrollX((int) player.x - getScreenWidth() / 2);
         setScrollY((int) player.y - getScreenHeight() / 2);
-
-        TileCoord coord = new TileCoord(18, 18, 16);
-        Slime slime = new Slime(coord.getX(), coord.getY());
-        slime.initialize(this);
-        addEntity(slime);
-
-        loadMapTiles(getClass().getClassLoader().getResource("resource/map_1-2.png"));
-        loadTriggerTiles(getClass().getClassLoader().getResource("resource/triggermap_1-2.png"));
-        loadMobs(getClass().getClassLoader().getResource("resource/spawnmap_1-2.png"));
 
         putTrigger(0xffff0000, () -> {
             Intent intent = new Intent(FadeOut.class);
@@ -57,7 +52,7 @@ public class Area_1_2 extends Area_1 {
             intent.putExtra("nextGameState", Area_1_1.class);
             intent.putExtra("pixels", getScreenPixels());
 
-            TileCoord tileCoord = new TileCoord(14, 15, 16);
+            TileCoord tileCoord = new TileCoord(14, 15, DemoTile.SIZE);
             player.x = tileCoord.getX();
             player.y = tileCoord.getY();
 
@@ -73,7 +68,47 @@ public class Area_1_2 extends Area_1 {
             intent.putExtra("nextGameState", Area_1_1.class);
             intent.putExtra("pixels", getScreenPixels());
 
-            TileCoord tileCoord = new TileCoord(17, 12, 16);
+            TileCoord tileCoord = new TileCoord(17, 12, DemoTile.SIZE);
+            player.x = tileCoord.getX();
+            player.y = tileCoord.getY();
+
+            Bundle outBundle = new Bundle();
+            outBundle.putExtra("player", player);
+
+            intent.setBundle(outBundle);
+            swapGameState(intent);
+        });
+
+        putTrigger(0xffffff00, () -> {
+            Intent intent = new Intent(FadeOut.class);
+            intent.putExtra("nextGameState", Area_1_3.class);
+            intent.putExtra("pixels", getScreenPixels());
+
+            TileCoord tileCoord = new TileCoord(18, 31, DemoTile.SIZE);
+            player.x = tileCoord.getX();
+            player.y = tileCoord.getY();
+
+            Bundle outBundle = new Bundle();
+            outBundle.putExtra("player", player);
+
+            intent.setBundle(outBundle);
+            swapGameState(intent);
+        });
+
+        putTrigger(0xff00ffff, () -> {
+            if(player.inventory.getCount("doorkey") > 0) {
+                player.inventory.remove("doorkey");
+                setMapTile(18, 1, 0xffb200ff);
+                setTriggerTile(18, 1, 0xffff00ff);
+            }
+        });
+
+        putTrigger(0xffff00ff, () -> {
+            Intent intent = new Intent(FadeOut.class);
+            intent.putExtra("nextGameState", Area_1_1.class);
+            intent.putExtra("pixels", getScreenPixels());
+
+            TileCoord tileCoord = new TileCoord(11, 12, 16);
             player.x = tileCoord.getX();
             player.y = tileCoord.getY();
 

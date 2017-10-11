@@ -1,13 +1,20 @@
-package demo.player;
+package demo.mob.player;
 
 import com.sun.istack.internal.NotNull;
-import demo.spritesheets.PlayerSprites;
+import demo.mob.Mob;
+import demo.spritesheets.SpriteSheets;
 import gamestate.GameState;
+import graphics.AnimSprite;
 import input.Mouse;
 
 class PlayerStateMoving extends PlayerState {
 
     private static final double MOVE_SPEED = 1.0;
+
+    private final AnimSprite playerSpriteUp = new AnimSprite(SpriteSheets.PLAYER_UP, 16, 16, 4);
+    private final AnimSprite playerSpriteDown = new AnimSprite(SpriteSheets.PLAYER_DOWN, 16, 16, 4);
+    private final AnimSprite playerSpriteLeft = new AnimSprite(SpriteSheets.PLAYER_LEFT, 16, 16, 4);
+    private final AnimSprite playerSpriteRight = new AnimSprite(SpriteSheets.PLAYER_RIGHT, 16, 16, 4);
 
     PlayerStateMoving(@NotNull Player player, @NotNull GameState gameState, int count) {
         super(player, gameState, count);
@@ -76,26 +83,30 @@ class PlayerStateMoving extends PlayerState {
     }
 
     private void moveUp() {
-        mob.setCurrSprite(PlayerSprites.PLAYER_UP);
+        mob.setCurrSprite(playerSpriteUp);
         mob.setySpeed(MOVE_SPEED);
         mob.setyDir(-1);
+        mob.direction = Mob.Direction.UP;
     }
 
     private void moveDown() {
-        mob.setCurrSprite(PlayerSprites.PLAYER_DOWN);
+        mob.setCurrSprite(playerSpriteDown);
         mob.setySpeed(MOVE_SPEED);
         mob.setyDir(1);
+        mob.direction = Mob.Direction.DOWN;
     }
 
     private void moveLeft() {
-        mob.setCurrSprite(PlayerSprites.PLAYER_LEFT);
+        mob.setCurrSprite(playerSpriteLeft);
         mob.setxSpeed(MOVE_SPEED);
         mob.setxDir(-1);
+        mob.direction = Mob.Direction.LEFT;
     }
 
     private void moveRight() {
-        mob.setCurrSprite(PlayerSprites.PLAYER_RIGHT);
+        mob.setCurrSprite(playerSpriteRight);
         mob.setxSpeed(MOVE_SPEED);
         mob.setxDir(1);
+        mob.direction = Mob.Direction.RIGHT;
     }
 }

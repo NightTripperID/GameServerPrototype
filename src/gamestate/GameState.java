@@ -89,7 +89,7 @@ public abstract class GameState {
 
         for (int y = y0; y < y1; y++)
             for (int x = x0; x < x1; x++)
-                getMapTile(x, y).render(screen, x << tileBitShift, y << tileBitShift);
+                getMapTileObject(x, y).render(screen, x << tileBitShift, y << tileBitShift);
     }
 
     public final void pushGameState(@NotNull Intent intent) {
@@ -167,12 +167,12 @@ public abstract class GameState {
         }
     }
 
-    public final void setIntent(@NotNull Intent intent) {
-        this.intent = intent;
-    }
-
     public final Keyboard getKeyboard() {
         return server.getKeyboard();
+    }
+
+    public final void setIntent(@NotNull Intent intent) {
+        this.intent = intent;
     }
 
     public void scrollX(double xScroll) {
@@ -199,8 +199,32 @@ public abstract class GameState {
         this.yScroll = yScroll;
     }
 
-    public Tile getMapTile(int x, int y) {
+    public Tile getMapTileObject(int x, int y) {
         return null;
+    }
+
+    public int getMapTile(int x, int y) {
+        return mapTiles[x + y * mapWidth];
+    }
+
+    public void setMapTile(int x, int y, int col) {
+        mapTiles[x + y * mapWidth] = col;
+    }
+
+    protected int[] getMapTiles() {
+        return mapTiles;
+    }
+
+    public int getTriggerTile(int x, int y) {
+        return triggerTiles[x + y * mapWidth];
+    }
+
+    public void setTriggerTile(int x, int y, int col) {
+        triggerTiles[x + y * mapWidth] = col;
+    }
+
+    protected int[] getTriggerTiles() {
+        return triggerTiles;
     }
 
     public void putTrigger(int key, @NotNull Runnable trigger) {
@@ -230,10 +254,6 @@ public abstract class GameState {
 
     protected int getMapHeight() {
         return mapHeight;
-    }
-
-    protected int[] getMapTiles() {
-        return mapTiles;
     }
 
     public int[] getScreenPixels() {

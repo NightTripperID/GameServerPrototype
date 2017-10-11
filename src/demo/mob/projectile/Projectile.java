@@ -1,4 +1,4 @@
-package demo.projectile;
+package demo.mob.projectile;
 
 import com.sun.istack.internal.NotNull;
 import demo.mob.Mob;
@@ -9,8 +9,9 @@ public abstract class Projectile extends Mob {
 
     double angle;
 
-    Projectile(double x, double y, int width, int height, double angle, int damage, int health, boolean friendly) {
-        super(x, y, 1, 1, width, height, health, damage, friendly);
+    Projectile(double x, double y, int width, int height, int damage, int health,
+               boolean friendly, boolean vulnerable, double angle) {
+        super(x, y, 1, 1, width, height, health, damage, friendly, vulnerable);
         this.angle = angle;
     }
 

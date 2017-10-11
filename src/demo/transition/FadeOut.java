@@ -5,8 +5,21 @@ import gamestate.Bundle;
 import gamestate.GameState;
 import gamestate.Intent;
 import graphics.Screen;
+import server.Server;
 
-public class FadeOut extends Fade {
+public class FadeOut extends GameState {
+
+    private int count;
+    private int[] pixels;
+
+    @Override
+    public void onCreate(@NotNull Server server) {
+        super.onCreate(server);
+        pixels = getIntent().getIntegerArrayExtra("pixels");
+        for(int p : pixels)
+            if (p == 0x000000)
+                count++;
+    }
 
     @Override
     @SuppressWarnings("unchecked")
