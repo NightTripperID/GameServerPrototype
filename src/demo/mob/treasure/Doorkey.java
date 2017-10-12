@@ -1,5 +1,6 @@
 package demo.mob.treasure;
 
+import demo.area.Area_1;
 import demo.mob.Mob;
 import demo.mob.player.Player;
 import demo.spritesheets.SpriteSheets;
@@ -26,6 +27,7 @@ public class Doorkey extends Mob {
 
         if(updatable instanceof Player) {
             ((Player)updatable).inventory.add("doorkey");
+            ((Area_1)gameState).setMobSpawn((int) x, (int) y, 0xff00ff);
             this.setRemoved(true);
         }
     }

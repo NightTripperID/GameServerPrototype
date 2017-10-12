@@ -107,17 +107,17 @@ public class Area_1_2 extends Area_1 {
         putTrigger(0xff00ffff, () -> {
             if(player.inventory.getCount("doorkey") > 0) {
                 player.inventory.remove("doorkey");
-                setMapTile(18, 1, 0xffb200ff);
-                setTriggerTile(18, 1, 0xffff00ff);
+                setMapTile(18, 13, 0xffa0a0cd);
+                setMapTile(18, 12, 0xffa0a0cd);
             }
         });
 
         putTrigger(0xffff00ff, () -> {
             Intent intent = new Intent(FadeOut.class);
-            intent.putExtra("nextGameState", Area_1_1.class);
+            intent.putExtra("nextGameState", Area_1_4.class);
             intent.putExtra("pixels", getScreenPixels());
 
-            TileCoord tileCoord = new TileCoord(11, 12, 16);
+            TileCoord tileCoord = new TileCoord(17, 8, 16);
             player.x = tileCoord.getX();
             player.y = tileCoord.getY();
 

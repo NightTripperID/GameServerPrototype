@@ -1,6 +1,7 @@
 package demo.spritesheets;
 
 import demo.tile.DemoTile;
+import graphics.AnimSprite;
 import graphics.Sprite;
 
 public class TileSprites {
@@ -19,6 +20,10 @@ public class TileSprites {
     public static final Sprite STONE_STAIRS_UP = new Sprite(SpriteSheets.MAIN_SHEET, DemoTile.SIZE, 10, 5);
     public static final Sprite DUNGEON_DOOR_LOCKED = new Sprite(SpriteSheets.MAIN_SHEET, DemoTile.SIZE, 9, 4);
     public static final Sprite DUNGEON_DOOR_OPEN = new Sprite(SpriteSheets.MAIN_SHEET, DemoTile.SIZE, 9, 5);
+    public static final Sprite FLOOR_SWITCH_UP = new Sprite(SpriteSheets.MAIN_SHEET, DemoTile.SIZE, 9, 6);
+    public static final Sprite FLOOR_SWITCH_DOWN = new Sprite(SpriteSheets.MAIN_SHEET, DemoTile.SIZE, 10, 6);
+
+    public static final AnimSprite WATER = new AnimSprite(SpriteSheets.WATER, 16, 16, 2);
 
     private TileSprites(){
     }

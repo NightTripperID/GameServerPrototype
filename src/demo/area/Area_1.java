@@ -1,6 +1,7 @@
 package demo.area;
 
 import com.sun.istack.internal.NotNull;
+import demo.mob.medusa.Medusa;
 import demo.mob.skelly.Skelly;
 import demo.mob.slime.Slime;
 import demo.mob.treasure.Doorkey;
@@ -53,6 +54,11 @@ public abstract class Area_1 extends GameState {
                         skelly.initialize(this);
                         addEntity(skelly);
                         break;
+                    case 0xffb200ff:
+                        Entity medusa = new Medusa(x * DemoTile.SIZE, y * DemoTile.SIZE);
+                        medusa.initialize(this);
+                        addEntity(medusa);
+                        break;
                     default:
                         break;
                 }
@@ -96,6 +102,12 @@ public abstract class Area_1 extends GameState {
                 return Tiles.dungeonDoorLocked;
             case 0xffb200ff:
                 return Tiles.dungeonDoorOpen;
+            case 0xff7fffc5:
+                return Tiles.water;
+            case 0xffe90064:
+                return Tiles.floorSwitchUp;
+            case 0xffbc0051:
+                return Tiles.floorSwitchDown;
             default:
                 return Tiles.voidTile;
         }

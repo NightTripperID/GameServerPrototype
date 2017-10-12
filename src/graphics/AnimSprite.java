@@ -42,4 +42,8 @@ public class AnimSprite extends Sprite {
 
         this.frame = frame;
     }
+
+    public int getFrame() {
+        return frame;
+    }
 }

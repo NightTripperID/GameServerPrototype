@@ -14,7 +14,6 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 import java.util.*;
 
 public abstract class GameState {
@@ -47,27 +46,11 @@ public abstract class GameState {
     }
 
     protected void loadMapTiles(@NotNull String path) {
-//        URL url = getClass().getClassLoader().getResource(path);
         loadTiles(path, mapTiles);
     }
 
     protected void loadTriggerTiles(@NotNull String path) {
-//        URL url = getClass().getClassLoader().getResource(path);
         loadTiles(path, triggerTiles);
-    }
-
-    protected void loadTiles(@NotNull URL url, @Nullable int[] dest) {
-        try {
-            System.out.println("Trying to load: " + url.toString() + "...");
-            BufferedImage map = ImageIO.read(url);
-            int[] pixels = new int[mapWidth * mapHeight];
-            map.getRGB(0, 0, mapWidth, mapHeight, pixels, 0, mapWidth);
-            System.arraycopy(pixels, 0, dest, 0, dest.length);
-            System.out.println("Success!");
-        } catch (IOException e) {
-            System.out.println("failed...");
-            e.printStackTrace();
-        }
     }
 
     protected void loadTiles(@NotNull String filePath, @Nullable int[] dest) {

@@ -1,6 +1,7 @@
 package demo.mob;
 
 import com.sun.istack.internal.NotNull;
+import demo.mob.explosion.Explosion;
 import entity.Entity;
 import entity.Renderable;
 import entity.Updatable;
@@ -57,8 +58,12 @@ public abstract class Mob extends Entity implements Updatable, Renderable, Seria
     public void update() {
         if(currState != null)
             currState.update();
-        if(health <= 0)
+        if(health <= 0) {
             setRemoved(true);
+            Entity explosion = new Explosion(x, y);
+            explosion.initialize(gameState);
+            gameState.addEntity(explosion);
+        }
     }
 
     public boolean tileCollision(int xa, int ya) {
@@ -88,7 +93,7 @@ public abstract class Mob extends Entity implements Updatable, Renderable, Seria
         return null;
     }
 
-    private Point getTileCorner(int xa, int ya, int corner) {
+    protected Point getTileCorner(int xa, int ya, int corner) {
         int xt = ((int) (x + xa) + corner % 2 * 2 + 6) / 16;
         int yt = ((int) (y + ya) + corner / 2 * 2 + 12) / 16;
         return new Point(xt, yt);

@@ -21,6 +21,9 @@ public class Tiles {
     public static Tile stoneStairsUp = new DemoTile(TileSprites.STONE_STAIRS_UP, false, true);
     public static Tile dungeonDoorLocked = new DemoTile(TileSprites.DUNGEON_DOOR_LOCKED, true, true);
     public static Tile dungeonDoorOpen = new DemoTile(TileSprites.DUNGEON_DOOR_OPEN, true, true);
+    public static Tile floorSwitchUp = new DemoTile(TileSprites.FLOOR_SWITCH_UP, false, true);
+    public static Tile floorSwitchDown = new DemoTile(TileSprites.FLOOR_SWITCH_DOWN, false, false);
+    public static Tile water = new WaterTile();
 
     private Tiles() {
     }
