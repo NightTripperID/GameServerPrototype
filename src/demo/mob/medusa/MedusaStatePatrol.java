@@ -40,7 +40,6 @@ public class MedusaStatePatrol extends MobState {
                 mob.setxDir(random.nextInt() > 0 ? 1 : -1);
                 mob.setyDir(random.nextInt() > 0 ? 1 : -1);
             }
-
         }
 
         mob.xa = mob.getxSpeed() * mob.getxDir();

@@ -9,8 +9,8 @@ public class PlayerStateKnockback extends PlayerState {
     private MobState lastPlayerState;
     private int count;
 
-    PlayerStateKnockback(Mob mob, GameState gameState, PlayerState lastPlayerState) {
-        super(mob, gameState);
+    PlayerStateKnockback(Player player, GameState gameState, PlayerState lastPlayerState) {
+        super(player, gameState);
         this.lastPlayerState = lastPlayerState;
 
         final int knockbackSpeed = 7;

@@ -4,7 +4,6 @@ import com.sun.istack.internal.NotNull;
 import com.sun.istack.internal.Nullable;
 import demo.tile.Tile;
 import entity.Entity;
-import entity.Renderable;
 import entity.Updatable;
 import graphics.Screen;
 import input.Keyboard;
@@ -21,9 +20,8 @@ public abstract class GameState {
     private Server server;
     private Intent intent;
 
+    private List<Entity> entities = new ArrayList<>();
     private List<Entity> pendingEntites = new ArrayList<>();
-    private List<Updatable> updatables = new ArrayList<>();
-    private List<Renderable> renderables = new ArrayList<>();
 
     private double xScroll, yScroll;
 
@@ -71,14 +69,13 @@ public abstract class GameState {
 
     public void update() {
         addEntities();
-        checkCollision();
-        updatables.forEach(Updatable::update);
+        entities.forEach(Updatable::update);
         removeEntities();
     }
 
     public void render(@NotNull Screen screen) {
         renderTiles(screen);
-        renderables.forEach(r -> r.render(screen));
+        entities.forEach(e -> e.render(screen));
     }
 
     private void renderTiles(@NotNull Screen screen) {
@@ -111,32 +108,31 @@ public abstract class GameState {
         return intent;
     }
 
+    public int getEntitiesSize() {
+        return entities.size();
+    }
+
+    public Entity getEntity(int index) {
+        return entities.get(index);
+    }
+
+    protected List<Entity> getEntities() {
+        return entities;
+    }
+
     public void addEntity(@NotNull Entity entity) {
-        if(!(entity instanceof Updatable) && !(entity instanceof Renderable))
-            throw new IllegalArgumentException("entity must implement either Updatable " +
-                    "or Renderable to be added to GameState");
         pendingEntites.add(entity);
     }
 
     private void addEntities() {
-        pendingEntites.forEach(entity -> {
-            if(entity instanceof Updatable)
-                updatables.add((Updatable) entity);
-            if(entity instanceof Renderable)
-                renderables.add((Renderable) entity);
-        });
+        entities.addAll(pendingEntites);
         pendingEntites.clear();
     }
 
     private void removeEntities() {
-        for(int i = 0; i < updatables.size(); i++) {
-            if(updatables.get(i).removed())
-                updatables.remove(updatables.get(i--));
-        }
-
-        for(int i = 0; i < renderables.size(); i++) {
-            if(renderables.get(i).removed())
-                renderables.remove(renderables.get(i--));
+        for(int i = 0; i < entities.size(); i++) {
+            if(entities.get(i).removed())
+                entities.remove(entities.get(i--));
         }
     }
 
@@ -260,16 +256,5 @@ public abstract class GameState {
 
     public int[] getScreenPixels() {
         return server.getScreenPixels();
-    }
-
-    private void checkCollision() {
-        for(int i = 0; i < updatables.size(); i++) {
-            for(int k = i + 1; k < updatables.size(); k++) {
-                if(updatables.get(i).collidesWith(updatables.get(k))) {
-                    updatables.get(i).runCollision(updatables.get(k));
-                    updatables.get(k).runCollision(updatables.get(i));
-                }
-            }
-        }
     }
 }

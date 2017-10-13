@@ -6,8 +6,10 @@ import java.awt.event.MouseWheelEvent;
 
 public class Mouse extends MouseAdapter {
 
-
-    public static boolean button1, button2, button3;
+    private static boolean button1, button2, button3;
+    public static boolean button1Held, button2Held, button3Held;
+    public static boolean button1Pressed, button2Pressed, button3Pressed;
+    public static boolean button1Released, button2Released, button3Released;
 
     public static int mouseX, mouseY;
 
@@ -20,6 +22,28 @@ public class Mouse extends MouseAdapter {
             throw new IllegalArgumentException("Screen scale must be greater than 0");
 
         this.screenScale = screenScale;
+    }
+
+    public void update() {
+
+        boolean button1Last, button2Last, button3Last;
+
+        button1Last = button1Held;
+        button2Last = button2Held;
+        button3Last = button3Held;
+
+        button1Held = button1;
+        button2Held = button2;
+        button3Held = button3;
+
+        button1Pressed = button1Held && !button1Last;
+        button2Pressed = button2Held && !button2Last;
+        button3Pressed = button3Held && !button3Last;
+
+        button1Released = !button1Held && button1Last;
+        button2Released = !button2Held && button2Last;
+        button3Released = !button3Held && button3Last;
+
     }
 
     @Override

@@ -21,12 +21,9 @@ public class Doorkey extends Mob {
     }
 
     @Override
-    public void runCollision(Updatable updatable) {
-        if(!(updatable instanceof Mob))
-            throw new IllegalArgumentException("updatable must be instance of Mob");
-
-        if(updatable instanceof Player) {
-            ((Player)updatable).inventory.add("doorkey");
+    public void runCollision(Mob mob) {
+        if(mob instanceof Player) {
+            ((Player)mob).inventory.add("doorkey");
             ((Area_1)gameState).setMobSpawn((int) x, (int) y, 0xff00ff);
             this.setRemoved(true);
         }

@@ -5,7 +5,7 @@ import input.MouseCursor;
 
 import java.awt.*;
 
-public class DemoCursor extends MouseCursor {
+public abstract class DemoCursor extends MouseCursor {
 
     public static final int CURSOR_UP = 0;
     public static final int CURSOR_DOWN = 1;
@@ -13,4 +13,6 @@ public class DemoCursor extends MouseCursor {
     public DemoCursor(@NotNull Point cursorHotSpot, @NotNull String name, @NotNull String... imagePaths) {
         super(cursorHotSpot, name, imagePaths);
     }
+
+
 }

@@ -113,6 +113,7 @@ public class Server extends Canvas implements Runnable {
 
     private void update() {
         keyboard.update();
+        mouse.update();
         gsm.peek().update();
     }
 

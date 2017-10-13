@@ -22,12 +22,10 @@ public class Potion extends Mob {
     }
 
     @Override
-    public void runCollision(Updatable updatable) {
-        if(!(updatable instanceof Mob))
-            throw  new IllegalArgumentException("updatable must be instance of Mob");
+    public void runCollision(Mob mob) {
 
-        if(updatable instanceof Player) {
-            ((Player)updatable).inventory.add("potion");
+        if(mob instanceof Player) {
+            ((Player)mob).inventory.add("potion");
             ((Area_1)gameState).setMobSpawn((int) x, (int) y, 0xff00ff);
             this.setRemoved(true);
         }

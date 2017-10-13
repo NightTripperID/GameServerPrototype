@@ -1,7 +1,6 @@
 package demo.mob.player;
 
 import com.sun.istack.internal.NotNull;
-import demo.mob.Mob;
 import demo.mob.MobState;
 import demo.mob.projectile.Axe;
 import entity.Entity;
@@ -15,40 +14,61 @@ abstract class PlayerState extends MobState {
 
     private static final int ATTACK_RATE = 1 * 30;
 
-    int count = ATTACK_RATE;
+    static int attackCount = ATTACK_RATE;
 
-    PlayerState(@NotNull Mob mob, @NotNull GameState gameState) {
+    private static int chargeStep;
+
+
+    PlayerState(@NotNull Player mob, @NotNull GameState gameState) {
         super(mob, gameState);
         keyboard = gameState.getKeyboard();
-    }
-
-    PlayerState(@NotNull Mob mob, @NotNull GameState gameState, int count) {
-        this(mob, gameState);
-        this.count = count;
     }
 
     @Override
     public void update() {
 
-        if(++count < ATTACK_RATE)
-            return;
-
-        count = 0;
-
-        if(Mouse.button1) {
-
-            int mouseX = Mouse.mouseX + (int) gameState.getScrollX();
-            int mouseY = Mouse.mouseY + (int) gameState.getScrollY();
-
-            double dx = mouseX - mob.x;
-            double dy = mouseY - mob.y;
-
-            double angle = Math.atan2(dy, dx);
-
-            Entity axe = new Axe(mob.x, mob.y, angle);
-            axe.initialize(gameState);
-            gameState.addEntity(axe);
+        if(Mouse.button3Held) {
+            System.out.println(chargeStep + ", " + chargeStep % 3);
+            if (chargeStep++ % 3 == 2) {
+                ((Player) mob).addCharge(3);
+                chargeStep = 0;
+            }
         }
+
+        if(Mouse.button3Released)
+            ((Player) mob).spendCharge();
+
+        if (++attackCount > ATTACK_RATE)
+            attackCount = ATTACK_RATE;
+
+        if(Mouse.button1Pressed) {
+            if(attackCount < ATTACK_RATE / 2)
+                return;
+            attackCount = 0;
+            throwAxe();
+        }
+
+        if(Mouse.button1Held) {
+            if (attackCount < ATTACK_RATE)
+                return;
+            attackCount = 0;
+            throwAxe();
+        }
+
+    }
+
+    private void throwAxe() {
+        int mouseX = Mouse.mouseX + (int) gameState.getScrollX();
+        int mouseY = Mouse.mouseY + (int) gameState.getScrollY();
+
+        double dx = mouseX - mob.x;
+        double dy = mouseY - mob.y;
+
+        double angle = Math.atan2(dy, dx);
+
+        Entity axe = new Axe(mob.x, mob.y, angle);
+        axe.initialize(gameState);
+        gameState.addEntity(axe);
     }
 
     @Override

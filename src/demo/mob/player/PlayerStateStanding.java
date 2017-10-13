@@ -13,17 +13,12 @@ class PlayerStateStanding extends PlayerState {
         mob.setySpeed(0);
     }
 
-    PlayerStateStanding(@NotNull Player player, @NotNull GameState gameState, int count) {
-        this(player, gameState);
-        this.count = count;
-    }
-
     @Override
     public void update() {
 
         super.update();
 
-        if(keyboard.upHeld || keyboard.downHeld || keyboard.leftHeld || keyboard.rightHeld || Mouse.button3)
-            mob.setCurrState(new PlayerStateMoving((Player) mob, gameState, count));
+        if(keyboard.upHeld || keyboard.downHeld || keyboard.leftHeld || keyboard.rightHeld || Mouse.button3Held)
+            mob.setCurrState(new PlayerStateMoving((Player) mob, gameState));
     }
 }

@@ -51,6 +51,17 @@ class Font8x8 {
             0 , 0 , 0 ,'#','#', 0 , 0 , 0
     };
 
+    private static final char[] PRCNT = {
+            0 , 0 ,'#', 0 , 0 , 0 , 0 ,'#',
+            0 ,'#', 0 ,'#', 0 , 0 ,'#', 0 ,
+            0 , 0 ,'#', 0 , 0 ,'#', 0 , 0 ,
+            0 , 0 , 0 , 0 ,'#', 0 , 0 , 0 ,
+            0 , 0 , 0 ,'#', 0 , 0 , 0 , 0 ,
+            0 , 0 ,'#', 0 , 0 ,'#', 0 , 0 ,
+            0 ,'#', 0 , 0 ,'#', 0 ,'#', 0 ,
+            '#', 0, 0 , 0 , 0 ,'#', 0 , 0
+    };
+
     private static final char[] QUESTN = {
             0 ,'#','#','#','#','#','#', 0 ,
             '#','#','#','#','#','#','#','#',
@@ -576,6 +587,8 @@ class Font8x8 {
                 return Font8x8.DASH;
             case '!':
                 return Font8x8.EXCLA;
+            case '%':
+                return Font8x8.PRCNT;
             case '?':
                 return Font8x8.QUESTN;
             case '<':

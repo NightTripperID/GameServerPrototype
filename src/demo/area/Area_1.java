@@ -18,7 +18,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-public abstract class Area_1 extends GameState {
+public abstract class Area_1 extends Area {
 
     private int[] mobSpawns;
 

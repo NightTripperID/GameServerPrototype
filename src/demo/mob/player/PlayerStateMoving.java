@@ -5,7 +5,6 @@ import demo.mob.Mob;
 import demo.spritesheets.SpriteSheets;
 import gamestate.GameState;
 import graphics.AnimSprite;
-import input.Mouse;
 
 class PlayerStateMoving extends PlayerState {
 
@@ -16,8 +15,8 @@ class PlayerStateMoving extends PlayerState {
     private final AnimSprite playerSpriteLeft = new AnimSprite(SpriteSheets.PLAYER_LEFT, 16, 16, 4);
     private final AnimSprite playerSpriteRight = new AnimSprite(SpriteSheets.PLAYER_RIGHT, 16, 16, 4);
 
-    PlayerStateMoving(@NotNull Player player, @NotNull GameState gameState, int count) {
-        super(player, gameState, count);
+    PlayerStateMoving(@NotNull Player player, @NotNull GameState gameState) {
+        super(player, gameState);
     }
 
     @Override
@@ -30,8 +29,11 @@ class PlayerStateMoving extends PlayerState {
         mob.setxSpeed(0);
         mob.setySpeed(0);
 
-        if (!moveWithMouse() && !moveWithKeyboard())
-            mob.setCurrState(new PlayerStateStanding((Player) mob, gameState, count));
+//        if (!moveWithMouse() && !moveWithKeyboard())
+//            mob.setCurrState(new PlayerStateStanding((Player) mob, gameState, attackCount));
+
+        if (!moveWithKeyboard())
+            mob.setCurrState(new PlayerStateStanding((Player) mob, gameState));
 
         mob.xa = mob.getxSpeed() * mob.getxDir();
         mob.ya = mob.getySpeed() * mob.getyDir();
@@ -39,28 +41,28 @@ class PlayerStateMoving extends PlayerState {
         commitMove(mob.xa, mob.ya);
     }
 
-    private boolean moveWithMouse() {
-
-        if (!Mouse.button3)
-            return false;
-
-        int mouseX = Mouse.mouseX + (int) gameState.getScrollX();
-        int mouseY = Mouse.mouseY + (int) gameState.getScrollY();
-
-        int xCenter = (int) mob.x + mob.getWidth() / 2;
-        int yCenter = (int) mob.y + mob.getHeight() / 2;
-
-        if (mouseY < yCenter - 1)
-            moveUp();
-        if (mouseY > yCenter + 1)
-            moveDown();
-        if (mouseX < xCenter - 1)
-            moveLeft();
-        if (mouseX > xCenter + 1)
-            moveRight();
-
-        return true;
-    }
+//    private boolean moveWithMouse() {
+//
+//        if (!Mouse.button3Held)
+//            return false;
+//
+//        int mouseX = Mouse.mouseX + (int) gameState.getScrollX();
+//        int mouseY = Mouse.mouseY + (int) gameState.getScrollY();
+//
+//        int xCenter = (int) mob.x + mob.getWidth() / 2;
+//        int yCenter = (int) mob.y + mob.getHeight() / 2;
+//
+//        if (mouseY < yCenter - 1)
+//            moveUp();
+//        if (mouseY > yCenter + 1)
+//            moveDown();
+//        if (mouseX < xCenter - 1)
+//            moveLeft();
+//        if (mouseX > xCenter + 1)
+//            moveRight();
+//
+//        return true;
+//    }
 
     private boolean moveWithKeyboard() {
 

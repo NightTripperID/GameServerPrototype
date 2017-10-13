@@ -60,9 +60,10 @@ public abstract class Mob extends Entity implements Updatable, Renderable, Seria
             currState.update();
         if(health <= 0) {
             setRemoved(true);
-            Entity explosion = new Explosion(x, y);
-            explosion.initialize(gameState);
+            Entity explosion = new Explosion(x, y); // needs switch statement to spawn explosion
+            explosion.initialize(gameState);        // of appropriate size (8x8, 16x16, etc)
             gameState.addEntity(explosion);
+
         }
     }
 
@@ -189,12 +190,7 @@ public abstract class Mob extends Entity implements Updatable, Renderable, Seria
         return removed;
     }
 
-    @Override
-    public boolean collidesWith(@NotNull Updatable updatable) {
-        if(!(updatable instanceof Mob))
-            throw new IllegalArgumentException("updatable must be an instance of Mob");
-
-        Mob mob = (Mob) updatable;
+    public boolean collidesWith(@NotNull Mob mob) {
 
         if(x + width > mob.x && x < mob.x + mob.getWidth())
             if(y + height > mob.y && y < mob.y + mob.getHeight())
@@ -227,14 +223,9 @@ public abstract class Mob extends Entity implements Updatable, Renderable, Seria
         return damage;
     }
 
-    @Override
-    public void runCollision(@NotNull Updatable updatable) {
-        if(!(updatable instanceof Mob))
-            throw new IllegalArgumentException("updatable must be an instance of Mob");
-
-        Mob target = (Mob) updatable;
-        if(friendly() != target.friendly())
-            if(target.vulnerable)
-                target.assignDamage(damage);
+    public void runCollision(@NotNull Mob mob) {
+        if(friendly() != mob.friendly())
+            if(mob.vulnerable)
+                mob.assignDamage(damage);
     }
 }

@@ -13,6 +13,7 @@ import gamestate.GameState;
 import gamestate.Intent;
 import graphics.AnimSprite;
 import graphics.Screen;
+import input.Mouse;
 
 public class Player extends Mob {
 
@@ -26,6 +27,12 @@ public class Player extends Mob {
 
     private AnimSprite heartSprite = new AnimSprite(SpriteSheets.HEART, 8, 8, 1);
     private AnimSprite doorkeySprite = new AnimSprite(SpriteSheets.DOORKEY, 8, 8, 1);
+    private AnimSprite potionSprite = new AnimSprite(SpriteSheets.POTION, 8, 8, 1);
+
+    private int charge;
+    private static final int MAX_CHARGE = 100;
+    private int[] chargeColors = {0xffff00, 0xffa500, 0xff0000, 0xff00ff};
+    private int chargeColor;
 
     public Player(int x, int y) {
         super(x, y, 1, 1, 16, 16, 3, 0, true, true);
@@ -37,10 +44,16 @@ public class Player extends Mob {
 
         currSprite = new AnimSprite(SpriteSheets.PLAYER_DOWN, 16, 16, 4);
         currState = new PlayerStateStanding(this, gameState);
+
+        if(!Mouse.button3Held)
+            charge = 0;
     }
 
     @Override
     public void update() {
+
+        chargeColor = chargeColors[charge / 33];
+
         currState.update();
 
         if(getHealth()<= 0) {
@@ -65,6 +78,11 @@ public class Player extends Mob {
 
     @Override
     public void render(@NotNull Screen screen) {
+        int screenW = gameState.getScreenWidth();
+        int doorkeyOfs = screenW - 40;
+        int numKeysOfs = screenW - 32;
+        int chargeOfs = screenW - 80 - 70 + 16;
+
         screen.renderSprite(x - gameState.getScrollX(), y - gameState.getScrollY(), currSprite.getSprite());
 
         screen.fillRect(0, 0, gameState.getScreenWidth(), 32, 0x000000);
@@ -73,15 +91,19 @@ public class Player extends Mob {
         for (int i = 0; i < getHealth(); i++)
             screen.renderSprite(16 + (i << 4), 12, heartSprite.getSprite());
 
-        screen.renderSprite(gameState.getScreenWidth() - 56, 12, doorkeySprite.getSprite());
-        screen.renderString8x8(gameState.getScreenWidth() - 48, 12, 0xffffff, "x" + numKeys);
+        for (int i = 0; i < numPotions; i++)
+            screen.renderSprite(chargeOfs - 16 - (i << 4), 12, potionSprite.getSprite());
+
+        screen.renderSprite(doorkeyOfs, 12, doorkeySprite.getSprite());
+        screen.renderString8x8(numKeysOfs, 12, 0xffffff, "x" + numKeys);
+
+        screen.renderString8x8(chargeOfs, 12, chargeColor, "charge %" + charge);
     }
 
     @Override
-    public void runCollision(@NotNull Updatable updatable) {
-        super.runCollision(updatable);
-        Mob that = (Mob) updatable;
-        if(this.friendly() != that.friendly())
+    public void runCollision(@NotNull Mob mob) {
+        super.runCollision(mob);
+        if(this.friendly() != mob.friendly())
             if(!(currState instanceof PlayerStateKnockback))
                 currState = new PlayerStateKnockback(this, gameState, (PlayerState) currState);
     }
@@ -93,5 +115,17 @@ public class Player extends Mob {
             graceCount = 0;
             super.assignDamage(damage);
         }
+    }
+
+    void addCharge(int charge) {
+        if(this.charge < MAX_CHARGE)
+            this.charge += charge;
+
+        if(this.charge > MAX_CHARGE)
+            this.charge = MAX_CHARGE;
+    }
+
+    public void spendCharge() {
+        charge = 0;
     }
 }
