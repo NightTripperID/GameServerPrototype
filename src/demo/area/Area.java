@@ -3,11 +3,21 @@ package demo.area;
 import demo.mob.Mob;
 import entity.Entity;
 import gamestate.GameState;
+import server.Server;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Area extends GameState {
+
+    private Mob player;
+
+    @Override
+    public void onCreate(Server server) {
+        super.onCreate(server);
+
+        player = (Mob) getIntent().getBundle().getSerializableExtra("player");
+    }
 
     @Override
     public void update() {
@@ -31,5 +41,9 @@ public abstract class Area extends GameState {
                 }
             }
         }
+    }
+
+    public Mob getPlayer() {
+        return player;
     }
 }

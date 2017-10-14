@@ -108,7 +108,7 @@ public class Screen {
         for (int yy = 0; yy < 8; yy++)
             for (int xx = 0; xx < 8; xx++)
                 if (character[xx + (yy << 3)] == '#')
-                    drawRect(x + xx, y + yy, 1, 1, col);
+                    renderPixel(x + xx, y + yy, col);
     }
 
     /**
@@ -124,8 +124,8 @@ public class Screen {
 
         for (int yy = 0; yy < 5; yy++)
             for (int xx = 0; xx < 5; xx++)
-                if (character[xx + (yy * 5)] == '#')
-                    drawRect(x + xx, y + yy, 1, 1, col);
+                if (character[xx + yy * 5] == '#')
+                    renderPixel(x + xx, y + yy, col);
     }
 
     /**
@@ -185,7 +185,7 @@ public class Screen {
         if(x < 0 || x >= width || y < 0 || y >= height)
             return;
 
-        pixels[(int)x * (int)y] = col;
+        pixels[(int)x + (int)y * width] = col;
     }
 
     /**

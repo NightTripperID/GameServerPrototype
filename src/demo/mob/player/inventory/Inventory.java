@@ -13,11 +13,19 @@ public class Inventory {
         inventory.add(item);
     }
 
-    public void remove(@NotNull String itemName) {
+    public boolean contains(@NotNull String item) {
+        if(inventory.contains(item))
+            return true;
+        return false;
+    }
+
+    public boolean remove(@NotNull String itemName) {
         if(inventory.contains(itemName)) {
             int index = inventory.indexOf(itemName);
-            inventory.remove(index);
+            System.out.println(inventory.remove(index));
+            return true;
         }
+        return false;
     }
 
     public int getCount(@NotNull String item) {

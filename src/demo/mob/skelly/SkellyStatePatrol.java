@@ -29,37 +29,37 @@ public class SkellyStatePatrol extends MobState {
 
     @Override
     public void update() {
-        mob.getCurrSprite().update();
-
-        if(count++ == 60 * 2) {
-            count = 0;
-
-            final int moveSpeed = 1;
-
-            if(mob.getxSpeed() == moveSpeed || mob.getySpeed() == moveSpeed) {
-                mob.setxSpeed(0);
-                mob.setySpeed(0);
-            } else {
-                mob.setxSpeed(random.nextInt() > 0 ? moveSpeed : 0);
-                mob.setySpeed(random.nextInt() > 0 ? moveSpeed : 0);
-
-                mob.setxDir(random.nextInt() > 0 ? 1 : -1);
-                mob.setyDir(random.nextInt() > 0 ? 1 : -1);
-            }
-        }
-
-        mob.xa = mob.getxSpeed() * mob.getxDir();
-        mob.ya = mob.getySpeed() * mob.getyDir();
-
-        if(mob.ya < 0)
-            mob.setCurrSprite(skellyUp);
-        if(mob.ya > 0)
-            mob.setCurrSprite(skellyDown);
-        if(mob.xa < 0)
-            mob.setCurrSprite(skellyLeft);
-        if(mob.xa > 0)
-            mob.setCurrSprite(skellyRight);
-
-        commitMove(mob.xa, mob.ya);
+//        mob.getCurrSprite().update();
+//
+//        if(count++ == 60 * 2) {
+//            count = 0;
+//
+//            final int moveSpeed = 1;
+//
+//            if(mob.getxSpeed() == moveSpeed || mob.getySpeed() == moveSpeed) {
+//                mob.setxSpeed(0);
+//                mob.setySpeed(0);
+//            } else {
+//                mob.setxSpeed(random.nextInt() > 0 ? moveSpeed : 0);
+//                mob.setySpeed(random.nextInt() > 0 ? moveSpeed : 0);
+//
+//                mob.setxDir(random.nextInt() > 0 ? 1 : -1);
+//                mob.setyDir(random.nextInt() > 0 ? 1 : -1);
+//            }
+//        }
+//
+//        mob.xa = mob.getxSpeed() * mob.getxDir();
+//        mob.ya = mob.getySpeed() * mob.getyDir();
+//
+//        if(mob.ya < 0)
+//            mob.setCurrSprite(skellyUp);
+//        if(mob.ya > 0)
+//            mob.setCurrSprite(skellyDown);
+//        if(mob.xa < 0)
+//            mob.setCurrSprite(skellyLeft);
+//        if(mob.xa > 0)
+//            mob.setCurrSprite(skellyRight);
+//
+//        commitMove(mob.xa, mob.ya);
     }
 }

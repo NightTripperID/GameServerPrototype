@@ -212,7 +212,15 @@ public abstract class Mob extends Entity implements Updatable, Renderable, Seria
     }
 
     public void assignDamage(int damage) {
+        if(damage < 0)
+            throw new IllegalArgumentException("damage must be > 0");
         health -= damage;
+    }
+
+    public void addHealth(int health) {
+        if(health < 0)
+            throw new IllegalArgumentException("added health must be > 0");
+        this.health += health;
     }
 
     public int getHealth() {
@@ -227,5 +235,18 @@ public abstract class Mob extends Entity implements Updatable, Renderable, Seria
         if(friendly() != mob.friendly())
             if(mob.vulnerable)
                 mob.assignDamage(damage);
+    }
+
+    protected void commitMove(double xa, double ya) {
+        if (xa != 0 && ya != 0) {
+            commitMove(xa, 0);
+            commitMove(0, ya);
+            return;
+        }
+
+        if (!tileCollision((int) xa, (int) ya)) {
+            x += xa;
+            y += ya;
+        }
     }
 }

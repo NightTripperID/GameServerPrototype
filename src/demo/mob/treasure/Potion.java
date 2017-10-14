@@ -25,9 +25,12 @@ public class Potion extends Mob {
     public void runCollision(Mob mob) {
 
         if(mob instanceof Player) {
-            ((Player)mob).inventory.add("potion");
-            ((Area_1)gameState).setMobSpawn((int) x, (int) y, 0xff00ff);
-            this.setRemoved(true);
+            Player player = (Player) mob;
+            if(player.inventory.getCount("potion") < Player.MAX_POTIONS) {
+                player.inventory.add("potion");
+                ((Area_1) gameState).setMobSpawn((int) x, (int) y, 0xff00ff);
+                this.setRemoved(true);
+            }
         }
     }
 }

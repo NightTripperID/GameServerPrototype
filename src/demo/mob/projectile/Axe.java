@@ -1,6 +1,7 @@
 package demo.mob.projectile;
 
 import com.sun.istack.internal.NotNull;
+import demo.mob.Mob;
 import demo.spritesheets.SpriteSheets;
 import gamestate.GameState;
 import graphics.AnimSprite;
@@ -10,7 +11,7 @@ import graphics.Sprite;
 public class Axe extends Projectile {
 
     public Axe(double x, double y, double angle) {
-        super(x, y, 16, 16, 1, 1, true, true, angle);
+        super(x, y, 16, 16, 1, 1, true, false, angle);
 
         currSprite = new AnimSprite(SpriteSheets.ARROW, 16, 16, 1);
 
@@ -45,5 +46,14 @@ public class Axe extends Projectile {
     public void render(@NotNull Screen screen) {
         screen.renderSprite(x - gameState.getScrollX(), y - gameState.getScrollY(),
                 Sprite.rotate(currSprite.getSprite(), angle));
+    }
+
+    @Override
+    public void runCollision(Mob mob) {
+        if(friendly() != mob.friendly())
+            if(mob.vulnerable()) {
+                mob.assignDamage(getDamage());
+                this.setRemoved(true);
+            }
     }
 }

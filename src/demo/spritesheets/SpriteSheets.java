@@ -29,6 +29,9 @@ public class SpriteSheets {
     public static final SpriteSheet POTION = new SpriteSheet(MAIN_SHEET, 6, 1, 1, 1, 8, 8);
     public static final SpriteSheet DOORKEY = new SpriteSheet(MAIN_SHEET, 7, 0, 1, 1, 8, 8);
 
+//    public static final SpriteSheet MAGIC_1 = new SpriteSheet(MAIN_SHEET, 12, 0, 1, 4, 8, 8);
+    public static final SpriteSheet MAGIC_1 = new SpriteSheet(MAIN_SHEET, 6, 2, 1, 4, 16, 16);
+
     public static final SpriteSheet WATER = new SpriteSheet(MAIN_SHEET, 9, 0, 1, 2, 16, 16);
 
     private SpriteSheets(){

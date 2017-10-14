@@ -45,12 +45,12 @@ public abstract class Area_1 extends Area {
                         addEntity(doorkey);
                         break;
                     case 0xff00ff00:
-                        Entity slime = new Slime(x * DemoTile.SIZE, y * DemoTile.SIZE);
+                        Entity slime = new Slime(x * DemoTile.SIZE, y * DemoTile.SIZE, getPlayer());
                         slime.initialize(this);
                         addEntity(slime);
                         break;
                     case 0xff0000ff:
-                        Entity skelly = new Skelly(x * DemoTile.SIZE, y * DemoTile.SIZE);
+                        Entity skelly = new Skelly(x * DemoTile.SIZE, y * DemoTile.SIZE, getPlayer());
                         skelly.initialize(this);
                         addEntity(skelly);
                         break;
