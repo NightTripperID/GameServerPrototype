@@ -14,13 +14,10 @@ public class Tile {
 
     private boolean trigger;
 
-    public Tile(@NotNull Sprite sprite, boolean solid) {
-        this.sprite = sprite;
-        this.solid = solid;
-    }
 
     public Tile(@NotNull Sprite sprite, boolean solid, boolean trigger) {
-        this(sprite, solid);
+        this.sprite = sprite;
+        this.solid = solid;
         this.trigger = trigger;
     }
 
@@ -32,11 +29,11 @@ public class Tile {
         return sprite;
     }
 
-    public boolean isSolid() {
+    public boolean solid() {
         return solid;
     }
 
-    public boolean hasTrigger() {
+    public boolean trigger() {
         return trigger;
     }
 

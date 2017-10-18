@@ -16,7 +16,6 @@ public class Keyboard implements KeyListener {
     public boolean upPressed, downPressed, leftPressed, rightPressed, enterPressed, spacePressed, escPressed, cPressed;
     public boolean upReleased, downReleased, leftReleased, rightReleased, enterReleased, spaceReleased, escReleased, cReleased;
 
-
     public void update() {
 
         boolean upLast, downLast, leftLast, rightLast, enterLast, spaceLast, escLast, cLast;

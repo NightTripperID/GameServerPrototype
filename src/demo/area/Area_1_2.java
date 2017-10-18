@@ -31,9 +31,12 @@ public class Area_1_2 extends Area_1 {
             loadMobs("/home/jeep/IdeaProjects/LittleEngine/res/cached/spawnmap_1-2.png");
         }
 
-        Bundle inBundle = getIntent().getBundle();
+        Bundle inBundle = (Bundle) getIntent().getSerializableExtra("bundle");
 
         Player player = (Player) inBundle.getSerializableExtra("player");
+        TileCoord tileCoord = (TileCoord) inBundle.getSerializableExtra("tileCoord");
+        player.x = tileCoord.getX();
+        player.y = tileCoord.getY();
         player.initialize(this);
         addEntity(player);
 
@@ -45,14 +48,11 @@ public class Area_1_2 extends Area_1 {
             intent.putExtra("nextGameState", Area_1_1.class);
             intent.putExtra("pixels", getScreenPixels());
 
-            TileCoord tileCoord = new TileCoord(11, 12, 16);
-            player.x = tileCoord.getX();
-            player.y = tileCoord.getY();
+            Bundle bundle = new Bundle();
+            bundle.putExtra("tileCoord", new TileCoord(11, 12, 16));
+            bundle.putExtra("player", player);
 
-            Bundle outBundle = new Bundle();
-            outBundle.putExtra("player", player);
-
-            intent.setBundle(outBundle);
+            intent.putExtra("bundle", bundle);
             swapGameState(intent);
         });
 
@@ -61,14 +61,11 @@ public class Area_1_2 extends Area_1 {
             intent.putExtra("nextGameState", Area_1_1.class);
             intent.putExtra("pixels", getScreenPixels());
 
-            TileCoord tileCoord = new TileCoord(14, 15, DemoTile.SIZE);
-            player.x = tileCoord.getX();
-            player.y = tileCoord.getY();
+            Bundle bundle = new Bundle();
+            bundle.putExtra("tileCoord", new TileCoord(14, 15, DemoTile.SIZE));
+            bundle.putExtra("player", player);
 
-            Bundle outBundle = new Bundle();
-            outBundle.putExtra("player", player);
-
-            intent.setBundle(outBundle);
+            intent.putExtra("bundle", bundle);
             swapGameState(intent);
         });
 
@@ -77,14 +74,11 @@ public class Area_1_2 extends Area_1 {
             intent.putExtra("nextGameState", Area_1_1.class);
             intent.putExtra("pixels", getScreenPixels());
 
-            TileCoord tileCoord = new TileCoord(17, 12, DemoTile.SIZE);
-            player.x = tileCoord.getX();
-            player.y = tileCoord.getY();
+            Bundle bundle = new Bundle();
+            bundle.putExtra("tileCoord", new TileCoord(17, 12, DemoTile.SIZE));
+            bundle.putExtra("player", player);
 
-            Bundle outBundle = new Bundle();
-            outBundle.putExtra("player", player);
-
-            intent.setBundle(outBundle);
+            intent.putExtra("bundle", bundle);
             swapGameState(intent);
         });
 
@@ -93,14 +87,11 @@ public class Area_1_2 extends Area_1 {
             intent.putExtra("nextGameState", Area_1_3.class);
             intent.putExtra("pixels", getScreenPixels());
 
-            TileCoord tileCoord = new TileCoord(18, 31, DemoTile.SIZE);
-            player.x = tileCoord.getX();
-            player.y = tileCoord.getY();
+            Bundle bundle = new Bundle();
+            bundle.putExtra("tileCoord", new TileCoord(18, 31, DemoTile.SIZE));
+            bundle.putExtra("player", player);
 
-            Bundle outBundle = new Bundle();
-            outBundle.putExtra("player", player);
-
-            intent.setBundle(outBundle);
+            intent.putExtra("bundle", bundle);
             swapGameState(intent);
         });
 
@@ -117,14 +108,11 @@ public class Area_1_2 extends Area_1 {
             intent.putExtra("nextGameState", Area_1_4.class);
             intent.putExtra("pixels", getScreenPixels());
 
-            TileCoord tileCoord = new TileCoord(17, 8, 16);
-            player.x = tileCoord.getX();
-            player.y = tileCoord.getY();
+            Bundle bundle = new Bundle();
+            bundle.putExtra("tileCoord", new TileCoord(17, 8, 16));
+            bundle.putExtra("player", player);
 
-            Bundle outBundle = new Bundle();
-            outBundle.putExtra("player", player);
-
-            intent.setBundle(outBundle);
+            intent.putExtra("bundle", bundle);
             swapGameState(intent);
         });
     }
@@ -135,6 +123,6 @@ public class Area_1_2 extends Area_1 {
 
         pixelsToPNG(getMapTiles(), "/home/jeep/IdeaProjects/LittleEngine/res/cached/map_1-2.png");
         pixelsToPNG(getTriggerTiles(), "/home/jeep/IdeaProjects/LittleEngine/res/cached/triggermap_1-2.png");
-        pixelsToPNG(getMobSpawns(), "/home/jeep/IdeaProjects/LittleEngine/res/cached/spawnmap_1-2.png");
+        pixelsToPNG(getMobTiles(), "/home/jeep/IdeaProjects/LittleEngine/res/cached/spawnmap_1-2.png");
     }
 }

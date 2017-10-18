@@ -29,9 +29,6 @@ class PlayerStateMoving extends PlayerState {
         mob.setxSpeed(0);
         mob.setySpeed(0);
 
-//        if (!moveWithMouse() && !moveWithKeyboard())
-//            mob.setCurrState(new PlayerStateStanding((Player) mob, gameState, attackCount));
-
         if (!moveWithKeyboard())
             mob.setCurrState(new PlayerStateStanding((Player) mob, gameState));
 
@@ -40,29 +37,6 @@ class PlayerStateMoving extends PlayerState {
 
         commitMove(mob.xa, mob.ya);
     }
-
-//    private boolean moveWithMouse() {
-//
-//        if (!Mouse.button3Held)
-//            return false;
-//
-//        int mouseX = Mouse.mouseX + (int) gameState.getScrollX();
-//        int mouseY = Mouse.mouseY + (int) gameState.getScrollY();
-//
-//        int xCenter = (int) mob.x + mob.getWidth() / 2;
-//        int yCenter = (int) mob.y + mob.getHeight() / 2;
-//
-//        if (mouseY < yCenter - 1)
-//            moveUp();
-//        if (mouseY > yCenter + 1)
-//            moveDown();
-//        if (mouseX < xCenter - 1)
-//            moveLeft();
-//        if (mouseX > xCenter + 1)
-//            moveRight();
-//
-//        return true;
-//    }
 
     private boolean moveWithKeyboard() {
 

@@ -9,6 +9,7 @@ import graphics.AnimSprite;
 
 import java.awt.*;
 import java.io.Serializable;
+import java.util.Random;
 
 public abstract class Mob extends Entity implements Updatable, Renderable, Serializable {
 
@@ -24,6 +25,9 @@ public abstract class Mob extends Entity implements Updatable, Renderable, Seria
 
     private boolean removed;
 
+    protected Random random = new Random();
+
+    private int col; // color coding
     public double x, y;
     public double xa, ya;
     private double xSpeed, ySpeed;
@@ -32,9 +36,10 @@ public abstract class Mob extends Entity implements Updatable, Renderable, Seria
     private int health, damage;
     private boolean friendly, vulnerable;
 
-
-    public Mob(double x, double y, int xDir, int yDir, int width, int height,
+    public Mob(int col, double x, double y, int xDir, int yDir, int width, int height,
                int health, int damage, boolean friendly, boolean vulnerable) {
+
+        this.col = col;
 
         this.x = x;
         this.y = y;
@@ -56,21 +61,21 @@ public abstract class Mob extends Entity implements Updatable, Renderable, Seria
 
     @Override
     public void update() {
+
         if(currState != null)
             currState.update();
         if(health <= 0) {
             setRemoved(true);
-            Entity explosion = new Explosion(x, y); // needs switch statement to spawn explosion
-            explosion.initialize(gameState);        // of appropriate size (8x8, 16x16, etc)
+            Entity explosion = new Explosion(0xff00ff, x, y); // TODO: needs switch statement to spawn explosion
+            explosion.initialize(gameState);        // TODO: of appropriate size (8x8, 16x16, etc)
             gameState.addEntity(explosion);
-
         }
     }
 
     public boolean tileCollision(int xa, int ya) {
         for (int corner = 0; corner < 4; corner++) {
             Point p = getTileCorner(xa, ya, corner);
-            if (gameState.getMapTileObject(p.x, p.y).isSolid())
+            if (gameState.getMapTileObject(p.x, p.y).solid())
                 return true;
         }
         return false;
@@ -79,7 +84,7 @@ public abstract class Mob extends Entity implements Updatable, Renderable, Seria
     public boolean triggerCollision(int xa, int ya) {
         for (int corner = 0; corner < 4; corner++) {
             Point p = getTileCorner(xa, ya, corner);
-            if (gameState.getMapTileObject(p.x, p.y).hasTrigger())
+            if (gameState.getMapTileObject(p.x, p.y).trigger())
                 return true;
         }
         return false;
@@ -88,7 +93,7 @@ public abstract class Mob extends Entity implements Updatable, Renderable, Seria
     public Runnable getTileTrigger(int xa, int ya) {
         for (int corner = 0; corner < 4; corner++) {
             Point p = getTileCorner(xa, ya, corner);
-            if (gameState.getMapTileObject(p.x, p.y).hasTrigger())
+            if (gameState.getMapTileObject(p.x, p.y).trigger())
                 return gameState.getTrigger(p.x, p.y);
         }
         return null;
@@ -191,9 +196,8 @@ public abstract class Mob extends Entity implements Updatable, Renderable, Seria
     }
 
     public boolean collidesWith(@NotNull Mob mob) {
-
-        if(x + width > mob.x && x < mob.x + mob.getWidth())
-            if(y + height > mob.y && y < mob.y + mob.getHeight())
+        if(x + xa + width > mob.x + mob.xa && x + xa < mob.x + mob.xa + mob.getWidth())
+            if(y + ya + height > mob.y + mob.ya && y + ya < mob.y + mob.ya + mob.getHeight())
                 return true;
 
         return false;
@@ -248,5 +252,9 @@ public abstract class Mob extends Entity implements Updatable, Renderable, Seria
             x += xa;
             y += ya;
         }
+    }
+
+    public int getCol() {
+        return col;
     }
 }

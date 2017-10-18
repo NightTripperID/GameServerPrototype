@@ -1,6 +1,10 @@
 package demo.tile;
 
-public class TileCoord {
+import java.io.Serializable;
+
+public class TileCoord implements Serializable {
+
+    public static final long serialVersionUID = 201710151331L;
 
     private int x, y;
 

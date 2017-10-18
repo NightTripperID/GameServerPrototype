@@ -5,15 +5,15 @@ import demo.spritesheets.SpriteSheets;
 import graphics.AnimSprite;
 import graphics.Screen;
 
-public class Magic_1 extends Mob {
+public class Fireball extends Mob {
 
     private int pointCount;
     private static final int MAX_POINT_COUNT = 200;
 
     private Mob player;
 
-    public Magic_1(double x, double y, Mob player) {
-        super(x, y, 1, 1, 16, 16, 1, 1, true, false);
+    public Fireball(double x, double y, Mob player) {
+        super(0xff00ff, x, y, 1, 1, 16, 16, 1, 1, true, false);
         this.player = player;
         currSprite = new AnimSprite(SpriteSheets.MAGIC_1, getWidth(), getHeight(), 4);
     }

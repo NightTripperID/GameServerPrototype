@@ -10,7 +10,9 @@ import java.util.stream.DoubleStream;
 import java.util.stream.IntStream;
 import java.util.stream.LongStream;
 
-public class Bundle {
+public class Bundle implements Serializable {
+
+    public static final long serialVersionUID = 201710161356L;
 
     private Map<String, Byte> byteExtras;
     private Map<String, Character> characterExtras;

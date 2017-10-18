@@ -1,25 +1,24 @@
 package demo.mob.skelly;
 
 import demo.mob.Mob;
+import demo.mob.player.Player;
 import demo.spritesheets.SpriteSheets;
 import graphics.AnimSprite;
 import graphics.Screen;
 
-import java.util.Random;
-
 public class Skelly extends Mob {
 
-    private Mob player;
+    private Player player;
 
     private AnimSprite skellyUp = new AnimSprite(SpriteSheets.SKELLY_UP, 16, 16, 4);
     private AnimSprite skellyDown = new AnimSprite(SpriteSheets.SKELLY_DOWN, 16, 16, 4);
     private AnimSprite skellyLeft = new AnimSprite(SpriteSheets.SKELLY_LEFT, 16, 16,4);
     private AnimSprite skellyRight = new AnimSprite(SpriteSheets.SKELLY_RIGHT, 16, 16,4);
 
-    private Random random = new Random();
+    private int count;
 
-    public Skelly(double x, double y, Mob player) {
-        super(x, y, 1, 1, 16, 16, 3, 1, false, true);
+    public Skelly(int col, double x, double y, Player player) {
+        super(col, x, y, 1, 1, 16, 16, 3, 1, false, true);
         final int frameRate = 10;
         skellyUp.setFrameRate(frameRate);
         skellyDown.setFrameRate(frameRate);
@@ -34,8 +33,18 @@ public class Skelly extends Mob {
         super.update();
         currSprite.update();
 
-        final int moveSpeed = 1;
+        if(count++ % 2 == 1) {
+            move();
+            count = 0;
+        }
+    }
 
+    @Override
+    public void render(Screen screen) {
+        screen.renderSprite(x - gameState.getScrollX(), y - gameState.getScrollY(), currSprite.getSprite());
+    }
+
+    private void move() {
         if (x == player.x)
             setxSpeed(0);
         else
@@ -69,10 +78,5 @@ public class Skelly extends Mob {
             setCurrSprite(skellyRight);
 
         commitMove(xa, ya);
-    }
-
-    @Override
-    public void render(Screen screen) {
-        screen.renderSprite(x - gameState.getScrollX(), y - gameState.getScrollY(), currSprite.getSprite());
     }
 }

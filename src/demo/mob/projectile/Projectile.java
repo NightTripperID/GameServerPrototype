@@ -9,9 +9,9 @@ public abstract class Projectile extends Mob {
 
     double angle;
 
-    Projectile(double x, double y, int width, int height, int damage, int health,
+    Projectile(int col, double x, double y, int width, int height, int damage, int health,
                boolean friendly, boolean vulnerable, double angle) {
-        super(x, y, 1, 1, width, height, health, damage, friendly, vulnerable);
+        super(col, x, y, 1, 1, width, height, health, damage, friendly, vulnerable);
         this.angle = angle;
     }
 

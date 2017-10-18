@@ -11,7 +11,7 @@ import graphics.Sprite;
 public class Axe extends Projectile {
 
     public Axe(double x, double y, double angle) {
-        super(x, y, 16, 16, 1, 1, true, false, angle);
+        super(0xff00ff, x, y, 16, 16, 1, 1, true, false, angle);
 
         currSprite = new AnimSprite(SpriteSheets.ARROW, 16, 16, 1);
 

@@ -4,14 +4,13 @@ import demo.area.Area_1;
 import demo.mob.Mob;
 import demo.mob.player.Player;
 import demo.spritesheets.SpriteSheets;
-import entity.Updatable;
 import graphics.AnimSprite;
 import graphics.Screen;
 
 public class Doorkey extends Mob {
 
-    public Doorkey(double x, double y) {
-        super(x, y, 1, 1, 8, 8, 1, 0, true, false);
+    public Doorkey(int col, double x, double y) {
+        super(col, x, y, 1, 1, 8, 8, 1, 0, true, false);
         currSprite = new AnimSprite(SpriteSheets.DOORKEY, getWidth(), getHeight(), 1);
     }
 

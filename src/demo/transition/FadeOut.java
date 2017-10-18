@@ -49,19 +49,13 @@ public class FadeOut extends GameState {
         }
 
         if(count == pixels.length) {
-
             Class<? extends GameState> nextGameState =
                     (Class<? extends GameState>) getIntent().getSerializableExtra("nextGameState");
-
-            Bundle bundle = getIntent().getBundle();
-
+            Bundle bundle = (Bundle) getIntent().getSerializableExtra("bundle");
             Intent intent = new Intent(nextGameState);
-
-            intent.setBundle(bundle);
-
+            intent.putExtra("bundle", bundle);
             swapGameState(intent);
         }
-
     }
 
     @Override

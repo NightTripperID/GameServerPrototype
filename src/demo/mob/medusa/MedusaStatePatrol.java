@@ -2,25 +2,23 @@ package demo.mob.medusa;
 
 import demo.mob.Mob;
 import demo.mob.MobState;
+import demo.mob.player.Player;
 import demo.spritesheets.SpriteSheets;
+import demo.tile.DemoTile;
 import gamestate.GameState;
 import graphics.AnimSprite;
 
+import java.awt.*;
 import java.util.Random;
 
-public class MedusaStatePatrol extends MobState {
+public class MedusaStatePatrol extends MedusaState {
 
     private int count;
-    private Random random = new Random();
 
-    private AnimSprite medusaUp = new AnimSprite(SpriteSheets.MEDUSA_UP, 16, 16, 2);
-    private AnimSprite medusaDown = new AnimSprite(SpriteSheets.MEDUSA_DOWN, 16, 16,2);
-
-    MedusaStatePatrol(Mob mob, GameState gameState) {
-        super(mob, gameState);
-
-        medusaUp.setFrameRate(20);
-        medusaDown.setFrameRate(20);
+    MedusaStatePatrol(Mob mob, GameState gameState, Player player) {
+        super(mob, gameState, player);
+        mob.setxSpeed(0);
+        mob.setySpeed(0);
     }
 
     @Override
@@ -41,6 +39,10 @@ public class MedusaStatePatrol extends MobState {
                 mob.setyDir(random.nextInt() > 0 ? 1 : -1);
             }
         }
+
+        if(mob.x > player.x && mob.x < player.x + player.getWidth() ||
+                mob.y > player.y && mob.y < player.y + player.getHeight())
+            mob.setCurrState(new MedusaStateCharge(mob, gameState, player));
 
         mob.xa = mob.getxSpeed() * mob.getxDir();
         mob.ya = mob.getySpeed() * mob.getyDir();

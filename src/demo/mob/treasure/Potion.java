@@ -4,14 +4,13 @@ import demo.area.Area_1;
 import demo.mob.Mob;
 import demo.mob.player.Player;
 import demo.spritesheets.SpriteSheets;
-import entity.Updatable;
 import graphics.AnimSprite;
 import graphics.Screen;
 
 public class Potion extends Mob {
 
-    public Potion(double x, double y) {
-        super(x, y, 1, 1, 8, 8, 2, 0, true, false);
+    public Potion(int col, double x, double y) {
+        super(col, x, y, 1, 1, 8, 8, 2, 0, true, false);
 
         currSprite = new AnimSprite(SpriteSheets.POTION, getWidth(), getHeight(), 1);
     }

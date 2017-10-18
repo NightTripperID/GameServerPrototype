@@ -2,7 +2,7 @@ package demo.mob.player;
 
 import com.sun.istack.internal.NotNull;
 import demo.mob.MobState;
-import demo.mob.magic.Magic_1;
+import demo.mob.magic.Fireball;
 import demo.mob.projectile.Axe;
 import entity.Entity;
 import gamestate.GameState;
@@ -134,7 +134,7 @@ abstract class PlayerState extends MobState {
     }
 
     private void spawnFireball(double x, double y) {
-        Entity fireball = new Magic_1(x, y, mob);
+        Entity fireball = new Fireball(x, y, mob);
         fireball.initialize(gameState);
         gameState.addEntity(fireball);
     }
@@ -159,5 +159,10 @@ abstract class PlayerState extends MobState {
             mob.xa = 0;
             mob.ya = 0;
         }
+    }
+
+    @Override
+    public String toString() {
+        return getClass().getSimpleName();
     }
 }

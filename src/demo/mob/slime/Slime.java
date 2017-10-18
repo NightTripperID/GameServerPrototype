@@ -8,13 +8,14 @@ import graphics.Screen;
 public class Slime extends Mob {
 
     private int count;
+    private int skip = random.nextInt(3) + 1;
 
     private Mob player;
 
-    public Slime(double x, double y, Mob player) {
-        super(x, y, 1, 1, 16, 16, 2, 1, false, true);
+    public Slime(int col, double x, double y, Mob player) {
+        super(col, x, y, 1, 1, 16, 16, 2, 1, false, true);
         currSprite = new AnimSprite(SpriteSheets.SLIME, 16, 16, 4);
-        currSprite.setFrameRate(13);
+        currSprite.setFrameRate(random.nextInt(5) + 13);
         this.player = player;
     }
 
@@ -23,7 +24,7 @@ public class Slime extends Mob {
         super.update();
         currSprite.update();
 
-        if (count++ % 2 == 1) {
+        if (count++ / skip == 1) {
             count = 0;
             move();
         }

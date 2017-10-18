@@ -27,14 +27,12 @@ public abstract class GameState {
 
     private int mapWidth, mapHeight; // tile precision
 
-    private int tileSize, tileBitShift;
+    protected int tileSize, tileBitShift;
 
     private int[] mapTiles;
     private int[] triggerTiles;
 
     private Map<Integer, Runnable> triggers = new HashMap<>();
-
-    private Random random = new Random();
 
     public void onCreate(@NotNull Server server) {
         this.server = server;
@@ -209,7 +207,7 @@ public abstract class GameState {
         mapTiles[x + y * mapWidth] = col;
     }
 
-    protected int[] getMapTiles() {
+    public int[] getMapTiles() {
         return mapTiles;
     }
 
@@ -246,11 +244,11 @@ public abstract class GameState {
         return server.getScreenScale();
     }
 
-    protected int getMapWidth() {
+    public int getMapWidth() {
         return mapWidth;
     }
 
-    protected int getMapHeight() {
+    public int getMapHeight() {
         return mapHeight;
     }
 

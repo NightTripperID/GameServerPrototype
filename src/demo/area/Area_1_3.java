@@ -31,9 +31,12 @@ public class Area_1_3 extends Area_1 {
             loadMobs("/home/jeep/IdeaProjects/LittleEngine/res/cached/spawnmap_1-3.png");
         }
 
-        Bundle inBundle = getIntent().getBundle();
+        Bundle inBundle = (Bundle) getIntent().getSerializableExtra("bundle");
 
         Mob player = (Player) inBundle.getSerializableExtra("player");
+        TileCoord tileCoord = (TileCoord) inBundle.getSerializableExtra("tileCoord");
+        player.x = tileCoord.getX();
+        player.y = tileCoord.getY();
         player.initialize(this);
         addEntity(player);
 
@@ -45,14 +48,12 @@ public class Area_1_3 extends Area_1 {
             intent.putExtra("nextGameState", Area_1_2.class);
             intent.putExtra("pixels", getScreenPixels());
 
-            TileCoord tileCoord = new TileCoord(18, 18, DemoTile.SIZE);
-            player.x = tileCoord.getX();
-            player.y = tileCoord.getY();
 
-            Bundle outBundle = new Bundle();
-            outBundle.putExtra("player", player);
+            Bundle bundle = new Bundle();
+            bundle.putExtra("tileCoord", new TileCoord(18, 18, DemoTile.SIZE));
+            bundle.putExtra("player", player);
 
-            intent.setBundle(outBundle);
+            intent.putExtra("bundle", bundle);
             swapGameState(intent);
         });
     }
@@ -63,6 +64,6 @@ public class Area_1_3 extends Area_1 {
 
         pixelsToPNG(getMapTiles(), "/home/jeep/IdeaProjects/LittleEngine/res/cached/map_1-3.png");
         pixelsToPNG(getTriggerTiles(), "/home/jeep/IdeaProjects/LittleEngine/res/cached/triggermap_1-3.png");
-        pixelsToPNG(getMobSpawns(), "/home/jeep/IdeaProjects/LittleEngine/res/cached/spawnmap_1-3.png");
+        pixelsToPNG(getMobTiles(), "/home/jeep/IdeaProjects/LittleEngine/res/cached/spawnmap_1-3.png");
     }
 }

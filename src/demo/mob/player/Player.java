@@ -17,8 +17,8 @@ public class Player extends Mob {
 
     public final Inventory inventory = new Inventory();
 
-    private int graceCount;
     private static final int MAX_GRACE_COUNT = 1 * 90;
+    private int graceCount = MAX_GRACE_COUNT;
 
     private int numKeys = 0;
     private int numPotions = 0;
@@ -30,29 +30,29 @@ public class Player extends Mob {
     public static final int MAX_HEALTH = 6;
     public static final int MAX_POTIONS = 4;
 
+    private boolean visible = true;
+
     public Player(int x, int y) {
-        super(x, y, 1, 1, 16, 16, 3, 0, true, true);
+        super(0x00ffff, x, y, 1, 1, 16, 16, 3, 0, true, true);
     }
 
     @Override
     public void initialize(@NotNull GameState gameState) {
         super.initialize(gameState);
-
         currSprite = new AnimSprite(SpriteSheets.PLAYER_DOWN, 16, 16, 4);
         currState = new PlayerStateStanding(this, gameState);
     }
 
     @Override
     public void update() {
-
         currState.update();
 
         if(getHealth()<= 0) {
             Bundle bundle = new Bundle();
-            TileCoord coord = new TileCoord(14, 17, 16);
-            bundle.putExtra("player", new Player(coord.getX(), coord.getY()));
+            bundle.putExtra("player", new Player(0, 0));
+            bundle.putExtra("tileCoord", new TileCoord(14, 17, 16));
             Intent intent = new Intent(FadeOut.class);
-            intent.setBundle(bundle);
+            intent.putExtra("bundle", bundle);
             intent.putExtra("nextGameState", Area_1_1.class);
             intent.putExtra("pixels", gameState.getScreenPixels());
             gameState.swapGameState(intent);
@@ -61,10 +61,13 @@ public class Player extends Mob {
         numKeys = inventory.getCount("doorkey");
         numPotions = inventory.getCount("potion");
 
-        if (graceCount == MAX_GRACE_COUNT)
+        if (graceCount == MAX_GRACE_COUNT) {
             setVulnerable(true);
-        else
-            graceCount++;
+            visible = true;
+        } else {
+            if(graceCount++ % 2 == 0)
+                visible = ! visible;
+        }
     }
 
     @Override
@@ -73,7 +76,8 @@ public class Player extends Mob {
         int doorkeyOfs = screenW - 40;
         int numKeysOfs = screenW - 32;
 
-        screen.renderSprite(x - gameState.getScrollX(), y - gameState.getScrollY(), currSprite.getSprite());
+        if(visible)
+            screen.renderSprite(x - gameState.getScrollX(), y - gameState.getScrollY(), currSprite.getSprite());
 
         screen.fillRect(0, 0, screenW, 32, 0x000000);
         screen.drawRect(0, 0, screenW, 32, 0xffffff);

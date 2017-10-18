@@ -2,12 +2,14 @@ package demo.mob.player;
 
 import demo.mob.Mob;
 import demo.mob.MobState;
+import demo.tile.DemoTile;
 import gamestate.GameState;
 
 public class PlayerStateKnockback extends PlayerState {
 
     private MobState lastPlayerState;
-    private int count;
+    private int distCount;
+    private int timeCount;
 
     PlayerStateKnockback(Player player, GameState gameState, PlayerState lastPlayerState) {
         super(player, gameState);
@@ -39,7 +41,10 @@ public class PlayerStateKnockback extends PlayerState {
     @Override
     public void update() {
 
-        final int knockbackDistance = 48;
+        super.update();
+
+        final int knockbackDist = 3 * DemoTile.SIZE;
+        final int knockbackTime = 1 * 8; // about an eighth of a second
 
         mob.xa = mob.getxSpeed() * mob.getxDir();
         mob.ya = mob.getySpeed() * mob.getyDir();
@@ -47,11 +52,11 @@ public class PlayerStateKnockback extends PlayerState {
         commitMove(mob.xa, mob.ya);
 
         if(mob.xa != 0)
-            count += Math.abs(mob.xa);
+            distCount += Math.abs(mob.xa);
         if(mob.ya != 0)
-            count += Math.abs(mob.ya);
+            distCount += Math.abs(mob.ya);
 
-        if(count >= knockbackDistance)
+        if(distCount >= knockbackDist || timeCount++ >= knockbackTime)
             mob.setCurrState(lastPlayerState);
     }
 }

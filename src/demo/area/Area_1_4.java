@@ -32,9 +32,12 @@ public class Area_1_4 extends Area_1 {
             loadMobs("/home/jeep/IdeaProjects/LittleEngine/res/cached/spawnmap_1-4.png");
         }
 
-        Bundle inBundle = getIntent().getBundle();
+        Bundle inBundle = (Bundle) getIntent().getSerializableExtra("bundle");
 
         Mob player = (Player) inBundle.getSerializableExtra("player");
+        TileCoord tileCoord = (TileCoord) inBundle.getSerializableExtra("tileCoord");
+        player.x = tileCoord.getX();
+        player.y = tileCoord.getY();
         player.initialize(this);
         addEntity(player);
 
@@ -46,14 +49,11 @@ public class Area_1_4 extends Area_1 {
             intent.putExtra("nextGameState", Area_1_2.class);
             intent.putExtra("pixels", getScreenPixels());
 
-            TileCoord tileCoord = new TileCoord(18, 6, DemoTile.SIZE);
-            player.x = tileCoord.getX();
-            player.y = tileCoord.getY();
+            Bundle bundle = new Bundle();
+            bundle.putExtra("tileCoord", new TileCoord(18, 6, DemoTile.SIZE));
+            bundle.putExtra("player", player);
 
-            Bundle outBundle = new Bundle();
-            outBundle.putExtra("player", player);
-
-            intent.setBundle(outBundle);
+            intent.putExtra("bundle", bundle);
             swapGameState(intent);
         });
 
@@ -61,7 +61,7 @@ public class Area_1_4 extends Area_1 {
             setMapTile(2, 3, 0xffbc0051);
             if (getMapTile(33, 3) == 0xffbc0051 && getMapTile(2, 32) == 0xffbc0051 &&
                     getMapTile(33, 32) == 0xffbc0051) {
-                drainTheMoat();
+                drainMoat();
             }
         });
 
@@ -69,7 +69,7 @@ public class Area_1_4 extends Area_1 {
             setMapTile(33, 3, 0xffbc0051);
             if (getMapTile(2, 3) == 0xffbc0051 && getMapTile(2, 32) == 0xffbc0051 &&
                     getMapTile(33, 32) == 0xffbc0051) {
-                drainTheMoat();
+                drainMoat();
             }
         });
 
@@ -77,7 +77,7 @@ public class Area_1_4 extends Area_1 {
             setMapTile(2, 32, 0xffbc0051);
             if (getMapTile(2, 3) == 0xffbc0051 && getMapTile(33, 3) == 0xffbc0051 &&
                     getMapTile(33, 32) == 0xffbc0051) {
-                drainTheMoat();
+                drainMoat();
             }
         });
 
@@ -85,28 +85,25 @@ public class Area_1_4 extends Area_1 {
             setMapTile(33, 32, 0xffbc0051);
             if (getMapTile(2, 3) == 0xffbc0051 && getMapTile(33, 3) == 0xffbc0051 &&
                     getMapTile(2, 32) == 0xffbc0051) {
-                drainTheMoat();
+                drainMoat();
             }
         });
 
         putTrigger(0xffff00ff,() -> { // magenta
             Intent intent = new Intent(FadeOut.class);
-            intent.putExtra("nextGameState", Area_1_1.class);
+            intent.putExtra("nextGameState", Area_2_1.class);
             intent.putExtra("pixels", getScreenPixels());
 
-            TileCoord tileCoord = new TileCoord(14, 17, DemoTile.SIZE);
-            player.x = tileCoord.getX();
-            player.y = tileCoord.getY();
+            Bundle bundle = new Bundle();
+            bundle.putExtra("tileCoord", new TileCoord(13, 3, DemoTile.SIZE));
+            bundle.putExtra("player", player);
 
-            Bundle outBundle = new Bundle();
-            outBundle.putExtra("player", player);
-
-            intent.setBundle(outBundle);
+            intent.putExtra("bundle", bundle);
             swapGameState(intent);
         });
     }
 
-    private void drainTheMoat() {
+    private void drainMoat() {
         // drain the water
         for (int y = 11; y < 24; y++)
             for (int x = 11; x < 25; x++)
@@ -128,7 +125,6 @@ public class Area_1_4 extends Area_1 {
         setMapTile(17, 25, 0xffc0c0c0);
         setMapTile(18, 24, 0xffc0c0c0);
         setMapTile(18, 25, 0xffc0c0c0);
-
     }
 
     @Override
@@ -143,6 +139,6 @@ public class Area_1_4 extends Area_1 {
 
         pixelsToPNG(getMapTiles(), "/home/jeep/IdeaProjects/LittleEngine/res/cached/map_1-4.png");
         pixelsToPNG(getTriggerTiles(), "/home/jeep/IdeaProjects/LittleEngine/res/cached/triggermap_1-4.png");
-        pixelsToPNG(getMobSpawns(), "/home/jeep/IdeaProjects/LittleEngine/res/cached/spawnmap_1-4.png");
+        pixelsToPNG(getMobTiles(), "/home/jeep/IdeaProjects/LittleEngine/res/cached/spawnmap_1-4.png");
     }
 }

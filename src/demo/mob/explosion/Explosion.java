@@ -9,8 +9,8 @@ public class Explosion extends Mob {
 
     private int count;
 
-    public Explosion(double x, double y) {
-        super(x, y, 1, 1, 16, 16, 1, 0, true, false);
+    public Explosion(int col, double x, double y) {
+        super(col, x, y, 1, 1, 16, 16, 1, 0, true, false);
         currSprite = new AnimSprite(SpriteSheets.PUFF_EXPLOSION, 16, 16, 3);
         currSprite.setFrameRate(5);
     }
