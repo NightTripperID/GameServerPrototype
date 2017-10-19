@@ -1,6 +1,8 @@
 package demo.area;
 
 import demo.mob.Mob;
+import demo.mob.player.Player;
+import demo.overlay.Overlay;
 import demo.tile.DemoTile;
 import demo.tile.LavaTile;
 import demo.tile.Tile;
@@ -32,12 +34,13 @@ public class Area_2_2 extends Area_2 {
         }
 
         Bundle inBundle = (Bundle) getIntent().getSerializableExtra("bundle");
-        Mob player = (Mob) inBundle.getSerializableExtra("player");
+        Player player = (Player) inBundle.getSerializableExtra("player");
         TileCoord tileCoord = (TileCoord) inBundle.getSerializableExtra("tileCoord");
         player.x = tileCoord.getX();
         player.y = tileCoord.getY();
         player.initialize(this);
         addEntity(player);
+        setOverlay(new Overlay(player));
 
         setScrollX((int) player.x - getScreenWidth() / 2);
         setScrollY((int) player.y - getScreenHeight() / 2);

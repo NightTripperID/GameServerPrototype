@@ -1,5 +1,6 @@
 package demo.mob.treasure;
 
+import demo.area.Area;
 import demo.area.Area_1;
 import demo.mob.Mob;
 import demo.mob.player.Player;
@@ -23,7 +24,7 @@ public class Doorkey extends Mob {
     public void runCollision(Mob mob) {
         if(mob instanceof Player) {
             ((Player)mob).inventory.add("doorkey");
-            ((Area_1)gameState).setMobSpawn((int) x, (int) y, 0xff00ff);
+            ((Area) gameState).setMobSpawn((int) x, (int) y, 0xff00ff);
             this.setRemoved(true);
         }
     }

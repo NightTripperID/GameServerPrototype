@@ -2,7 +2,9 @@ package demo.mob.skelly;
 
 import demo.mob.Mob;
 import demo.mob.player.Player;
+import demo.mob.treasure.Potion;
 import demo.spritesheets.SpriteSheets;
+import entity.Entity;
 import graphics.AnimSprite;
 import graphics.Screen;
 

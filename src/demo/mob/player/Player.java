@@ -20,12 +20,12 @@ public class Player extends Mob {
     private static final int MAX_GRACE_COUNT = 1 * 90;
     private int graceCount = MAX_GRACE_COUNT;
 
-    private int numKeys = 0;
-    private int numPotions = 0;
-
-    private AnimSprite heartSprite = new AnimSprite(SpriteSheets.HEART, 8, 8, 1);
-    private AnimSprite doorkeySprite = new AnimSprite(SpriteSheets.DOORKEY, 8, 8, 1);
-    private AnimSprite potionSprite = new AnimSprite(SpriteSheets.POTION, 8, 8, 1);
+//    private int numKeys = 0;
+//    private int numPotions = 0;
+//
+//    private AnimSprite heartSprite = new AnimSprite(SpriteSheets.HEART, 8, 8, 1);
+//    private AnimSprite doorkeySprite = new AnimSprite(SpriteSheets.DOORKEY, 8, 8, 1);
+//    private AnimSprite potionSprite = new AnimSprite(SpriteSheets.POTION, 8, 8, 1);
 
     public static final int MAX_HEALTH = 6;
     public static final int MAX_POTIONS = 4;
@@ -58,8 +58,8 @@ public class Player extends Mob {
             gameState.swapGameState(intent);
         }
 
-        numKeys = inventory.getCount("doorkey");
-        numPotions = inventory.getCount("potion");
+//        numKeys = inventory.getCount("doorkey");
+//        numPotions = inventory.getCount("potion");
 
         if (graceCount == MAX_GRACE_COUNT) {
             setVulnerable(true);
@@ -72,31 +72,31 @@ public class Player extends Mob {
 
     @Override
     public void render(@NotNull Screen screen) {
-        int screenW = gameState.getScreenWidth();
-        int doorkeyOfs = screenW - 40;
-        int numKeysOfs = screenW - 32;
-
         if(visible)
             screen.renderSprite(x - gameState.getScrollX(), y - gameState.getScrollY(), currSprite.getSprite());
 
-        screen.fillRect(0, 0, screenW, 32, 0x000000);
-        screen.drawRect(0, 0, screenW, 32, 0xffffff);
-
-        for (int i = 0; i < getHealth(); i++)
-            screen.renderSprite(16 + (i << 4), 12, heartSprite.getSprite());
-
-        int w = 60;
-        int potionFrameOfs = (screenW >> 1) - (w >> 1);
-
-        screen.renderString5x5(potionFrameOfs + (("potions".length() * 5) >> 1) - 2, 4, 0xffffff, "potions");
-
-        screen.drawRect(potionFrameOfs, 10, 60, 12, 0xffffff);
-
-        for (int i = 0; i < numPotions; i++)
-            screen.renderSprite(potionFrameOfs + 2 + (i << 4), 12, potionSprite.getSprite());
-
-        screen.renderSprite(doorkeyOfs, 12, doorkeySprite.getSprite());
-        screen.renderString8x8(numKeysOfs, 12, 0xffffff, "x" + numKeys);
+//        int screenW = gameState.getScreenWidth();
+//        int doorkeyOfs = screenW - 40;
+//        int numKeysOfs = screenW - 32;
+//
+//        screen.fillRect(0, 0, screenW, 32, 0x000000);
+//        screen.drawRect(0, 0, screenW, 32, 0xffffff);
+//
+//        for (int i = 0; i < getHealth(); i++)
+//            screen.renderSprite(16 + (i << 4), 12, heartSprite.getSprite());
+//
+//        int w = 60;
+//        int potionFrameOfs = (screenW >> 1) - (w >> 1);
+//
+//        screen.renderString5x5(potionFrameOfs + (("potions".length() * 5) >> 1) - 2, 4, 0xffffff, "potions");
+//
+//        screen.drawRect(potionFrameOfs, 10, 60, 12, 0xffffff);
+//
+//        for (int i = 0; i < numPotions; i++)
+//            screen.renderSprite(potionFrameOfs + 2 + (i << 4), 12, potionSprite.getSprite());
+//
+//        screen.renderSprite(doorkeyOfs, 12, doorkeySprite.getSprite());
+//        screen.renderString8x8(numKeysOfs, 12, 0xffffff, "x" + numKeys);
     }
 
     @Override

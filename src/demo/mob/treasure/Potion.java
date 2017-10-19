@@ -1,6 +1,6 @@
 package demo.mob.treasure;
 
-import demo.area.Area_1;
+import demo.area.Area;
 import demo.mob.Mob;
 import demo.mob.player.Player;
 import demo.spritesheets.SpriteSheets;
@@ -27,7 +27,7 @@ public class Potion extends Mob {
             Player player = (Player) mob;
             if(player.inventory.getCount("potion") < Player.MAX_POTIONS) {
                 player.inventory.add("potion");
-                ((Area_1) gameState).setMobSpawn((int) x, (int) y, 0xff00ff);
+                ((Area) gameState).setMobSpawn((int) x, (int) y, 0xff00ff);
                 this.setRemoved(true);
             }
         }

@@ -1,7 +1,6 @@
 package demo.overlay;
 
 import demo.mob.player.Player;
-import demo.mob.player.inventory.Inventory;
 import demo.spritesheets.SpriteSheets;
 import entity.Entity;
 import entity.Renderable;
@@ -14,14 +13,15 @@ public class Overlay extends Entity implements Updatable, Renderable{
 
     private AnimSprite heartSprite = new AnimSprite(SpriteSheets.HEART, 8, 8, 1);
     private AnimSprite doorkeySprite = new AnimSprite(SpriteSheets.DOORKEY, 8, 8, 1);
-
-    private Inventory inventory;
+    private AnimSprite potionSprite = new AnimSprite(SpriteSheets.POTION, 8, 8, 1);
 
     private int numKeys;
     private int numPotions;
 
+    private Player player;
+
     public Overlay(Player player) {
-        this.inventory = player.inventory;
+        this.player = player;
     }
 
     @Override
@@ -31,21 +31,36 @@ public class Overlay extends Entity implements Updatable, Renderable{
 
     @Override
     public void update() {
-        numKeys = inventory.getCount("doorkey");
-        numPotions = inventory.getCount("potion");
+        numKeys = player.inventory.getCount("doorkey");
+        numPotions = player.inventory.getCount("potion");
 
     }
 
     @Override
     public void render(Screen screen) {
-        screen.fillRect(0, 0, gameState.getScreenWidth(), 32, 0x000000);
-        screen.drawRect(0, 0, gameState.getScreenWidth(), 32, 0xffffff);
 
-//        for (int i = 0; i < getHealth(); i++)
-//            screen.renderSprite(16 + (i << 4), 12, heartSprite.getSprite());
+        int screenW = gameState.getScreenWidth();
+        int doorkeyOfs = screenW - 40;
+        int numKeysOfs = screenW - 32;
 
-        screen.renderSprite(gameState.getScreenWidth() - 56, 12, doorkeySprite.getSprite());
-        screen.renderString8x8(gameState.getScreenWidth() - 48, 12, 0xffffff, "x" + numKeys);
+        screen.fillRect(0, 0, screenW, 32, 0x000000);
+        screen.drawRect(0, 0, screenW, 32, 0xffffff);
+
+        for (int i = 0; i < player.getHealth(); i++)
+            screen.renderSprite(16 + (i << 4), 12, heartSprite.getSprite());
+
+        int w = 60;
+        int potionFrameOfs = (screenW >> 1) - (w >> 1);
+
+        screen.renderString5x5(potionFrameOfs + (("potions".length() * 5) >> 1) - 2, 4, 0xffffff, "potions");
+
+        screen.drawRect(potionFrameOfs, 10, 60, 12, 0xffffff);
+
+        for (int i = 0; i < numPotions; i++)
+            screen.renderSprite(potionFrameOfs + 2 + (i << 4), 12, potionSprite.getSprite());
+
+        screen.renderSprite(doorkeyOfs, 12, doorkeySprite.getSprite());
+        screen.renderString8x8(numKeysOfs, 12, 0xffffff, "x" + numKeys);
     }
 
     @Override

@@ -4,14 +4,17 @@ import com.sun.istack.internal.NotNull;
 import demo.mob.Mob;
 import demo.mob.medusa.MedusaSpawner;
 import demo.mob.player.Player;
+import demo.mob.roach.Roach;
 import demo.mob.skelly.SkellySpawner;
 import demo.mob.slime.SlimeSpawner;
 import demo.mob.treasure.Doorkey;
 import demo.mob.treasure.Potion;
+import demo.overlay.Overlay;
 import demo.tile.DemoTile;
 import entity.Entity;
 import gamestate.Bundle;
 import gamestate.GameState;
+import graphics.Screen;
 import server.Server;
 
 import javax.imageio.ImageIO;
@@ -25,10 +28,11 @@ import java.util.List;
 public abstract class Area extends GameState {
 
     private Player player;
+    private Overlay overlay;
 
-    int[] mobTiles;
+    private int[] mobTiles;
 
-    public int[] getMobTiles() {
+    int[] getMobTiles() {
         return mobTiles;
     }
 
@@ -43,6 +47,13 @@ public abstract class Area extends GameState {
     public void update() {
         checkCollision();
         super.update();
+        overlay.update();
+    }
+
+    @Override
+    public void render(Screen screen) {
+        super.render(screen);
+        overlay.render(screen);
     }
 
     private void checkCollision() {
@@ -123,10 +134,24 @@ public abstract class Area extends GameState {
                         medusaSpawner.initialize(this);
                         addEntity(medusaSpawner);
                         break;
+                    case 0xff00ffff:
+                        Entity roach = new Roach(0xff00ffff, x * DemoTile.SIZE, y * DemoTile.SIZE);
+                        roach.initialize(this);
+                        addEntity(roach);
+                        break;
+                    case 0xff000f0f:
+                        Entity roachWithKey = new Roach(0xff000f0f, x * DemoTile.SIZE, y * DemoTile.SIZE, true);
+                        roachWithKey.initialize(this);
+                        addEntity(roachWithKey);
                     default:
                         break;
                 }
             }
         }
+    }
+
+    void setOverlay(Overlay overlay) {
+        this.overlay = overlay;
+        overlay.initialize(this);
     }
 }

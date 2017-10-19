@@ -2,6 +2,7 @@ package demo.mob;
 
 import com.sun.istack.internal.NotNull;
 import demo.mob.explosion.Explosion;
+import demo.mob.treasure.Potion;
 import entity.Entity;
 import entity.Renderable;
 import entity.Updatable;
@@ -69,6 +70,18 @@ public abstract class Mob extends Entity implements Updatable, Renderable, Seria
             Entity explosion = new Explosion(0xff00ff, x, y); // TODO: needs switch statement to spawn explosion
             explosion.initialize(gameState);        // TODO: of appropriate size (8x8, 16x16, etc)
             gameState.addEntity(explosion);
+
+            if(!friendly) {
+                switch(random.nextInt(10)) {
+                    case 0:
+                        Entity potion = new Potion(0xffff0000, x, y);
+                        potion.initialize(gameState);
+                        gameState.addEntity(potion);
+                        break;
+                    default:
+                        break;
+                }
+            }
         }
     }
 

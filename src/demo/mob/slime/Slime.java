@@ -8,7 +8,7 @@ import graphics.Screen;
 public class Slime extends Mob {
 
     private int count;
-    private int skip = random.nextInt(3) + 1;
+    private final int skip = random.nextInt(3) + 1;
 
     private Mob player;
 
@@ -21,6 +21,7 @@ public class Slime extends Mob {
 
     @Override
     public void update() {
+
         super.update();
         currSprite.update();
 

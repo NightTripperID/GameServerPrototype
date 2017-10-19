@@ -4,7 +4,7 @@ import graphics.SpriteSheet;
 
 public class SpriteSheets {
 
-    public static final SpriteSheet MAIN_SHEET = new SpriteSheet("resource/spritesheet.png", 192, 144);
+    public static final SpriteSheet MAIN_SHEET = new SpriteSheet("resource/spritesheet.png", 192, 288);
 
     public static final SpriteSheet PLAYER_UP = new SpriteSheet(MAIN_SHEET, 0, 4, 1, 4, 16, 16);
     public static final SpriteSheet PLAYER_DOWN = new SpriteSheet(MAIN_SHEET, 0, 0, 1, 4, 16, 16);
@@ -23,6 +23,11 @@ public class SpriteSheets {
     public static final SpriteSheet MEDUSA_UP = new SpriteSheet(MAIN_SHEET, 2, 7, 1, 2, 16, 16);
     public static final SpriteSheet MEDUSA_DOWN = new SpriteSheet(MAIN_SHEET, 2, 5, 1, 2, 16, 16);
 
+    public static final SpriteSheet ROACH_UP = new SpriteSheet(MAIN_SHEET, 0, 8, 1, 4, 16, 16);
+    public static final SpriteSheet ROACH_DOWN = new SpriteSheet(MAIN_SHEET, 0, 12, 1, 4, 16, 16);
+    public static final SpriteSheet ROACH_LEFT = new SpriteSheet(MAIN_SHEET, 1, 8, 1, 4, 16, 16);
+    public static final SpriteSheet ROACH_RIGHT = new SpriteSheet(MAIN_SHEET, 1, 12, 1, 4, 16, 16);
+
     public static final SpriteSheet PUFF_EXPLOSION = new SpriteSheet(MAIN_SHEET, 3, 3, 1, 3, 16, 16);
 
     public static final SpriteSheet ARROW = new SpriteSheet(MAIN_SHEET, 2, 0, 1, 1, 16, 16);
@@ -33,8 +38,8 @@ public class SpriteSheets {
 
     public static final SpriteSheet MAGIC_1 = new SpriteSheet(MAIN_SHEET, 6, 2, 1, 4, 16, 16);
 
-    public static final SpriteSheet WATER = new SpriteSheet(MAIN_SHEET, 9, 0, 1, 2, 16, 16);
-    public static final SpriteSheet LAVA = new SpriteSheet(MAIN_SHEET, 8, 4, 1, 2, 16, 16);
+    static final SpriteSheet WATER = new SpriteSheet(MAIN_SHEET, 9, 0, 1, 2, 16, 16);
+    static final SpriteSheet LAVA = new SpriteSheet(MAIN_SHEET, 8, 4, 1, 2, 16, 16);
 
     private SpriteSheets(){
     }
