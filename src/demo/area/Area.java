@@ -2,15 +2,18 @@ package demo.area;
 
 import com.sun.istack.internal.NotNull;
 import demo.mob.Mob;
-import demo.mob.medusa.MedusaSpawner;
+import demo.mob.buzzard.Buzzard;
+import demo.mob.enemy.dinodrac.DinoDrac;
+import demo.mob.enemy.medusa.MedusaSpawner;
 import demo.mob.player.Player;
-import demo.mob.roach.Roach;
-import demo.mob.skelly.SkellySpawner;
-import demo.mob.slime.SlimeSpawner;
-import demo.mob.treasure.Doorkey;
+import demo.mob.enemy.roach.Roach;
+import demo.mob.enemy.skelly.SkellySpawner;
+import demo.mob.enemy.slime.SlimeSpawner;
+import demo.mob.treasure.YellowDoorkey;
 import demo.mob.treasure.Potion;
 import demo.overlay.Overlay;
 import demo.tile.DemoTile;
+import demo.tile.TileCoord;
 import entity.Entity;
 import gamestate.Bundle;
 import gamestate.GameState;
@@ -27,7 +30,7 @@ import java.util.List;
 
 public abstract class Area extends GameState {
 
-    private Player player;
+    protected Player player;
     private Overlay overlay;
 
     private int[] mobTiles;
@@ -41,6 +44,16 @@ public abstract class Area extends GameState {
         super.onCreate(server);
         Bundle bundle = (Bundle) getIntent().getSerializableExtra("bundle");
         player = (Player) bundle.getSerializableExtra("player");
+        TileCoord tileCoord = (TileCoord) bundle.getSerializableExtra("tileCoord");
+        player.x = tileCoord.getX();
+        player.y = tileCoord.getY();
+        player.setRespawn(tileCoord);
+        player.initialize(this);
+        addEntity(player);
+        setOverlay(new Overlay(player));
+
+        setScrollX((int) player.x - getScreenWidth() / 2);
+        setScrollY((int) player.y - getScreenHeight() / 2);
     }
 
     @Override
@@ -115,7 +128,7 @@ public abstract class Area extends GameState {
                         addEntity(potion);
                         break;
                     case 0xffffff00:
-                        Entity doorkey = new Doorkey(0xffffff00, x * DemoTile.SIZE, y * DemoTile.SIZE);
+                        Entity doorkey = new YellowDoorkey(0xffffff00, x * DemoTile.SIZE, y * DemoTile.SIZE);
                         doorkey.initialize(this);
                         addEntity(doorkey);
                         break;
@@ -139,10 +152,16 @@ public abstract class Area extends GameState {
                         roach.initialize(this);
                         addEntity(roach);
                         break;
-                    case 0xff000f0f:
-                        Entity roachWithKey = new Roach(0xff000f0f, x * DemoTile.SIZE, y * DemoTile.SIZE, true);
-                        roachWithKey.initialize(this);
-                        addEntity(roachWithKey);
+                    case 0xff4cff00:
+                        Entity dinoDrac = new DinoDrac(0xff4cff00, x * DemoTile.SIZE, y * DemoTile.SIZE);
+                        dinoDrac.initialize(this);
+                        addEntity(dinoDrac);
+                        break;
+                    case 0xff7c5033:
+                        Entity buzzard = new Buzzard(0xff7c5033, x * DemoTile.SIZE, y * DemoTile.SIZE);
+                        buzzard.initialize(this);
+                        addEntity(buzzard);
+                        break;
                     default:
                         break;
                 }

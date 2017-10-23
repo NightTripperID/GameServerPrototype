@@ -2,7 +2,9 @@
   <dictionary name="jeep">
     <words>
       <w>cachedresource</w>
+      <w>coord</w>
       <w>doorkey</w>
+      <w>drac</w>
       <w>renderable</w>
       <w>spawner</w>
       <w>spawnmap</w>

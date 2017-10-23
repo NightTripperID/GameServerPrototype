@@ -1,8 +1,6 @@
 package demo.area;
 
 import com.sun.istack.internal.NotNull;
-import demo.mob.player.Player;
-import demo.overlay.Overlay;
 import demo.tile.DemoTile;
 import demo.tile.Tile;
 import demo.tile.TileCoord;
@@ -31,19 +29,6 @@ public class Area_1_2 extends Area_1 {
             loadTriggerTiles("/home/jeep/IdeaProjects/LittleEngine/res/cached/triggermap_1-2.png");
             loadMobs("/home/jeep/IdeaProjects/LittleEngine/res/cached/spawnmap_1-2.png");
         }
-
-        Bundle inBundle = (Bundle) getIntent().getSerializableExtra("bundle");
-
-        Player player = (Player) inBundle.getSerializableExtra("player");
-        TileCoord tileCoord = (TileCoord) inBundle.getSerializableExtra("tileCoord");
-        player.x = tileCoord.getX();
-        player.y = tileCoord.getY();
-        player.initialize(this);
-        addEntity(player);
-        setOverlay(new Overlay(player));
-
-        setScrollX((int) player.x - getScreenWidth() / 2);
-        setScrollY((int) player.y - getScreenHeight() / 2);
 
         putTrigger(0xffff0000, () -> {
             Intent intent = new Intent(FadeOut.class);

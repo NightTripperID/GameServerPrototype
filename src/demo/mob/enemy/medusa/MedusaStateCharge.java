@@ -1,4 +1,4 @@
-package demo.mob.medusa;
+package demo.mob.enemy.medusa;
 
 import demo.mob.Mob;
 import demo.mob.player.Player;

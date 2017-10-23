@@ -1,6 +1,6 @@
-package demo.mob.medusa;
+package demo.mob.enemy.medusa;
 
-import demo.mob.Mob;
+import demo.mob.enemy.Enemy;
 import demo.mob.player.Player;
 import demo.spritesheets.SpriteSheets;
 import demo.tile.Tiles;
@@ -9,18 +9,13 @@ import graphics.Screen;
 
 import java.awt.*;
 
-public class Medusa extends Mob {
+public class Medusa extends Enemy {
 
     public Medusa(int col, double x, double y, Player player) {
-        super(col, x, y, 1, 1, 16, 16, 2, 1, false, true);
+        super(col, x, y, 1, 1, 16, 16, 2, 1, true);
         currState = new MedusaStatePatrol(this, gameState, player);
         currSprite = new AnimSprite(SpriteSheets.MEDUSA_DOWN, 16, 16, 2);
         currSprite.setFrameRate(20);
-    }
-
-    @Override
-    public void render(Screen screen) {
-        screen.renderSprite(x - gameState.getScrollX(), y - gameState.getScrollY(), currSprite.getSprite());
     }
 
     @Override

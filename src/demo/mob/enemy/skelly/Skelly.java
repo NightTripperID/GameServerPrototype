@@ -1,14 +1,12 @@
-package demo.mob.skelly;
+package demo.mob.enemy.skelly;
 
-import demo.mob.Mob;
+import demo.mob.enemy.Enemy;
 import demo.mob.player.Player;
-import demo.mob.treasure.Potion;
 import demo.spritesheets.SpriteSheets;
-import entity.Entity;
 import graphics.AnimSprite;
 import graphics.Screen;
 
-public class Skelly extends Mob {
+public class Skelly extends Enemy {
 
     private Player player;
 
@@ -20,7 +18,7 @@ public class Skelly extends Mob {
     private int count;
 
     public Skelly(int col, double x, double y, Player player) {
-        super(col, x, y, 1, 1, 16, 16, 3, 1, false, true);
+        super(col, x, y, 1, 1, 16, 16, 3, 1, true);
         final int frameRate = 10;
         skellyUp.setFrameRate(frameRate);
         skellyDown.setFrameRate(frameRate);
@@ -39,11 +37,6 @@ public class Skelly extends Mob {
             move();
             count = 0;
         }
-    }
-
-    @Override
-    public void render(Screen screen) {
-        screen.renderSprite(x - gameState.getScrollX(), y - gameState.getScrollY(), currSprite.getSprite());
     }
 
     private void move() {

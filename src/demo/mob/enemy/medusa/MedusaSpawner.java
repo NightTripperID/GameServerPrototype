@@ -1,7 +1,7 @@
-package demo.mob.medusa;
+package demo.mob.enemy.medusa;
 
 import demo.area.Area;
-import demo.mob.spawner.Spawner;
+import demo.mob.Spawner;
 import demo.spritesheets.SpriteSheets;
 import entity.Entity;
 import graphics.AnimSprite;

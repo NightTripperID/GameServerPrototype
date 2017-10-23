@@ -1,21 +1,21 @@
 package demo.tile;
 
-import demo.spritesheets.TileSprites;
+import demo.spritesheets.Sprites;
 import graphics.Sprite;
 
 public class LavaTile extends DemoTile {
 
     public LavaTile() {
         super(null, true);
-        TileSprites.LAVA.setFrameRate(15);
+        Sprites.LAVA.setFrameRate(15);
     }
 
     public static void update() {
-        TileSprites.LAVA.update();
+        Sprites.LAVA.update();
     }
 
     @Override
     public Sprite getSprite() {
-        return TileSprites.LAVA.getSprite();
+        return Sprites.LAVA.getSprite();
     }
 }

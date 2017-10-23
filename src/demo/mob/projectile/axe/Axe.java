@@ -1,19 +1,16 @@
-package demo.mob.projectile;
+package demo.mob.projectile.axe;
 
 import com.sun.istack.internal.NotNull;
-import demo.mob.Mob;
-import demo.spritesheets.SpriteSheets;
+import demo.mob.projectile.Projectile;
+import demo.spritesheets.Sprites;
 import gamestate.GameState;
-import graphics.AnimSprite;
-import graphics.Screen;
-import graphics.Sprite;
 
 public class Axe extends Projectile {
 
     public Axe(double x, double y, double angle) {
         super(0xff00ff, x, y, 16, 16, 1, 1, true, false, angle);
 
-        currSprite = new AnimSprite(SpriteSheets.ARROW, 16, 16, 1);
+        sprite = Sprites.AXE;
 
         double angleVelocity = Math.sqrt(8); // sqrt(2^2 + 2^2), i.e. hypotenuse from  pythagorean theorem
 
@@ -33,27 +30,11 @@ public class Axe extends Projectile {
     @Override
     public void initialize(@NotNull GameState gameState) {
         super.initialize(gameState);
-        currState = new AxeStateFlying(this, gameState);
     }
 
     @Override
     public void update() {
-        super.update();
         angle += (getxDir() > 0 ? .1 : -.1);
-    }
-
-    @Override
-    public void render(@NotNull Screen screen) {
-        screen.renderSprite(x - gameState.getScrollX(), y - gameState.getScrollY(),
-                Sprite.rotate(currSprite.getSprite(), angle));
-    }
-
-    @Override
-    public void runCollision(Mob mob) {
-        if(friendly() != mob.friendly())
-            if(mob.vulnerable()) {
-                mob.assignDamage(getDamage());
-                this.setRemoved(true);
-            }
+        move();
     }
 }

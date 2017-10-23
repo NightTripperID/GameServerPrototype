@@ -1,7 +1,5 @@
 package demo.area;
 
-import demo.mob.player.Player;
-import demo.overlay.Overlay;
 import demo.tile.DemoTile;
 import demo.tile.Tile;
 import demo.tile.TileCoord;
@@ -30,18 +28,6 @@ public class Area_2_5 extends Area_2 {
             loadTriggerTiles("/home/jeep/IdeaProjects/LittleEngine/res/cached/triggermap_2-5.png");
             loadMobs("/home/jeep/IdeaProjects/LittleEngine/res/cached/spawnmap_2-5.png");
         }
-
-        Bundle inBundle = (Bundle) getIntent().getSerializableExtra("bundle");
-        Player player = (Player) inBundle.getSerializableExtra("player");
-        TileCoord tileCoord = (TileCoord) inBundle.getSerializableExtra("tileCoord");
-        player.x = tileCoord.getX();
-        player.y = tileCoord.getY();
-        player.initialize(this);
-        addEntity(player);
-        setOverlay(new Overlay(player));
-
-        setScrollX((int) player.x - getScreenWidth() / 2);
-        setScrollY((int) player.y - getScreenHeight() / 2);
 
         putTrigger(0xffff0000, () -> { // red
             Bundle bundle = new Bundle();

@@ -3,7 +3,7 @@ package demo.mob.player;
 import com.sun.istack.internal.NotNull;
 import demo.mob.MobState;
 import demo.mob.magic.Fireball;
-import demo.mob.projectile.Axe;
+import demo.mob.projectile.axe.Axe;
 import entity.Entity;
 import gamestate.GameState;
 import input.Keyboard;

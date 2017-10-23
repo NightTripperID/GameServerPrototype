@@ -1,11 +1,14 @@
-package demo.mob.slime;
+package demo.mob.enemy.slime;
 
+import com.sun.istack.internal.NotNull;
 import demo.mob.Mob;
+import demo.mob.enemy.Enemy;
 import demo.spritesheets.SpriteSheets;
 import graphics.AnimSprite;
 import graphics.Screen;
+import graphics.Sprite;
 
-public class Slime extends Mob {
+public class Slime extends Enemy {
 
     private int count;
     private final int skip = random.nextInt(3) + 1;
@@ -13,7 +16,7 @@ public class Slime extends Mob {
     private Mob player;
 
     public Slime(int col, double x, double y, Mob player) {
-        super(col, x, y, 1, 1, 16, 16, 2, 1, false, true);
+        super(col, x, y, 1, 1, 16, 16, 2, 1, true);
         currSprite = new AnimSprite(SpriteSheets.SLIME, 16, 16, 4);
         currSprite.setFrameRate(random.nextInt(5) + 13);
         this.player = player;
@@ -29,11 +32,6 @@ public class Slime extends Mob {
             count = 0;
             move();
         }
-    }
-
-    @Override
-    public void render(Screen screen) {
-        screen.renderSprite(x - gameState.getScrollX(), y - gameState.getScrollY(), currSprite.getSprite());
     }
 
     private void move() {

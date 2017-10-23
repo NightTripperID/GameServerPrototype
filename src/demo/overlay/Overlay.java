@@ -1,21 +1,17 @@
 package demo.overlay;
 
 import demo.mob.player.Player;
-import demo.spritesheets.SpriteSheets;
+import demo.spritesheets.Sprites;
 import entity.Entity;
 import entity.Renderable;
 import entity.Updatable;
 import gamestate.GameState;
-import graphics.AnimSprite;
 import graphics.Screen;
 
 public class Overlay extends Entity implements Updatable, Renderable{
 
-    private AnimSprite heartSprite = new AnimSprite(SpriteSheets.HEART, 8, 8, 1);
-    private AnimSprite doorkeySprite = new AnimSprite(SpriteSheets.DOORKEY, 8, 8, 1);
-    private AnimSprite potionSprite = new AnimSprite(SpriteSheets.POTION, 8, 8, 1);
-
-    private int numKeys;
+    private int numYellowKeys;
+    private int numBlueKeys;
     private int numPotions;
 
     private Player player;
@@ -31,7 +27,8 @@ public class Overlay extends Entity implements Updatable, Renderable{
 
     @Override
     public void update() {
-        numKeys = player.inventory.getCount("doorkey");
+        numYellowKeys = player.inventory.getCount("doorkey");
+        numBlueKeys = player.inventory.getCount("blue_doorkey");
         numPotions = player.inventory.getCount("potion");
 
     }
@@ -40,14 +37,16 @@ public class Overlay extends Entity implements Updatable, Renderable{
     public void render(Screen screen) {
 
         int screenW = gameState.getScreenWidth();
-        int doorkeyOfs = screenW - 40;
-        int numKeysOfs = screenW - 32;
+        int blueDoorkeyOfs = screenW - 80;
+        int numBlueKeysOfs = screenW - 72;
+        int yellowDoorkeyOfs = screenW - 40;
+        int numYellowKeysOfs = screenW - 32;
 
         screen.fillRect(0, 0, screenW, 32, 0x000000);
         screen.drawRect(0, 0, screenW, 32, 0xffffff);
 
         for (int i = 0; i < player.getHealth(); i++)
-            screen.renderSprite(16 + (i << 4), 12, heartSprite.getSprite());
+            screen.renderSprite(16 + (i << 4), 12, Sprites.HEART);
 
         int w = 60;
         int potionFrameOfs = (screenW >> 1) - (w >> 1);
@@ -57,10 +56,13 @@ public class Overlay extends Entity implements Updatable, Renderable{
         screen.drawRect(potionFrameOfs, 10, 60, 12, 0xffffff);
 
         for (int i = 0; i < numPotions; i++)
-            screen.renderSprite(potionFrameOfs + 2 + (i << 4), 12, potionSprite.getSprite());
+            screen.renderSprite(potionFrameOfs + 2 + (i << 4), 12, Sprites.POTION);
 
-        screen.renderSprite(doorkeyOfs, 12, doorkeySprite.getSprite());
-        screen.renderString8x8(numKeysOfs, 12, 0xffffff, "x" + numKeys);
+        screen.renderSprite(blueDoorkeyOfs, 12, Sprites.BLUE_DOORKEY);
+        screen.renderString8x8(numBlueKeysOfs, 12, 0xffffff, "x" + numBlueKeys);
+
+        screen.renderSprite(yellowDoorkeyOfs, 12, Sprites.YELLOW_DOORKEY);
+        screen.renderString8x8(numYellowKeysOfs, 12, 0xffffff, "x" + numYellowKeys);
     }
 
     @Override

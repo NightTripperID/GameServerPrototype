@@ -1,7 +1,5 @@
 package demo.area;
 
-import demo.mob.player.Player;
-import demo.overlay.Overlay;
 import demo.tile.DemoTile;
 import demo.tile.Tile;
 import demo.tile.TileCoord;
@@ -18,7 +16,7 @@ public class Area_2_1 extends Area_2 {
     public void onCreate(Server server) {
         super.onCreate(server);
 
-        initMap(29, 11, Tile.TileSize.X16);
+        initMap(23, 11, Tile.TileSize.X16);
 
         if (!cached) {
             loadMapTiles("/home/jeep/IdeaProjects/LittleEngine/res/map_2-1.png");
@@ -30,18 +28,6 @@ public class Area_2_1 extends Area_2 {
             loadTriggerTiles("/home/jeep/IdeaProjects/LittleEngine/res/cached/triggermap_2-1.png");
             loadMobs("/home/jeep/IdeaProjects/LittleEngine/res/cached/spawnmap_2-1.png");
         }
-
-        Bundle inBundle = (Bundle) getIntent().getSerializableExtra("bundle");
-        Player player = (Player) inBundle.getSerializableExtra("player");
-        TileCoord tileCoord = (TileCoord) inBundle.getSerializableExtra("tileCoord");
-        player.x = tileCoord.getX();
-        player.y = tileCoord.getY();
-        player.initialize(this);
-        addEntity(player);
-        setOverlay(new Overlay(player));
-
-        setScrollX((int) player.x - getScreenWidth() / 2);
-        setScrollY((int) player.y - getScreenHeight() / 2);
 
         putTrigger(0xffff0000, () -> { // red
             Intent intent = new Intent(FadeOut.class);
@@ -80,7 +66,6 @@ public class Area_2_1 extends Area_2 {
 
             intent.putExtra("bundle", bundle);
             swapGameState(intent);
-
         });
     }
 

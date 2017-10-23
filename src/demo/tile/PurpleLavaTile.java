@@ -3,19 +3,19 @@ package demo.tile;
 import demo.spritesheets.Sprites;
 import graphics.Sprite;
 
-public class WaterTile extends DemoTile {
+public class PurpleLavaTile extends DemoTile {
 
-    public WaterTile() {
+    public PurpleLavaTile() {
         super(null, true);
-        Sprites.WATER.setFrameRate(15);
+        Sprites.PURPLE_LAVA.setFrameRate(15);
     }
 
     public static void update() {
-        Sprites.WATER.update();
+        Sprites.PURPLE_LAVA.update();
     }
 
     @Override
     public Sprite getSprite() {
-        return Sprites.WATER.getSprite();
+        return Sprites.PURPLE_LAVA.getSprite();
     }
 }

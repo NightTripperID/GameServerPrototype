@@ -1,4 +1,4 @@
-package demo.mob.medusa;
+package demo.mob.enemy.medusa;
 
 import java.awt.*;
 

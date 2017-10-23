@@ -1,8 +1,5 @@
 package demo.area;
 
-import demo.mob.Mob;
-import demo.mob.player.Player;
-import demo.overlay.Overlay;
 import demo.tile.DemoTile;
 import demo.tile.LavaTile;
 import demo.tile.Tile;
@@ -33,19 +30,7 @@ public class Area_2_2 extends Area_2 {
             loadMobs("/home/jeep/IdeaProjects/LittleEngine/res/cached/spawnmap_2-2.png");
         }
 
-        Bundle inBundle = (Bundle) getIntent().getSerializableExtra("bundle");
-        Player player = (Player) inBundle.getSerializableExtra("player");
-        TileCoord tileCoord = (TileCoord) inBundle.getSerializableExtra("tileCoord");
-        player.x = tileCoord.getX();
-        player.y = tileCoord.getY();
-        player.initialize(this);
-        addEntity(player);
-        setOverlay(new Overlay(player));
-
-        setScrollX((int) player.x - getScreenWidth() / 2);
-        setScrollY((int) player.y - getScreenHeight() / 2);
-
-        putTrigger(0xffff0000, () -> {
+        putTrigger(0xffff0000, () -> { // red
             Intent intent = new Intent(FadeOut.class);
             intent.putExtra("nextGameState", Area_2_1.class);
             intent.putExtra("pixels", getScreenPixels());
@@ -58,46 +43,43 @@ public class Area_2_2 extends Area_2 {
             swapGameState(intent);
         });
 
-        putTrigger(0xff00ff00, () -> {
-            setMapTile(12, 8 , 0xff808080);
-            if(getMapTile(16, 12) == 0xff808080 && getMapTile(12, 16) == 0xff808080
-                    && getMapTile(8, 12) == 0xff808080) {
-                removeObelisk();
-            }
-        });
-        putTrigger(0xff0000ff, () -> {
+        putTrigger(0xff00ff00, () -> { // green
+            if(!player.inventory.remove("blue_doorkey"))
+                return;
             setMapTile(16, 12, 0xff808080);
-            if(getMapTile(12, 8) == 0xff808080 && getMapTile(12, 16) == 0xff808080
-                    && getMapTile(8, 12) == 0xff808080) {
+            if(getMapTile(12, 16) == 0xff808080 && getMapTile(8, 12) == 0xff808080)
                 removeObelisk();
-            }
         });
-        putTrigger(0xffffff00, () -> {
+        putTrigger(0xff0000ff, () -> { // blue
+            if(!player.inventory.remove("blue_doorkey"))
+                return;
             setMapTile(12, 16, 0xff808080);
-            if(getMapTile(12, 8) == 0xff808080 && getMapTile(16, 12) == 0xff808080
-                    && getMapTile(8, 12) == 0xff808080) {
+            if(getMapTile(16, 12) == 0xff808080 && getMapTile(8, 12) == 0xff808080)
                 removeObelisk();
-            }
         });
-        putTrigger(0xff00ffff, () -> {
+        putTrigger(0xffffff00, () -> { // yellow
+            if(!player.inventory.remove("blue_doorkey"))
+                return;
             setMapTile(8, 12, 0xff808080);
-            if(getMapTile(16, 12) == 0xff808080 && getMapTile(12, 16) == 0xff808080
-                    && getMapTile(12, 8) == 0xff808080) {
+            if(getMapTile(16, 12) == 0xff808080 && getMapTile(12, 16) == 0xff808080)
                 removeObelisk();
-            }
         });
-        putTrigger(0xffff00ff, () -> {  // raise wide doorway
+        putTrigger(0xff00ffff, () -> {  // cyan
+            // raise wide doorway
             setMapTile(12, 12, 0xffbc0051); // floor switch down
-            setMapTile(10, 6, 0xff823400); // earth top
-            setMapTile(11, 6, 0xff823400); // earth top
-            setMapTile(12, 6, 0xff823400); // earth top
-            setMapTile(13, 6, 0xff823400); // earth top
-            setMapTile(14, 6, 0xff823400); // earth top
-            setMapTile(10, 7, 0xffc14d00); // earth side
             setMapTile(11, 7, 0xffdaff7f); // left side of wide doorway
-            setMapTile(12, 7, 0xffa5ff7f); // left of wide doorway
+            setMapTile(12, 7, 0xffa5ff7f); // center of wide doorway
             setMapTile(13, 7, 0xffffff8e); // right side of wide doorway
-            setMapTile(14, 7, 0xffc14d00); // earth side
+        });
+        putTrigger(0xffff00ff, () -> { //magenta
+           Intent intent = new Intent(FadeOut.class);
+           Bundle bundle = new Bundle();
+           bundle.putExtra("player", player);
+           bundle.putExtra("tileCoord", new TileCoord(10, 14, DemoTile.SIZE));
+           intent.putExtra("pixels", getScreenPixels());
+           intent.putExtra("nextGameState", Area_3_1.class);
+           intent.putExtra("bundle", bundle);
+           swapGameState(intent);
         });
     }
 

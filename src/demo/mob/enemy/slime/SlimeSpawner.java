@@ -1,7 +1,7 @@
-package demo.mob.slime;
+package demo.mob.enemy.slime;
 
 import demo.area.Area;
-import demo.mob.spawner.Spawner;
+import demo.mob.Spawner;
 import demo.spritesheets.SpriteSheets;
 import entity.Entity;
 import graphics.AnimSprite;

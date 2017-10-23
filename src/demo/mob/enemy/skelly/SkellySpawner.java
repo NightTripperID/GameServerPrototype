@@ -1,14 +1,14 @@
-package demo.mob.skelly;
+package demo.mob.enemy.skelly;
 
 import demo.area.Area;
-import demo.mob.spawner.Spawner;
-import demo.spritesheets.TileSprites;
+import demo.mob.Spawner;
+import demo.spritesheets.Sprites;
 import entity.Entity;
 
 public class SkellySpawner extends Spawner {
 
     public SkellySpawner(int col, double x, double y) {
-        super(col, x, y, 4 * 60, TileSprites.SKELLY);
+        super(col, x, y, 4 * 60, Sprites.SKELLY);
     }
 
     @Override

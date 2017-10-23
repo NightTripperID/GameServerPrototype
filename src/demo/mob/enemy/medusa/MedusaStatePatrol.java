@@ -1,15 +1,9 @@
-package demo.mob.medusa;
+package demo.mob.enemy.medusa;
 
 import demo.mob.Mob;
-import demo.mob.MobState;
 import demo.mob.player.Player;
-import demo.spritesheets.SpriteSheets;
 import demo.tile.DemoTile;
 import gamestate.GameState;
-import graphics.AnimSprite;
-
-import java.awt.*;
-import java.util.Random;
 
 public class MedusaStatePatrol extends MedusaState {
 
@@ -40,9 +34,15 @@ public class MedusaStatePatrol extends MedusaState {
             }
         }
 
-        if(mob.x > player.x && mob.x < player.x + player.getWidth() ||
-                mob.y > player.y && mob.y < player.y + player.getHeight())
-            mob.setCurrState(new MedusaStateCharge(mob, gameState, player));
+        final int chargeDist = DemoTile.SIZE * 6;
+
+        if(mob.x > player.x && mob.x < player.x + player.getWidth())
+            if(Math.abs(mob.y - player.y) <= chargeDist)
+                mob.setCurrState(new MedusaStateCharge(mob, gameState, player));
+
+        if(mob.y > player.y && mob.y < player.y + player.getHeight())
+            if(Math.abs(mob.x - player.x) <= chargeDist)
+                mob.setCurrState(new MedusaStateCharge(mob, gameState, player));
 
         mob.xa = mob.getxSpeed() * mob.getxDir();
         mob.ya = mob.getySpeed() * mob.getyDir();

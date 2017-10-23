@@ -1,11 +1,11 @@
-package demo.mob.spawner;
+package demo.mob;
 
-import demo.mob.Mob;
+import demo.mob.enemy.Enemy;
 import graphics.AnimSprite;
 import graphics.Screen;
 import graphics.Sprite;
 
-public abstract class Spawner extends Mob {
+public abstract class Spawner extends Enemy {
 
     protected int count;
     protected final int countMax;
@@ -13,7 +13,7 @@ public abstract class Spawner extends Mob {
     protected Sprite spawnerSprite;
 
     public Spawner(int col, double x, double y, int countMax, AnimSprite animSprite, int frameRate) {
-        this(col,x, y, countMax);
+        this(col, x, y, countMax);
         currSprite = animSprite;
         currSprite.setFrameRate(frameRate);
     }
@@ -24,17 +24,17 @@ public abstract class Spawner extends Mob {
     }
 
     private Spawner(int col, double x, double y, int countMax) {
-        super(col, x, y, 1, 1, 16, 16, 5, 0, false, true);
+        super(col, x, y, 1, 1, 16, 16, 5, 0, true);
         this.countMax = countMax;
     }
 
     @Override
     public void update() {
         super.update();
-        if(currSprite != null)
+        if (currSprite != null)
             currSprite.update();
 
-        if(count++ == countMax) {
+        if (count++ == countMax) {
             count = 0;
             spawn();
         }
@@ -42,8 +42,13 @@ public abstract class Spawner extends Mob {
 
     @Override
     public void render(Screen screen) {
-        if(spawnerSprite == null)
-            screen.renderSprite(x - gameState.getScrollX(), y - gameState.getScrollY(), currSprite.getSprite());
+        if (spawnerSprite == null)
+            if (wounded)
+                screen.renderSpriteColorFill(x - gameState.getScrollX(), y - gameState.getScrollY(), 0xffffff, currSprite.getSprite());
+            else
+                screen.renderSprite(x - gameState.getScrollX(), y - gameState.getScrollY(), currSprite.getSprite());
+        else if (wounded)
+            screen.renderSpriteColorFill(x - gameState.getScrollX(), y - gameState.getScrollY(), 0xffffff, spawnerSprite);
         else
             screen.renderSprite(x - gameState.getScrollX(), y - gameState.getScrollY(), spawnerSprite);
     }

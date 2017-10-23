@@ -3,21 +3,18 @@ package demo.mob.treasure;
 import demo.area.Area;
 import demo.mob.Mob;
 import demo.mob.player.Player;
-import demo.spritesheets.SpriteSheets;
-import graphics.AnimSprite;
+import demo.spritesheets.Sprites;
 import graphics.Screen;
 
 public class Potion extends Mob {
 
     public Potion(int col, double x, double y) {
         super(col, x, y, 1, 1, 8, 8, 2, 0, true, false);
-
-        currSprite = new AnimSprite(SpriteSheets.POTION, getWidth(), getHeight(), 1);
     }
 
     @Override
     public void render(Screen screen) {
-        screen.renderSprite(x - gameState.getScrollX(), y - gameState.getScrollY(), currSprite.getSprite());
+        screen.renderSprite(x - gameState.getScrollX(), y - gameState.getScrollY(), Sprites.POTION);
     }
 
     @Override

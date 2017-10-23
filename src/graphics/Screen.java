@@ -195,7 +195,6 @@ public class Screen {
      * @param sprite The sprite to render.
      */
     public void renderSprite(double x, double y, @NotNull Sprite sprite) {
-
         for (int yy = 0; yy < sprite.getHeight(); yy++) {
             if (yy + y <  0 || yy + y >= this.height)
                 continue;
@@ -204,6 +203,54 @@ public class Screen {
                     continue;
                 if (sprite.pixels[xx + yy * sprite.getWidth()] != 0xffff00ff)
                     pixels[xx + (int) x + (yy + (int) y) * width] = sprite.pixels[xx + yy * sprite.getWidth()];
+            }
+        }
+    }
+
+    public void renderSprite(double x, double y, int scale, @NotNull Sprite sprite) {
+        for (int yy = 0; yy < sprite.getHeight() * scale; yy += scale) {
+            for (int xx = 0; xx < sprite.getWidth() * scale; xx += scale) {
+                for (int yyy = yy; yyy < yy + scale; yyy++) {
+                    if (yyy + y < 0 || yyy + y >= this.height)
+                        continue;
+                    for (int xxx = xx; xxx < xx + scale; xxx++) {
+                       if (xxx + x < 0 || xxx + x >= this.width)
+                           continue;
+                        if (sprite.pixels[(xx / scale) + (yy / scale) * sprite.getWidth()] != 0xffff00ff)
+                            pixels[xxx + (int) x + (yyy + (int) y) * this.width]
+                                    = sprite.pixels[(xx / scale) + (yy / scale) * sprite.getWidth()];
+                    }
+                }
+            }
+        }
+    }
+
+    public void renderSprite(double x, double y, int scale, int colorFill, @NotNull Sprite sprite) {
+        for (int yy = 0; yy < sprite.getHeight() * scale; yy += scale) {
+            for (int xx = 0; xx < sprite.getWidth() * scale; xx += scale) {
+                for (int yyy = yy; yyy < yy + scale; yyy++) {
+                    if (yyy + y < 0 || yyy + y >= this.height)
+                        continue;
+                    for (int xxx = xx; xxx < xx + scale; xxx++) {
+                        if (xxx + x < 0 || xxx + x >= this.width)
+                            continue;
+                        if (sprite.pixels[(xx / scale) + (yy / scale) * sprite.getWidth()] != 0xffff00ff)
+                            pixels[xxx + (int) x + (yyy + (int) y) * this.width] = colorFill;
+                    }
+                }
+            }
+        }
+    }
+
+    public void renderSpriteColorFill(double x, double y, int color, @NotNull Sprite sprite) {
+        for (int yy = 0; yy < sprite.getHeight(); yy++) {
+            if (yy + y <  0 || yy + y >= height)
+                continue;
+            for (int xx = 0; xx < sprite.getWidth(); xx++) {
+                if (xx + x < 0 || xx + x >= width)
+                    continue;
+                if (sprite.pixels[xx + yy * sprite.getWidth()] != 0xffff00ff)
+                    pixels[xx + (int) x + (yy + (int) y) * this.width] = color;
             }
         }
     }
