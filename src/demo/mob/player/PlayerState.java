@@ -87,7 +87,7 @@ abstract class PlayerState extends MobState {
             Intent intent = new Intent(TextBox.class);
             intent.putExtra("pixels", gameState.getScreenPixels());
             intent.putExtra("textCol", 0xffffff);
-            intent.putExtra("msg", "the quick red fox jumped over the lazy brown dog that was about the size of a small pygmy hippopotamus, not that it is any concern of yours or even mine for that matter. are you listening to anything that i am saying my good fellow?");
+            intent.putExtra("msg", "the quick red fox jumped over the lazy brown dog that was about the size of a small pygmy hippopotamus not that it is any concern of yours or even mine for that matter are you listening to anything that i am saying my good fellow");
 //            intent.putExtra("msg", "the quick red fox jumped over the lazy brown dog");
 //            intent.putExtra("msg", "the quick red fox");
             gameState.pushGameState(intent);

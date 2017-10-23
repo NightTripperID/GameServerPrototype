@@ -36,23 +36,28 @@ public class TextBox extends GameState {
 
         StringBuilder msgSb = new StringBuilder(msg);
 
+        int messageLength = msg.length();
+
         for (int y = 0; y < textH; y++) {
             StringBuilder sb = new StringBuilder();
-            Outer:
+            Row:
             for (int x = 0; x < textW; x++) {
-                if (x + y * textW >= msg.length())
+                if(x == 0 && msgSb.charAt(0) == ' ')
+                    msgSb.deleteCharAt(0);
+                if (x + y * textW >= messageLength || msgSb.length() == 0)
                     break;
                 int count = 0;
                 if (msgSb.charAt(0) == ' ')
                     for (int i = 1; i < msgSb.length(); i++) {
                         count++;
-                        if (msgSb.charAt(i) == ' ')
-                            if(count > textW - x) {
-                                msgSb.deleteCharAt(0);
-                                break Outer;
+                        if (msgSb.charAt(i) == ' ') {
+                            if (count > textW - x) {
+                                messageLength += (textW - x);
+                                break Row;
                             } else {
                                 break;
                             }
+                        }
                     }
                 sb.append(msgSb.charAt(0));
                 msgSb.deleteCharAt(0);
