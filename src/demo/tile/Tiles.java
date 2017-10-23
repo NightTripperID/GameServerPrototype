@@ -28,6 +28,7 @@ public class Tiles {
     public static Tile purpleLava = new PurpleLavaTile();
     public static Tile sand = new DemoTile(Sprites.SAND, false);
     public static Tile scorchedSand = new DemoTile(Sprites.SCORCHED_SAND, false);
+    public static Tile sign = new DemoTile(Sprites.SIGN, true, true);
     public static Tile skelly = new DemoTile(Sprites.SKELLY, true);
     public static Tile stoneDoorway = new DemoTile(Sprites.STONE_DOORWAY, true, true);
     public static Tile stoneGravelFloor = new DemoTile(Sprites.STONE_GRAVEL_FLOOR, false);

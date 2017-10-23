@@ -4,6 +4,7 @@ import com.sun.istack.internal.NotNull;
 import demo.mob.Mob;
 import demo.mob.player.Player;
 import demo.overlay.Overlay;
+import demo.textbox.TextBox;
 import demo.tile.Tile;
 import demo.tile.TileCoord;
 import demo.transition.FadeOut;
@@ -32,20 +33,7 @@ public class Area_1_1 extends Area_1 {
             loadMobs("/home/jeep/IdeaProjects/LittleEngine/res/cached/spawnmap_1-1.png");
         }
 
-//        Bundle inBundle = (Bundle) getIntent().getSerializableExtra("bundle");
-//
-//        Player player = (Player) inBundle.getSerializableExtra("player");
-//        TileCoord tileCoord = (TileCoord) inBundle.getSerializableExtra("tileCoord");
-//        player.x = tileCoord.getX();
-//        player.y = tileCoord.getY();
-//        player.initialize(this);
-//        addEntity(player);
-//        setOverlay(new Overlay(player));
-//
-//        setScrollX((int) player.x - getScreenWidth() / 2);
-//        setScrollY((int) player.y - getScreenHeight() / 2);
-
-        putTrigger(0xffff0000, () -> {
+        putTrigger(0xffff0000, () -> { // red
 
             Intent intent = new Intent(FadeOut.class);
             intent.putExtra("nextGameState", Area_1_2.class);
@@ -60,7 +48,7 @@ public class Area_1_1 extends Area_1 {
             swapGameState(intent);
         });
 
-        putTrigger(0xff00ff00, () -> {
+        putTrigger(0xff00ff00, () -> { // green
             Intent intent = new Intent(FadeOut.class);
             intent.putExtra("nextGameState", Area_1_2.class);
             intent.putExtra("pixels", getScreenPixels());
@@ -74,7 +62,7 @@ public class Area_1_1 extends Area_1 {
             swapGameState(intent);
         });
 
-        putTrigger(0xff0000ff, () -> {
+        putTrigger(0xff0000ff, () -> { // blue
             Intent intent = new Intent(FadeOut.class);
             intent.putExtra("nextGameState", Area_1_2.class);
             intent.putExtra("pixels", getScreenPixels());
@@ -85,6 +73,15 @@ public class Area_1_1 extends Area_1 {
 
             intent.putExtra("bundle", bundle);
             swapGameState(intent);
+        });
+
+        putTrigger(0xff00ffff, () -> { // cyan
+            Intent intent = new Intent(TextBox.class);
+            intent.putExtra("pixels", getScreenPixels());
+            intent.putExtra("msg", "Welcome to Varg's very short adventure! Use W-A-S-D keys or the arrow keys to move. Press the left mouse button to throw an axe!");
+            intent.putExtra("textCol", 0xffffff);
+            pushGameState(intent);
+
         });
     }
 

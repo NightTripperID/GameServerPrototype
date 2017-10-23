@@ -33,16 +33,16 @@ abstract class PlayerState extends MobState {
         if (++magicCount > MAGIC_RATE)
             magicCount = MAGIC_RATE;
 
-        if(Mouse.button3Pressed) {
+        if (Mouse.button3Pressed) {
 
-            if(magicCount < MAGIC_RATE)
+            if (magicCount < MAGIC_RATE)
                 return;
             magicCount = 0;
 
             Player player = (Player) mob;
             int potionCount = player.inventory.getCount("potion");
 
-            switch(potionCount) {
+            switch (potionCount) {
                 case 1:
                     castMagic_1();
                     break;
@@ -63,34 +63,24 @@ abstract class PlayerState extends MobState {
         if (++attackCount > ATTACK_RATE)
             attackCount = ATTACK_RATE;
 
-        if(Mouse.button1Pressed) {
-            if(attackCount < ATTACK_RATE / 2)
+        if (Mouse.button1Pressed) {
+            if (attackCount < ATTACK_RATE / 2)
                 return;
             attackCount = 0;
             throwAxe();
         }
 
-        if(Mouse.button1Held) {
+        if (Mouse.button1Held) {
             if (attackCount < ATTACK_RATE)
                 return;
             attackCount = 0;
             throwAxe();
         }
 
-        if(Mouse.button2Pressed || keyboard.cPressed) {
-            if(mob.getHealth() < Player.MAX_HEALTH)
+        if (Mouse.button2Pressed || keyboard.cPressed) {
+            if (mob.getHealth() < Player.MAX_HEALTH)
                 if (((Player) mob).inventory.remove("potion"))
                     mob.addHealth(1);
-        }
-
-        if(keyboard.qPressed) {
-            Intent intent = new Intent(TextBox.class);
-            intent.putExtra("pixels", gameState.getScreenPixels());
-            intent.putExtra("textCol", 0xffffff);
-            intent.putExtra("msg", "the quick red fox jumped over the lazy brown dog that was about the size of a small pygmy hippopotamus not that it is any concern of yours or even mine for that matter are you listening to anything that i am saying my good fellow");
-//            intent.putExtra("msg", "the quick red fox jumped over the lazy brown dog");
-//            intent.putExtra("msg", "the quick red fox");
-            gameState.pushGameState(intent);
         }
     }
 

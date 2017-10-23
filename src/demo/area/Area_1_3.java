@@ -1,5 +1,6 @@
 package demo.area;
 
+import demo.textbox.TextBox;
 import demo.tile.DemoTile;
 import demo.tile.Tile;
 import demo.tile.TileCoord;
@@ -32,7 +33,7 @@ public class Area_1_3 extends Area_1 {
         setScrollX((int) player.x - getScreenWidth() / 2);
         setScrollY((int) player.y - getScreenHeight() / 2);
 
-        putTrigger(0xffff0000, () -> {
+        putTrigger(0xffff0000, () -> { // red
             Intent intent = new Intent(FadeOut.class);
             intent.putExtra("nextGameState", Area_1_2.class);
             intent.putExtra("pixels", getScreenPixels());
@@ -44,6 +45,14 @@ public class Area_1_3 extends Area_1 {
 
             intent.putExtra("bundle", bundle);
             swapGameState(intent);
+        });
+
+        putTrigger(0xff00ff00, () -> { //green
+            Intent intent = new Intent(TextBox.class);
+            intent.putExtra("pixels", getScreenPixels());
+            intent.putExtra("textCol", 0xffffff);
+            intent.putExtra("msg", "there is a door somewhere that needs unlocking...");
+            pushGameState(intent);
         });
     }
 

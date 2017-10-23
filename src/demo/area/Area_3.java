@@ -25,6 +25,8 @@ public abstract class Area_3 extends Area {
                 return Tiles.purpleLava;
             case 0xfffc4206:
                 return Tiles.scorchedSand;
+            case 0xffffaa50:
+                return Tiles.sign;
             case 0xff303030:
                 return Tiles.stoneStairsDown;
             case 0xffff8800:

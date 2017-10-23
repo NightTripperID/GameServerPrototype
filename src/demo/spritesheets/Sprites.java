@@ -2,7 +2,6 @@ package demo.spritesheets;
 
 import graphics.AnimSprite;
 import graphics.Sprite;
-import graphics.SpriteSheet;
 
 public class Sprites {
 
@@ -42,6 +41,7 @@ public class Sprites {
     public static final Sprite PILLAR_SIDE = new Sprite(SpriteSheets.MAIN_SHEET, 16, 10, 1);
     public static final Sprite SAND = new Sprite(SpriteSheets.MAIN_SHEET, 16, 11, 0);
     public static final Sprite SCORCHED_SAND = new Sprite(SpriteSheets.MAIN_SHEET, 16, 8, 6);
+    public static final Sprite SIGN = new Sprite(SpriteSheets.MAIN_SHEET, 16, 11, 8);
     public static final Sprite SKELLY = new Sprite(SpriteSheets.MAIN_SHEET, 16, 11, 3);
     public static final Sprite STONE_DOORWAY = new Sprite(SpriteSheets.MAIN_SHEET, 16, 10, 3);
     public static final Sprite STONE_GRAVEL_FLOOR = new Sprite(SpriteSheets.MAIN_SHEET, 16, 10, 2);

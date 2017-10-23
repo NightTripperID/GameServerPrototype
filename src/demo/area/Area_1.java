@@ -23,14 +23,16 @@ public abstract class Area_1 extends Area {
                 return Tiles.floorSwitchUp;
             case 0xffbc0051:
                 return Tiles.floorSwitchDown;
-            case 0xff00ffff:
+            case 0xff7f92ff:
                 return Tiles.grave;
             case 0xff606060:
                 return Tiles.pillarTop;
             case 0xff808080:
                 return Tiles.pillarSide;
-            case 0xfffca75d:
+            case 0xfffcdd5d:
                 return Tiles.sand;
+            case 0xffffaa50:
+                return Tiles.sign;
             case 0xffffffff:
                 return Tiles.skelly;
             case 0xff21007f:

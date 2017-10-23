@@ -14,15 +14,19 @@ public class Main {
 
         Bundle bundle = new Bundle();
         bundle.putExtra("tileCoord", new TileCoord(14, 17, 16));
-//        bundle.putExtra("tileCoord", new TileCoord(23, 12, 16));
 //        bundle.putExtra("tileCoord", new TileCoord(17, 8, 16));
+//        bundle.putExtra("tileCoord", new TileCoord(23, 12, 16));
+
         Player player = new Player(0, 0);
+//        player.inventory.add("blue_doorkey");
+//        player.inventory.add("blue_doorkey");
+//        player.inventory.add("blue_doorkey");
         player.inventory.add("potion");
         bundle.putExtra("player", player);
 
         Intent intent = new Intent(Area_1_1.class);
-//        Intent intent = new Intent(Area_2_2.class);
 //        Intent intent = new Intent(Area_1_4.class);
+//        Intent intent = new Intent(Area_2_2.class);
 
         intent.putExtra("bundle", bundle);
 

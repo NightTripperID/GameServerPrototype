@@ -10,9 +10,13 @@ public class TextBox extends GameState {
 
     private int[] pixels;
     private int textCol;
-    private String msg;
-    private String[] lines;
+    private StringBuilder msg;
+    private String[] inputLines;
+    private String[] outputLines;
 
+    private int scrollCount;
+    private int scrollX;
+    private int scrollY;
 
     private final int textW = 36;
     private int textH;
@@ -24,33 +28,33 @@ public class TextBox extends GameState {
         Intent intent = getIntent();
         pixels = intent.getIntegerArrayExtra("pixels");
         textCol = intent.getIntegerExtra("textCol");
-        msg = intent.getStringExtra("msg");
-
-        textH = msg.length() / textW;
-
-        if (msg.length() % textW != 1)
-            textH += 1;
-        System.out.println(textH);
-
-        lines = new String[textH];
-
-        StringBuilder msgSb = new StringBuilder(msg);
+        msg = new StringBuilder(intent.getStringExtra("msg"));
 
         int messageLength = msg.length();
+
+        textH = messageLength / textW;
+
+        if (messageLength % textW > 0)
+            textH += 1;
+
+        inputLines = new String[textH];
+        outputLines = new String[textH];
+        for(int i = 0; i < textH; i++)
+            outputLines[i] = "";
 
         for (int y = 0; y < textH; y++) {
             StringBuilder sb = new StringBuilder();
             Row:
             for (int x = 0; x < textW; x++) {
-                if(x == 0 && msgSb.charAt(0) == ' ')
-                    msgSb.deleteCharAt(0);
-                if (x + y * textW >= messageLength || msgSb.length() == 0)
+                if(x == 0 && msg.charAt(0) == ' ')
+                    msg.deleteCharAt(0);
+                if (x + y * textW >= messageLength || msg.length() == 0)
                     break;
                 int count = 0;
-                if (msgSb.charAt(0) == ' ')
-                    for (int i = 1; i < msgSb.length(); i++) {
+                if (msg.charAt(0) == ' ')
+                    for (int i = 1; i < msg.length(); i++) {
                         count++;
-                        if (msgSb.charAt(i) == ' ') {
+                        if (msg.charAt(i) == ' ') {
                             if (count > textW - x) {
                                 messageLength += (textW - x);
                                 break Row;
@@ -59,19 +63,35 @@ public class TextBox extends GameState {
                             }
                         }
                     }
-                sb.append(msgSb.charAt(0));
-                msgSb.deleteCharAt(0);
+                sb.append(msg.charAt(0));
+                msg.deleteCharAt(0);
             }
-            lines[y] = sb.toString();
+            inputLines[y] = sb.toString();
         }
-
-
     }
 
     @Override
     public void update() {
-        if (getKeyboard().enterPressed || getKeyboard().spacePressed)
-            popGameState();
+        int scrollWait;
+        if(getKeyboard().spaceHeld || getKeyboard().enterHeld)
+            scrollWait = 0;
+        else
+            scrollWait = 5;
+
+        if(++scrollCount >= scrollWait) {
+            scrollCount = 0;
+            if (scrollY < textH) {
+                outputLines[scrollY] += inputLines[scrollY].charAt(scrollX++);
+                if (scrollX > inputLines[scrollY].length() - 1) {
+                    scrollX = 0;
+                    scrollY++;
+                }
+            }
+        }
+
+        if (getKeyboard().spacePressed || getKeyboard().enterPressed)
+            if(scrollY == textH)
+                popGameState();
     }
 
     @Override
@@ -90,6 +110,6 @@ public class TextBox extends GameState {
         screen.drawRect(x, y, w, h, borderCol);
 
         for (int i = 0; i < textH; i++)
-            screen.renderString8x8(x + 8, (y + ((i + 1) << 3) + i), textCol, lines[i]);
+                screen.renderString8x8(x + 8, (y + ((i + 1) << 3) + i), textCol, outputLines[i]);
     }
 }

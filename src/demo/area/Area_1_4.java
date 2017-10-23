@@ -1,5 +1,6 @@
 package demo.area;
 
+import demo.textbox.TextBox;
 import demo.tile.DemoTile;
 import demo.tile.Tile;
 import demo.tile.TileCoord;
@@ -111,6 +112,12 @@ public class Area_1_4 extends Area_1 {
         setMapTile(17, 25, 0xffc0c0c0);
         setMapTile(18, 24, 0xffc0c0c0);
         setMapTile(18, 25, 0xffc0c0c0);
+
+        Intent intent = new Intent(TextBox.class);
+        intent.putExtra("pixels", getScreenPixels());
+        intent.putExtra("textCol", 0xff00ffff);
+        intent.putExtra("msg", "You hear the sound of draining water...");
+        pushGameState(intent);
     }
 
     @Override

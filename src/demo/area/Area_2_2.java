@@ -1,5 +1,6 @@
 package demo.area;
 
+import demo.textbox.TextBox;
 import demo.tile.DemoTile;
 import demo.tile.LavaTile;
 import demo.tile.Tile;
@@ -44,33 +45,49 @@ public class Area_2_2 extends Area_2 {
         });
 
         putTrigger(0xff00ff00, () -> { // green
-            if(!player.inventory.remove("blue_doorkey"))
+            if(!player.inventory.remove("blue_doorkey")) {
+                blueKeyRequired();
                 return;
+            }
             setMapTile(16, 12, 0xff808080);
             if(getMapTile(12, 16) == 0xff808080 && getMapTile(8, 12) == 0xff808080)
                 removeObelisk();
         });
+
         putTrigger(0xff0000ff, () -> { // blue
-            if(!player.inventory.remove("blue_doorkey"))
+            if(!player.inventory.remove("blue_doorkey")) {
+                blueKeyRequired();
                 return;
+            }
             setMapTile(12, 16, 0xff808080);
             if(getMapTile(16, 12) == 0xff808080 && getMapTile(8, 12) == 0xff808080)
                 removeObelisk();
         });
+
         putTrigger(0xffffff00, () -> { // yellow
-            if(!player.inventory.remove("blue_doorkey"))
+            if(!player.inventory.remove("blue_doorkey")) {
+                blueKeyRequired();
                 return;
+            }
             setMapTile(8, 12, 0xff808080);
             if(getMapTile(16, 12) == 0xff808080 && getMapTile(12, 16) == 0xff808080)
                 removeObelisk();
         });
+
         putTrigger(0xff00ffff, () -> {  // cyan
             // raise wide doorway
             setMapTile(12, 12, 0xffbc0051); // floor switch down
             setMapTile(11, 7, 0xffdaff7f); // left side of wide doorway
             setMapTile(12, 7, 0xffa5ff7f); // center of wide doorway
             setMapTile(13, 7, 0xffffff8e); // right side of wide doorway
+
+            Intent intent = new Intent(TextBox.class);
+            intent.putExtra("pixels", getScreenPixels());
+            intent.putExtra("textCol", 0xff0000);
+            intent.putExtra("msg", "Abandon all hope, ye who enter here!");
+            pushGameState(intent);
         });
+
         putTrigger(0xffff00ff, () -> { //magenta
            Intent intent = new Intent(FadeOut.class);
            Bundle bundle = new Bundle();
@@ -81,6 +98,22 @@ public class Area_2_2 extends Area_2 {
            intent.putExtra("bundle", bundle);
            swapGameState(intent);
         });
+
+        putTrigger(0xffffa500, () -> { // orange
+            Intent intent = new Intent(TextBox.class);
+            intent.putExtra("pixels", getScreenPixels());
+            intent.putExtra("textCol", 0xffffff);
+            intent.putExtra("msg", "Legend has it that unlocking the three gates reveals a secret.");
+            pushGameState(intent);
+        });
+    }
+
+    private void blueKeyRequired() {
+        Intent intent = new Intent(TextBox.class);
+        intent.putExtra("pixels", getScreenPixels());
+        intent.putExtra("textCol", 0x00ffff);
+        intent.putExtra("msg", "A blue key is required.");
+        pushGameState(intent);
     }
 
     private void removeObelisk() {

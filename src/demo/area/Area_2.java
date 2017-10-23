@@ -37,6 +37,8 @@ public abstract class Area_2 extends Area {
                 return Tiles.obeliskBottom;
             case 0xffff7f7f:
                 return Tiles.obeliskTop;
+            case 0xffffaa50:
+                return Tiles.sign;
             case 0xff303030:
                 return Tiles.stoneStairsDown;
             case 0xffff8800:
