@@ -12,13 +12,13 @@ public class Keyboard implements KeyListener {
 
     public boolean[] keys = new boolean[120];
 
-    public boolean upHeld, downHeld, leftHeld, rightHeld, enterHeld, spaceHeld, escHeld, cHeld;
-    public boolean upPressed, downPressed, leftPressed, rightPressed, enterPressed, spacePressed, escPressed, cPressed;
-    public boolean upReleased, downReleased, leftReleased, rightReleased, enterReleased, spaceReleased, escReleased, cReleased;
+    public boolean upHeld, downHeld, leftHeld, rightHeld, enterHeld, spaceHeld, escHeld, cHeld, qHeld;
+    public boolean upPressed, downPressed, leftPressed, rightPressed, enterPressed, spacePressed, escPressed, cPressed, qPressed;
+    public boolean upReleased, downReleased, leftReleased, rightReleased, enterReleased, spaceReleased, escReleased, cReleased, qReleased;
 
     public void update() {
 
-        boolean upLast, downLast, leftLast, rightLast, enterLast, spaceLast, escLast, cLast;
+        boolean upLast, downLast, leftLast, rightLast, enterLast, spaceLast, escLast, cLast, qLast;
 
         upLast    = upHeld;
         downLast  = downHeld;
@@ -30,6 +30,7 @@ public class Keyboard implements KeyListener {
         escLast   = escHeld;
 
         cLast = cHeld;
+        qLast = qHeld;
 
         upHeld    = keys[KeyEvent.VK_W] || keys[KeyEvent.VK_UP];
         downHeld  = keys[KeyEvent.VK_S] || keys[KeyEvent.VK_DOWN];
@@ -38,7 +39,8 @@ public class Keyboard implements KeyListener {
         enterHeld = keys[KeyEvent.VK_ENTER];
         spaceHeld = keys[KeyEvent.VK_SPACE];
         escHeld   = keys[KeyEvent.VK_ESCAPE];
-        cHeld = keys[KeyEvent.VK_C];
+        cHeld     = keys[KeyEvent.VK_C];
+        qHeld     = keys[KeyEvent.VK_Q];
 
         upPressed    = upHeld && !upLast;
         downPressed  = downHeld && !downLast;
@@ -48,6 +50,7 @@ public class Keyboard implements KeyListener {
         spacePressed = spaceHeld && !spaceLast;
         escPressed   = escHeld && !escLast;
         cPressed     = cHeld && !cLast;
+        qPressed     = qHeld && !qLast;
 
         upReleased    = !upHeld && upLast;
         downReleased  = !downHeld && downLast;
@@ -57,6 +60,7 @@ public class Keyboard implements KeyListener {
         spaceReleased = !spaceHeld && spaceLast;
         escReleased   = !escHeld && escLast;
         cReleased     = !cHeld && cLast;
+        qReleased     = !qHeld && qLast;
     }
 
     @Override

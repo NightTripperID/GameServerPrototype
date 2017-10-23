@@ -5,12 +5,12 @@ import demo.mob.Mob;
 import demo.mob.buzzard.Buzzard;
 import demo.mob.enemy.dinodrac.DinoDrac;
 import demo.mob.enemy.medusa.MedusaSpawner;
-import demo.mob.player.Player;
 import demo.mob.enemy.roach.Roach;
 import demo.mob.enemy.skelly.SkellySpawner;
 import demo.mob.enemy.slime.SlimeSpawner;
-import demo.mob.treasure.YellowDoorkey;
+import demo.mob.player.Player;
 import demo.mob.treasure.Potion;
+import demo.mob.treasure.YellowDoorkey;
 import demo.overlay.Overlay;
 import demo.tile.DemoTile;
 import demo.tile.TileCoord;
@@ -60,7 +60,7 @@ public abstract class Area extends GameState {
     public void update() {
         checkCollision();
         super.update();
-        overlay.update();
+        overlay.update();;
     }
 
     @Override

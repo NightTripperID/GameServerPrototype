@@ -4,7 +4,6 @@ import com.sun.istack.internal.NotNull;
 import demo.mob.Mob;
 import demo.mob.player.inventory.Inventory;
 import demo.spritesheets.SpriteSheets;
-import demo.tile.DemoTile;
 import demo.tile.TileCoord;
 import demo.transition.FadeOut;
 import gamestate.Bundle;
@@ -25,7 +24,7 @@ public class Player extends Mob {
 
     private boolean visible = true;
 
-    private TileCoord lastSpawn;
+    private TileCoord respawn;
 
     public Player(int x, int y) {
         super(0x00ffff, x, y, 1, 1, 16, 16, 3, 0, true, true);
@@ -43,10 +42,13 @@ public class Player extends Mob {
         currState.update();
 
         if(getHealth()<= 0) {
+            setVulnerable(true);
+            visible = true;
+            graceCount = MAX_GRACE_COUNT;
             addHealth(3);
             Bundle bundle = new Bundle();
             bundle.putExtra("player", this);
-            bundle.putExtra("tileCoord", lastSpawn);
+            bundle.putExtra("tileCoord", respawn);
             Intent intent = new Intent(FadeOut.class);
             intent.putExtra("bundle", bundle);
             intent.putExtra("nextGameState", gameState.getClass());
@@ -80,7 +82,7 @@ public class Player extends Mob {
         }
     }
 
-    public void setRespawn(TileCoord lastSpawn) {
-        this.lastSpawn = lastSpawn;
+    public void setRespawn(TileCoord respawn) {
+        this.respawn = respawn;
     }
 }

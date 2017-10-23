@@ -1,11 +1,14 @@
 package demo.mob.player;
 
 import com.sun.istack.internal.NotNull;
+import demo.area.Area;
 import demo.mob.MobState;
 import demo.mob.magic.Fireball;
 import demo.mob.projectile.axe.Axe;
+import demo.textbox.TextBox;
 import entity.Entity;
 import gamestate.GameState;
+import gamestate.Intent;
 import input.Keyboard;
 import input.Mouse;
 
@@ -78,6 +81,16 @@ abstract class PlayerState extends MobState {
             if(mob.getHealth() < Player.MAX_HEALTH)
                 if (((Player) mob).inventory.remove("potion"))
                     mob.addHealth(1);
+        }
+
+        if(keyboard.qPressed) {
+            Intent intent = new Intent(TextBox.class);
+            intent.putExtra("pixels", gameState.getScreenPixels());
+            intent.putExtra("textCol", 0xffffff);
+            intent.putExtra("msg", "the quick red fox jumped over the lazy brown dog that was about the size of a small pygmy hippopotamus, not that it is any concern of yours or even mine for that matter. are you listening to anything that i am saying my good fellow?");
+//            intent.putExtra("msg", "the quick red fox jumped over the lazy brown dog");
+//            intent.putExtra("msg", "the quick red fox");
+            gameState.pushGameState(intent);
         }
     }
 
