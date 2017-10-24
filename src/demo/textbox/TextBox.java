@@ -39,14 +39,14 @@ public class TextBox extends GameState {
 
         inputLines = new String[textH];
         outputLines = new String[textH];
-        for(int i = 0; i < textH; i++)
+        for (int i = 0; i < textH; i++)
             outputLines[i] = "";
 
         for (int y = 0; y < textH; y++) {
             StringBuilder sb = new StringBuilder();
             Row:
             for (int x = 0; x < textW; x++) {
-                if(x == 0 && msg.charAt(0) == ' ')
+                if (x == 0 && msg.charAt(0) == ' ')
                     msg.deleteCharAt(0);
                 if (x + y * textW >= messageLength || msg.length() == 0)
                     break;
@@ -68,17 +68,36 @@ public class TextBox extends GameState {
             }
             inputLines[y] = sb.toString();
         }
+
+//        int x = 0;
+//
+//        for (int y = 0; y < textH; y++) {
+//            StringBuilder sb = new StringBuilder();
+//            Row:
+//            for (; x < textW; x++) {
+//                if (msg.charAt(x) == ' ') {
+//                    for (int i = x + 1; i < textW - x; i++) {
+//                        if (msg.charAt(i) == ' ')
+//                            if (i > textW - x) {
+//                                break Row;
+//                            }
+//                    }
+//                }
+//                sb.append(msg.charAt(x));
+//            }
+//            inputLines[y] = sb.toString();
+//        }
     }
 
     @Override
     public void update() {
         int scrollWait;
-        if(getKeyboard().spaceHeld || getKeyboard().enterHeld)
+        if (getKeyboard().spaceHeld || getKeyboard().enterHeld)
             scrollWait = 0;
         else
             scrollWait = 5;
 
-        if(++scrollCount >= scrollWait) {
+        if (++scrollCount >= scrollWait) {
             scrollCount = 0;
             if (scrollY < textH) {
                 outputLines[scrollY] += inputLines[scrollY].charAt(scrollX++);
@@ -90,7 +109,7 @@ public class TextBox extends GameState {
         }
 
         if (getKeyboard().spacePressed || getKeyboard().enterPressed)
-            if(scrollY == textH)
+            if (scrollY == textH)
                 popGameState();
     }
 
@@ -110,6 +129,6 @@ public class TextBox extends GameState {
         screen.drawRect(x, y, w, h, borderCol);
 
         for (int i = 0; i < textH; i++)
-                screen.renderString8x8(x + 8, (y + ((i + 1) << 3) + i), textCol, outputLines[i]);
+            screen.renderString8x8(x + 8, (y + ((i + 1) << 3) + i), textCol, outputLines[i]);
     }
 }

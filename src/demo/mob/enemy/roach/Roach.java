@@ -1,5 +1,6 @@
 package demo.mob.enemy.roach;
 
+import com.sun.istack.internal.NotNull;
 import demo.mob.enemy.Enemy;
 import demo.mob.treasure.YellowDoorkey;
 import demo.spritesheets.SpriteSheets;
@@ -37,32 +38,8 @@ public class Roach extends Enemy {
         currSprite.update();
         if(count++ == MAX_COUNT) {
             count = 0;
-            switch(randomDirection()) {
-                case UP:
-                    setyDir(-1);
-                    setxSpeed(0);
-                    setySpeed(MOVE_SPEED);
-                    currSprite = roachUp;
-                    break;
-                case DOWN:
-                    setyDir(1);
-                    setxSpeed(0);
-                    setySpeed(MOVE_SPEED);
-                    currSprite = roachDown;
-                    break;
-                case LEFT:
-                    setxDir(-1);
-                    setxSpeed(MOVE_SPEED);
-                    setySpeed(0);
-                    currSprite = roachLeft;
-                    break;
-                case RIGHT:
-                    setxDir(1);
-                    setxSpeed(MOVE_SPEED);
-                    setySpeed(0);
-                    currSprite = roachRight;
-                    break;
-            }
+            direction = randomDirection();
+            processDirection(direction);
         }
 
         xa = getxSpeed() * getxDir();
@@ -84,5 +61,64 @@ public class Roach extends Enemy {
             default:
                 return Direction.UP;
         }
+    }
+
+    private Direction reverseDirection(@NotNull Direction direction) {
+        switch(direction) {
+            case UP:
+                return Direction.DOWN;
+            case DOWN:
+                return Direction.UP;
+            case LEFT:
+                return Direction.RIGHT;
+            case RIGHT:
+                return Direction.LEFT;
+            default:
+                return Direction.UP;
+        }
+    }
+
+    private void processDirection(@NotNull Direction direction) {
+        switch(direction) {
+            case UP:
+                setyDir(-1);
+                setxSpeed(0);
+                setySpeed(MOVE_SPEED);
+                currSprite = roachUp;
+                break;
+            case DOWN:
+                setyDir(1);
+                setxSpeed(0);
+                setySpeed(MOVE_SPEED);
+                currSprite = roachDown;
+                break;
+            case LEFT:
+                setxDir(-1);
+                setxSpeed(MOVE_SPEED);
+                setySpeed(0);
+                currSprite = roachLeft;
+                break;
+            case RIGHT:
+                setxDir(1);
+                setxSpeed(MOVE_SPEED);
+                setySpeed(0);
+                currSprite = roachRight;
+                break;
+        }
+    }
+
+    @Override
+    protected void commitMove(double xa, double ya) {
+        if (tileCollision((int) xa, (int) ya)) {
+            setxDir(getxDir() * -1); // reverse directions on tile collision so they don't get stuck in corners
+            setyDir(getyDir() * -1);
+            direction = reverseDirection(direction);
+            processDirection(direction);
+            xa = getxSpeed() * getxDir(); // recalculate xa and ya
+            ya = getySpeed() * getyDir();
+        }
+
+        x += xa;
+        y += ya;
     }
 }
