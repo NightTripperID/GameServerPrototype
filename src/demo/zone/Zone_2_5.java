@@ -1,11 +1,12 @@
-package demo.area;
+package demo.zone;
 
 import demo.tile.DemoTile;
 import demo.tile.Tile;
 import demo.tile.TileCoord;
+import gamestate.Trigger;
 import server.Server;
 
-public class Area_2_5 extends Area_2 {
+public class Zone_2_5 extends Zone_2 {
 
     private static boolean cached;
 
@@ -25,7 +26,7 @@ public class Area_2_5 extends Area_2 {
             loadTriggerTiles("/home/jeep/IdeaProjects/LittleEngine/res/cached/triggermap_2-5.png");
             loadMobs("/home/jeep/IdeaProjects/LittleEngine/res/cached/spawnmap_2-5.png");
         }
-        putTrigger(0xffff0000, () -> changeArea(Area_2_3.class, new TileCoord(5, 2, DemoTile.SIZE))); // red
+        putTrigger(0xffff0000, new Trigger(() -> changeZone(Zone_2_3.class, new TileCoord(5, 2, DemoTile.SIZE)), false)); // red
     }
 
     @Override

@@ -1,6 +1,6 @@
 package demo.mob.enemy.medusa;
 
-import demo.area.Area;
+import demo.zone.Zone;
 import demo.mob.Spawner;
 import demo.spritesheets.SpriteSheets;
 import entity.Entity;
@@ -14,7 +14,7 @@ public class MedusaSpawner extends Spawner {
 
     @Override
     protected void spawn() {
-        Entity medusa = new Medusa(0x00ff00, x,  y, ((Area) gameState).getPlayer());
+        Entity medusa = new Medusa(0x00ff00, x,  y, ((Zone) gameState).getPlayer());
         medusa.initialize(gameState);
         gameState.addEntity(medusa);
     }

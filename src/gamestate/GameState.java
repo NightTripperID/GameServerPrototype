@@ -32,7 +32,8 @@ public abstract class GameState {
     private int[] mapTiles;
     private int[] triggerTiles;
 
-    private Map<Integer, Runnable> triggers = new HashMap<>();
+//    private Map<Integer, Runnable> triggers = new HashMap<>();
+    private Map<Integer, Trigger> triggers = new HashMap<>();
 
     public void onCreate(@NotNull Server server) {
         this.server = server;
@@ -223,11 +224,20 @@ public abstract class GameState {
         return triggerTiles;
     }
 
-    public void putTrigger(int key, @NotNull Runnable trigger) {
+//    public void putTrigger(int key, @NotNull Runnable trigger) {
+//        triggers.put(key, trigger);
+//    }
+//
+//    public Runnable getTrigger(int x, int y) {
+//        int key = triggerTiles[x + y * mapWidth];
+//        return triggers.get(key);
+//    }
+
+    public void putTrigger(int key, @NotNull Trigger trigger) {
         triggers.put(key, trigger);
     }
 
-    public Runnable getTrigger(int x, int y) {
+    public Trigger getTrigger(int x, int y) {
         int key = triggerTiles[x + y * mapWidth];
         return triggers.get(key);
     }

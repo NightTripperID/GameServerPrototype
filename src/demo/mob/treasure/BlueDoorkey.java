@@ -1,6 +1,6 @@
 package demo.mob.treasure;
 
-import demo.area.Area;
+import demo.zone.Zone;
 import demo.mob.Mob;
 import demo.mob.player.Player;
 import demo.spritesheets.Sprites;
@@ -21,7 +21,7 @@ public class BlueDoorkey extends Mob{
     public void runCollision(Mob mob) {
         if(mob instanceof Player) {
             ((Player)mob).inventory.add("blue_doorkey");
-            ((Area) gameState).setMobSpawn((int) x, (int) y, 0xff00ff);
+            ((Zone) gameState).setMobSpawn((int) x, (int) y, 0xff00ff);
             this.setRemoved(true);
         }
     }

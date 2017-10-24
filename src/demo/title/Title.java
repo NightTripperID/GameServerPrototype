@@ -1,6 +1,6 @@
 package demo.title;
 
-import demo.area.Area_1_1;
+import demo.zone.Zone_1_1;
 import demo.mob.player.Player;
 import demo.spritesheets.Sprites;
 import demo.tile.TileCoord;
@@ -31,27 +31,38 @@ public class Title extends GameState {
     @Override
     public void render(Screen screen) {
 
-        final int scale = 3;
+        final int scale = 2;
 
         screen.fill(0xffffff);
 
+        int spriteX = (getScreenWidth() / 2) - (titleSprite.getWidth() / 2) * scale;
+        int spriteY = (getScreenHeight() / 2) - (titleSprite.getHeight() / 2) * scale;
+
         screen.renderSprite(
-                (getScreenWidth() / 2) - (titleSprite.getWidth() / 2) * scale,
-                (getScreenHeight() / 2) - (titleSprite.getHeight() / 2) * scale,
+                spriteX,
+                spriteY,
                 scale,
                 titleSprite);
+
+        String str = "very short adventure";
+        screen.renderString8x8(
+                (getScreenWidth() / 2) - (str.length() * 8 / 2),
+                spriteY + titleSprite.getHeight() * scale + 8,
+                0x000000,
+                str
+        );
     }
 
     private void startDemo() {
         Bundle bundle = new Bundle();
         bundle.putExtra("tileCoord", new TileCoord(14, 17, 16));
-        Player player = new Player(0, 0);
+        Player player = new Player();
         player.inventory.add("potion");
         bundle.putExtra("player", player);
 
         Intent intent = new Intent(FadeOut.class);
         intent.putExtra("pixels", getScreenPixels());
-        intent.putExtra("nextGameState", Area_1_1.class);
+        intent.putExtra("nextGameState", Zone_1_1.class);
         intent.putExtra("bundle", bundle);
         intent.putExtra("fadeRate", 3);
 

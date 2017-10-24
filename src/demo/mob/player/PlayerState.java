@@ -1,14 +1,12 @@
 package demo.mob.player;
 
 import com.sun.istack.internal.NotNull;
-import demo.area.Area;
 import demo.mob.MobState;
 import demo.mob.magic.Fireball;
 import demo.mob.projectile.axe.Axe;
-import demo.textbox.TextBox;
 import entity.Entity;
 import gamestate.GameState;
-import gamestate.Intent;
+import gamestate.Trigger;
 import input.Keyboard;
 import input.Mouse;
 
@@ -150,8 +148,14 @@ abstract class PlayerState extends MobState {
             return;
         }
 
-        if (mob.triggerCollision((int) xa, (int) ya))
-            mob.getTileTrigger((int) xa, (int) ya).run();
+        Trigger trigger;
+        if (mob.triggerCollision((int) xa, (int) ya)) {
+            trigger = mob.getTileTrigger((int) xa, (int) ya);
+            if (!trigger.active)
+                trigger.runnable.run();
+            else if (gameState.getKeyboard().spacePressed)
+                trigger.runnable.run();
+        }
 
         if (!mob.tileCollision((int) xa, (int) ya)) {
             mob.x += xa;

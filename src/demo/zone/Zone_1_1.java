@@ -1,13 +1,12 @@
-package demo.area;
+package demo.zone;
 
 import com.sun.istack.internal.NotNull;
-import demo.textbox.TextBox;
 import demo.tile.Tile;
 import demo.tile.TileCoord;
-import gamestate.Intent;
+import gamestate.Trigger;
 import server.Server;
 
-public class Area_1_1 extends Area_1 {
+public class Zone_1_1 extends Zone_1 {
 
     private static boolean cached;
 
@@ -28,16 +27,15 @@ public class Area_1_1 extends Area_1 {
             loadMobs("/home/jeep/IdeaProjects/LittleEngine/res/cached/spawnmap_1-1.png");
         }
 
-        putTrigger(0xffff0000, () -> changeArea(Area_1_2.class, new TileCoord(5, 22, 16))); // red
+        putTrigger(0xffff0000, new Trigger(() -> changeZone(Zone_1_2.class, new TileCoord(5, 22, 16)), false)); // red
+        putTrigger(0xff00ff00, new Trigger(() -> changeZone(Zone_1_2.class, new TileCoord(17, 34, 16)), false)); // green
+        putTrigger(0xff0000ff, new Trigger(() -> changeZone(Zone_1_2.class, new TileCoord(29, 22, 16)), false)); // blue
 
-        putTrigger(0xff00ff00, () -> changeArea(Area_1_2.class, new TileCoord(17, 34, 16))); // green
-
-        putTrigger(0xff0000ff, () -> changeArea(Area_1_2.class, new TileCoord(29, 22, 16))); // blue
-
-        putTrigger(0xff00ffff, () -> { // cyan
-            String msg = "Welcome to Varg's very short adventure! Use W-A-S-D keys or the arrow keys to move. Press the left mouse button to throw an axe!";
-            createTextBox(0xffffff, msg);
-        });
+        putTrigger(0xff00ffff,
+                new Trigger(() -> { // cyan
+                    String msg = "Welcome to Varg's very short adventure! Use W-A-S-D keys or the arrow keys to move. Press the left mouse button to throw an axe!";
+                    createTextBox(0xffffff, msg);
+                    }, true));
     }
 
     @Override

@@ -2,12 +2,8 @@ package demo.mob.enemy.roach;
 
 import com.sun.istack.internal.NotNull;
 import demo.mob.enemy.Enemy;
-import demo.mob.treasure.YellowDoorkey;
 import demo.spritesheets.SpriteSheets;
-import demo.spritesheets.Sprites;
-import entity.Entity;
 import graphics.AnimSprite;
-import graphics.Screen;
 
 public class Roach extends Enemy {
 

@@ -1,6 +1,6 @@
 package demo.mob.enemy.slime;
 
-import demo.area.Area;
+import demo.zone.Zone;
 import demo.mob.Spawner;
 import demo.spritesheets.SpriteSheets;
 import entity.Entity;
@@ -13,7 +13,7 @@ public class SlimeSpawner extends Spawner {
     }
 
     public void spawn() {
-        Entity slime = new Slime(0x00ff00, x,  y, ((Area) gameState).getPlayer());
+        Entity slime = new Slime(0x00ff00, x,  y, ((Zone) gameState).getPlayer());
         slime.initialize(gameState);
         gameState.addEntity(slime);
     }

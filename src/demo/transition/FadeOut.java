@@ -40,14 +40,13 @@ public class FadeOut extends GameState {
             g -= fadeRate;
             b -= fadeRate;
 
-            pixels[i] = (r << 16) | (g << 8) |  b;
+            pixels[i] = (r << 16) | (g << 8) | b;
 
             if(pixels[i] < 0x000000)
                 pixels[i] = 0x000000;
 
             if(pixels[i] == 0x000000)
                 count++;
-//            System.out.println(count);
         }
 
         if(count == pixels.length) {

@@ -1,10 +1,10 @@
-package demo.area;
+package demo.zone;
 
 import demo.tile.PurpleLavaTile;
 import demo.tile.Tile;
 import server.Server;
 
-public class Area_3_1 extends Area_3 {
+public class Zone_3_1 extends Zone_3 {
     
     private static boolean cached;
 

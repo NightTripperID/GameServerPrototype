@@ -1,12 +1,11 @@
-package demo.area;
+package demo.zone;
 
-import demo.textbox.TextBox;
 import demo.tile.Tile;
 import demo.tile.TileCoord;
-import gamestate.Intent;
+import gamestate.Trigger;
 import server.Server;
 
-public class Area_1_3 extends Area_1 {
+public class Zone_1_3 extends Zone_1 {
 
     private static boolean cached;
 
@@ -30,12 +29,15 @@ public class Area_1_3 extends Area_1 {
         setScrollX((int) player.x - getScreenWidth() / 2);
         setScrollY((int) player.y - getScreenHeight() / 2);
 
-        putTrigger(0xffff0000, () -> changeArea(Area_1_2.class, new TileCoord(18, 18, 16)));
+        putTrigger(0xffff0000, new Trigger(() -> changeZone(Zone_1_2.class, new TileCoord(18, 18, 16)), false)); // red
 
-        putTrigger(0xff00ff00, () -> {
-           String msg = "there is a door somewhere that needs unlocking...";
-           createTextBox(0xffffff, msg);
-        });
+        putTrigger(0xff00ff00, // green
+                new Trigger(
+                        () -> {
+                            String msg = "there is a door somewhere that needs unlocking...";
+                            createTextBox(0xffffff, msg);
+                        },
+                        true));
     }
 
     @Override

@@ -1,15 +1,12 @@
 package demo.mob.player;
 
 import com.sun.istack.internal.NotNull;
-import demo.area.Area;
+import demo.zone.Zone;
 import demo.mob.Mob;
 import demo.mob.player.inventory.Inventory;
 import demo.spritesheets.SpriteSheets;
 import demo.tile.TileCoord;
-import demo.transition.FadeOut;
-import gamestate.Bundle;
 import gamestate.GameState;
-import gamestate.Intent;
 import graphics.AnimSprite;
 import graphics.Screen;
 
@@ -31,6 +28,10 @@ public class Player extends Mob {
         super(0x00ffff, x, y, 1, 1, 16, 16, 3, 0, true, true);
     }
 
+    public Player() {
+        this(0, 0);
+    }
+
     @Override
     public void initialize(@NotNull GameState gameState) {
         super.initialize(gameState);
@@ -47,7 +48,7 @@ public class Player extends Mob {
             visible = true;
             graceCount = MAX_GRACE_COUNT;
             addHealth(3);
-            ((Area) gameState).changeArea(gameState.getClass(), respawn);
+            ((Zone) gameState).changeZone(gameState.getClass(), respawn);
         }
 
         if (graceCount == MAX_GRACE_COUNT) {

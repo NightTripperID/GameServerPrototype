@@ -1,18 +1,16 @@
 package demo.mob.enemy.dinodrac;
 
-import demo.area.Area;
+import demo.mob.treasure.Doorkey;
+import demo.zone.Zone;
 import demo.mob.enemy.Enemy;
 import demo.mob.player.Player;
 import demo.mob.projectile.bolt.BlueBolt;
 import demo.mob.projectile.bolt.GreenBolt;
 import demo.mob.projectile.bolt.YellowBolt;
-import demo.mob.treasure.BlueDoorkey;
-import demo.mob.treasure.Potion;
 import demo.spritesheets.SpriteSheets;
 import entity.Entity;
 import gamestate.GameState;
 import graphics.AnimSprite;
-import graphics.Screen;
 
 public class DinoDrac extends Enemy {
 
@@ -45,7 +43,7 @@ public class DinoDrac extends Enemy {
     @Override
     public void initialize(GameState gameState) {
         super.initialize(gameState);
-        player = ((Area) gameState).getPlayer();
+        player = ((Zone) gameState).getPlayer();
     }
 
     @Override
@@ -188,8 +186,8 @@ public class DinoDrac extends Enemy {
 
     @Override
     protected void dropItem() {
-        Entity blueDoorkey = new BlueDoorkey(0xffff0000, x, y);
-        blueDoorkey.initialize(gameState);
-        gameState.addEntity(blueDoorkey);
+        Entity doorkey = new Doorkey(0xffff0000, x, y);
+        doorkey.initialize(gameState);
+        gameState.addEntity(doorkey);
     }
 }

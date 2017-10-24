@@ -1,12 +1,6 @@
 package demo;
 
-import demo.area.Area_1_1;
-import demo.area.Area_1_4;
-import demo.area.Area_2_2;
-import demo.mob.player.Player;
-import demo.tile.TileCoord;
 import demo.title.Title;
-import gamestate.Bundle;
 import gamestate.Intent;
 import server.Server;
 
@@ -25,9 +19,9 @@ public class Main {
 //        player.inventory.add("potion");
 //        bundle.putExtra("player", player);
 //
-//        Intent intent = new Intent(Area_1_1.class);
-////        Intent intent = new Intent(Area_1_4.class);
-////        Intent intent = new Intent(Area_2_2.class);
+//        Intent intent = new Intent(Zone_1_1.class);
+////        Intent intent = new Intent(Zone_1_4.class);
+////        Intent intent = new Intent(Zone_2_2.class);
 //
 //        intent.putExtra("bundle", bundle);
 //

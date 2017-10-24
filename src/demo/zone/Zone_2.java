@@ -1,9 +1,9 @@
-package demo.area;
+package demo.zone;
 
 import demo.tile.Tile;
 import demo.tile.Tiles;
 
-public abstract class Area_2 extends Area {
+public abstract class Zone_2 extends Zone {
 
     @Override
     public Tile getMapTileObject(int x, int y) {

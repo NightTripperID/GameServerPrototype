@@ -1,4 +1,4 @@
-package demo.area;
+package demo.zone;
 
 import com.sun.istack.internal.NotNull;
 import demo.mob.Mob;
@@ -10,7 +10,7 @@ import demo.mob.enemy.skelly.SkellySpawner;
 import demo.mob.enemy.slime.SlimeSpawner;
 import demo.mob.player.Player;
 import demo.mob.treasure.Potion;
-import demo.mob.treasure.YellowDoorkey;
+import demo.mob.treasure.Doorkey;
 import demo.overlay.Overlay;
 import demo.textbox.TextBox;
 import demo.tile.DemoTile;
@@ -31,7 +31,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class Area extends GameState {
+public abstract class Zone extends GameState {
 
     protected Player player;
     private Overlay overlay;
@@ -65,7 +65,7 @@ public abstract class Area extends GameState {
     public void update() {
         checkCollision();
         super.update();
-        overlay.update();;
+        overlay.update();
     }
 
     @Override
@@ -133,7 +133,7 @@ public abstract class Area extends GameState {
                         addEntity(potion);
                         break;
                     case 0xffffff00:
-                        Entity doorkey = new YellowDoorkey(0xffffff00, x * DemoTile.SIZE, y * DemoTile.SIZE);
+                        Entity doorkey = new Doorkey(0xffffff00, x * DemoTile.SIZE, y * DemoTile.SIZE);
                         doorkey.initialize(this);
                         addEntity(doorkey);
                         break;
@@ -179,7 +179,7 @@ public abstract class Area extends GameState {
         overlay.initialize(this);
     }
 
-    public void changeArea(Class<? extends GameState> gsc, TileCoord tileCoord) {
+    public void changeZone(Class<? extends GameState> gsc, TileCoord tileCoord) {
         Bundle bundle = new Bundle();
 
         bundle.putExtra("tileCoord", tileCoord);

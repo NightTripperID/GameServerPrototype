@@ -66,7 +66,7 @@ public class Sprites {
     public static final AnimSprite WATER = new AnimSprite(SpriteSheets.WATER, 16, 16, 2);
 
     //TITLE
-    public static final Sprite TITLE_SPRITE = new Sprite(SpriteSheets.TITLE_SHEET, 98, 34, 0, 0);;
+    public static final Sprite TITLE_SPRITE = new Sprite(SpriteSheets.TITLE_SHEET, 125, 34, 0, 0);
 
     private Sprites() {
     }

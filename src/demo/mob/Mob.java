@@ -4,6 +4,7 @@ import com.sun.istack.internal.NotNull;
 import entity.Entity;
 import entity.Renderable;
 import entity.Updatable;
+import gamestate.Trigger;
 import graphics.AnimSprite;
 
 import java.awt.*;
@@ -83,7 +84,7 @@ public abstract class Mob extends Entity implements Updatable, Renderable, Seria
         return false;
     }
 
-    public Runnable getTileTrigger(int xa, int ya) {
+    public Trigger getTileTrigger(int xa, int ya) {
         for (int corner = 0; corner < 4; corner++) {
             Point p = getTileCorner(xa, ya, corner);
             if (gameState.getMapTileObject(p.x, p.y).trigger())
