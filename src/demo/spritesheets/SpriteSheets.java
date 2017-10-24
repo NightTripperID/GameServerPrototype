@@ -6,6 +6,8 @@ public class SpriteSheets {
 
     public static final SpriteSheet MAIN_SHEET = new SpriteSheet("resource/spritesheet.png", 192, 288);
 
+    public static final SpriteSheet TITLE_SHEET = new SpriteSheet("resource/title.png", 98, 34);
+
     // MOBS
     public static final SpriteSheet BUZZARD_CLOCKWISE = new SpriteSheet(MAIN_SHEET, 4, 8, 1, 2, 16, 16);
     public static final SpriteSheet BUZZARD_COUNTERCLOCKWISE = new SpriteSheet(MAIN_SHEET, 4, 10, 1, 2, 16, 16);

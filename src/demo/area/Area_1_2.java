@@ -2,11 +2,8 @@ package demo.area;
 
 import com.sun.istack.internal.NotNull;
 import demo.textbox.TextBox;
-import demo.tile.DemoTile;
 import demo.tile.Tile;
 import demo.tile.TileCoord;
-import demo.transition.FadeOut;
-import gamestate.Bundle;
 import gamestate.Intent;
 import server.Server;
 
@@ -31,57 +28,10 @@ public class Area_1_2 extends Area_1 {
             loadMobs("/home/jeep/IdeaProjects/LittleEngine/res/cached/spawnmap_1-2.png");
         }
 
-        putTrigger(0xffff0000, () -> { // red
-            Intent intent = new Intent(FadeOut.class);
-            intent.putExtra("nextGameState", Area_1_1.class);
-            intent.putExtra("pixels", getScreenPixels());
-
-            Bundle bundle = new Bundle();
-            bundle.putExtra("tileCoord", new TileCoord(11, 12, 16));
-            bundle.putExtra("player", player);
-
-            intent.putExtra("bundle", bundle);
-            swapGameState(intent);
-        });
-
-        putTrigger(0xff00ff00, () -> { // green
-            Intent intent = new Intent(FadeOut.class);
-            intent.putExtra("nextGameState", Area_1_1.class);
-            intent.putExtra("pixels", getScreenPixels());
-
-            Bundle bundle = new Bundle();
-            bundle.putExtra("tileCoord", new TileCoord(14, 15, DemoTile.SIZE));
-            bundle.putExtra("player", player);
-
-            intent.putExtra("bundle", bundle);
-            swapGameState(intent);
-        });
-
-        putTrigger(0xff0000ff, () -> { // blue
-            Intent intent = new Intent(FadeOut.class);
-            intent.putExtra("nextGameState", Area_1_1.class);
-            intent.putExtra("pixels", getScreenPixels());
-
-            Bundle bundle = new Bundle();
-            bundle.putExtra("tileCoord", new TileCoord(17, 12, DemoTile.SIZE));
-            bundle.putExtra("player", player);
-
-            intent.putExtra("bundle", bundle);
-            swapGameState(intent);
-        });
-
-        putTrigger(0xffffff00, () -> { // yellow
-            Intent intent = new Intent(FadeOut.class);
-            intent.putExtra("nextGameState", Area_1_3.class);
-            intent.putExtra("pixels", getScreenPixels());
-
-            Bundle bundle = new Bundle();
-            bundle.putExtra("tileCoord", new TileCoord(18, 31, DemoTile.SIZE));
-            bundle.putExtra("player", player);
-
-            intent.putExtra("bundle", bundle);
-            swapGameState(intent);
-        });
+        putTrigger(0xffff0000, () -> changeArea(Area_1_1.class, new TileCoord(11, 12, 16))); // red
+        putTrigger(0xff00ff00, () -> changeArea(Area_1_1.class, new TileCoord(14, 15, 16))); // green
+        putTrigger(0xff0000ff, () -> changeArea(Area_1_1.class, new TileCoord(17, 12, 16))); // blue
+        putTrigger(0xffffff00, () -> changeArea(Area_1_3.class, new TileCoord(18, 31, 16))); // yellow
 
         putTrigger(0xff00ffff, () -> { // cyan
             if(player.inventory.getCount("doorkey") > 0) {
@@ -91,25 +41,11 @@ public class Area_1_2 extends Area_1 {
             }
         });
 
-        putTrigger(0xffff00ff, () -> { // magenta
-            Intent intent = new Intent(FadeOut.class);
-            intent.putExtra("nextGameState", Area_1_4.class);
-            intent.putExtra("pixels", getScreenPixels());
-
-            Bundle bundle = new Bundle();
-            bundle.putExtra("tileCoord", new TileCoord(17, 8, 16));
-            bundle.putExtra("player", player);
-
-            intent.putExtra("bundle", bundle);
-            swapGameState(intent);
-        });
+        putTrigger(0xffff00ff, () -> changeArea(Area_1_4.class, new TileCoord(17, 8, 16))); // magenta
 
         putTrigger(0xffffa500, () -> { // orange
-            Intent intent = new Intent(TextBox.class);
-            intent.putExtra("pixels", getScreenPixels());
-            intent.putExtra("textCol", 0xffffff);
-            intent.putExtra("msg", "Kill enemies to collect potions. Use the middle mouse button to heal with a potion. Use the right mouse button to use all your potions and cast magic! The more potions you have, the stronger the spell!");
-            pushGameState(intent);
+            String msg = "Kill enemies to collect potions. Use the middle mouse button to heal with a potion. Use the right mouse button to use all your potions to cast magic! The more potions you have, the stronger the spell!";
+            createTextBox(0xffffff, msg);
         });
     }
 

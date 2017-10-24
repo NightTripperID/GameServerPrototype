@@ -1,11 +1,7 @@
 package demo.area;
 
-import demo.tile.DemoTile;
 import demo.tile.Tile;
 import demo.tile.TileCoord;
-import demo.transition.FadeOut;
-import gamestate.Bundle;
-import gamestate.Intent;
 import server.Server;
 
 public class Area_2_1 extends Area_2 {
@@ -29,44 +25,9 @@ public class Area_2_1 extends Area_2 {
             loadMobs("/home/jeep/IdeaProjects/LittleEngine/res/cached/spawnmap_2-1.png");
         }
 
-        putTrigger(0xffff0000, () -> { // red
-            Intent intent = new Intent(FadeOut.class);
-            intent.putExtra("nextGameState", Area_1_4.class);
-            intent.putExtra("pixels", getScreenPixels());
-
-            Bundle bundle = new Bundle();
-            bundle.putExtra("tileCoord", new TileCoord(17, 17, DemoTile.SIZE));
-            bundle.putExtra("player", player);
-
-            intent.putExtra("bundle", bundle);
-            swapGameState(intent);
-        });
-
-        putTrigger(0xff00ff00, () -> { // green
-            Intent intent = new Intent(FadeOut.class);
-            intent.putExtra("nextGameState", Area_2_2.class);
-            intent.putExtra("pixels", getScreenPixels());
-
-            Bundle bundle = new Bundle();
-            bundle.putExtra("tileCoord", new TileCoord(23, 12, DemoTile.SIZE));
-            bundle.putExtra("player", player);
-
-            intent.putExtra("bundle", bundle);
-            swapGameState(intent);
-        });
-
-        putTrigger(0xff0000ff, () -> { // blue
-            Intent intent = new Intent(FadeOut.class);
-            intent.putExtra("nextGameState", Area_2_3.class);
-            intent.putExtra("pixels", getScreenPixels());
-
-            Bundle bundle = new Bundle();
-            bundle.putExtra("tileCoord", new TileCoord(1, 3, 16));
-            bundle.putExtra("player", player);
-
-            intent.putExtra("bundle", bundle);
-            swapGameState(intent);
-        });
+        putTrigger(0xffff0000, () -> changeArea(Area_1_4.class, new TileCoord(17, 17, 16))); // red
+        putTrigger(0xff00ff00, () -> changeArea(Area_2_2.class, new TileCoord(23, 12, 16))); // green
+        putTrigger(0xff0000ff, () -> changeArea(Area_2_3.class, new TileCoord(1, 3, 16))); // blue
     }
 
     @Override

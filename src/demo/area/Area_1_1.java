@@ -1,14 +1,9 @@
 package demo.area;
 
 import com.sun.istack.internal.NotNull;
-import demo.mob.Mob;
-import demo.mob.player.Player;
-import demo.overlay.Overlay;
 import demo.textbox.TextBox;
 import demo.tile.Tile;
 import demo.tile.TileCoord;
-import demo.transition.FadeOut;
-import gamestate.Bundle;
 import gamestate.Intent;
 import server.Server;
 
@@ -33,55 +28,15 @@ public class Area_1_1 extends Area_1 {
             loadMobs("/home/jeep/IdeaProjects/LittleEngine/res/cached/spawnmap_1-1.png");
         }
 
-        putTrigger(0xffff0000, () -> { // red
+        putTrigger(0xffff0000, () -> changeArea(Area_1_2.class, new TileCoord(5, 22, 16))); // red
 
-            Intent intent = new Intent(FadeOut.class);
-            intent.putExtra("nextGameState", Area_1_2.class);
-            intent.putExtra("pixels", getScreenPixels());
+        putTrigger(0xff00ff00, () -> changeArea(Area_1_2.class, new TileCoord(17, 34, 16))); // green
 
-            Bundle bundle = new Bundle();
-
-            bundle.putExtra("tileCoord", new TileCoord(5, 22, 16));
-            bundle.putExtra("player", player);
-
-            intent.putExtra("bundle", bundle);
-            swapGameState(intent);
-        });
-
-        putTrigger(0xff00ff00, () -> { // green
-            Intent intent = new Intent(FadeOut.class);
-            intent.putExtra("nextGameState", Area_1_2.class);
-            intent.putExtra("pixels", getScreenPixels());
-
-            Bundle bundle = new Bundle();
-
-            bundle.putExtra("tileCoord", new TileCoord(17, 34, 16));
-            bundle.putExtra("player", player);
-
-            intent.putExtra("bundle", bundle);
-            swapGameState(intent);
-        });
-
-        putTrigger(0xff0000ff, () -> { // blue
-            Intent intent = new Intent(FadeOut.class);
-            intent.putExtra("nextGameState", Area_1_2.class);
-            intent.putExtra("pixels", getScreenPixels());
-
-            Bundle bundle = new Bundle();
-            bundle.putExtra("tileCoord", new TileCoord(29, 22, 16));
-            bundle.putExtra("player", player);
-
-            intent.putExtra("bundle", bundle);
-            swapGameState(intent);
-        });
+        putTrigger(0xff0000ff, () -> changeArea(Area_1_2.class, new TileCoord(29, 22, 16))); // blue
 
         putTrigger(0xff00ffff, () -> { // cyan
-            Intent intent = new Intent(TextBox.class);
-            intent.putExtra("pixels", getScreenPixels());
-            intent.putExtra("msg", "Welcome to Varg's very short adventure! Use W-A-S-D keys or the arrow keys to move. Press the left mouse button to throw an axe!");
-            intent.putExtra("textCol", 0xffffff);
-            pushGameState(intent);
-
+            String msg = "Welcome to Varg's very short adventure! Use W-A-S-D keys or the arrow keys to move. Press the left mouse button to throw an axe!";
+            createTextBox(0xffffff, msg);
         });
     }
 

@@ -1,6 +1,7 @@
 package demo.mob.player;
 
 import com.sun.istack.internal.NotNull;
+import demo.area.Area;
 import demo.mob.Mob;
 import demo.mob.player.inventory.Inventory;
 import demo.spritesheets.SpriteSheets;
@@ -46,14 +47,7 @@ public class Player extends Mob {
             visible = true;
             graceCount = MAX_GRACE_COUNT;
             addHealth(3);
-            Bundle bundle = new Bundle();
-            bundle.putExtra("player", this);
-            bundle.putExtra("tileCoord", respawn);
-            Intent intent = new Intent(FadeOut.class);
-            intent.putExtra("bundle", bundle);
-            intent.putExtra("nextGameState", gameState.getClass());
-            intent.putExtra("pixels", gameState.getScreenPixels());
-            gameState.swapGameState(intent);
+            ((Area) gameState).changeArea(gameState.getClass(), respawn);
         }
 
         if (graceCount == MAX_GRACE_COUNT) {

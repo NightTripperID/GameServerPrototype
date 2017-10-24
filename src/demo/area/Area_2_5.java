@@ -3,9 +3,6 @@ package demo.area;
 import demo.tile.DemoTile;
 import demo.tile.Tile;
 import demo.tile.TileCoord;
-import demo.transition.FadeOut;
-import gamestate.Bundle;
-import gamestate.Intent;
 import server.Server;
 
 public class Area_2_5 extends Area_2 {
@@ -28,17 +25,7 @@ public class Area_2_5 extends Area_2 {
             loadTriggerTiles("/home/jeep/IdeaProjects/LittleEngine/res/cached/triggermap_2-5.png");
             loadMobs("/home/jeep/IdeaProjects/LittleEngine/res/cached/spawnmap_2-5.png");
         }
-
-        putTrigger(0xffff0000, () -> { // red
-            Bundle bundle = new Bundle();
-            bundle.putExtra("tileCoord", new TileCoord(5, 2, DemoTile.SIZE));
-            bundle.putExtra("player", player);
-            Intent intent = new Intent(FadeOut.class);
-            intent.putExtra("pixels", getScreenPixels());
-            intent.putExtra("nextGameState", Area_2_3.class);
-            intent.putExtra("bundle", bundle);
-            swapGameState(intent);
-        });
+        putTrigger(0xffff0000, () -> changeArea(Area_2_3.class, new TileCoord(5, 2, DemoTile.SIZE))); // red
     }
 
     @Override

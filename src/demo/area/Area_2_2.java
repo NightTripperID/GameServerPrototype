@@ -5,8 +5,6 @@ import demo.tile.DemoTile;
 import demo.tile.LavaTile;
 import demo.tile.Tile;
 import demo.tile.TileCoord;
-import demo.transition.FadeOut;
-import gamestate.Bundle;
 import gamestate.Intent;
 import server.Server;
 
@@ -31,18 +29,7 @@ public class Area_2_2 extends Area_2 {
             loadMobs("/home/jeep/IdeaProjects/LittleEngine/res/cached/spawnmap_2-2.png");
         }
 
-        putTrigger(0xffff0000, () -> { // red
-            Intent intent = new Intent(FadeOut.class);
-            intent.putExtra("nextGameState", Area_2_1.class);
-            intent.putExtra("pixels", getScreenPixels());
-
-            Bundle bundle = new Bundle();
-            bundle.putExtra("tileCoord", new TileCoord(1, 5, DemoTile.SIZE));
-            bundle.putExtra("player", player);
-
-            intent.putExtra("bundle", bundle);
-            swapGameState(intent);
-        });
+        putTrigger(0xffff0000, () -> changeArea(Area_2_1.class, new TileCoord(1, 5, DemoTile.SIZE))); // red
 
         putTrigger(0xff00ff00, () -> { // green
             if(!player.inventory.remove("blue_doorkey")) {
@@ -81,30 +68,15 @@ public class Area_2_2 extends Area_2 {
             setMapTile(12, 7, 0xffa5ff7f); // center of wide doorway
             setMapTile(13, 7, 0xffffff8e); // right side of wide doorway
 
-            Intent intent = new Intent(TextBox.class);
-            intent.putExtra("pixels", getScreenPixels());
-            intent.putExtra("textCol", 0xff0000);
-            intent.putExtra("msg", "Abandon all hope, ye who enter here!");
-            pushGameState(intent);
+            String msg = "Abandon all hope, ye who enter here!";
+            createTextBox(0xff0000, msg);
         });
 
-        putTrigger(0xffff00ff, () -> { //magenta
-           Intent intent = new Intent(FadeOut.class);
-           Bundle bundle = new Bundle();
-           bundle.putExtra("player", player);
-           bundle.putExtra("tileCoord", new TileCoord(10, 14, DemoTile.SIZE));
-           intent.putExtra("pixels", getScreenPixels());
-           intent.putExtra("nextGameState", Area_3_1.class);
-           intent.putExtra("bundle", bundle);
-           swapGameState(intent);
-        });
+        putTrigger(0xffff00ff, () -> changeArea(Area_3_1.class, new TileCoord(10, 14, DemoTile.SIZE))); // magenta
 
         putTrigger(0xffffa500, () -> { // orange
-            Intent intent = new Intent(TextBox.class);
-            intent.putExtra("pixels", getScreenPixels());
-            intent.putExtra("textCol", 0xffffff);
-            intent.putExtra("msg", "Legend has it that unlocking the three gates reveals a secret.");
-            pushGameState(intent);
+            String msg = "Legend has it that unlocking three gates reveals a secret.";
+            createTextBox(0xffffff, msg);
         });
     }
 

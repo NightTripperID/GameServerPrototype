@@ -12,11 +12,14 @@ import demo.mob.player.Player;
 import demo.mob.treasure.Potion;
 import demo.mob.treasure.YellowDoorkey;
 import demo.overlay.Overlay;
+import demo.textbox.TextBox;
 import demo.tile.DemoTile;
 import demo.tile.TileCoord;
+import demo.transition.FadeOut;
 import entity.Entity;
 import gamestate.Bundle;
 import gamestate.GameState;
+import gamestate.Intent;
 import graphics.Screen;
 import server.Server;
 
@@ -34,6 +37,8 @@ public abstract class Area extends GameState {
     private Overlay overlay;
 
     private int[] mobTiles;
+
+    protected static final int FADE_RATE = 6;
 
     int[] getMobTiles() {
         return mobTiles;
@@ -172,5 +177,28 @@ public abstract class Area extends GameState {
     void setOverlay(Overlay overlay) {
         this.overlay = overlay;
         overlay.initialize(this);
+    }
+
+    public void changeArea(Class<? extends GameState> gsc, TileCoord tileCoord) {
+        Bundle bundle = new Bundle();
+
+        bundle.putExtra("tileCoord", tileCoord);
+        bundle.putExtra("player", player);
+
+        Intent intent = new Intent(FadeOut.class);
+        intent.putExtra("bundle", bundle);
+        intent.putExtra("nextGameState", gsc);
+        intent.putExtra("pixels", getScreenPixels());
+        intent.putExtra("fadeRate", FADE_RATE);
+
+        swapGameState(intent);
+    }
+
+    public void createTextBox(int textCol, String msg) {
+        Intent intent = new Intent(TextBox.class);
+        intent.putExtra("pixels", getScreenPixels());
+        intent.putExtra("textCol", textCol);
+        intent.putExtra("msg", msg);
+        pushGameState(intent);
     }
 }

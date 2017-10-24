@@ -11,10 +11,13 @@ public class FadeOut extends GameState {
 
     private int count;
     private int[] pixels;
+    private int fadeRate;
 
     @Override
     public void onCreate(@NotNull Server server) {
         super.onCreate(server);
+        Intent intent = getIntent();
+        fadeRate = intent.getIntegerExtra("fadeRate");
         pixels = getIntent().getIntegerArrayExtra("pixels");
         for(int p : pixels)
             if (p == 0x000000)
@@ -24,8 +27,6 @@ public class FadeOut extends GameState {
     @Override
     @SuppressWarnings("unchecked")
     public void update() {
-
-        final int fadeRate = 6;
 
         for(int i = 0; i < pixels.length; i++) {
             if(pixels[i] == 0x000000)
@@ -46,6 +47,7 @@ public class FadeOut extends GameState {
 
             if(pixels[i] == 0x000000)
                 count++;
+//            System.out.println(count);
         }
 
         if(count == pixels.length) {

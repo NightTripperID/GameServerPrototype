@@ -1,12 +1,9 @@
 package demo.area;
 
 import demo.textbox.TextBox;
-import demo.tile.DemoTile;
 import demo.tile.Tile;
 import demo.tile.TileCoord;
 import demo.tile.WaterTile;
-import demo.transition.FadeOut;
-import gamestate.Bundle;
 import gamestate.Intent;
 import server.Server;
 
@@ -31,18 +28,7 @@ public class Area_1_4 extends Area_1 {
             loadMobs("/home/jeep/IdeaProjects/LittleEngine/res/cached/spawnmap_1-4.png");
         }
 
-        putTrigger(0xffff0000, () -> { //red
-            Intent intent = new Intent(FadeOut.class);
-            intent.putExtra("nextGameState", Area_1_2.class);
-            intent.putExtra("pixels", getScreenPixels());
-
-            Bundle bundle = new Bundle();
-            bundle.putExtra("tileCoord", new TileCoord(18, 6, DemoTile.SIZE));
-            bundle.putExtra("player", player);
-
-            intent.putExtra("bundle", bundle);
-            swapGameState(intent);
-        });
+        putTrigger(0xffff0000, () -> changeArea(Area_1_2.class, new TileCoord(18, 6, 16))); // red
 
         putTrigger(0xff00ff00, () -> { // green
             setMapTile(2, 3, 0xffbc0051);
@@ -76,18 +62,7 @@ public class Area_1_4 extends Area_1 {
             }
         });
 
-        putTrigger(0xffff00ff,() -> { // magenta
-            Intent intent = new Intent(FadeOut.class);
-            intent.putExtra("nextGameState", Area_2_1.class);
-            intent.putExtra("pixels", getScreenPixels());
-
-            Bundle bundle = new Bundle();
-            bundle.putExtra("tileCoord", new TileCoord(11, 4, DemoTile.SIZE));
-            bundle.putExtra("player", player);
-
-            intent.putExtra("bundle", bundle);
-            swapGameState(intent);
-        });
+        putTrigger(0xffff00ff,() -> changeArea(Area_2_1.class, new TileCoord(11, 4, 16))); // magenta
     }
 
     private void drainMoat() {
@@ -113,11 +88,8 @@ public class Area_1_4 extends Area_1 {
         setMapTile(18, 24, 0xffc0c0c0);
         setMapTile(18, 25, 0xffc0c0c0);
 
-        Intent intent = new Intent(TextBox.class);
-        intent.putExtra("pixels", getScreenPixels());
-        intent.putExtra("textCol", 0xff00ffff);
-        intent.putExtra("msg", "You hear the sound of draining water...");
-        pushGameState(intent);
+        String msg = "You hear the sound of draining water...";
+        createTextBox(0xff00ffff, msg);
     }
 
     @Override
