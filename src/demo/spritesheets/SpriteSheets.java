@@ -9,6 +9,8 @@ public class SpriteSheets {
     public static final SpriteSheet TITLE_SHEET = new SpriteSheet("resource/title.png", 98, 34);
 
     // MOBS
+    public static final SpriteSheet BOSS = new SpriteSheet(MAIN_SHEET, 2, 6, 1, 2, 32, 32);
+
     public static final SpriteSheet BUZZARD_CLOCKWISE = new SpriteSheet(MAIN_SHEET, 4, 8, 1, 2, 16, 16);
     public static final SpriteSheet BUZZARD_COUNTERCLOCKWISE = new SpriteSheet(MAIN_SHEET, 4, 10, 1, 2, 16, 16);
 
@@ -21,7 +23,6 @@ public class SpriteSheets {
 
     public static final SpriteSheet MAGIC_1 = new SpriteSheet(MAIN_SHEET, 6, 2, 1, 4, 16, 16);
 
-    public static final SpriteSheet MEDUSA_SPAWNER = new SpriteSheet(MAIN_SHEET,  3, 6, 1, 1, 16, 16);
     public static final SpriteSheet MEDUSA_UP = new SpriteSheet(MAIN_SHEET, 2, 7, 1, 2, 16, 16);
     public static final SpriteSheet MEDUSA_DOWN = new SpriteSheet(MAIN_SHEET, 2, 5, 1, 2, 16, 16);
 
@@ -35,6 +36,8 @@ public class SpriteSheets {
     public static final SpriteSheet ROACH_LEFT = new SpriteSheet(MAIN_SHEET, 1, 8, 1, 4, 16, 16);
     public static final SpriteSheet ROACH_RIGHT = new SpriteSheet(MAIN_SHEET, 1, 12, 1, 4, 16, 16);
 
+    public static final SpriteSheet REVENGE_SLIME = new SpriteSheet(MAIN_SHEET, 5, 8, 1, 4, 16, 16);
+
     public static final SpriteSheet SKELLY_UP = new SpriteSheet(MAIN_SHEET, 4, 4, 1, 4, 16, 16);
     public static final SpriteSheet SKELLY_DOWN = new SpriteSheet(MAIN_SHEET, 4, 0, 1, 4, 16, 16);
     public static final SpriteSheet SKELLY_LEFT = new SpriteSheet(MAIN_SHEET, 5, 0, 1, 4, 16, 16);
@@ -42,8 +45,6 @@ public class SpriteSheets {
 
     public static final SpriteSheet SLIME_SPAWNER = new SpriteSheet(MAIN_SHEET, 6, 0, 1, 2, 16, 16);
     public static final SpriteSheet SLIME = new SpriteSheet(MAIN_SHEET, 2, 1, 1, 4, 16, 16);
-
-    public static final SpriteSheet ITEMS = new SpriteSheet(MAIN_SHEET, 6, 0, 2, 2, 8, 8);
 
     // ANIMATED TILES
     static final SpriteSheet WATER = new SpriteSheet(MAIN_SHEET, 9, 0, 1, 2, 16, 16);

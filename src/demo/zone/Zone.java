@@ -1,16 +1,17 @@
 package demo.zone;
 
 import com.sun.istack.internal.NotNull;
+import demo.mob.enemy.boss.Boss;
 import demo.mob.Mob;
-import demo.mob.buzzard.Buzzard;
+import demo.mob.enemy.buzzard.Buzzard;
 import demo.mob.enemy.dinodrac.DinoDrac;
 import demo.mob.enemy.medusa.MedusaSpawner;
 import demo.mob.enemy.roach.Roach;
 import demo.mob.enemy.skelly.SkellySpawner;
 import demo.mob.enemy.slime.SlimeSpawner;
 import demo.mob.player.Player;
-import demo.mob.treasure.Potion;
-import demo.mob.treasure.Doorkey;
+import demo.mob.item.Potion;
+import demo.mob.item.Doorkey;
 import demo.overlay.Overlay;
 import demo.textbox.TextBox;
 import demo.tile.DemoTile;
@@ -167,6 +168,10 @@ public abstract class Zone extends GameState {
                         buzzard.initialize(this);
                         addEntity(buzzard);
                         break;
+                    case 0xff978cff:
+                        Entity boss = new Boss(0xff978cff, x * DemoTile.SIZE, y * DemoTile.SIZE);
+                        boss.initialize(this);
+                        addEntity(boss);
                     default:
                         break;
                 }

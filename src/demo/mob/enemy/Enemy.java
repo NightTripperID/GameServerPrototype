@@ -3,7 +3,7 @@ package demo.mob.enemy;
 import com.sun.istack.internal.NotNull;
 import demo.mob.Mob;
 import demo.mob.explosion.Explosion;
-import demo.mob.treasure.Potion;
+import demo.mob.item.Potion;
 import entity.Entity;
 import graphics.Screen;
 import graphics.Sprite;
@@ -22,14 +22,14 @@ public abstract class Enemy extends Mob {
         super.update();
 
         final int woundCount = 3;
-        if(wounded) {
-            if(count++ == woundCount) {
+        if (wounded) {
+            if (count++ == woundCount) {
                 count = 0;
                 wounded = false;
             }
         }
 
-        if(getHealth() <= 0) {
+        if (getHealth() <= 0) {
             die();
             dropItem();
         }
@@ -61,8 +61,8 @@ public abstract class Enemy extends Mob {
     }
 
     protected void dropItem() {
-        if(!friendly()) {
-            switch(random.nextInt(10)) {
+        if (!friendly()) {
+            switch (random.nextInt(10)) {
                 case 0:
                     Entity potion = new Potion(0xffff0000, x, y);
                     potion.initialize(gameState);
@@ -78,7 +78,7 @@ public abstract class Enemy extends Mob {
     public void assignDamage(int damage) {
         super.assignDamage(damage);
 
-        if(damage > 0)
+        if (damage > 0)
             wounded = true;
     }
 }

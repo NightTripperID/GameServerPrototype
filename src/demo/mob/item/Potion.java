@@ -1,4 +1,4 @@
-package demo.mob.treasure;
+package demo.mob.item;
 
 import demo.zone.Zone;
 import demo.mob.Mob;

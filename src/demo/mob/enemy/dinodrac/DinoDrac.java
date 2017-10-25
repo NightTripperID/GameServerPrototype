@@ -1,6 +1,6 @@
 package demo.mob.enemy.dinodrac;
 
-import demo.mob.treasure.Doorkey;
+import demo.mob.item.Doorkey;
 import demo.zone.Zone;
 import demo.mob.enemy.Enemy;
 import demo.mob.player.Player;

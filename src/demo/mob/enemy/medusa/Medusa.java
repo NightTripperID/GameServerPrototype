@@ -1,5 +1,6 @@
 package demo.mob.enemy.medusa;
 
+import com.sun.istack.internal.NotNull;
 import demo.mob.enemy.Enemy;
 import demo.mob.player.Player;
 import demo.spritesheets.SpriteSheets;
@@ -11,7 +12,7 @@ import java.awt.*;
 
 public class Medusa extends Enemy {
 
-    public Medusa(int col, double x, double y, Player player) {
+    public Medusa(int col, double x, double y, @NotNull Player player) {
         super(col, x, y, 1, 1, 16, 16, 2, 1, true);
         currState = new MedusaStatePatrol(this, gameState, player);
         currSprite = new AnimSprite(SpriteSheets.MEDUSA_DOWN, 16, 16, 2);

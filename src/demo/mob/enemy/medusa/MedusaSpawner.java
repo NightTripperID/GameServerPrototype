@@ -1,15 +1,17 @@
 package demo.mob.enemy.medusa;
 
+import demo.spritesheets.Sprites;
 import demo.zone.Zone;
 import demo.mob.Spawner;
 import demo.spritesheets.SpriteSheets;
 import entity.Entity;
 import graphics.AnimSprite;
+import graphics.Sprite;
 
 public class MedusaSpawner extends Spawner {
 
     public MedusaSpawner(int col, double x, double y) {
-        super(col, x, y, 4 * 60, new AnimSprite(SpriteSheets.MEDUSA_SPAWNER, 16, 16, 1), 35);
+        super(col, x, y, 4 * 60, Sprites.MEDUSA_SPAWNER);
     }
 
     @Override

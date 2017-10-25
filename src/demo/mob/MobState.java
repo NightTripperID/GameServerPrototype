@@ -3,10 +3,13 @@ package demo.mob;
 import com.sun.istack.internal.NotNull;
 import gamestate.GameState;
 
+import java.util.Random;
+
 public abstract class MobState {
 
     protected Mob mob;
     protected GameState gameState;
+    protected Random random = new Random();
 
     public MobState(@NotNull Mob mob, @NotNull GameState gameState) {
         this.mob = mob;

@@ -32,7 +32,6 @@ public abstract class GameState {
     private int[] mapTiles;
     private int[] triggerTiles;
 
-//    private Map<Integer, Runnable> triggers = new HashMap<>();
     private Map<Integer, Trigger> triggers = new HashMap<>();
 
     public void onCreate(@NotNull Server server) {
@@ -86,8 +85,10 @@ public abstract class GameState {
         int y1 = (((int) yScroll + screen.getHeight()) + tileSize) >> tileBitShift;
 
         for (int y = y0; y < y1; y++)
-            for (int x = x0; x < x1; x++)
-                getMapTileObject(x, y).render(screen, x << tileBitShift, y << tileBitShift);
+            for (int x = x0; x < x1; x++) {
+                if(getMapTiles() != null)
+                    getMapTileObject(x, y).render(screen, x << tileBitShift, y << tileBitShift);
+            }
     }
 
     public final void pushGameState(@NotNull Intent intent) {

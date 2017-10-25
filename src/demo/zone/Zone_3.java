@@ -41,17 +41,6 @@ public abstract class Zone_3 extends Zone {
                     return Tiles.stoneTopL;
                 else
                     return Tiles.stoneTopR;
-            case 0xffff7f7f:
-                if(x % 2 == 0)
-                    if(y % 2 == 1)
-                        return Tiles.vultureSlabTL;
-                    else
-                        return Tiles.vultureSlabTR;
-                else
-                    if(y % 2 == 1)
-                        return Tiles.vultureSlabBL;
-                    else
-                        return Tiles.vultureSlabBR;
             default:
                 return Tiles.voidTile;
         }

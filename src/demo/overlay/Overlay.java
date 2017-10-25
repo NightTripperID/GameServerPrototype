@@ -8,10 +8,9 @@ import entity.Updatable;
 import gamestate.GameState;
 import graphics.Screen;
 
-public class Overlay extends Entity implements Updatable, Renderable{
+public class Overlay extends Entity implements Updatable, Renderable {
 
-    private int numYellowKeys;
-    private int numBlueKeys;
+    private int numDoorkeys;
     private int numPotions;
 
     private Player player;
@@ -27,18 +26,14 @@ public class Overlay extends Entity implements Updatable, Renderable{
 
     @Override
     public void update() {
-        numYellowKeys = player.inventory.getCount("doorkey");
-        numBlueKeys = player.inventory.getCount("blue_doorkey");
+        numDoorkeys = player.inventory.getCount("doorkey");
         numPotions = player.inventory.getCount("potion");
-
     }
 
     @Override
     public void render(Screen screen) {
 
         int screenW = gameState.getScreenWidth();
-        int blueDoorkeyOfs = screenW - 80;
-        int numBlueKeysOfs = screenW - 72;
         int yellowDoorkeyOfs = screenW - 40;
         int numYellowKeysOfs = screenW - 32;
 
@@ -58,11 +53,8 @@ public class Overlay extends Entity implements Updatable, Renderable{
         for (int i = 0; i < numPotions; i++)
             screen.renderSprite(potionFrameOfs + 2 + (i << 4), 12, Sprites.POTION);
 
-        screen.renderSprite(blueDoorkeyOfs, 12, Sprites.BLUE_DOORKEY);
-        screen.renderString8x8(numBlueKeysOfs, 12, 0xffffff, "x" + numBlueKeys);
-
         screen.renderSprite(yellowDoorkeyOfs, 12, Sprites.YELLOW_DOORKEY);
-        screen.renderString8x8(numYellowKeysOfs, 12, 0xffffff, "x" + numYellowKeys);
+        screen.renderString8x8(numYellowKeysOfs, 12, 0xffffff, "x" + numDoorkeys);
     }
 
     @Override

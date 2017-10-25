@@ -14,7 +14,6 @@ public class Sprites {
     public static final Sprite HEART = new Sprite(SpriteSheets.MAIN_SHEET, 8, 6, 0);
     public static final Sprite POTION = new Sprite(SpriteSheets.MAIN_SHEET, 8, 6, 1);
     public static final Sprite YELLOW_DOORKEY = new Sprite(SpriteSheets.MAIN_SHEET, 8, 7, 0);
-    public static final Sprite BLUE_DOORKEY = new Sprite(SpriteSheets.MAIN_SHEET, 8, 7, 1);
 
     // PROJECTILES
     public static final Sprite AXE = new Sprite(SpriteSheets.MAIN_SHEET, 16, 2, 0);
@@ -35,6 +34,7 @@ public class Sprites {
     public static final Sprite FLOOR_SWITCH_DOWN = new Sprite(SpriteSheets.MAIN_SHEET, 16, 10, 6);
     public static final Sprite GRAVE = new Sprite(SpriteSheets.MAIN_SHEET, 16, 11, 2);
     public static final Sprite LAVA_GRATE = new Sprite(SpriteSheets.MAIN_SHEET, 16, 8, 3);
+    public static final Sprite MEDUSA_SPAWNER = new Sprite(SpriteSheets.MAIN_SHEET, 16, 3, 6);
     public static final Sprite OBELISK_TOP = new Sprite(SpriteSheets.MAIN_SHEET, 16, 7, 0);
     public static final Sprite OBELISK_BOTTOM = new Sprite(SpriteSheets.MAIN_SHEET, 16, 7, 1);
     public static final Sprite PILLAR_TOP = new Sprite(SpriteSheets.MAIN_SHEET, 16, 10, 0);

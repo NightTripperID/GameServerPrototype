@@ -9,7 +9,7 @@ import graphics.AnimSprite;
 public class SlimeSpawner extends Spawner {
 
     public SlimeSpawner(int col, double x, double y) {
-        super(col, x, y, 4 * 60, new AnimSprite(SpriteSheets.SLIME_SPAWNER, 16, 16, 2), 35);
+        super(col, x, y, 4 * 60, new AnimSprite(SpriteSheets.SLIME_SPAWNER, 16, 16, 2, 35));
     }
 
     public void spawn() {

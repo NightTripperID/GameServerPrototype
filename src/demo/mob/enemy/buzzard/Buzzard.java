@@ -1,14 +1,13 @@
-package demo.mob.buzzard;
+package demo.mob.enemy.buzzard;
 
 import demo.mob.enemy.Enemy;
 import demo.spritesheets.SpriteSheets;
 import demo.tile.DemoTile;
 import graphics.AnimSprite;
 import graphics.Screen;
-import graphics.Sprite;
 
-import static demo.mob.buzzard.Buzzard.Rotation.CLOCKWISE;
-import static demo.mob.buzzard.Buzzard.Rotation.COUNTERCLOCKWISE;
+import static demo.mob.enemy.buzzard.Buzzard.Rotation.CLOCKWISE;
+import static demo.mob.enemy.buzzard.Buzzard.Rotation.COUNTERCLOCKWISE;
 
 public class Buzzard extends Enemy {
 

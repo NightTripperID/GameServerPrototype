@@ -8,6 +8,11 @@ public class AnimSprite extends Sprite {
     private int time;
     private int length = -1;
 
+    public AnimSprite(SpriteSheet sheet, int width, int height, int length, int rate) {
+        this(sheet, width, height, length);
+        this.rate = rate;
+    }
+
     public AnimSprite(SpriteSheet sheet, int width, int height, int length) {
         super(sheet, width, height);
         this.length = length;

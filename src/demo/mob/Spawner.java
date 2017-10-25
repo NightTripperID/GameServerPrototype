@@ -12,10 +12,9 @@ public abstract class Spawner extends Enemy {
 
     protected Sprite spawnerSprite;
 
-    public Spawner(int col, double x, double y, int countMax, AnimSprite animSprite, int frameRate) {
+    public Spawner(int col, double x, double y, int countMax, AnimSprite animSprite) {
         this(col, x, y, countMax);
         currSprite = animSprite;
-        currSprite.setFrameRate(frameRate);
     }
 
     public Spawner(int col, double x, double y, int countMax, Sprite spawnerSprite) {
