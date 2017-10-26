@@ -16,14 +16,14 @@ public class Zone_1_3 extends Zone_1 {
         initMap(36, 36, Tile.TileSize.X16);
 
         if(!cached) {
-            loadMapTiles("/home/jeep/IdeaProjects/LittleEngine/res/map_1-3.png");
-            loadTriggerTiles("/home/jeep/IdeaProjects/LittleEngine/res/triggermap_1-3.png");
-            loadMobs("/home/jeep/IdeaProjects/LittleEngine/res/spawnmap_1-3.png");
+            loadMapTiles("res/map_1-3.png");
+            loadTriggerTiles("res/triggermap_1-3.png");
+            loadMobs("res/spawnmap_1-3.png");
             cached = true;
         } else {
-            loadMapTiles("/home/jeep/IdeaProjects/LittleEngine/res/cached/map_1-3.png");
-            loadTriggerTiles("/home/jeep/IdeaProjects/LittleEngine/res/cached/triggermap_1-3.png");
-            loadMobs("/home/jeep/IdeaProjects/LittleEngine/res/cached/spawnmap_1-3.png");
+            loadMapTiles("res/cached/map_1-3.png");
+            loadTriggerTiles("res/cached/triggermap_1-3.png");
+            loadMobs("res/cached/spawnmap_1-3.png");
         }
 
         setScrollX((int) player.x - getScreenWidth() / 2);
@@ -44,8 +44,8 @@ public class Zone_1_3 extends Zone_1 {
     public void onDestroy() {
         super.onDestroy();
 
-        pixelsToPNG(getMapTiles(), "/home/jeep/IdeaProjects/LittleEngine/res/cached/map_1-3.png");
-        pixelsToPNG(getTriggerTiles(), "/home/jeep/IdeaProjects/LittleEngine/res/cached/triggermap_1-3.png");
-        pixelsToPNG(getMobTiles(), "/home/jeep/IdeaProjects/LittleEngine/res/cached/spawnmap_1-3.png");
+        pixelsToPNG(getMapTiles(), "res/cached/map_1-3.png");
+        pixelsToPNG(getTriggerTiles(), "res/cached/triggermap_1-3.png");
+        pixelsToPNG(getMobTiles(), "res/cached/spawnmap_1-3.png");
     }
 }

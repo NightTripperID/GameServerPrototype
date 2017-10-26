@@ -17,14 +17,14 @@ public class Zone_2_3 extends Zone_2 {
         initMap(11, 7, Tile.TileSize.X16);
 
         if (!cached) {
-            loadMapTiles("/home/jeep/IdeaProjects/LittleEngine/res/map_2-3.png");
-            loadTriggerTiles("/home/jeep/IdeaProjects/LittleEngine/res/triggermap_2-3.png");
-            loadMobs("/home/jeep/IdeaProjects/LittleEngine/res/spawnmap_2-3.png");
+            loadMapTiles("res/map_2-3.png");
+            loadTriggerTiles("res/triggermap_2-3.png");
+            loadMobs("res/spawnmap_2-3.png");
             cached = true;
         } else {
-            loadMapTiles("/home/jeep/IdeaProjects/LittleEngine/res/cached/map_2-3.png");
-            loadTriggerTiles("/home/jeep/IdeaProjects/LittleEngine/res/cached/triggermap_2-3.png");
-            loadMobs("/home/jeep/IdeaProjects/LittleEngine/res/cached/spawnmap_2-3.png");
+            loadMapTiles("res/cached/map_2-3.png");
+            loadTriggerTiles("res/cached/triggermap_2-3.png");
+            loadMobs("res/cached/spawnmap_2-3.png");
         }
         putTrigger(0xffff0000, new Trigger(() -> changeZone(Zone_2_1.class, new TileCoord(21, 5, DemoTile.SIZE)), false)); // red
         putTrigger(0xff00ff00, new Trigger(() -> changeZone(Zone_2_4.class, new TileCoord(1, 9, DemoTile.SIZE)), false)); // green
@@ -35,8 +35,8 @@ public class Zone_2_3 extends Zone_2 {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        pixelsToPNG(getMapTiles(), "/home/jeep/IdeaProjects/LittleEngine/res/cached/map_2-3.png");
-        pixelsToPNG(getTriggerTiles(), "/home/jeep/IdeaProjects/LittleEngine/res/cached/triggermap_2-3.png");
-        pixelsToPNG(getMobTiles(), "/home/jeep/IdeaProjects/LittleEngine/res/cached/spawnmap_2-3.png");
+        pixelsToPNG(getMapTiles(), "res/cached/map_2-3.png");
+        pixelsToPNG(getTriggerTiles(), "res/cached/triggermap_2-3.png");
+        pixelsToPNG(getMobTiles(), "res/cached/spawnmap_2-3.png");
     }
 }

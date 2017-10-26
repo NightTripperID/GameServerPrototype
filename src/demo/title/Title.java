@@ -17,7 +17,6 @@ public class Title extends GameState {
 
     private Sprite axeSprite = Sprites.AXE;
     private Sprite titleSprite = Sprites.TITLE_SPRITE;
-    private double angle;
 
     @Override
     public void onCreate(Server server) {
@@ -29,7 +28,6 @@ public class Title extends GameState {
         super.update();
         if(getKeyboard().enterPressed || getKeyboard().spacePressed)
             startDemo();
-        angle += .01;
     }
 
     @Override
@@ -69,16 +67,16 @@ public class Title extends GameState {
 
     private void startDemo() {
         Bundle bundle = new Bundle();
-//        bundle.putExtra("tileCoord", new TileCoord(14, 17, 16));
-        bundle.putExtra("tileCoord", new TileCoord(11, 15, 16));
+        bundle.putExtra("tileCoord", new TileCoord(14, 17, 16));
+//        bundle.putExtra("tileCoord", new TileCoord(11, 15, 16));
         Player player = new Player();
         player.inventory.add("potion");
         bundle.putExtra("player", player);
 
         Intent intent = new Intent(FadeOut.class);
         intent.putExtra("pixels", getScreenPixels());
-//        intent.putExtra("nextGameState", Zone_1_1.class);
-        intent.putExtra("nextGameState", Zone_3_1.class);
+        intent.putExtra("nextGameState", Zone_1_1.class);
+//        intent.putExtra("nextGameState", Zone_3_1.class);
         intent.putExtra("bundle", bundle);
         intent.putExtra("fadeRate", 3);
 

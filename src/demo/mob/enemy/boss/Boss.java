@@ -7,7 +7,7 @@ import graphics.Screen;
 public class Boss extends Enemy {
 
     public Boss(int col, double x, double y) {
-        super(col, x, y, -1, 1, 32, 32, 1, 2, true);
+        super(col, x, y, -1, 1, 32, 32, 40, 2, true);
     }
 
     @Override

@@ -24,14 +24,14 @@ public class Zone_3_1 extends Zone_3 {
         initMap(22, 22, Tile.TileSize.X16);
 
         if (!cached) {
-            loadMapTiles("/home/jeep/IdeaProjects/LittleEngine/res/map_3-1.png");
-            loadTriggerTiles("/home/jeep/IdeaProjects/LittleEngine/res/triggermap_3-1.png");
-            loadMobs("/home/jeep/IdeaProjects/LittleEngine/res/spawnmap_3-1.png");
+            loadMapTiles("res/map_3-1.png");
+            loadTriggerTiles("res/triggermap_3-1.png");
+            loadMobs("res/spawnmap_3-1.png");
             cached = true;
         } else {
-            loadMapTiles("/home/jeep/IdeaProjects/LittleEngine/res/cached/map_3-1.png");
-            loadTriggerTiles("/home/jeep/IdeaProjects/LittleEngine/res/cached/triggermap_3-1.png");
-            loadMobs("/home/jeep/IdeaProjects/LittleEngine/res/cached/spawnmap_3-1.png");
+            loadMapTiles("res/cached/map_3-1.png");
+            loadTriggerTiles("res/cached/triggermap_3-1.png");
+            loadMobs("res/cached/spawnmap_3-1.png");
         }
 
         slimeCount = numRevengeSlimes;
@@ -51,9 +51,9 @@ public class Zone_3_1 extends Zone_3 {
     public void onDestroy() {
         super.onDestroy();
 
-        pixelsToPNG(getMapTiles(), "/home/jeep/IdeaProjects/LittleEngine/res/cached/map_3-1.png");
-        pixelsToPNG(getTriggerTiles(), "/home/jeep/IdeaProjects/LittleEngine/res/cached/triggermap_3-1.png");
-        pixelsToPNG(getMobTiles(), "/home/jeep/IdeaProjects/LittleEngine/res/cached/spawnmap_3-1.png");
+        pixelsToPNG(getMapTiles(), "res/cached/map_3-1.png");
+        pixelsToPNG(getTriggerTiles(), "res/cached/triggermap_3-1.png");
+        pixelsToPNG(getMobTiles(), "res/cached/spawnmap_3-1.png");
     }
 
     public void subtractSlime() {

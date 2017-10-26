@@ -17,14 +17,14 @@ public class Zone_1_4 extends Zone_1 {
         initMap(36, 36, Tile.TileSize.X16);
 
         if (!cached) {
-            loadMapTiles("/home/jeep/IdeaProjects/LittleEngine/res/map_1-4.png");
-            loadTriggerTiles("/home/jeep/IdeaProjects/LittleEngine/res/triggermap_1-4.png");
-            loadMobs("/home/jeep/IdeaProjects/LittleEngine/res/spawnmap_1-4.png");
+            loadMapTiles("res/map_1-4.png");
+            loadTriggerTiles("res/triggermap_1-4.png");
+            loadMobs("res/spawnmap_1-4.png");
             cached = true;
         } else {
-            loadMapTiles("/home/jeep/IdeaProjects/LittleEngine/res/cached/map_1-4.png");
-            loadTriggerTiles("/home/jeep/IdeaProjects/LittleEngine/res/cached/triggermap_1-4.png");
-            loadMobs("/home/jeep/IdeaProjects/LittleEngine/res/cached/spawnmap_1-4.png");
+            loadMapTiles("res/cached/map_1-4.png");
+            loadTriggerTiles("res/cached/triggermap_1-4.png");
+            loadMobs("res/cached/spawnmap_1-4.png");
         }
 
         putTrigger(0xffff0000, new Trigger(() -> changeZone(Zone_1_2.class, new TileCoord(18, 6, 16)), false)); // red
@@ -103,7 +103,7 @@ public class Zone_1_4 extends Zone_1 {
         setMapTile(18, 24, 0xffc0c0c0);
         setMapTile(18, 25, 0xffc0c0c0);
 
-        String msg = "You hear the sound of draining water...";
+        String msg = "You hear the sfx of draining water...";
         createTextBox(0xff00ffff, msg);
     }
 
@@ -117,8 +117,8 @@ public class Zone_1_4 extends Zone_1 {
     public void onDestroy() {
         super.onDestroy();
 
-        pixelsToPNG(getMapTiles(), "/home/jeep/IdeaProjects/LittleEngine/res/cached/map_1-4.png");
-        pixelsToPNG(getTriggerTiles(), "/home/jeep/IdeaProjects/LittleEngine/res/cached/triggermap_1-4.png");
-        pixelsToPNG(getMobTiles(), "/home/jeep/IdeaProjects/LittleEngine/res/cached/spawnmap_1-4.png");
+        pixelsToPNG(getMapTiles(), "res/cached/map_1-4.png");
+        pixelsToPNG(getTriggerTiles(), "res/cached/triggermap_1-4.png");
+        pixelsToPNG(getMobTiles(), "res/cached/spawnmap_1-4.png");
     }
 }

@@ -16,14 +16,14 @@ public class Zone_2_1 extends Zone_2 {
         initMap(23, 11, Tile.TileSize.X16);
 
         if (!cached) {
-            loadMapTiles("/home/jeep/IdeaProjects/LittleEngine/res/map_2-1.png");
-            loadTriggerTiles("/home/jeep/IdeaProjects/LittleEngine/res/triggermap_2-1.png");
-            loadMobs("/home/jeep/IdeaProjects/LittleEngine/res/spawnmap_2-1.png");
+            loadMapTiles("res/map_2-1.png");
+            loadTriggerTiles("res/triggermap_2-1.png");
+            loadMobs("res/spawnmap_2-1.png");
             cached = true;
         } else {
-            loadMapTiles("/home/jeep/IdeaProjects/LittleEngine/res/cached/map_2-1.png");
-            loadTriggerTiles("/home/jeep/IdeaProjects/LittleEngine/res/cached/triggermap_2-1.png");
-            loadMobs("/home/jeep/IdeaProjects/LittleEngine/res/cached/spawnmap_2-1.png");
+            loadMapTiles("res/cached/map_2-1.png");
+            loadTriggerTiles("res/cached/triggermap_2-1.png");
+            loadMobs("res/cached/spawnmap_2-1.png");
         }
 
         putTrigger(0xffff0000, new Trigger(() -> changeZone(Zone_1_4.class, new TileCoord(17, 17, 16)), false)); // red
@@ -35,8 +35,8 @@ public class Zone_2_1 extends Zone_2 {
     public void onDestroy() {
         super.onDestroy();
 
-        pixelsToPNG(getMapTiles(), "/home/jeep/IdeaProjects/LittleEngine/res/cached/map_2-1.png");
-        pixelsToPNG(getTriggerTiles(), "/home/jeep/IdeaProjects/LittleEngine/res/cached/triggermap_2-1.png");
-        pixelsToPNG(getMobTiles(), "/home/jeep/IdeaProjects/LittleEngine/res/cached/spawnmap_2-1.png");
+        pixelsToPNG(getMapTiles(), "res/cached/map_2-1.png");
+        pixelsToPNG(getTriggerTiles(), "res/cached/triggermap_2-1.png");
+        pixelsToPNG(getMobTiles(), "res/cached/spawnmap_2-1.png");
     }
 }
