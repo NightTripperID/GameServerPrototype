@@ -78,8 +78,8 @@ public class Title extends GameState {
 
     private void startDemo() {
         Bundle bundle = new Bundle();
-//        bundle.putExtra("tileCoord", new TileCoord(14, 17, 16));
-        bundle.putExtra("tileCoord", new TileCoord(11, 15, 16));
+        bundle.putExtra("tileCoord", new TileCoord(14, 17, 16));
+//        bundle.putExtra("tileCoord", new TileCoord(11, 15, 16));
         Player player = new Player();
         player.inventory.add("potion");
         player.inventory.add("potion");
@@ -87,8 +87,8 @@ public class Title extends GameState {
 
         Intent intent = new Intent(FadeOut.class);
         intent.putExtra("pixels", getScreenPixels());
-//        intent.putExtra("nextGameState", Zone_1_1.class);
-        intent.putExtra("nextGameState", Zone_3_1.class);
+        intent.putExtra("nextGameState", Zone_1_1.class);
+//        intent.putExtra("nextGameState", Zone_3_1.class);
         intent.putExtra("bundle", bundle);
         intent.putExtra("fadeRate", 3);
 

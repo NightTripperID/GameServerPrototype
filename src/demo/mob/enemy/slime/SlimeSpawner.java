@@ -7,10 +7,14 @@ import demo.spritesheets.SpriteSheets;
 import entity.Entity;
 import graphics.AnimSprite;
 
+import java.util.Random;
+
 public class SlimeSpawner extends Spawner {
 
     public SlimeSpawner(int col, double x, double y) {
-        super(col, x, y, 4 * 60, new AnimSprite(SpriteSheets.SLIME_SPAWNER, 16, 16, 2, 35));
+        super(col, x, y, 0, new AnimSprite(SpriteSheets.SLIME_SPAWNER, 16, 16, 2, 35));
+        countMax = (random.nextInt(3) + 4) * 60;
+        currSprite.setFrameRate(random.nextInt(5) + 20);
     }
 
     public void spawn() {

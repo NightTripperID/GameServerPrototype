@@ -35,11 +35,17 @@ public class Zone_1_1 extends Zone_1 {
         putTrigger(0xff00ff00, new Trigger(() -> changeZone(Zone_1_2.class, new TileCoord(17, 34, 16)), false)); // green
         putTrigger(0xff0000ff, new Trigger(() -> changeZone(Zone_1_2.class, new TileCoord(29, 22, 16)), false)); // blue
 
+        putTrigger(0xffffff00, // yellow
+                new Trigger(() -> {
+                    String msg = "You pour a bit of mead on the ground for your fallen homie.";
+                    createTextBox(0xffffff, msg);
+                }, true));
+
         putTrigger(0xff00ffff,
                 new Trigger(() -> { // cyan
                     String msg = "Welcome to Varg's very short adventure! Use W-A-S-D keys or the arrow keys to move. Press the left mouse button to throw an axe!";
                     createTextBox(0xffffff, msg);
-                    }, true));
+                }, true));
     }
 
     @Override

@@ -18,7 +18,7 @@ public class Tiles {
     public static Tile earthTop = new DemoTile(Sprites.EARTH_TOP, true);
     public static Tile floorSwitchUp = new DemoTile(Sprites.FLOOR_SWITCH_UP, false, true);
     public static Tile floorSwitchDown = new DemoTile(Sprites.FLOOR_SWITCH_DOWN, false);
-    public static Tile grave = new DemoTile(Sprites.GRAVE, true);
+    public static Tile grave = new DemoTile(Sprites.GRAVE, true, true);
     public static Tile lava = new LavaTile();
     public static Tile lavaGrate = new DemoTile(Sprites.LAVA_GRATE, false);
     public static Tile obeliskBottom = new DemoTile(Sprites.OBELISK_BOTTOM, true);
@@ -40,10 +40,6 @@ public class Tiles {
     public static Tile stoneTileFloor = new DemoTile(Sprites.STONE_TILE_FLOOR, false);
     public static Tile stoneTopR = new DemoTile(Sprites.STONE_TOP_R, true);
     public static Tile stoneTopL = new DemoTile(Sprites.STONE_TOP_L, true);
-    public static Tile vultureSlabTL = new DemoTile(Sprites.VULTURE_SLAB_TL, true);
-    public static Tile vultureSlabTR = new DemoTile(Sprites.VULTURE_SLAB_TR, true);
-    public static Tile vultureSlabBL = new DemoTile(Sprites.VULTURE_SLAB_BL, true);
-    public static Tile vultureSlabBR = new DemoTile(Sprites.VULTURE_SLAB_BR, true);
     public static Tile water = new WaterTile();
     public static Tile wideDoorCenter = new DemoTile(Sprites.WIDE_DOOR_CENTER, true, true);
     public static Tile wideDoorLeft = new DemoTile(Sprites.WIDE_DOOR_LEFT, true, true);

@@ -46,8 +46,10 @@ public class Zone_3_1 extends Zone_3 {
         PurpleLavaTile.update();
 
         if(lastScene)
-            if(slimeCount == 0)
+            if(slimeCount == 0) {
+                Jukebox.BOSS_MUSIC.stop();
                 congratulations();
+            }
     }
 
     @Override

@@ -1,13 +1,21 @@
 package demo.congratulations;
 
+import demo.audio.Jukebox;
 import demo.spritesheets.Sprites;
 import gamestate.GameState;
 import graphics.Screen;
 import graphics.Sprite;
+import server.Server;
 
 public class Congratulations extends GameState {
 
     private Sprite axeSprite = Sprites.AXE;
+
+    @Override
+    public void onCreate(Server server) {
+        super.onCreate(server);
+        Jukebox.CONGRATS_MUSIC.play(true);
+    }
 
     @Override
     public void render(Screen screen) {

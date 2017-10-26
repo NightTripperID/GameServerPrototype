@@ -19,7 +19,7 @@ public class Main {
         Jukebox.VOID_MUSIC.play(false);
 
         Intent intent = new Intent(Title.class);
-        Server server = new Server(320, 200, 4, "Varg");
+        Server server = new Server(320, 200, 3, "Varg");
         server.startServer(intent);
     }
 }

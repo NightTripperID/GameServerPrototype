@@ -8,7 +8,7 @@ import graphics.Sprite;
 public abstract class Spawner extends Enemy {
 
     protected int count;
-    protected final int countMax;
+    protected int countMax;
 
     protected Sprite spawnerSprite;
 
