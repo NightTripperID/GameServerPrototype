@@ -1,5 +1,7 @@
 package demo;
 
+import demo.audio.Sfx;
+import demo.shutdown.ShutdownThread;
 import demo.title.Title;
 import gamestate.Intent;
 import kuusisto.tinysound.TinySound;
@@ -8,8 +10,10 @@ import server.Server;
 public class Main {
     public static void main(String[] args) {
 
+        Runtime.getRuntime().addShutdownHook(new ShutdownThread());
+
         TinySound.init();
-        TinySound.shutdown();
+        Sfx.VOID_SOUND.play(); // blank wav file to "prime" TinySound by loading it into memory
 
         Intent intent = new Intent(Title.class);
         Server server = new Server(320, 240, 3, "Varg");

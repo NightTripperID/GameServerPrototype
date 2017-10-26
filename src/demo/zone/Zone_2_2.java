@@ -1,5 +1,6 @@
 package demo.zone;
 
+import demo.audio.Sfx;
 import demo.tile.DemoTile;
 import demo.tile.LavaTile;
 import demo.tile.Tile;
@@ -37,6 +38,7 @@ public class Zone_2_2 extends Zone_2 {
                         () -> {
                              if(player.inventory.remove("doorkey")) {
                                  setMapTile(16, 12, 0xff808080);
+                                 Sfx.SWITCH.play();
                                  if(getMapTile(12, 16) == 0xff808080 && getMapTile(8, 12) == 0xff808080)
                                      removeObelisk();
                              } else
@@ -49,6 +51,7 @@ public class Zone_2_2 extends Zone_2 {
                         () -> {
                             if(player.inventory.remove("doorkey")) {
                                 setMapTile(12, 16, 0xff808080);
+                                Sfx.SWITCH.play();
                                 if(getMapTile(16, 12) == 0xff808080 && getMapTile(8, 12) == 0xff808080)
                                     removeObelisk();
                             } else {
@@ -62,6 +65,7 @@ public class Zone_2_2 extends Zone_2 {
                         () -> {
                             if(player.inventory.remove("doorkey")) {
                                 setMapTile(8, 12, 0xff808080);
+                                Sfx.SWITCH.play();
                                 if(getMapTile(12, 16) == 0xff808080 && getMapTile(16, 12) == 0xff808080)
                                     removeObelisk();
                             } else {
@@ -79,6 +83,7 @@ public class Zone_2_2 extends Zone_2 {
                             setMapTile(13, 7, 0xffffff8e); // right side of wide doorway
                             String msg = "Abandon all hope, ye who enter here!";
                             createTextBox(0xff0000, msg);
+                            Sfx.SWITCH.play();
                         },
                         false));
 

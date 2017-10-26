@@ -7,22 +7,22 @@ import java.util.List;
 
 public class Inventory {
 
-    private List<String> inventory = new ArrayList<>();
+    private List<String> items = new ArrayList<>();
 
     public void add(@NotNull String item) {
-        inventory.add(item);
+        items.add(item);
     }
 
     public boolean contains(@NotNull String item) {
-        if(inventory.contains(item))
+        if(items.contains(item))
             return true;
         return false;
     }
 
     public boolean remove(@NotNull String itemName) {
-        if(inventory.contains(itemName)) {
-            int index = inventory.indexOf(itemName);
-            System.out.println(inventory.remove(index));
+        if(items.contains(itemName)) {
+            int index = items.indexOf(itemName);
+            items.remove(index);
             return true;
         }
         return false;
@@ -30,7 +30,7 @@ public class Inventory {
 
     public int getCount(@NotNull String item) {
         int count = 0;
-        List inventory = new ArrayList<>(this.inventory);
+        List inventory = new ArrayList<>(this.items);
         while (inventory.contains(item)) {
             inventory.remove(item);
             count++;

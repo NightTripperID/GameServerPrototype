@@ -1,5 +1,6 @@
 package demo.zone;
 
+import demo.audio.Sfx;
 import demo.tile.Tile;
 import demo.tile.TileCoord;
 import demo.tile.WaterTile;
@@ -33,6 +34,7 @@ public class Zone_1_4 extends Zone_1 {
                 new Trigger(
                         () -> {
                             setMapTile(2, 3, 0xffbc0051);
+                            Sfx.SWITCH.play();
                             if (getMapTile(33, 3) == 0xffbc0051 &&
                                     getMapTile(2, 32) == 0xffbc0051 &&
                                     getMapTile(33, 32) == 0xffbc0051) {
@@ -45,6 +47,7 @@ public class Zone_1_4 extends Zone_1 {
                 new Trigger(
                         () -> {
                             setMapTile(33, 3, 0xffbc0051);
+                            Sfx.SWITCH.play();
                             if (getMapTile(2, 3) == 0xffbc0051 &&
                                     getMapTile(2, 32) == 0xffbc0051 &&
                                     getMapTile(33, 32) == 0xffbc0051) {
@@ -57,6 +60,7 @@ public class Zone_1_4 extends Zone_1 {
                 new Trigger(
                         () -> {
                             setMapTile(2, 32, 0xffbc0051);
+                            Sfx.SWITCH.play();
                             if (getMapTile(2, 3) == 0xffbc0051 &&
                                     getMapTile(33, 3) == 0xffbc0051 &&
                                     getMapTile(33, 32) == 0xffbc0051) {
@@ -69,6 +73,7 @@ public class Zone_1_4 extends Zone_1 {
                 new Trigger(
                         () -> {
                             setMapTile(33, 32, 0xffbc0051);
+                            Sfx.SWITCH.play();
                             if (getMapTile(2, 3) == 0xffbc0051 &&
                                     getMapTile(33, 3) == 0xffbc0051 &&
                                     getMapTile(2, 32) == 0xffbc0051) {
@@ -103,7 +108,7 @@ public class Zone_1_4 extends Zone_1 {
         setMapTile(18, 24, 0xffc0c0c0);
         setMapTile(18, 25, 0xffc0c0c0);
 
-        String msg = "You hear the sfx of draining water...";
+        String msg = "You hear the sound of draining water...";
         createTextBox(0xff00ffff, msg);
     }
 

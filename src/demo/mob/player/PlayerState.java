@@ -4,6 +4,7 @@ import com.sun.istack.internal.NotNull;
 import demo.mob.MobState;
 import demo.mob.magic.Fireball;
 import demo.mob.projectile.axe.Axe;
+import demo.audio.Sfx;
 import entity.Entity;
 import gamestate.GameState;
 import gamestate.Trigger;
@@ -54,7 +55,7 @@ abstract class PlayerState extends MobState {
                     castMagic_4();
                     break;
                 default:
-                    System.out.println("no potions!");
+                    break;
             }
         }
 
@@ -75,11 +76,16 @@ abstract class PlayerState extends MobState {
             throwAxe();
         }
 
-        if (Mouse.button2Pressed || keyboard.cPressed) {
-            if (mob.getHealth() < Player.MAX_HEALTH)
-                if (((Player) mob).inventory.remove("potion"))
-                    mob.addHealth(1);
-        }
+        if (Mouse.button2Pressed || keyboard.cPressed)
+            drinkPotion();
+    }
+
+    private void drinkPotion() {
+        if (mob.getHealth() < Player.MAX_HEALTH)
+            if (((Player) mob).inventory.remove("potion")) {
+                mob.addHealth(1);
+                Sfx.DRINK_POTION.play();
+            }
     }
 
     private void throwAxe() {
@@ -94,16 +100,16 @@ abstract class PlayerState extends MobState {
         Entity axe = new Axe(mob.x, mob.y, angle);
         axe.initialize(gameState);
         gameState.addEntity(axe);
+
+        Sfx.AXE_THROW.play();
     }
 
     private void castMagic_1() {
-        System.out.println("casting magic 1");
         spawnFireball(mob.x, mob.y);
         ((Player) mob).inventory.remove("potion");
     }
 
     private void castMagic_2() {
-        System.out.println("casting magic 2");
         spawnFireball(mob.x, mob.y - mob.getHeight());
         spawnFireball(mob.x, mob.y + mob.getHeight());
         ((Player) mob).inventory.remove("potion");
@@ -112,7 +118,6 @@ abstract class PlayerState extends MobState {
 
     private void castMagic_3() {
         Player player = (Player) mob;
-        System.out.println("casting magic 3");
         spawnFireball(mob.x, mob.y - mob.getHeight());
         spawnFireball(mob.x - mob.getWidth(), mob.y + mob.getHeight());
         spawnFireball(mob.x + mob.getWidth(), mob.y + mob.getHeight());
@@ -123,7 +128,6 @@ abstract class PlayerState extends MobState {
 
     private void castMagic_4() {
         Player player = (Player) mob;
-        System.out.println("casting magic 4");
         spawnFireball(mob.x - mob.getWidth(), mob.y - mob.getHeight());
         spawnFireball(mob.x - mob.getWidth(), mob.y + mob.getHeight());
         spawnFireball(mob.x + mob.getWidth(), mob.y - mob.getHeight());
@@ -138,6 +142,7 @@ abstract class PlayerState extends MobState {
         Entity fireball = new Fireball(x, y, mob);
         fireball.initialize(gameState);
         gameState.addEntity(fireball);
+        Sfx.FLAME.play();
     }
 
     @Override

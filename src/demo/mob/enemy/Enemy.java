@@ -4,6 +4,7 @@ import com.sun.istack.internal.NotNull;
 import demo.mob.Mob;
 import demo.mob.explosion.Explosion;
 import demo.mob.item.Potion;
+import demo.audio.Sfx;
 import entity.Entity;
 import graphics.Screen;
 import graphics.Sprite;
@@ -58,6 +59,7 @@ public abstract class Enemy extends Mob {
         Entity explosion = new Explosion(0xff00ff, x, y); // TODO: needs switch statement to spawn explosion
         explosion.initialize(gameState);        // TODO: of appropriate size (8x8, 16x16, etc)
         gameState.addEntity(explosion);
+        Sfx.ENEMY_EXPLODE.play();
     }
 
     protected void dropItem() {
@@ -78,7 +80,10 @@ public abstract class Enemy extends Mob {
     public void assignDamage(int damage) {
         super.assignDamage(damage);
 
-        if (damage > 0)
+        if (damage > 0) {
             wounded = true;
+            Sfx.ENEMY_HIT.play();
+        }
+
     }
 }

@@ -1,6 +1,7 @@
 package demo.zone;
 
 import com.sun.istack.internal.NotNull;
+import demo.audio.Sfx;
 import demo.tile.Tile;
 import demo.tile.TileCoord;
 import gamestate.Trigger;
@@ -39,6 +40,7 @@ public class Zone_1_2 extends Zone_1 {
                                  player.inventory.remove("doorkey");
                                  setMapTile(18, 13, 0xffa0a0cd);
                                  setMapTile(18, 12, 0xffa0a0cd);
+                                 Sfx.SWITCH.play();
                              } else {
                                  createTextBox(0xffffff, "The door is locked.");
                              }

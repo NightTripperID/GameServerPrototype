@@ -1,15 +1,14 @@
 package demo.mob.item;
 
-import demo.zone.Zone;
 import demo.mob.Mob;
 import demo.mob.player.Player;
 import demo.spritesheets.Sprites;
 import graphics.Screen;
 
-public class Potion extends Mob {
+public class Potion extends Item {
 
     public Potion(int col, double x, double y) {
-        super(col, x, y, 1, 1, 8, 8, 2, 0, true, false);
+        super(col, x, y,  8, 8);
     }
 
     @Override
@@ -19,14 +18,8 @@ public class Potion extends Mob {
 
     @Override
     public void runCollision(Mob mob) {
-
-        if(mob instanceof Player) {
-            Player player = (Player) mob;
-            if(player.inventory.getCount("potion") < Player.MAX_POTIONS) {
-                player.inventory.add("potion");
-                ((Zone) gameState).setMobSpawn((int) x, (int) y, 0xff00ff);
-                this.setRemoved(true);
-            }
-        }
+        if(mob instanceof Player)
+            if (((Player) mob).inventory.getCount("potion") < 4)
+                addToInventory(mob, "potion");
     }
 }

@@ -1,5 +1,6 @@
 package demo.textbox;
 
+import demo.audio.Sfx;
 import demo.tile.DemoTile;
 import gamestate.GameState;
 import gamestate.Intent;
@@ -101,6 +102,7 @@ public class TextBox extends GameState {
             scrollCount = 0;
             if (scrollY < textH) {
                 outputLines[scrollY] += inputLines[scrollY].charAt(scrollX++);
+                Sfx.TEXTBOX.play();
                 if (scrollX > inputLines[scrollY].length() - 1) {
                     scrollX = 0;
                     scrollY++;

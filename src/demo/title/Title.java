@@ -71,6 +71,7 @@ public class Title extends GameState {
 //        bundle.putExtra("tileCoord", new TileCoord(11, 15, 16));
         Player player = new Player();
         player.inventory.add("potion");
+        player.inventory.add("potion");
         bundle.putExtra("player", player);
 
         Intent intent = new Intent(FadeOut.class);
