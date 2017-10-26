@@ -27,8 +27,7 @@ public class Congratulations extends GameState {
                 axeSprite);
 
         String str1 = "congratulations, you vanquished the slime king.";
-        String str2 = "your place in 8-bit valhalla is assured.";
-        String str3 = "now go drink some mead";
+        String str2 = "you have earned your place in 8-bit valhalla.";
 
         screen.renderString5x5(
                 (getScreenWidth() / 2) - (str1.length() * 5 / 2),
@@ -42,13 +41,6 @@ public class Congratulations extends GameState {
                 axeSpriteY + axeSprite.getHeight() * axeScale + 20,
                 0xffffff,
                 str2
-        );
-
-        screen.renderString5x5(
-                (getScreenWidth() / 2) - (str3.length() * 5 / 2),
-                axeSpriteY + axeSprite.getHeight() * axeScale + 32,
-                0xffffff,
-                str3
         );
     }
 }

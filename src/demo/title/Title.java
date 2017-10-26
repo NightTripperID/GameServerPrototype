@@ -1,5 +1,6 @@
 package demo.title;
 
+import demo.audio.Jukebox;
 import demo.zone.Zone_1_1;
 import demo.mob.player.Player;
 import demo.spritesheets.Sprites;
@@ -18,15 +19,25 @@ public class Title extends GameState {
     private Sprite axeSprite = Sprites.AXE;
     private Sprite titleSprite = Sprites.TITLE_SPRITE;
 
+    private boolean startDemo;
+
     @Override
     public void onCreate(Server server) {
         super.onCreate(server);
+        Jukebox.TITLE_MUSIC.play(false);
     }
 
     @Override
     public void update() {
         super.update();
-        if(getKeyboard().enterPressed || getKeyboard().spacePressed)
+        if(getKeyboard().enterPressed || getKeyboard().spacePressed) {
+            if(Jukebox.TITLE_MUSIC.playing())
+                Jukebox.TITLE_MUSIC.stop();
+
+            Jukebox.START_JINGLE.play(false);
+            startDemo = true;
+        }
+        if(startDemo && Jukebox.START_JINGLE.done())
             startDemo();
     }
 
@@ -67,8 +78,8 @@ public class Title extends GameState {
 
     private void startDemo() {
         Bundle bundle = new Bundle();
-        bundle.putExtra("tileCoord", new TileCoord(14, 17, 16));
-//        bundle.putExtra("tileCoord", new TileCoord(11, 15, 16));
+//        bundle.putExtra("tileCoord", new TileCoord(14, 17, 16));
+        bundle.putExtra("tileCoord", new TileCoord(11, 15, 16));
         Player player = new Player();
         player.inventory.add("potion");
         player.inventory.add("potion");
@@ -76,8 +87,8 @@ public class Title extends GameState {
 
         Intent intent = new Intent(FadeOut.class);
         intent.putExtra("pixels", getScreenPixels());
-        intent.putExtra("nextGameState", Zone_1_1.class);
-//        intent.putExtra("nextGameState", Zone_3_1.class);
+//        intent.putExtra("nextGameState", Zone_1_1.class);
+        intent.putExtra("nextGameState", Zone_3_1.class);
         intent.putExtra("bundle", bundle);
         intent.putExtra("fadeRate", 3);
 
