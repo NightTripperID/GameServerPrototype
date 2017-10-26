@@ -1,5 +1,6 @@
 package demo.mob.enemy.boss;
 
+import demo.audio.Sfx;
 import demo.mob.Mob;
 import demo.mob.enemy.slime.RevengeSlime;
 import demo.mob.explosion.Explosion;
@@ -20,7 +21,7 @@ public class BossStateDying extends BossState {
     @Override
     public void update() {
 
-        if(explosionDelay++ % 5 == 0) {
+        if(explosionDelay++ % 8 == 0) {
             spawnExplosion();
             explosionCount++;
         }
@@ -28,7 +29,10 @@ public class BossStateDying extends BossState {
         final int maxExplosions = 32;
         if(explosionCount == maxExplosions) {
             mob.setRemoved(true);
-            ((Zone) gameState).createTextBox(0xffffff, "The dungeon is festooned with the slimy remnants of the slain beast. Suddenly the gooey bits reanimate!");
+            Sfx.BOSS_EXPLODE.play();
+            ((Zone) gameState).createTextBox(0xffffff,
+                    "The dungeon is festooned with the slimy remnants of the slain beast. Suddenly the gooey bits reanimate!",
+                    Sfx.SQUISH);
             ((Zone_3_1) gameState).lastScene = true;
             spawnRevengeSlimes();
 
@@ -44,6 +48,7 @@ public class BossStateDying extends BossState {
         explosion.y = y;
         explosion.initialize(gameState);
         gameState.addEntity(explosion);
+        Sfx.ENEMY_EXPLODE.play();
     }
 
     private void spawnRevengeSlimes() {

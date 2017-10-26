@@ -1,5 +1,6 @@
 package demo.mob.enemy.boss;
 
+import demo.audio.Sfx;
 import demo.mob.Mob;
 import demo.mob.enemy.slime.Slime;
 import demo.zone.Zone;
@@ -28,6 +29,7 @@ public class BossStateSpawning extends BossState {
         slime.x = xOfs;
         slime.initialize(gameState);
         gameState.addEntity(slime);
+        Sfx.SQUISH.play();
         return 1;
     }
 }

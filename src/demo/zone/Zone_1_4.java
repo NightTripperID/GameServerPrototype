@@ -109,7 +109,7 @@ public class Zone_1_4 extends Zone_1 {
         setMapTile(18, 25, 0xffc0c0c0);
 
         String msg = "You hear the sound of draining water...";
-        createTextBox(0xff00ffff, msg);
+        createTextBox(0xff00ffff, msg, Sfx.WATER_DRAIN);
     }
 
     @Override

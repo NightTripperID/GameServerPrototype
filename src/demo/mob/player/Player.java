@@ -1,6 +1,7 @@
 package demo.mob.player;
 
 import com.sun.istack.internal.NotNull;
+import demo.audio.Sfx;
 import demo.zone.Zone;
 import demo.mob.Mob;
 import demo.mob.player.inventory.Inventory;
@@ -74,6 +75,10 @@ public class Player extends Mob {
             if(!(currState instanceof PlayerStateKnockback))
                 currState = new PlayerStateKnockback(this, gameState, (PlayerState) currState);
             super.assignDamage(damage);
+            if(getHealth() > 0)
+                Sfx.HERO_HURT.play();
+            else
+                Sfx.HERO_DEAD.play();
         }
     }
 

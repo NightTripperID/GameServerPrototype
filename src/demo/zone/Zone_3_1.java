@@ -1,5 +1,6 @@
 package demo.zone;
 
+import demo.audio.Jukebox;
 import demo.congratulations.Congratulations;
 import demo.mob.enemy.slime.RevengeSlime;
 import demo.tile.PurpleLavaTile;
@@ -20,6 +21,8 @@ public class Zone_3_1 extends Zone_3 {
     @Override
     public void onCreate(Server server) {
         super.onCreate(server);
+
+        Jukebox.BOSS_MUSIC.play(true);
 
         initMap(22, 22, Tile.TileSize.X16);
 

@@ -1,5 +1,6 @@
 package demo.mob.enemy.slime;
 
+import demo.audio.Sfx;
 import demo.zone.Zone;
 import demo.mob.Spawner;
 import demo.spritesheets.SpriteSheets;
@@ -16,5 +17,6 @@ public class SlimeSpawner extends Spawner {
         Entity slime = new Slime(0x00ff00, x,  y, ((Zone) gameState).getPlayer());
         slime.initialize(gameState);
         gameState.addEntity(slime);
+        Sfx.SQUISH.play();
     }
 }

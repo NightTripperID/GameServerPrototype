@@ -2,9 +2,11 @@ package demo.textbox;
 
 import demo.audio.Sfx;
 import demo.tile.DemoTile;
+import gamestate.Bundle;
 import gamestate.GameState;
 import gamestate.Intent;
 import graphics.Screen;
+import kuusisto.tinysound.Sound;
 import server.Server;
 
 public class TextBox extends GameState {
@@ -22,6 +24,8 @@ public class TextBox extends GameState {
     private final int textW = 36;
     private int textH;
 
+    private Sfx sfx;
+
     @Override
     public void onCreate(Server server) {
         super.onCreate(server);
@@ -30,6 +34,7 @@ public class TextBox extends GameState {
         pixels = intent.getIntegerArrayExtra("pixels");
         textCol = intent.getIntegerExtra("textCol");
         msg = new StringBuilder(intent.getStringExtra("msg"));
+        sfx = (Sfx) intent.getSerializableExtra("sfx");
 
         int messageLength = msg.length();
 
@@ -69,25 +74,6 @@ public class TextBox extends GameState {
             }
             inputLines[y] = sb.toString();
         }
-
-//        int x = 0;
-//
-//        for (int y = 0; y < textH; y++) {
-//            StringBuilder sb = new StringBuilder();
-//            Row:
-//            for (; x < textW; x++) {
-//                if (msg.charAt(x) == ' ') {
-//                    for (int i = x + 1; i < textW - x; i++) {
-//                        if (msg.charAt(i) == ' ')
-//                            if (i > textW - x) {
-//                                break Row;
-//                            }
-//                    }
-//                }
-//                sb.append(msg.charAt(x));
-//            }
-//            inputLines[y] = sb.toString();
-//        }
     }
 
     @Override
@@ -132,5 +118,11 @@ public class TextBox extends GameState {
 
         for (int i = 0; i < textH; i++)
             screen.renderString8x8(x + 8, (y + ((i + 1) << 3) + i), textCol, outputLines[i]);
+    }
+
+    @Override
+    public void onDestroy() {
+        if(sfx != null)
+            sfx.play();
     }
 }

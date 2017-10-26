@@ -1,5 +1,6 @@
 package demo.zone;
 
+import demo.audio.Jukebox;
 import demo.audio.Sfx;
 import demo.tile.DemoTile;
 import demo.tile.LavaTile;
@@ -82,8 +83,8 @@ public class Zone_2_2 extends Zone_2 {
                             setMapTile(12, 7, 0xffa5ff7f); // center of wide doorway
                             setMapTile(13, 7, 0xffffff8e); // right side of wide doorway
                             String msg = "Abandon all hope, ye who enter here!";
-                            createTextBox(0xff0000, msg);
-                            Sfx.SWITCH.play();
+                            createTextBox(0xff0000, msg, Sfx.SWITCH);
+                            Jukebox.DUNGEON_MUSIC.stop();
                         },
                         false));
 

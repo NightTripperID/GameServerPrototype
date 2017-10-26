@@ -169,6 +169,8 @@ public class Bundle implements Serializable {
     }
 
     public final Serializable getSerializableExtra(@NotNull String key) {
+        if(serializableExtras == null)
+            serializableExtras = new HashMap<>();
         return serializableExtras.get(key);
     }
 

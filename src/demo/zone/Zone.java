@@ -1,6 +1,7 @@
 package demo.zone;
 
 import com.sun.istack.internal.NotNull;
+import demo.audio.Sfx;
 import demo.mob.enemy.boss.Boss;
 import demo.mob.Mob;
 import demo.mob.enemy.buzzard.Buzzard;
@@ -22,6 +23,7 @@ import gamestate.Bundle;
 import gamestate.GameState;
 import gamestate.Intent;
 import graphics.Screen;
+import kuusisto.tinysound.Sound;
 import server.Server;
 
 import javax.imageio.ImageIO;
@@ -204,6 +206,15 @@ public abstract class Zone extends GameState {
         intent.putExtra("pixels", getScreenPixels());
         intent.putExtra("textCol", textCol);
         intent.putExtra("msg", msg);
+        pushGameState(intent);
+    }
+
+    public void createTextBox(int textCol, String msg, Sfx sfx) {
+        Intent intent = new Intent(TextBox.class);
+        intent.putExtra("pixels", getScreenPixels());
+        intent.putExtra("textCol", textCol);
+        intent.putExtra("msg", msg);
+        intent.putExtra("sfx", sfx);
         pushGameState(intent);
     }
 }

@@ -1,6 +1,7 @@
 package demo.zone;
 
 import com.sun.istack.internal.NotNull;
+import demo.audio.Jukebox;
 import demo.tile.Tile;
 import demo.tile.TileCoord;
 import gamestate.Trigger;
@@ -13,6 +14,9 @@ public class Zone_1_1 extends Zone_1 {
     @Override
     public void onCreate(@NotNull Server server) {
         super.onCreate(server);
+
+        if(!Jukebox.DUNGEON_MUSIC.playing())
+            Jukebox.DUNGEON_MUSIC.play(true);
 
         initMap(30, 20, Tile.TileSize.X16);
 
