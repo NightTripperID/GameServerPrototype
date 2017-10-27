@@ -1,4 +1,4 @@
-package demo.tile;
+package graphics;
 
 import com.sun.istack.internal.NotNull;
 import graphics.Screen;

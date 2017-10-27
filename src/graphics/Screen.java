@@ -1,7 +1,6 @@
 package graphics;
 
 import com.sun.istack.internal.NotNull;
-import demo.tile.Tile;
 
 /**
  * Object that contains a pixel buffer matching specified dimensions and methods for rendering

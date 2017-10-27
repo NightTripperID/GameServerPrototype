@@ -2,10 +2,10 @@ package gamestate;
 
 import com.sun.istack.internal.NotNull;
 import com.sun.istack.internal.Nullable;
-import demo.tile.Tile;
 import entity.Entity;
 import entity.Updatable;
 import graphics.Screen;
+import graphics.Tile;
 import input.Keyboard;
 import server.Server;
 
@@ -13,7 +13,10 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public abstract class GameState {
 
@@ -224,15 +227,6 @@ public abstract class GameState {
     protected int[] getTriggerTiles() {
         return triggerTiles;
     }
-
-//    public void putTrigger(int key, @NotNull Runnable trigger) {
-//        triggers.put(key, trigger);
-//    }
-//
-//    public Runnable getTrigger(int x, int y) {
-//        int key = triggerTiles[x + y * mapWidth];
-//        return triggers.get(key);
-//    }
 
     public void putTrigger(int key, @NotNull Trigger trigger) {
         triggers.put(key, trigger);
