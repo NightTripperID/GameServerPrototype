@@ -1,10 +1,8 @@
 package graphics;
 
 /**
- * Represents a 2 dimensional graphic on screen. graphics.Sprite data is loaded from a graphics.SpriteSheet object. Width, height, and coordinates
- * can be specified. Sprites can also be rotated using affine matrix transformation.
- * @author Noah
- *
+ * Represents a 2 dimensional graphic on screen. graphics.Sprite data is loaded from a graphics.SpriteSheet object.
+ * Width, height, and coordinates can be specified. Sprites can also be rotated using affine matrix transformation.
  */
 public class Sprite {
 
@@ -27,6 +25,12 @@ public class Sprite {
         this.sheet = sheet;
     }
 
+    /**
+     * Creates a Sprite object using a specified pixel array.
+     * @param pixels The pixels representing the Sprite.
+     * @param width The Sprite width.
+     * @param height The Sprite height.
+     */
     public Sprite(int[] pixels, int width, int height) {
         setWidth(width);
         setHeight(height);
@@ -34,6 +38,14 @@ public class Sprite {
         System.arraycopy(pixels, 0, this.pixels, 0, pixels.length);
     }
 
+    /**
+     * Creates a Sprite object using a specified SpriteSheet
+     * @param sheet The given SpriteSheet.
+     * @param width The Sprite width.
+     * @param height The Sprite height.
+     * @param xOfs The x offset of the Sprite on the SpriteSheet in tile precision.
+     * @param yOfs The y offset of the Sprite on the SpriteSheet in tile precision.
+     */
     public Sprite(SpriteSheet sheet, int width, int height, int xOfs, int yOfs) {
         this.sheet = sheet;
         setWidth(width);
@@ -44,6 +56,13 @@ public class Sprite {
         load();
     }
 
+    /**
+     * Creates a Sprite object using a specified SpriteSheet
+     * @param sheet The given SpriteSheet.
+     * @param size The Sprite size.
+     * @param xOfs The x offset of the Sprite on the SpriteSheet in tile precision.
+     * @param yOfs The y offset of the Sprite on the SpriteSheet in tile precision.
+     */
     public Sprite(SpriteSheet sheet, int size, int xOfs, int yOfs) {
         this.sheet = sheet;
         setWidth(size);
@@ -54,6 +73,12 @@ public class Sprite {
         load();
     }
 
+    /**
+     * Creates a Sprite object that is filled with a solid color.
+     * @param col The given color.
+     * @param width The given width.
+     * @param height The given height.
+     */
     public Sprite(int col, int width, int height) {
         setWidth(width);
         setHeight(height);
@@ -61,6 +86,11 @@ public class Sprite {
         setColor(col);
     }
 
+    /**
+     * Returns an array of Sprites that are retrieved from a SpriteSheet.
+     * @param sheet The SpriteSheet from which the Sprite array is retrieved.
+     * @return The array of Sprites retrieved from the SpriteSheet.
+     */
     public static Sprite[] split(SpriteSheet sheet) {
         int amount = (sheet.getWidth() * sheet.getHeight()) / (sheet.spriteWidth * sheet.spriteHeight);
         Sprite[] sprites = new Sprite[amount];
@@ -80,7 +110,6 @@ public class Sprite {
                 sprites[current++] = new Sprite(pixels, sheet.spriteWidth, sheet.spriteHeight);
             }
         }
-
         return sprites;
     }
 
@@ -94,6 +123,14 @@ public class Sprite {
         return new Sprite(rotate(sprite.pixels, sprite.width, sprite.height, angle), sprite.width, sprite.height);
     }
 
+    /**
+     * Rotates the Sprite using an affine matrix
+     * @param pixels The pixels representing the Sprite
+     * @param width The Sprite width
+     * @param height The Sprite height
+     * @param angle The angle in radians by which to rotate the Sprite
+     * @return the affine matrix rotated pixel array
+     */
     private  static int[] rotate(int[] pixels, int width, int height, double angle) {
         int[] result = new int[width * height];
 
@@ -127,18 +164,35 @@ public class Sprite {
         return result;
     }
 
+    /**
+     * Returns the new x coordinate of a pixel rotated by a specified angle.
+     * @param angle The given rotation angle in radians.
+     * @param x The initial x coordinate of the given pixel.
+     * @param y The initial y coordinate of the given pixel.
+     * @return The new x coordinate of the given pixel.
+     */
     private static double rot_x(double angle, double x, double y) {
         double cos = Math.cos(angle-Math.PI/2);
         double sin = Math.sin(angle- Math.PI/2);
         return x * cos + y * -sin;
     }
 
+    /**
+     * Returns the new y coordinate of a pixel rotated by a specified angle.
+     * @param angle The given rotation angle in radians.
+     * @param x The initial x coordinate of the given pixel.
+     * @param y The initial y coordinate of the given pixel.
+     * @return The new y coordinate of the given pixel.
+     */
     private static double rot_y(double angle, double x, double y) {
         double cos = Math.cos(angle-Math.PI/2);
         double sin = Math.sin(angle-Math.PI/2);
         return x * sin + y * cos;
     }
 
+    /**
+     * Loads the Sprite pixels from the Sprite's SpriteSheet.
+     */
     private void load() {
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
@@ -147,6 +201,10 @@ public class Sprite {
         }
     }
 
+    /**
+     * Sets the Sprite's width.
+     * @param width The given width.
+     */
     private void setWidth(int width) {
         if(width < 1)
             throw new IllegalArgumentException("width must be 1 or greater");
@@ -154,21 +212,37 @@ public class Sprite {
         this.width = width;
     }
 
+    /**
+     * Sets the Sprite's height.
+     * @param height The given height.
+     */
     private void setHeight(int height) {
         if (height < 1)
             throw new IllegalArgumentException("height must be 1 or greater");
         this.height = height;
     }
 
+    /**
+     * Fills the Sprite with the specified color.
+     * @param col The given color
+     */
     private void setColor(int col) {
         for(int i = 0; i < pixels.length; i++)
         pixels[i] = col;
     }
 
+    /**
+     * Returns the Sprite's width
+     * @return width
+     */
     public int getWidth() {
         return width;
     }
 
+    /**
+     * Returns the Sprite's height
+     * @return height
+     */
     public int getHeight() {
         return height;
     }

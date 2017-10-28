@@ -10,6 +10,10 @@ import java.util.stream.DoubleStream;
 import java.util.stream.IntStream;
 import java.util.stream.LongStream;
 
+/**
+ * Object representing a bundle of values. Values are stored in lazily intantiated HashMaps.
+ *
+ */
 public class Bundle implements Serializable {
 
     public static final long serialVersionUID = 201710161356L;

@@ -9,7 +9,6 @@ import javax.imageio.ImageIO;
 /**
  * SpriteSheet is an image that contains images that can be selected to make graphics.Sprite objects. Image data is loaded from a png file
  * that is typically comprised of multiple sprite images, e.g. the animation frames for a video game character such as Mario.
- * @author Noah
  *
  */
 public class SpriteSheet {

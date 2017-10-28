@@ -2,7 +2,6 @@ package graphics;
 
 /**
  * Character arrays that represent a 5x5 Font for convenience. Used by Screen.
- * @author Noah
  *
  */
 class Font5x5 {

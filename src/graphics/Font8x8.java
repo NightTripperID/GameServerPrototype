@@ -2,8 +2,6 @@ package graphics;
 
 /**
  * Character arrays that represent an 8x8 Font for convenience. Used by Screen.
- * @author Noah
- *
  */
 class Font8x8 {
 

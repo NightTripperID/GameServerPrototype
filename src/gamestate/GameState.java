@@ -18,6 +18,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Abstract object representing a GameState.
+ */
 public abstract class GameState {
 
     private Server server;
@@ -37,21 +40,69 @@ public abstract class GameState {
 
     private Map<Integer, Trigger> triggers = new HashMap<>();
 
+    /**
+     * Called when Server instantiates this GameState. Provides a reference to the sever for server callbacks.
+     * @param server the server that is instantiating the GameState and available for callback. Can be overridden
+     * so GameState can perform additional actions upon being created.
+     */
     public void onCreate(@NotNull Server server) {
         this.server = server;
     }
 
+    /**
+     * Called when Server disposes of this GameState. Can be overridden so GameState can perform actions upon being
+     * destroyed.
+     */
     public void onDestroy() {
     }
 
+    /**
+     * Called when Server executes the update loop. Any pending entities are added to the Entity list. The update method
+     * of each Entity is called. Finally, any entities flagged for removal are removed.
+     */
+    public void update() {
+        addPendingEntities();
+        entities.forEach(Updatable::update);
+        removeMarkedEntities();
+    }
+
+    /**
+     * Called when Server executes the render loop. The render method of each Tile is called. Also, the render method
+     * of each Entity is called.
+     * @param screen the screen object to which Tiles and Entities are rendered
+     */
+    public void render(@NotNull Screen screen) {
+        renderTiles(screen);
+        entities.forEach(e -> e.render(screen));
+    }
+
+    /**
+     * Loads map tiles from a png file to an integer array. Each integer represents a pixel on the tilemap, which in turn
+     * represents a Tile that will be rendered by the GameState to the Screen.
+     * @param path the filepath of the png file specified by the caller.
+     */
     protected void loadMapTiles(@NotNull String path) {
         loadTiles(path, mapTiles);
     }
 
+    /**
+     * Loads trigger tiles from a png file to an integer array. Each integer represents a pixel on the tilemap,
+     * which in turn represents a Trigger that is loaded into a HashMap called 'triggers'. The pixel color acts as
+     * the HashMap's key, which coincides with a value that is a Runnable. Generally, the trigger map will be identical
+     * to the tile map, but locations with interactive triggers will be represented by primary colors such as red,
+     * blue, green, yellow, etc, so they stand out visually on the map. When the player interacts with the trigger in game,
+     * it is called by color, executing the runnable piece of code via lambda or anonymous inner class.
+     * @param path the filepath of the png file specified by the caller.
+     */
     protected void loadTriggerTiles(@NotNull String path) {
         loadTiles(path, triggerTiles);
     }
 
+    /**
+     * Helper method that loads a tile map into an integer array representing a tileset.
+     * @param filePath // the filepath specified by the caller
+     * @param dest // the destination integer array that the tileset will be loaded into
+     */
     protected void loadTiles(@NotNull String filePath, @Nullable int[] dest) {
         try {
             System.out.println("Trying to load: " + filePath + "...");
@@ -68,19 +119,12 @@ public abstract class GameState {
         }
     }
 
-    public void update() {
-        addEntities();
-        entities.forEach(Updatable::update);
-        removeEntities();
-    }
-
-    public void render(@NotNull Screen screen) {
-        renderTiles(screen);
-        entities.forEach(e -> e.render(screen));
-    }
-
+    /**
+     * Renders map Tiles onto the given Screen.
+     * @param screen The Screen on which to render the Tiles.
+     */
     private void renderTiles(@NotNull Screen screen) {
-        screen.setOffset(xScroll, yScroll);
+        screen.setScroll(xScroll, yScroll);
 
         int x0 = (int) xScroll >> tileBitShift;
         int x1 = (((int) xScroll + screen.getWidth()) + tileSize) >> tileBitShift;
@@ -94,51 +138,81 @@ public abstract class GameState {
             }
     }
 
+    /**
+     * Pushes a new GameState onto the GameStateManager's GameState stack.
+     * @param intent The intent that contains the class metadata of the new GameState.
+     */
     public final void pushGameState(@NotNull Intent intent) {
         server.pushGameState(intent);
     }
 
+    /**
+     * Pops this GameState from the GameStateManager's GameState stack.
+     */
     public final void popGameState() {
         server.popGameState();
     }
 
+    /**
+     * Pops this GameState from the GameStateManager's stack and pushes a new GameState in its place.
+     * @param intent The intent containing the class metadata of the new GameState.
+     */
     public final void swapGameState(@NotNull Intent intent) {
         server.swapGameState(intent);
     }
 
-    @NotNull
-    protected final Intent getIntent() {
-        return intent;
-    }
-
+    /**
+     * Returns the size of AraayList entities.
+     * @return the size of ArrayList entities.
+     */
     public int getEntitiesSize() {
         return entities.size();
     }
 
+    /**
+     * Returns the entity residing at the given index of ArrayList entities.
+     * @param index the index of the desired entity.
+     * @return the Entity residing at the given index.
+     */
     public Entity getEntity(int index) {
         return entities.get(index);
     }
 
-    protected List<Entity> getEntities() {
-        return entities;
-    }
-
+    /**
+     * Adds a new entity to ArrayList pendingEntities. pending Entites are added to ArraList entites on the next
+     * update cycle.
+     * @param entity The new entity to add.
+     */
     public void addEntity(@NotNull Entity entity) {
         pendingEntites.add(entity);
     }
 
-    private void addEntities() {
+    /**
+     * Adds all pending entities to ArrayList entities during the last update cycle.
+     * Clears ArrayList pendingEntities once all pending entities are added.
+     */
+    private void addPendingEntities() {
         entities.addAll(pendingEntites);
         pendingEntites.clear();
     }
 
-    private void removeEntities() {
+    /**
+     * Removes all entities that were marked for removal in this update cycle.
+     */
+    private void removeMarkedEntities() {
         for(int i = 0; i < entities.size(); i++) {
             if(entities.get(i).removed())
                 entities.remove(entities.get(i--));
         }
     }
 
+    /**
+     * Initializes the tileMap and triggerMap with the given dimensions. Sets the bitshift value based on given tileSize
+     * for rendering operations.
+     * @param mapWidth The given map width in tile precision.
+     * @param mapHeight The given map height in tile precision.
+     * @param tileSize The given tile size in pixel precision.
+     */
     protected void initMap(int mapWidth, int mapHeight, @NotNull Tile.TileSize tileSize) {
         this.mapWidth = mapWidth;
         this.mapHeight = mapHeight;
@@ -168,34 +242,75 @@ public abstract class GameState {
         }
     }
 
+    /**
+     * Returns the keyboard object owned by the server.
+     * @return The keyboard object.
+     */
     public final Keyboard getKeyboard() {
         return server.getKeyboard();
     }
 
+    /**
+     * Returns this GameState's Intent (It should be the intent from which this GameState was created).
+     * @return the GameState's Intent.
+     */
+    protected final Intent getIntent() {
+        return intent;
+    }
+
+    /**
+     * Sets this GameState's intent. (It should be the intent from which this GameState was created. The server
+     * sets this, and the user should probably never call this method).
+     * @param intent The Intent to set.
+     */
     public final void setIntent(@NotNull Intent intent) {
         this.intent = intent;
     }
 
+    /**
+     * Increments scrollX by the given value.
+     * @param xScroll The value by which to increment scrollX.
+     */
     public void scrollX(double xScroll) {
         this.xScroll += xScroll;
     }
 
+    /**
+     * Increments scrollY by the given value.
+     * @param yScroll The value by which to increment scrollY.
+     */
     public void scrollY(double yScroll) {
         this.yScroll += yScroll;
     }
 
+    /**
+     * Returns xScroll
+     * @return xScroll
+     */
     public double getScrollX() {
         return xScroll;
     }
 
+    /**
+     * Returns yScroll
+     * @return yscroll
+     */
     public double getScrollY() {
         return yScroll;
     }
 
+    /**
+     * Sets xScroll to the given value.
+     * @param xScroll The value to which to set xScroll.
+     */
     protected void setScrollX(int xScroll) {
         this.xScroll = xScroll;
     }
 
+    /**
+     * Sets yScroll to the given value.
+     * @param yScroll The value to which to set yScroll.
+     */
     protected void setScrollY(int yScroll) {
         this.yScroll = yScroll;
     }
@@ -204,59 +319,126 @@ public abstract class GameState {
         return null;
     }
 
+    /**
+     * Returns the color value associated with the map tile at the given map coordinates.
+     * @param x The tile's x coordinate in tile precision.
+     * @param y The tile's y coordinate in tile precision.
+     * @return The color value associated with the Tile residing at the given coordinates.
+     */
     public int getMapTile(int x, int y) {
         return mapTiles[x + y * mapWidth];
     }
 
+    /**
+     * Sets the color value associated with the map tile at the given map coordinates.
+     * @param x The tile's x coordinate in tile precision.
+     * @param y The tile's y coordinate in tile precision.
+     * @param col The new color to store at the given coordinates.
+     */
     public void setMapTile(int x, int y, int col) {
         mapTiles[x + y * mapWidth] = col;
     }
 
+    /**
+     * Returns mapTiles
+     * @return mapTiles
+     */
     public int[] getMapTiles() {
         return mapTiles;
     }
 
+    /**
+     * Returns the color value associated with the trigger tile at the given map coordinates.
+     * @param x The tile's x coordinate in tile precision.
+     * @param y The tile's y coordinate in tile precision.
+     * @return The color value associated with the Tile residing at the given coordinates.
+     */
     public int getTriggerTile(int x, int y) {
         return triggerTiles[x + y * mapWidth];
     }
 
+    /**
+     * Sets the color value associated with the trigger tile at the given map coordinates.
+     * @param x The tile's x coordinate in tile precision.
+     * @param y The tile's y coordinate in tile precision.
+     * @param col The new color to store at the given coordinates.
+     */
     public void setTriggerTile(int x, int y, int col) {
         triggerTiles[x + y * mapWidth] = col;
     }
 
+    /**
+     * Returns triggerTiles
+     * @return triggerTiles
+     */
     protected int[] getTriggerTiles() {
         return triggerTiles;
     }
 
+    /**
+     * Puts a Trigger object in HashMap triggers
+     * @param key The Trigger's hex value RGB color key (i.e. 0xff0000)
+     * @param trigger The Trigger object associated with the color
+     */
     public void putTrigger(int key, @NotNull Trigger trigger) {
         triggers.put(key, trigger);
     }
 
+    /**
+     * Gets a Trigger object from HashMap triggers
+     * @param x the x coordinate of the Trigger
+     * @param y the y coordinate of the Trigger
+     * @return the Trigger object at the given coordinates.
+     */
     public Trigger getTrigger(int x, int y) {
         int key = triggerTiles[x + y * mapWidth];
         return triggers.get(key);
     }
 
+    /**
+     * Returns screenWidth
+     * @return screenWidth
+     */
     public int getScreenWidth() {
         return server.getScreenWidth();
     }
 
+    /**
+     * Returns screenHeight
+     * @return screenHeight
+     */
     public int getScreenHeight() {
         return server.getScreenHeight();
     }
 
+    /**
+     * Returns screenScale
+     * @return screenScale
+     */
     public int getScreenScale() {
         return server.getScreenScale();
     }
 
+    /**
+     * Returns mapWidth
+     * @return mapWidth
+     */
     public int getMapWidth() {
         return mapWidth;
     }
 
+    /**
+     * Returns mapHeight
+     * @return mapHeight
+     */
     public int getMapHeight() {
         return mapHeight;
     }
 
+    /**
+     * Returns the screen pixels.
+     * @return int[] pixels
+     */
     public int[] getScreenPixels() {
         return server.getScreenPixels();
     }
