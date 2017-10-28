@@ -3,7 +3,6 @@ package gamestate;
 import com.sun.istack.internal.NotNull;
 import com.sun.istack.internal.Nullable;
 import entity.Entity;
-import entity.Updatable;
 import graphics.Screen;
 import graphics.Tile;
 import input.Keyboard;
@@ -62,7 +61,7 @@ public abstract class GameState {
      */
     public void update() {
         addPendingEntities();
-        entities.forEach(Updatable::update);
+        entities.forEach(Entity::update);
         removeMarkedEntities();
     }
 

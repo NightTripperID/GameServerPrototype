@@ -1,7 +1,6 @@
 package gamestate;
 
 import com.sun.istack.internal.NotNull;
-import exception.EmptyGSMException;
 
 import java.util.Stack;
 
@@ -16,7 +15,7 @@ public class GameStateManager {
      * Pushes a new GameState onto gameStateStack.
      * @param gs the new GameState to push onto gameStateStack.
      */
-    public void push(@NotNull GameState gs) {
+    public final void push(@NotNull GameState gs) {
         gameStateStack.push(gs);
     }
 
@@ -24,18 +23,15 @@ public class GameStateManager {
      * Pops the top GameState from the gameStateStack.
      * @return the GameState popped from the gameStateStack.
      */
-    public GameState pop() {
-
-        if(gameStateStack.size() > 1)
-            return gameStateStack.pop();
-        else throw new EmptyGSMException();
+    public final GameState pop() {
+        return gameStateStack.pop();
     }
 
     /**
      * Returns the top GameState on gameStateStack.
      * @return The top GameState on the gameStateStack,
      */
-    public GameState peek() {
+    public final GameState peek() {
         return gameStateStack.peek();
     }
 
@@ -44,7 +40,7 @@ public class GameStateManager {
      * @param gs The new GameState to push onto gameStateStack.
      * @return The old GameState that was popped from gameStateStack.
      */
-    public GameState swap(@NotNull GameState gs) {
+    public final GameState swap(@NotNull GameState gs) {
         GameState old = gameStateStack.pop();
         gameStateStack.push(gs);
         return old;

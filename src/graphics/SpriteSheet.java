@@ -98,18 +98,34 @@ public class SpriteSheet {
         }
     }
 
+    /**
+     * Return array of Sprites contained by the SpriteSheet.
+     * @return Array of Sprites contained by the SpriteSheet.
+     */
     public Sprite[] getSprites() {
         return sprites;
     }
 
+    /**
+     * Returns the Sprite's width.
+     * @return The Sprite's width.
+     */
     public int getWidth() {
         return width;
     }
 
+    /**
+     * Returns the Sprite's height.
+     * @return The Sprite's height.
+     */
     public int getHeight() {
         return height;
     }
 
+    /**
+     * Returns the pixel array that represents the Sprite.
+     * @return The pixel array that represents the Sprite.
+     */
     public int[] getPixels() {
         return pixels;
     }

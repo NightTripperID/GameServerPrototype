@@ -15,6 +15,10 @@ import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
 
+/**
+ * The object that represents the kernel of the game engine. Contains the central loop that updates the game logic
+ * and renders the graphics. Provides basic callbacks so GameStates can request resources and information.
+ */
 public class Server extends Canvas implements Runnable {
 
     private static final long serialVersionUID = 20170915;
@@ -34,6 +38,13 @@ public class Server extends Canvas implements Runnable {
     private final Keyboard keyboard;
     private final Mouse mouse;
 
+    /**
+     * Creates a new Server with a specified screen width, height and scale, and a title to appear in the window's title bar.
+     * @param screenWidth The given width for the screen.
+     * @param screenHeight The given height for the screen.
+     * @param screenScale The given scale for the screen.
+     * @param title The given title for the screen.
+     */
     public Server(int screenWidth, int screenHeight, int screenScale, String title) {
 
         this.title = title;
@@ -58,12 +69,18 @@ public class Server extends Canvas implements Runnable {
         addMouseWheelListener(mouse);
     }
 
+    /**
+     * Launches the game thread, setting the game into motion.
+     */
     private synchronized void start() {
         running = true;
         thread = new Thread(this, "Game");
         thread.start();
     }
 
+    /**
+     * Stops the game Thread, effectively halting the game.
+     */
     private void stop() {
         running = false;
 
@@ -74,6 +91,11 @@ public class Server extends Canvas implements Runnable {
         }
     }
 
+    /**
+     * The runnable containing the core game loop. The update loop (containing the game logic) is timed to run at
+     * approximately 60 ticks per second. The render loop (containing all graphics rendering calls) runs as fast as
+     * possible, executing once per loop iteration (actual speed depends on hardware).
+     */
     @Override
     public void run() {
 
@@ -111,12 +133,18 @@ public class Server extends Canvas implements Runnable {
         stop();
     }
 
+    /**
+     * Runs the core update method. Updates input devices and the active GameState.
+     */
     private void update() {
         keyboard.update();
         mouse.update();
         gsm.peek().update();
     }
 
+    /**
+     * Runs the core render method. Renders all Sprites and the displays them on the Canvas.
+     */
     private void render() {
 
         BufferStrategy bs = getBufferStrategy();
@@ -142,6 +170,11 @@ public class Server extends Canvas implements Runnable {
         bs.show();
     }
 
+    /**
+     * Prepares the JFrame for rendering, pushes the GameState represented by the Intent, and runs the start() method,
+     * setting the game into motion.
+     * @param intent The intent representing the first GameState.
+     */
     public void startServer(@NotNull Intent intent) {
         frame.setResizable(false);
         frame.setTitle(title);
@@ -156,6 +189,11 @@ public class Server extends Canvas implements Runnable {
         start();
     }
 
+    /**
+     * Instantiates the GameState represented by the Intent and pushes it onto the top of the GameStateManager's
+     * gameStateStack and runs its onCreate() method.
+     * @param intent The intent representing the GameState to be instantiated and pushed onto the stack.
+     */
     public void pushGameState(@NotNull Intent intent) {
 
         try {
@@ -169,10 +207,18 @@ public class Server extends Canvas implements Runnable {
         }
     }
 
+    /**
+     * Pops the active GameState from the top of the GameStateManager's gameStateStack and runs its onDestroy() method.
+     */
     public void popGameState() {
         gsm.pop().onDestroy();
     }
 
+    /**
+     * Pops the active GameState, runs its onDestroy() method, then pushes the newly intantiated GameState and runs its
+     * onCreate() method.
+     * @param intent The intent representing the GameState to be instantiated and pushed onto the stack.
+     */
     public void swapGameState(@NotNull Intent intent) {
 
         try {
@@ -186,31 +232,50 @@ public class Server extends Canvas implements Runnable {
         }
     }
 
+    /**
+     * Returns the Server's keyboard input device.
+     * @return the Server's keyboard.
+     */
     public Keyboard getKeyboard() {
         return keyboard;
     }
 
+    /**
+     * Returns the Server's mouse input device.
+     * @return the Server's mouse.
+     */
     public Mouse getMouse() {
         return mouse;
     }
 
-    public void setCustomMouseCursor(@NotNull Image image, @NotNull Point cursorHotspot, @NotNull String name) {
-        Cursor custom = Toolkit.getDefaultToolkit().createCustomCursor(image, cursorHotspot, name);
-        frame.setCursor(custom);
-    }
-
+    /**
+     * Returns the screen's width.
+     * @return the screen's width.
+     */
     public int getScreenWidth() {
         return screen.getWidth();
     }
 
+    /**
+     * Returns the screen's height.
+     * @return the screen's height.
+     */
     public int getScreenHeight() {
         return screen.getHeight();
     }
 
+    /**
+     * Returns the screen's scale.
+     * @return the screen's scale.
+     */
     public int getScreenScale() {
         return screen.getScale();
     }
 
+    /**
+     * Returns the game's pixel array (the screen buffer)
+     * @return the screen's pixel array
+     */
     public int[] getScreenPixels() {
         return screen.getPixels();
     }
