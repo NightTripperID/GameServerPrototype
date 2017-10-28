@@ -242,14 +242,6 @@ public abstract class GameState {
     }
 
     /**
-     * Returns the keyboard object owned by the server.
-     * @return The keyboard object.
-     */
-    public final Keyboard getKeyboard() {
-        return server.getKeyboard();
-    }
-
-    /**
      * Returns this GameState's Intent (It should be the intent from which this GameState was created).
      * @return the GameState's Intent.
      */

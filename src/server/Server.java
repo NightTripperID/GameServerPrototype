@@ -63,7 +63,7 @@ public class Server extends Canvas implements Runnable {
         keyboard = new Keyboard();
         addKeyListener(keyboard);
 
-         mouse = new Mouse(screenScale);
+        mouse = new Mouse(screenScale);
         addMouseListener(mouse);
         addMouseMotionListener(mouse);
         addMouseWheelListener(mouse);
@@ -230,22 +230,6 @@ public class Server extends Canvas implements Runnable {
             System.out.println("Exception in " + getClass().getSimpleName() +
                     ".swapGameState(intent): " + e.getMessage());
         }
-    }
-
-    /**
-     * Returns the Server's keyboard input device.
-     * @return the Server's keyboard.
-     */
-    public Keyboard getKeyboard() {
-        return keyboard;
-    }
-
-    /**
-     * Returns the Server's mouse input device.
-     * @return the Server's mouse.
-     */
-    public Mouse getMouse() {
-        return mouse;
     }
 
     /**

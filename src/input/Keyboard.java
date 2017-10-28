@@ -5,62 +5,54 @@ import java.awt.event.KeyListener;
 
 /**
  * Object that listens to keys for keyboard input handling.
- * @author Noah Dering
  *
  */
 public class Keyboard implements KeyListener {
 
-    public boolean[] keys = new boolean[120];
+    private static boolean[] keys = new boolean[120];
+    private static boolean[] keysLast = new boolean[120];
+    private static boolean[] keysHeld = new boolean[120];
+    private static boolean[] keysPressed = new boolean[120];
+    private static boolean[] keysReleased = new boolean[120];
 
-    public boolean upHeld, downHeld, leftHeld, rightHeld, enterHeld, spaceHeld, escHeld, cHeld, qHeld;
-    public boolean upPressed, downPressed, leftPressed, rightPressed, enterPressed, spacePressed, escPressed, cPressed, qPressed;
-    public boolean upReleased, downReleased, leftReleased, rightReleased, enterReleased, spaceReleased, escReleased, cReleased, qReleased;
-
+    /**
+     * Updates the state of the keys on the keyboard.
+     */
     public void update() {
+        System.arraycopy(keysHeld, 0, keysLast, 0, keysHeld.length);
+        System.arraycopy(keys, 0, keysHeld, 0, keys.length);
 
-        boolean upLast, downLast, leftLast, rightLast, enterLast, spaceLast, escLast, cLast, qLast;
+        for (int i = 0; i < keysHeld.length; i++) {
+            keysPressed[i] = keysHeld[i] && !keysLast[i];
+            keysReleased[i] = !keysHeld[i] && keysLast[i];
+        }
+    }
 
-        upLast    = upHeld;
-        downLast  = downHeld;
-        leftLast  = leftHeld;
-        rightLast = rightHeld;
+    /**
+     * Returns whether the given key is held down.
+     * @param virtualKey The virtual key representing the key being held down.
+     * @return Whether the given key is held down.
+     */
+    public static boolean held(int virtualKey) {
+        return keysHeld[virtualKey];
+    }
 
-        enterLast = enterHeld;
-        spaceLast = spaceHeld;
-        escLast   = escHeld;
+    /**
+     * Returns wheter the given key was just pressed this game frame.
+     * @param virtualKey The virtual key representing the key being pressed.
+     * @return Whether the given key was just pressed.
+     */
+    public static boolean pressed(int virtualKey) {
+        return keysPressed[virtualKey];
+    }
 
-        cLast = cHeld;
-        qLast = qHeld;
-
-        upHeld    = keys[KeyEvent.VK_W] || keys[KeyEvent.VK_UP];
-        downHeld  = keys[KeyEvent.VK_S] || keys[KeyEvent.VK_DOWN];
-        leftHeld  = keys[KeyEvent.VK_A] || keys[KeyEvent.VK_LEFT];
-        rightHeld = keys[KeyEvent.VK_D] || keys[KeyEvent.VK_RIGHT];
-        enterHeld = keys[KeyEvent.VK_ENTER];
-        spaceHeld = keys[KeyEvent.VK_SPACE];
-        escHeld   = keys[KeyEvent.VK_ESCAPE];
-        cHeld     = keys[KeyEvent.VK_C];
-        qHeld     = keys[KeyEvent.VK_Q];
-
-        upPressed    = upHeld && !upLast;
-        downPressed  = downHeld && !downLast;
-        leftPressed  = leftHeld && !leftLast;
-        rightPressed = rightHeld && !rightLast;
-        enterPressed = enterHeld && !enterLast;
-        spacePressed = spaceHeld && !spaceLast;
-        escPressed   = escHeld && !escLast;
-        cPressed     = cHeld && !cLast;
-        qPressed     = qHeld && !qLast;
-
-        upReleased    = !upHeld && upLast;
-        downReleased  = !downHeld && downLast;
-        leftReleased  = !leftHeld && leftLast;
-        rightReleased = !rightHeld && rightLast;
-        enterReleased = !enterHeld && enterLast;
-        spaceReleased = !spaceHeld && spaceLast;
-        escReleased   = !escHeld && escLast;
-        cReleased     = !cHeld && cLast;
-        qReleased     = !qHeld && qLast;
+    /**
+     * Returns wheter the given key was just released this game frame.
+     * @param virtualKey The virtual key representing the key being released.
+     * @return Whether the given key was just released.
+     */
+    public static boolean released(int virtualKey) {
+        return keysReleased[virtualKey];
     }
 
     @Override
