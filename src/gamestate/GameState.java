@@ -3,10 +3,10 @@ package gamestate;
 import com.sun.istack.internal.NotNull;
 import com.sun.istack.internal.Nullable;
 import entity.Entity;
-import graphics.Screen;
-import graphics.Tile;
-import input.Keyboard;
+import graphics.Renderable;
+import server.Screen;
 import server.Server;
+import update.Updatable;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -20,7 +20,7 @@ import java.util.Map;
 /**
  * Abstract object representing a GameState.
  */
-public abstract class GameState {
+public abstract class GameState implements Updatable, Renderable {
 
     private Server server;
     private Intent intent;
@@ -66,7 +66,7 @@ public abstract class GameState {
     }
 
     /**
-     * Called when Server executes the render loop. The render method of each Tile is called. Also, the render method
+     * Called when Server executes the Renderable loop. The Renderable method of each Tile is called. Also, the Renderable method
      * of each Entity is called.
      * @param screen the screen object to which Tiles and Entities are rendered
      */
@@ -120,7 +120,7 @@ public abstract class GameState {
 
     /**
      * Renders map Tiles onto the given Screen.
-     * @param screen The Screen on which to render the Tiles.
+     * @param screen The Screen on which to Renderable the Tiles.
      */
     private void renderTiles(@NotNull Screen screen) {
         screen.setScroll(xScroll, yScroll);

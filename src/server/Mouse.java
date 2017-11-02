@@ -1,11 +1,11 @@
-package input;
+package server;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 
 /**
- * Object that listens to mouse for mouse input handlinge.
+ * Object that listens to mouse for mouse input handling.
  */
 public class Mouse extends MouseAdapter {
 
@@ -18,13 +18,13 @@ public class Mouse extends MouseAdapter {
 
     public static boolean dragged;
 
-    public final int screenScale;
+    private int screenScale;
 
     /**
      * Creates a Mouse object whose MouseMoved events are scaled to the screen scale.
      * @param screenScale The  screen scale used for adjusting the scale of MouseMoved events
      */
-    public Mouse(int screenScale) {
+    Mouse(int screenScale) {
         if(screenScale < 1)
             throw new IllegalArgumentException("Screen scale must be greater than 0");
 
@@ -34,7 +34,7 @@ public class Mouse extends MouseAdapter {
     /**
      * Updates the state of the mouse buttons.
      */
-    public void update() {
+    void update() {
 
         boolean button1Last, button2Last, button3Last;
 

@@ -3,7 +3,10 @@ package graphics;
 /**
  * Character arrays that represent an 8x8 Font for convenience. Used by Screen.
  */
-class Font8x8 {
+public class Font8x8 {
+
+    private Font8x8() {
+    }
 
     private static final char[] SPACE = {
             0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 ,
@@ -533,7 +536,7 @@ class Font8x8 {
             0 , 0 ,'#','#','#','#', 0 , 0
     };
 
-    static char[] getChar(char c){
+    public static char[] getChar(char c){
 
         c = Character.toUpperCase(c);
 

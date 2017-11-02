@@ -1,4 +1,4 @@
-package input;
+package server;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -15,10 +15,13 @@ public class Keyboard implements KeyListener {
     private static boolean[] keysPressed = new boolean[120];
     private static boolean[] keysReleased = new boolean[120];
 
+    Keyboard() {
+    }
+
     /**
      * Updates the state of the keys on the keyboard.
      */
-    public void update() {
+    void update() {
         System.arraycopy(keysHeld, 0, keysLast, 0, keysHeld.length);
         System.arraycopy(keys, 0, keysHeld, 0, keys.length);
 

@@ -1,6 +1,10 @@
-package graphics;
+package server;
 
 import com.sun.istack.internal.NotNull;
+import gamestate.Tile;
+import graphics.Font5x5;
+import graphics.Font8x8;
+import graphics.Sprite;
 
 /**
  * Object that contains a pixel buffer matching specified dimensions and methods for rendering
@@ -8,7 +12,7 @@ import com.sun.istack.internal.NotNull;
  */
 public class Screen {
 
-    private final int width, height, scale;
+    private int width, height, scale;
 
     private int[] pixels;
 
@@ -19,7 +23,7 @@ public class Screen {
      * @param width The width of the screen.
      * @param height The height of the screen.
      */
-    public Screen(int width, int height, int scale) {
+    Screen(int width, int height, int scale) {
 
         if(width < 1)
             throw new IllegalArgumentException("Screen width must be at least 1 pixel");
@@ -44,7 +48,7 @@ public class Screen {
     /**
      * Overwrites screen buffer with black (0x000000).
      */
-    public void clear() {
+    void clear() {
         for (int i = 0; i < pixels.length; i++)
             pixels[i] = 0x000000;
     }
@@ -153,15 +157,11 @@ public class Screen {
 
     /**
      * Renders the given pixel array on the Screen.
-     * @param pixels The pixels to render.
+     * @param pixels The pixels to Renderable.
      */
     public void renderPixels(int[] pixels) {
         if(pixels.length != this.pixels.length)
             throw new IllegalArgumentException("pixel lengths (i.e. screen dimensions) must match.");
-
-        int index = 0;
-        for(int p : pixels)
-            this.pixels[index++] = p;
 
         System.arraycopy(pixels, 0, this.pixels, 0, pixels.length);
     }
@@ -195,7 +195,7 @@ public class Screen {
      * Renders specified Sprite at provided screen coordinates.
      * @param x The x coordinate on screen.
      * @param y The y coordinate on screen.
-     * @param sprite The sprite to render.
+     * @param sprite The sprite to Renderable.
      */
     public void renderSprite(double x, double y, @NotNull Sprite sprite) {
         for (int yy = 0; yy < sprite.getHeight(); yy++) {
@@ -214,8 +214,8 @@ public class Screen {
      * Renders specified Sprite at provided screen coordinates with the given scale.
      * @param x The x coordinate on screen.
      * @param y The y coordinate on screen.
-     * @param scale The scale at which to render the Sprite.
-     * @param sprite The sprite to render.
+     * @param scale The scale at which to Renderable the Sprite.
+     * @param sprite The sprite to Renderable.
      */
     public void renderSprite(double x, double y, int scale, @NotNull Sprite sprite) {
         for (int yy = 0; yy < sprite.getHeight() * scale; yy += scale) {
@@ -240,9 +240,9 @@ public class Screen {
      * specified color.
      * @param x The x coordinate on screen.
      * @param y The y coordinate on screen.
-     * @param scale The scale at which to render the Sprite.
+     * @param scale The scale at which to Renderable the Sprite.
      * @param color The color to fill the Sprite with.
-     * @param sprite The Sprite to render.
+     * @param sprite The Sprite to Renderable.
      */
     public void renderSpriteColorFill(double x, double y, int scale, int color, @NotNull Sprite sprite) {
         for (int yy = 0; yy < sprite.getHeight() * scale; yy += scale) {
@@ -267,7 +267,7 @@ public class Screen {
      * @param x The x coordinate on screen.
      * @param y The y coordinate on screen.
      * @param color The color to fill the Sprite with.
-     * @param sprite The Sprite to render.
+     * @param sprite The Sprite to Renderable.
      */
     public void renderSpriteColorFill(double x, double y, int color, @NotNull Sprite sprite) {
         for (int yy = 0; yy < sprite.getHeight(); yy++) {
@@ -286,7 +286,7 @@ public class Screen {
      * Renders a tile at given Screen coordinates.
      * @param xPos The x position of the Tile in pixel precision.
      * @param yPos The y position of the Tile in pixel precision.
-     * @param tile The Tile to render.
+     * @param tile The Tile to Renderable.
      */
     public void renderTile(int xPos, int yPos, @NotNull Tile tile) {
         int tileW = tile.getSprite().getWidth();
@@ -306,7 +306,17 @@ public class Screen {
     }
 
     /**
-     * Gets pixel specified at index.
+     * Gets pixel at specified xy coordinates
+     * @param x the given x coordinate.
+     * @param y the given y coordinate.
+     * @return The pixel, represented by an rgb color (0x000000 thru 0xffffff).
+     */
+    public int getPixel(int x, int y) {
+        return pixels[x + y * width];
+    }
+
+    /**
+     * Gets pixel at specified index.
      * @param index The index of the pixel.
      * @return The pixel, represented by an rgb color (0x000000 thru 0xffffff).
      */
@@ -350,9 +360,11 @@ public class Screen {
 
     /**
      * Returns the pixel array representing the screen as a whole.
-     * @return
+     * @return the pixel array representing the screen
      */
     public int[] getPixels() {
+        int[] pixels = new int[this.pixels.length];
+        System.arraycopy(this.pixels, 0, pixels, 0, this.pixels.length);
         return  pixels;
     }
 }

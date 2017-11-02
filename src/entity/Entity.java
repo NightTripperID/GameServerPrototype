@@ -2,12 +2,14 @@ package entity;
 
 import com.sun.istack.internal.NotNull;
 import gamestate.GameState;
-import graphics.Screen;
+import graphics.Renderable;
+import server.Screen;
+import update.Updatable;
 
 /**
  * Abstract object representing a game entity that is updated and rendered by a GameState
  */
-public abstract class Entity {
+public abstract class Entity implements Updatable, Renderable {
 
     protected GameState gameState;
 
@@ -27,7 +29,7 @@ public abstract class Entity {
     public abstract void update();
 
     /**
-     * Render method that that is executed with each of the Server's render calls (as fast as hardware allows).
+     * Render method that that is executed with each of the Server's Renderable calls (as fast as hardware allows).
      * @param screen
      */
     public abstract void render(@NotNull Screen screen);

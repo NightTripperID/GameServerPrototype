@@ -2,11 +2,7 @@ package server;
 
 import com.sun.istack.internal.NotNull;
 import gamestate.GameState;
-import gamestate.GameStateManager;
 import gamestate.Intent;
-import graphics.Screen;
-import input.Keyboard;
-import input.Mouse;
 
 import javax.swing.*;
 
@@ -19,12 +15,12 @@ import java.awt.image.DataBufferInt;
  * The object that represents the kernel of the game engine. Contains the central loop that updates the game logic
  * and renders the graphics. Provides basic callbacks so GameStates can request resources and information.
  */
-public class Server extends Canvas implements Runnable {
+public class Server extends Canvas {
 
     private static final long serialVersionUID = 20170915;
     private Thread thread;
 
-    private final String title;
+    private String title = "";
 
     private boolean running;
 
@@ -74,7 +70,7 @@ public class Server extends Canvas implements Runnable {
      */
     private synchronized void start() {
         running = true;
-        thread = new Thread(this, "Game");
+        thread = new Thread(mainLoop, "LittleEngine");
         thread.start();
     }
 
@@ -93,12 +89,10 @@ public class Server extends Canvas implements Runnable {
 
     /**
      * The runnable containing the core game loop. The update loop (containing the game logic) is timed to run at
-     * approximately 60 ticks per second. The render loop (containing all graphics rendering calls) runs as fast as
+     * approximately 60 ticks per second. The Renderable loop (containing all graphics rendering calls) runs as fast as
      * possible, executing once per loop iteration (actual speed depends on hardware).
      */
-    @Override
-    public void run() {
-
+    private Runnable mainLoop = () -> {
         long lastTime = System.nanoTime();
         long timer = System.currentTimeMillis();
         final double ns = 1000000000D / 60D;
@@ -131,7 +125,7 @@ public class Server extends Canvas implements Runnable {
             }
         }
         stop();
-    }
+    };
 
     /**
      * Runs the core update method. Updates input devices and the active GameState.

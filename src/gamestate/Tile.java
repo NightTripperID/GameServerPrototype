@@ -1,7 +1,7 @@
-package graphics;
+package gamestate;
 
 import com.sun.istack.internal.NotNull;
-import graphics.Screen;
+import server.Screen;
 import graphics.Sprite;
 
 /**
@@ -28,9 +28,9 @@ public class Tile {
 
     /**
      * Renders the Tile onto screen.
-     * @param screen The screen on which to render.
-     * @param x The x map coordinate on which to render (in pixel precision).
-     * @param y The y map coordinate on which to render (in pixel precision).
+     * @param screen The screen on which to Renderable.
+     * @param x The x map coordinate on which to Renderable (in pixel precision).
+     * @param y The y map coordinate on which to Renderable (in pixel precision).
      */
     public void render(@NotNull Screen screen, int x, int y) {
         screen.renderTile(x, y, this);
@@ -45,7 +45,7 @@ public class Tile {
     }
 
     /**
-     * Rerturns whether this Tile is a solid object (i.e. cannot be traversed by game objects)
+     * Returns whether this Tile is a solid object (i.e. cannot be traversed by game objects)
      * @return
      */
     public boolean solid() {

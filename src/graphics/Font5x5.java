@@ -4,7 +4,10 @@ package graphics;
  * Character arrays that represent a 5x5 Font for convenience. Used by Screen.
  *
  */
-class Font5x5 {
+public class Font5x5 {
+
+    private Font5x5() {
+    }
 
     public static final char[] A = { 0 ,'#','#', 0 , 0 ,
                                     '#', 0 , 0 ,'#', 0 ,
@@ -281,7 +284,7 @@ class Font5x5 {
 
     };
 
-    static char[] getChar(char c){
+    public static char[] getChar(char c){
 
         c = Character.toUpperCase(c);
 

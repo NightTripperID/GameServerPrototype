@@ -131,7 +131,7 @@ public class Sprite {
      * @param angle The angle in radians by which to rotate the Sprite
      * @return the affine matrix rotated pixel array
      */
-    private  static int[] rotate(int[] pixels, int width, int height, double angle) {
+    private static int[] rotate(int[] pixels, int width, int height, double angle) {
         int[] result = new int[width * height];
 
         double nx_x = rot_x(-angle, 1.0, 0.0);

@@ -5,7 +5,7 @@ package graphics;
  */
 public class AnimSprite extends Sprite {
 
-    public int frame;
+    private int frame;
     private Sprite sprite;
     private int rate = 5;
     private int time;
