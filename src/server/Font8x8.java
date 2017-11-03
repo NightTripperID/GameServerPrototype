@@ -1,9 +1,9 @@
-package graphics;
+package server;
 
 /**
  * Character arrays that represent an 8x8 Font for convenience. Used by Screen.
  */
-public class Font8x8 {
+class Font8x8 {
 
     private Font8x8() {
     }
@@ -98,8 +98,8 @@ public class Font8x8 {
 
     private static final char[] QUESTN = {
             0 ,'#','#','#','#','#','#', 0 ,
-            '#','#','#','#','#','#','#','#',
-            '#','#', 0 , 0 , 0 ,'#','#','#',
+           '#','#','#','#','#','#','#','#',
+           '#','#', 0 , 0 , 0 ,'#','#','#',
             0 , 0 , 0 , 0 ,'#','#','#','#',
             0 , 0 , 0 ,'#','#','#', 0 , 0 ,
             0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 ,
@@ -536,7 +536,7 @@ public class Font8x8 {
             0 , 0 ,'#','#','#','#', 0 , 0
     };
 
-    public static char[] getChar(char c){
+    static char[] getChar(char c){
 
         c = Character.toUpperCase(c);
 

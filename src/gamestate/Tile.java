@@ -13,7 +13,6 @@ public class Tile {
     private boolean solid;
     private boolean trigger;
 
-
     /**
      * Creates a Tile object from a given Sprite and given properties.
      * @param sprite The sprite associated with the Tile.

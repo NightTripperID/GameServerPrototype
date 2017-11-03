@@ -12,7 +12,6 @@ import update.Updatable;
 public abstract class Entity implements Updatable, Renderable {
 
     protected GameState gameState;
-
     private boolean removed;
 
     /**

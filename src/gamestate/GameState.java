@@ -183,6 +183,7 @@ public abstract class GameState implements Updatable, Renderable {
      * @param entity The new entity to add.
      */
     public void addEntity(@NotNull Entity entity) {
+        entity.initialize(this);
         pendingEntites.add(entity);
     }
 

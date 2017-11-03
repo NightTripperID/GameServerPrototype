@@ -2,8 +2,6 @@ package server;
 
 import com.sun.istack.internal.NotNull;
 import gamestate.Tile;
-import graphics.Font5x5;
-import graphics.Font8x8;
 import graphics.Sprite;
 
 /**
@@ -13,9 +11,7 @@ import graphics.Sprite;
 public class Screen {
 
     private int width, height, scale;
-
     private int[] pixels;
-
     private double xScroll, yScroll;
 
     /**
@@ -24,7 +20,6 @@ public class Screen {
      * @param height The height of the screen.
      */
     Screen(int width, int height, int scale) {
-
         if(width < 1)
             throw new IllegalArgumentException("Screen width must be at least 1 pixel");
         if(height < 1)
@@ -62,7 +57,6 @@ public class Screen {
      * @param col The specified color for the rectangle's outline using rgb hex notation (e.g. 0xaabbcc)
      */
     public void drawRect(double x, double y, int width, int height, int col) {
-
         for (int yy = (int)y; yy < (int)y + height; yy++) {
             if (yy < 0 || yy >= this.height)
                 continue;
@@ -105,7 +99,6 @@ public class Screen {
      * @param character The character to be rendered.
      */
     private void renderChar8x8(double x, double y, int col, @NotNull char[] character) {
-
         for (int yy = 0; yy < 8; yy++)
             for (int xx = 0; xx < 8; xx++)
                 if (character[xx + (yy << 3)] == '#')
@@ -122,7 +115,6 @@ public class Screen {
      * @param character The character to be rendered.
      */
     private void renderChar5x5(double x, double y, int col, @NotNull char[] character) {
-
         for (int yy = 0; yy < 5; yy++)
             for (int xx = 0; xx < 5; xx++)
                 if (character[xx + yy * 5] == '#')
@@ -137,7 +129,6 @@ public class Screen {
      * @param string The string to be rendered.
      */
     public void renderString8x8(double x, double y, int col, @NotNull String string) {
-
         for (int i = 0; i < string.length(); i++)
             renderChar8x8(x + (i << 3), y, col, Font8x8.getChar(string.charAt(i)));
     }
@@ -150,7 +141,6 @@ public class Screen {
      * @param string The string to be rendered.
      */
     public void renderString5x5(double x, double y, int col, @NotNull String string) {
-
         for (int i = 0; i < string.length(); i++)
             renderChar5x5(x + (i * 5), y, col, Font5x5.getChar(string.charAt(i)));
     }
