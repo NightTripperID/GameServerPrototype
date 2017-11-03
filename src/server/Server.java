@@ -17,7 +17,6 @@ import java.awt.image.DataBufferInt;
  */
 public final class Server extends Canvas {
 
-    private static final long serialVersionUID = 20170915;
     private Thread thread;
 
     private String title = "";

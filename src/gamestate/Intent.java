@@ -4,7 +4,7 @@ package gamestate;
  * Object representing the bridge between GameStates. The Server uses an Intent to instantiate a push a new GameState
  * onto the GameStateManager's GameState stack.
  */
-public class Intent extends Bundle {
+public final class Intent extends HashMaps {
 
     private Class<? extends GameState> gameStateClass;
 
