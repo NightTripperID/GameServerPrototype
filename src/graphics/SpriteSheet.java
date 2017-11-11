@@ -83,7 +83,6 @@ public class SpriteSheet {
      * Loads image from specified URL to SpriteSheet object's pixel buffer.
      */
     private void load() {
-
         try {
             System.out.print("Trying to load: " + url.toString() + "... ");
             BufferedImage image = ImageIO.read(url);

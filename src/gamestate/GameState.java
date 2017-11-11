@@ -2,27 +2,25 @@ package gamestate;
 
 import com.sun.istack.internal.NotNull;
 import com.sun.istack.internal.Nullable;
+import engine.Engine;
 import entity.Entity;
 import graphics.Renderable;
-import server.Screen;
-import server.Server;
+import engine.Screen;
 import update.Updatable;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.io.Serializable;
+import java.util.*;
 
 /**
  * Abstract object representing a GameState.
  */
 public abstract class GameState implements Updatable, Renderable {
 
-    private Server server;
+    private Engine engine;
     private Intent intent;
 
     private List<Entity> entities = new ArrayList<>();
@@ -40,33 +38,34 @@ public abstract class GameState implements Updatable, Renderable {
     private Map<Integer, Trigger> triggers = new HashMap<>();
 
     /**
-     * Called when Server instantiates this GameState. Provides a reference to the sever for server callbacks.
-     * @param server the server that is instantiating the GameState and available for callback. Can be overridden
+     * Called when Engine instantiates this GameState. Provides a reference to the sever for engine callbacks.
+     * @param engine the engine that is instantiating the GameState and available for callback. Can be overridden
      * so GameState can perform additional actions upon being created.
      */
-    public void onCreate(@NotNull Server server) {
-        this.server = server;
+    public void onCreate(@NotNull Engine engine) {
+        this.engine = engine;
     }
 
     /**
-     * Called when Server disposes of this GameState. Can be overridden so GameState can perform actions upon being
+     * Called when Engine disposes of this GameState. Can be overridden so GameState can perform actions upon being
      * destroyed.
      */
     public void onDestroy() {
     }
 
     /**
-     * Called when Server executes the update loop. Any pending entities are added to the Entity list. The update method
+     * Called when Engine executes the update loop. Any pending entities are added to the Entity list. The update method
      * of each Entity is called. Finally, any entities flagged for removal are removed.
      */
     public void update() {
         addPendingEntities();
+        entities.sort(Entity::compareTo);
         entities.forEach(Entity::update);
         removeMarkedEntities();
     }
 
     /**
-     * Called when Server executes the Renderable loop. The Renderable method of each Tile is called. Also, the Renderable method
+     * Called when Engine executes the Renderable loop. The Renderable method of each Tile is called. Also, the Renderable method
      * of each Entity is called.
      * @param screen the screen object to which Tiles and Entities are rendered
      */
@@ -142,14 +141,14 @@ public abstract class GameState implements Updatable, Renderable {
      * @param intent The intent that contains the class metadata of the new GameState.
      */
     public final void pushGameState(@NotNull Intent intent) {
-        server.pushGameState(intent);
+        engine.pushGameState(intent);
     }
 
     /**
      * Pops this GameState from the GameStateManager's GameState stack.
      */
     public final void popGameState() {
-        server.popGameState();
+        engine.popGameState();
     }
 
     /**
@@ -157,7 +156,7 @@ public abstract class GameState implements Updatable, Renderable {
      * @param intent The intent containing the class metadata of the new GameState.
      */
     public final void swapGameState(@NotNull Intent intent) {
-        server.swapGameState(intent);
+        engine.swapGameState(intent);
     }
 
     /**
@@ -185,6 +184,7 @@ public abstract class GameState implements Updatable, Renderable {
     public void addEntity(@NotNull Entity entity) {
         entity.initialize(this);
         pendingEntites.add(entity);
+        entities.sort(Entity::compareTo);
     }
 
     /**
@@ -251,7 +251,7 @@ public abstract class GameState implements Updatable, Renderable {
     }
 
     /**
-     * Sets this GameState's intent. (It should be the intent from which this GameState was created. The server
+     * Sets this GameState's intent. (It should be the intent from which this GameState was created. The engine
      * sets this, and the user should probably never call this method).
      * @param intent The Intent to set.
      */
@@ -392,7 +392,7 @@ public abstract class GameState implements Updatable, Renderable {
      * @return screenWidth
      */
     public int getScreenWidth() {
-        return server.getScreenWidth();
+        return engine.getScreenWidth();
     }
 
     /**
@@ -400,7 +400,7 @@ public abstract class GameState implements Updatable, Renderable {
      * @return screenHeight
      */
     public int getScreenHeight() {
-        return server.getScreenHeight();
+        return engine.getScreenHeight();
     }
 
     /**
@@ -408,7 +408,7 @@ public abstract class GameState implements Updatable, Renderable {
      * @return screenScale
      */
     public int getScreenScale() {
-        return server.getScreenScale();
+        return engine.getScreenScale();
     }
 
     /**
@@ -432,6 +432,6 @@ public abstract class GameState implements Updatable, Renderable {
      * @return int[] pixels
      */
     public int[] getScreenPixels() {
-        return server.getScreenPixels();
+        return engine.getScreenPixels();
     }
 }

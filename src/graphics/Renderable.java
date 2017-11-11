@@ -1,6 +1,6 @@
 package graphics;
 
-import server.Screen;
+import engine.Screen;
 
 /**
  * Classes that render graphics to the screen must implement this interface.

@@ -1,4 +1,4 @@
-package server;
+package engine;
 
 import com.sun.istack.internal.NotNull;
 import gamestate.GameState;

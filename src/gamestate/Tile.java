@@ -1,7 +1,7 @@
 package gamestate;
 
 import com.sun.istack.internal.NotNull;
-import server.Screen;
+import engine.Screen;
 import graphics.Sprite;
 
 /**

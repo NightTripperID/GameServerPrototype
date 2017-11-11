@@ -1,4 +1,4 @@
-package server;
+package engine;
 
 import com.sun.istack.internal.NotNull;
 import gamestate.GameState;
@@ -15,7 +15,7 @@ import java.awt.image.DataBufferInt;
  * The object that represents the kernel of the game engine. Contains the central loop that updates the game logic
  * and renders the graphics. Provides basic callbacks so GameStates can request resources and information.
  */
-public final class Server extends Canvas {
+public final class Engine extends Canvas {
 
     private Thread thread;
 
@@ -34,13 +34,13 @@ public final class Server extends Canvas {
     private final Mouse mouse;
 
     /**
-     * Creates a new Server with a specified screen width, height and scale, and a title to appear in the window's title bar.
+     * Creates a new Engine with a specified screen width, height and scale, and a title to appear in the window's title bar.
      * @param screenWidth The given width for the screen.
      * @param screenHeight The given height for the screen.
      * @param screenScale The given scale for the screen.
      * @param title The given title for the screen.
      */
-    public Server(int screenWidth, int screenHeight, int screenScale, String title) {
+    public Engine(int screenWidth, int screenHeight, int screenScale, String title) {
 
         this.title = title;
 
@@ -168,7 +168,7 @@ public final class Server extends Canvas {
      * setting the game into motion.
      * @param intent The intent representing the first GameState.
      */
-    public void startServer(@NotNull Intent intent) {
+    public void start(@NotNull Intent intent) {
         frame.setResizable(false);
         frame.setTitle(title);
         frame.add(this);

@@ -1,4 +1,4 @@
-package server;
+package engine;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -41,7 +41,7 @@ public class Keyboard implements KeyListener {
     }
 
     /**
-     * Returns wheter the given key was just pressed this game frame.
+     * Returns whether the given key was just pressed this game frame.
      * @param virtualKey The virtual key representing the key being pressed.
      * @return Whether the given key was just pressed.
      */

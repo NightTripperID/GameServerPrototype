@@ -1,4 +1,4 @@
-package server;
+package engine;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -114,7 +114,7 @@ public class Mouse extends MouseAdapter {
     }
 
     /**
-     * Unused for now
+     * Unused
      */
     @Override
     public void mouseWheelMoved(MouseWheelEvent mouseWheelEvent) {
