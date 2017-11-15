@@ -12,7 +12,7 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.io.Serializable;
+import java.net.URL;
 import java.util.*;
 
 /**
@@ -24,7 +24,7 @@ public abstract class GameState implements Updatable, Renderable {
     private Intent intent;
 
     private List<Entity> entities = new ArrayList<>();
-    private List<Entity> pendingEntites = new ArrayList<>();
+    private List<Entity> pendingEntities = new ArrayList<>();
 
     private double xScroll, yScroll;
 
@@ -83,6 +83,10 @@ public abstract class GameState implements Updatable, Renderable {
         loadTiles(path, mapTiles);
     }
 
+    protected void loadMapTiles(@NotNull URL url) {
+        loadTiles(url, mapTiles);
+    }
+
     /**
      * Loads trigger tiles from a png file to an integer array. Each integer represents a pixel on the tilemap,
      * which in turn represents a Trigger that is loaded into a HashMap called 'triggers'. The pixel color acts as
@@ -94,6 +98,10 @@ public abstract class GameState implements Updatable, Renderable {
      */
     protected void loadTriggerTiles(@NotNull String path) {
         loadTiles(path, triggerTiles);
+    }
+
+    protected void loadTriggerTiles(@NotNull URL url) {
+        loadTiles(url, triggerTiles);
     }
 
     /**
@@ -112,6 +120,20 @@ public abstract class GameState implements Updatable, Renderable {
             System.arraycopy(pixels, 0, dest, 0, dest.length);
             System.out.println("Success!");
         } catch (IOException e) {
+            System.out.println("failed...");
+            e.printStackTrace();
+        }
+    }
+
+    protected void loadTiles(@NotNull URL url, @Nullable int[] dest) {
+        try {
+            BufferedImage map = ImageIO.read(url);
+            int[] pixels = new int[mapWidth * mapHeight];
+            map.getRGB(0, 0, mapWidth, mapHeight, pixels, 0, mapWidth);
+            System.arraycopy(pixels, 0, dest, 0, dest.length);
+            System.out.println("Success!");
+
+        } catch(IOException e) {
             System.out.println("failed...");
             e.printStackTrace();
         }
@@ -183,8 +205,7 @@ public abstract class GameState implements Updatable, Renderable {
      */
     public void addEntity(@NotNull Entity entity) {
         entity.initialize(this);
-        pendingEntites.add(entity);
-        entities.sort(Entity::compareTo);
+        pendingEntities.add(entity);
     }
 
     /**
@@ -192,8 +213,8 @@ public abstract class GameState implements Updatable, Renderable {
      * Clears ArrayList pendingEntities once all pending entities are added.
      */
     private void addPendingEntities() {
-        entities.addAll(pendingEntites);
-        pendingEntites.clear();
+        entities.addAll(pendingEntities);
+        pendingEntities.clear();
     }
 
     /**

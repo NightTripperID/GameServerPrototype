@@ -45,7 +45,7 @@ public class Tile {
 
     /**
      * Returns whether this Tile is a solid object (i.e. cannot be traversed by game objects)
-     * @return
+     * @return true if solid, false otherwise
      */
     public boolean solid() {
         return solid;
@@ -53,7 +53,7 @@ public class Tile {
 
     /**
      * Returns whether this Tile contains an interactive Trigger (an event that occurs when the Tile is interacted with)
-     * @return
+     * @return true if contains a trigger, false otherwise
      */
     public boolean trigger() {
         return trigger;

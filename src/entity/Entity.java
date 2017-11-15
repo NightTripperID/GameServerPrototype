@@ -18,9 +18,9 @@ public abstract class Entity implements Updatable, Renderable, Serializable, Com
     protected GameState gameState;
     private boolean removed;
 
-    private int renderPrio;
-    private static final int MIN_RENDER_PRIO = 0;
-    private static final int MAX_REDER_PRIO =  3;
+    private int renderPriority;
+    private static final int MIN_RENDER_PRIORITY = 0;
+    private static final int MAX_RENDER_PRIORITY =  3;
 
     /**
      * Associates the Entity with its containing GameState.
@@ -37,7 +37,7 @@ public abstract class Entity implements Updatable, Renderable, Serializable, Com
 
     /**
      * Render method that that is executed with each of the Engine's Renderable calls (as fast as hardware allows).
-     * @param screen
+     * @param screen the screen to render to.
      */
     public abstract void render(@NotNull Screen screen);
 
@@ -59,22 +59,24 @@ public abstract class Entity implements Updatable, Renderable, Serializable, Com
     }
 
     /**
-     * Sets the render priority. Valid values are 0, 1, 2, and 3. Entites with a lower priority are rendered first.
+     * Sets the render priority. Valid values are 0, 1, 2, and 3. Entities with a lower priority are rendered first.
+     * @param priority the specified priority.
      */
-    public void setRenderPriority(int renderPrio) {
-        if(renderPrio < MIN_RENDER_PRIO || renderPrio > MAX_REDER_PRIO)
+    public void setRenderPriority(int priority) {
+        if(priority < MIN_RENDER_PRIORITY || priority > MAX_RENDER_PRIORITY)
             throw new IllegalArgumentException("render priority must be greater than - 1 and less than 4");
-        this.renderPrio = renderPrio;
+        this.renderPriority = priority;
     }
 
     /**
      * Compares the render priority of this entity to another entity.
      * @param entity the other entity to compare to.
-     * @return < 1 if this entity has a higher render priority,
+     * @return less than 1 if this entity has a higher render priority,
      * 0 if they have the same prioriy, and 1 if the other entiy has a
      * higher priority.
      */
+    @Override
     public int compareTo(Entity entity) {
-        return this.renderPrio - entity.renderPrio;
+        return this.renderPriority - entity.renderPriority;
     }
 }
