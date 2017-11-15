@@ -111,7 +111,7 @@ public abstract class GameState implements Updatable, Renderable {
      */
     protected void loadTiles(@NotNull String filePath, @Nullable int[] dest) {
         try {
-            System.out.println("Trying to load: " + filePath + "...");
+            System.out.println("Trying to load file path: " + filePath + "...");
 
             File file = new File(filePath);
             BufferedImage map = ImageIO.read(file);
@@ -127,6 +127,8 @@ public abstract class GameState implements Updatable, Renderable {
 
     protected void loadTiles(@NotNull URL url, @Nullable int[] dest) {
         try {
+            System.out.println("Trying to load url: " + url + "...");
+
             BufferedImage map = ImageIO.read(url);
             int[] pixels = new int[mapWidth * mapHeight];
             map.getRGB(0, 0, mapWidth, mapHeight, pixels, 0, mapWidth);
