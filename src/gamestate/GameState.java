@@ -201,12 +201,12 @@ public abstract class GameState implements Updatable, Renderable {
     }
 
     /**
-     * Adds a new entity to ArrayList pendingEntities. pending Entites are added to ArraList entites on the next
-     * update cycle.
+     * Adds a new entity to ArrayList pendingEntities. Pending Entites are added to ArraList entities on the next
+     * update cycle. Runs Entity#onCreate.
      * @param entity The new entity to add.
      */
     public void addEntity(@NotNull Entity entity) {
-        entity.initialize(this);
+        entity.onCreate(this);
         pendingEntities.add(entity);
     }
 
@@ -220,12 +220,14 @@ public abstract class GameState implements Updatable, Renderable {
     }
 
     /**
-     * Removes all entities that were marked for removal in this update cycle.
+     * Removes all entities that were marked for removal in this update cycle. Runs marked entities' onDestroy method.
      */
     private void removeMarkedEntities() {
         for(int i = 0; i < entities.size(); i++) {
-            if(entities.get(i).removed())
+            if(entities.get(i).removed()) {
+                entities.get(i).onDestroy();
                 entities.remove(entities.get(i--));
+            }
         }
     }
 

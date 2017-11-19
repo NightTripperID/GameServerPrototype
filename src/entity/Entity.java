@@ -23,11 +23,18 @@ public abstract class Entity implements Updatable, Renderable, Serializable, Com
     private static final int MAX_RENDER_PRIORITY =  3;
 
     /**
-     * Associates the Entity with its containing GameState.
+     * Associates the Entity with its containing GameState. Overridable by API user so they can run any other code
+     * when Entity is created.
      * @param gameState The Entity's containing GameState.
      */
-    public void initialize(@NotNull GameState gameState) {
+    public void onCreate(@NotNull GameState gameState) {
         this.gameState = gameState;
+    }
+
+    /**
+     * Runs any final code when Entity is destroyed.
+     */
+    public void onDestroy() {
     }
 
     /**
@@ -40,7 +47,6 @@ public abstract class Entity implements Updatable, Renderable, Serializable, Com
      * @param screen the screen to render to.
      */
     public abstract void render(@NotNull Screen screen);
-
 
     /**
      * Returns whether Entity is marked for removal from the GameState.
