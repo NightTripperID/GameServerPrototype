@@ -1,4 +1,4 @@
-package gamestate;
+package com.bitburger.gamestate;
 
 /**
  * Object representing the bridge between GameStates. The Engine uses an Intent to instantiate a push a new GameState

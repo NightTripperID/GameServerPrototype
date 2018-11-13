@@ -1,4 +1,4 @@
-package graphics;
+package com.bitburger.graphics;
 
 /**
  * Object that represents a Sprite animation sequence,

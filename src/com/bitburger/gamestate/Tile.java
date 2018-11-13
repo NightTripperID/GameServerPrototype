@@ -1,8 +1,8 @@
-package gamestate;
+package com.bitburger.gamestate;
 
 import com.sun.istack.internal.NotNull;
-import engine.Screen;
-import graphics.Sprite;
+import com.bitburger.engine.Screen;
+import com.bitburger.graphics.Sprite;
 
 /**
  * Square background object that is rendered to Screen.

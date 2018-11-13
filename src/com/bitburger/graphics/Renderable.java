@@ -1,6 +1,6 @@
-package graphics;
+package com.bitburger.graphics;
 
-import engine.Screen;
+import com.bitburger.engine.Screen;
 
 /**
  * Classes that render graphics to the screen must implement this interface.

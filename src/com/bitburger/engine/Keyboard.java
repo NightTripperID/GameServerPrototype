@@ -1,4 +1,4 @@
-package engine;
+package com.bitburger.engine;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;

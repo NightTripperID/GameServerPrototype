@@ -1,4 +1,4 @@
-package gamestate;
+package com.bitburger.gamestate;
 
 import com.sun.istack.internal.NotNull;
 

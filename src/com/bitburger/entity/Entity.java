@@ -1,10 +1,10 @@
-package entity;
+package com.bitburger.entity;
 
 import com.sun.istack.internal.NotNull;
-import gamestate.GameState;
-import graphics.Renderable;
-import engine.Screen;
-import update.Updatable;
+import com.bitburger.gamestate.GameState;
+import com.bitburger.graphics.Renderable;
+import com.bitburger.engine.Screen;
+import com.bitburger.update.Updatable;
 
 import java.io.Serializable;
 

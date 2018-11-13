@@ -1,4 +1,4 @@
-package gamestate;
+package com.bitburger.gamestate;
 
 /**
  * Object representing a bundle of primitive and complex objexts. Values are stored in lazily instantiated HashMaps.

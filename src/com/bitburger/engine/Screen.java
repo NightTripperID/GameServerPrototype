@@ -1,8 +1,8 @@
-package engine;
+package com.bitburger.engine;
 
 import com.sun.istack.internal.NotNull;
-import gamestate.Tile;
-import graphics.Sprite;
+import com.bitburger.gamestate.Tile;
+import com.bitburger.graphics.Sprite;
 
 /**
  * Object that contains a pixel buffer matching specified dimensions and methods for rendering

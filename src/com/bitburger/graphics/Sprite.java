@@ -1,7 +1,7 @@
-package graphics;
+package com.bitburger.graphics;
 
 /**
- * Represents a 2 dimensional graphic on screen. graphics.Sprite data is loaded from a graphics.SpriteSheet object.
+ * Represents a 2 dimensional graphic on screen. com.bitburger.graphics.Sprite data is loaded from a com.bitburger.graphics.SpriteSheet object.
  * Width, height, and coordinates can be specified. Sprites can also be rotated using affine matrix transformation.
  */
 public class Sprite {
@@ -115,7 +115,7 @@ public class Sprite {
 
     /**
      * Rotate specified sprite by the specified angle.
-     * @param sprite: The specified graphics.Sprite object.
+     * @param sprite: The specified com.bitburger.graphics.Sprite object.
      * @param angle: The angle in radians.
      * @return the rotated sprite
      */

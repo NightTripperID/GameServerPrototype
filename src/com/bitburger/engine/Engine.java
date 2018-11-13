@@ -1,8 +1,8 @@
-package engine;
+package com.bitburger.engine;
 
 import com.sun.istack.internal.NotNull;
-import gamestate.GameState;
-import gamestate.Intent;
+import com.bitburger.gamestate.GameState;
+import com.bitburger.gamestate.Intent;
 
 import javax.swing.*;
 

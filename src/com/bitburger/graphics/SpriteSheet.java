@@ -1,4 +1,4 @@
-package graphics;
+package com.bitburger.graphics;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -7,7 +7,7 @@ import java.net.URL;
 import javax.imageio.ImageIO;
 
 /**
- * SpriteSheet is an image that contains images that can be selected to make graphics.Sprite objects. Image data is loaded from a png file
+ * SpriteSheet is an image that contains images that can be selected to make com.bitburger.graphics.Sprite objects. Image data is loaded from a png file
  * that is typically comprised of multiple sprite images, e.g. the animation frames for a video game character such as Mario.
  *
  */

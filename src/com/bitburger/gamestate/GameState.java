@@ -1,12 +1,12 @@
-package gamestate;
+package com.bitburger.gamestate;
 
 import com.sun.istack.internal.NotNull;
 import com.sun.istack.internal.Nullable;
-import engine.Engine;
-import entity.Entity;
-import graphics.Renderable;
-import engine.Screen;
-import update.Updatable;
+import com.bitburger.engine.Engine;
+import com.bitburger.entity.Entity;
+import com.bitburger.graphics.Renderable;
+import com.bitburger.engine.Screen;
+import com.bitburger.update.Updatable;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
