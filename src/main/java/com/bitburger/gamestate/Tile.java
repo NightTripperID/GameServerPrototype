@@ -19,7 +19,7 @@ public class Tile {
      * @param solid Indicates whether or not the Tile is traversable by Entities.
      * @param trigger Indicates whetehr or not the Tile has an interactive event Trigger.
      */
-    public Tile(@NotNull Sprite sprite, boolean solid, boolean trigger) {
+    public Tile(Sprite sprite, boolean solid, boolean trigger) {
         this.sprite = sprite;
         this.solid = solid;
         this.trigger = trigger;
