@@ -1,4 +1,4 @@
-package io.github.nighttripperid.gamestate;
+package com.github.nighttripperid.gamestate;
 
 import com.sun.istack.internal.NotNull;
 

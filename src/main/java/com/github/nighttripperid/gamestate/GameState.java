@@ -1,11 +1,11 @@
-package io.github.nighttripperid.gamestate;
+package com.github.nighttripperid.gamestate;
 
+import com.github.nighttripperid.engine.Engine;
+import com.github.nighttripperid.engine.Screen;
+import com.github.nighttripperid.entity.Entity;
+import com.github.nighttripperid.graphics.Renderable;
 import com.sun.istack.internal.NotNull;
 import com.sun.istack.internal.Nullable;
-import io.github.nighttripperid.engine.Engine;
-import io.github.nighttripperid.entity.Entity;
-import io.github.nighttripperid.graphics.Renderable;
-import io.github.nighttripperid.engine.Screen;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;

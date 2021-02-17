@@ -1,8 +1,8 @@
-package io.github.nighttripperid.engine;
+package com.github.nighttripperid.engine;
 
 import com.sun.istack.internal.NotNull;
-import io.github.nighttripperid.gamestate.GameState;
-import io.github.nighttripperid.gamestate.Intent;
+import com.github.nighttripperid.gamestate.GameState;
+import com.github.nighttripperid.gamestate.Intent;
 
 import javax.swing.*;
 

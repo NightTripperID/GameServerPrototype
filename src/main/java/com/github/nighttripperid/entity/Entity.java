@@ -1,10 +1,10 @@
-package io.github.nighttripperid.entity;
+package com.github.nighttripperid.entity;
 
+import com.github.nighttripperid.gamestate.Updatable;
+import com.github.nighttripperid.graphics.Renderable;
 import com.sun.istack.internal.NotNull;
-import io.github.nighttripperid.gamestate.GameState;
-import io.github.nighttripperid.graphics.Renderable;
-import io.github.nighttripperid.engine.Screen;
-import io.github.nighttripperid.gamestate.Updatable;
+import com.github.nighttripperid.gamestate.GameState;
+import com.github.nighttripperid.engine.Screen;
 
 import java.io.Serializable;
 

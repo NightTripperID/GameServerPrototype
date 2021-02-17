@@ -1,4 +1,4 @@
-package io.github.nighttripperid.gamestate;
+package com.github.nighttripperid.gamestate;
 
 /**
  * Object representing the bridge between GameStates. The Engine uses an Intent to instantiate a push a new GameState

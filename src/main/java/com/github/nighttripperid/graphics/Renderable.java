@@ -1,6 +1,6 @@
-package io.github.nighttripperid.graphics;
+package com.github.nighttripperid.graphics;
 
-import io.github.nighttripperid.engine.Screen;
+import com.github.nighttripperid.engine.Screen;
 
 /**
  * Classes that render graphics to the screen must implement this interface.

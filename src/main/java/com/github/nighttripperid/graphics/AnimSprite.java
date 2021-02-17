@@ -1,4 +1,4 @@
-package io.github.nighttripperid.graphics;
+package com.github.nighttripperid.graphics;
 
 /**
  * Object that represents a Sprite animation sequence,
