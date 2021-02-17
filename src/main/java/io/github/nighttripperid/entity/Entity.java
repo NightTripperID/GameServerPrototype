@@ -1,10 +1,10 @@
-package com.bitburger.entity;
+package io.github.nighttripperid.entity;
 
 import com.sun.istack.internal.NotNull;
-import com.bitburger.gamestate.GameState;
-import com.bitburger.graphics.Renderable;
-import com.bitburger.engine.Screen;
-import com.bitburger.gamestate.Updatable;
+import io.github.nighttripperid.gamestate.GameState;
+import io.github.nighttripperid.graphics.Renderable;
+import io.github.nighttripperid.engine.Screen;
+import io.github.nighttripperid.gamestate.Updatable;
 
 import java.io.Serializable;
 

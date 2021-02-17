@@ -1,8 +1,8 @@
-package com.bitburger.engine;
+package io.github.nighttripperid.engine;
 
 import com.sun.istack.internal.NotNull;
-import com.bitburger.gamestate.Tile;
-import com.bitburger.graphics.Sprite;
+import io.github.nighttripperid.gamestate.Tile;
+import io.github.nighttripperid.graphics.Sprite;
 
 /**
  * Object that contains a pixel buffer matching specified dimensions and methods for rendering

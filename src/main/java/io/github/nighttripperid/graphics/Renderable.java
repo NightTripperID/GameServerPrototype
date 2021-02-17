@@ -1,6 +1,6 @@
-package com.bitburger.graphics;
+package io.github.nighttripperid.graphics;
 
-import com.bitburger.engine.Screen;
+import io.github.nighttripperid.engine.Screen;
 
 /**
  * Classes that render graphics to the screen must implement this interface.
