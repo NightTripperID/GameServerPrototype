@@ -208,7 +208,7 @@ public final class Engine extends Canvas {
     }
 
     /**
-     * Pops the active GameState, runs its onDestroy() method, then pushes the newly intantiated GameState and runs its
+     * Pops the active GameState, runs its onDestroy() method, then pushes the newly instantiated GameState and runs its
      * onCreate() method.
      * @param intent The intent representing the GameState to be instantiated and pushed onto the stack.
      */

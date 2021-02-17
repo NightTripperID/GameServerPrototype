@@ -4,7 +4,7 @@ import com.sun.istack.internal.NotNull;
 import com.bitburger.gamestate.GameState;
 import com.bitburger.graphics.Renderable;
 import com.bitburger.engine.Screen;
-import com.bitburger.update.Updatable;
+import com.bitburger.gamestate.Updatable;
 
 import java.io.Serializable;
 

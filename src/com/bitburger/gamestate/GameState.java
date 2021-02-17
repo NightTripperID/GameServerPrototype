@@ -6,7 +6,6 @@ import com.bitburger.engine.Engine;
 import com.bitburger.entity.Entity;
 import com.bitburger.graphics.Renderable;
 import com.bitburger.engine.Screen;
-import com.bitburger.update.Updatable;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
