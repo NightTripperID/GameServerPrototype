@@ -1,4 +1,4 @@
-package com.bitburger.engine;
+package io.github.nighttripperid.engine;
 
 /**
  * Character arrays that represent an 8x8 Font for convenience. Used by Screen.

@@ -1,8 +1,8 @@
-package com.bitburger.gamestate;
+package io.github.nighttripperid.gamestate;
 
 import com.sun.istack.internal.NotNull;
-import com.bitburger.engine.Screen;
-import com.bitburger.graphics.Sprite;
+import io.github.nighttripperid.engine.Screen;
+import io.github.nighttripperid.graphics.Sprite;
 
 /**
  * Square background object that is rendered to Screen.

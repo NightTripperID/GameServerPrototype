@@ -1,4 +1,4 @@
-package com.bitburger.graphics;
+package io.github.nighttripperid.graphics;
 
 /**
  * Represents a 2 dimensional graphic on screen. com.bitburger.graphics.Sprite data is loaded from a com.bitburger.graphics.SpriteSheet object.

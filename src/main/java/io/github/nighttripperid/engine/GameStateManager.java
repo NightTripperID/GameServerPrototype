@@ -1,7 +1,7 @@
-package com.bitburger.engine;
+package io.github.nighttripperid.engine;
 
 import com.sun.istack.internal.NotNull;
-import com.bitburger.gamestate.GameState;
+import io.github.nighttripperid.gamestate.GameState;
 
 import java.util.Stack;
 

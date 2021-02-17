@@ -1,4 +1,4 @@
-package com.bitburger.gamestate;
+package io.github.nighttripperid.gamestate;
 
 import com.sun.istack.internal.NotNull;
 

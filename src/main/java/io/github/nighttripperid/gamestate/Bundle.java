@@ -1,4 +1,4 @@
-package com.bitburger.gamestate;
+package io.github.nighttripperid.gamestate;
 
 /**
  * Object representing a bundle of primitive and complex objexts. Values are stored in lazily instantiated HashMaps.
