@@ -1,8 +1,8 @@
-package io.github.nighttripperid.gamestate;
+package com.github.nighttripperid.gamestate;
 
 import com.sun.istack.internal.NotNull;
-import io.github.nighttripperid.engine.Screen;
-import io.github.nighttripperid.graphics.Sprite;
+import com.github.nighttripperid.engine.Screen;
+import com.github.nighttripperid.graphics.Sprite;
 
 /**
  * Square background object that is rendered to Screen.

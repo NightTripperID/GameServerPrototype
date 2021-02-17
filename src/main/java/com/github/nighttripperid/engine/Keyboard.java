@@ -1,4 +1,4 @@
-package io.github.nighttripperid.engine;
+package com.github.nighttripperid.engine;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;

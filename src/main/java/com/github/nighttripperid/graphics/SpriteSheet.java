@@ -1,4 +1,4 @@
-package io.github.nighttripperid.graphics;
+package com.github.nighttripperid.graphics;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;

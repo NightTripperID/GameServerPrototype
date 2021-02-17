@@ -1,4 +1,4 @@
-package io.github.nighttripperid.engine;
+package com.github.nighttripperid.engine;
 
 /**
  * Character arrays that represent a 5x5 Font for convenience. Used by Screen.
