@@ -1,6 +1,5 @@
 package com.github.nighttripperid.gamestate;
 
-import com.sun.istack.internal.NotNull;
 import com.github.nighttripperid.engine.Screen;
 import com.github.nighttripperid.graphics.Sprite;
 
@@ -31,7 +30,7 @@ public class Tile {
      * @param x The x map coordinate on which to Renderable (in pixel precision).
      * @param y The y map coordinate on which to Renderable (in pixel precision).
      */
-    public void render(@NotNull Screen screen, int x, int y) {
+    public void render(Screen screen, int x, int y) {
         screen.renderTile(x, y, this);
     }
 

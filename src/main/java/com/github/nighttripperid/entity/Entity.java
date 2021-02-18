@@ -1,10 +1,9 @@
 package com.github.nighttripperid.entity;
 
+import com.github.nighttripperid.engine.Screen;
+import com.github.nighttripperid.gamestate.GameState;
 import com.github.nighttripperid.gamestate.Updatable;
 import com.github.nighttripperid.graphics.Renderable;
-import com.sun.istack.internal.NotNull;
-import com.github.nighttripperid.gamestate.GameState;
-import com.github.nighttripperid.engine.Screen;
 
 import java.io.Serializable;
 
@@ -27,7 +26,7 @@ public abstract class Entity implements Updatable, Renderable, Serializable, Com
      * when Entity is created.
      * @param gameState The Entity's containing GameState.
      */
-    public void onCreate(@NotNull GameState gameState) {
+    public void onCreate(GameState gameState) {
         this.gameState = gameState;
     }
 
@@ -46,7 +45,7 @@ public abstract class Entity implements Updatable, Renderable, Serializable, Com
      * Render method that that is executed with each of the Engine's Renderable calls (as fast as hardware allows).
      * @param screen the screen to render to.
      */
-    public abstract void render(@NotNull Screen screen);
+    public abstract void render(Screen screen);
 
     /**
      * Returns whether Entity is marked for removal from the GameState.

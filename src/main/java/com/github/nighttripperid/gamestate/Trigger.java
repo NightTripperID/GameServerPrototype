@@ -1,7 +1,5 @@
 package com.github.nighttripperid.gamestate;
 
-import com.sun.istack.internal.NotNull;
-
 /**
  * Object that represents a tile trigger with a runnable piece of code.
  */
@@ -16,7 +14,7 @@ public class Trigger {
      * @param active Indicates whether or not the trigger is active (activates when user presses a button)
      *               Or passive (activates when user traverses over a trigger tile.
      */
-    public Trigger(@NotNull Runnable runnable, boolean active) {
+    public Trigger(Runnable runnable, boolean active) {
         this.runnable = runnable;
         this.active = active;
     }

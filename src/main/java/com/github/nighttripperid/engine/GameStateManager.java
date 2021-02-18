@@ -1,6 +1,5 @@
 package com.github.nighttripperid.engine;
 
-import com.sun.istack.internal.NotNull;
 import com.github.nighttripperid.gamestate.GameState;
 
 import java.util.Stack;
@@ -16,7 +15,7 @@ class GameStateManager {
      * Pushes a new GameState onto gameStateStack.
      * @param gs the new GameState to push onto gameStateStack.
      */
-    void push(@NotNull GameState gs) {
+    void push(GameState gs) {
         gameStateStack.push(gs);
     }
 
@@ -41,7 +40,7 @@ class GameStateManager {
      * @param gs The new GameState to push onto gameStateStack.
      * @return The old GameState that was popped from gameStateStack.
      */
-    GameState swap(@NotNull GameState gs) {
+    GameState swap(GameState gs) {
         GameState old = gameStateStack.pop();
         gameStateStack.push(gs);
         return old;

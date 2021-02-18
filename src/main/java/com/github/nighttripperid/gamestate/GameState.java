@@ -4,15 +4,16 @@ import com.github.nighttripperid.engine.Engine;
 import com.github.nighttripperid.engine.Screen;
 import com.github.nighttripperid.entity.Entity;
 import com.github.nighttripperid.graphics.Renderable;
-import com.sun.istack.internal.NotNull;
-import com.sun.istack.internal.Nullable;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Abstract object representing a GameState.
@@ -41,7 +42,7 @@ public abstract class GameState implements Updatable, Renderable {
      * @param engine the engine that is instantiating the GameState and available for callback. Can be overridden
      * so GameState can perform additional actions upon being created.
      */
-    public void onCreate(@NotNull Engine engine) {
+    public void onCreate(Engine engine) {
         this.engine = engine;
     }
 
@@ -68,7 +69,7 @@ public abstract class GameState implements Updatable, Renderable {
      * of each Entity is called.
      * @param screen the screen object to which Tiles and Entities are rendered
      */
-    public void render(@NotNull Screen screen) {
+    public void render(Screen screen) {
         renderTiles(screen);
         entities.forEach(e -> e.render(screen));
     }
@@ -78,11 +79,11 @@ public abstract class GameState implements Updatable, Renderable {
      * represents a Tile that will be rendered by the GameState to the Screen.
      * @param path the filepath of the png file specified by the caller.
      */
-    protected void loadMapTiles(@NotNull String path) {
+    protected void loadMapTiles(String path) {
         loadTiles(path, mapTiles);
     }
 
-    protected void loadMapTiles(@NotNull URL url) {
+    protected void loadMapTiles(URL url) {
         loadTiles(url, mapTiles);
     }
 
@@ -95,11 +96,11 @@ public abstract class GameState implements Updatable, Renderable {
      * it is called by color, executing the runnable piece of code via lambda or anonymous inner class.
      * @param path the filepath of the png file specified by the caller.
      */
-    protected void loadTriggerTiles(@NotNull String path) {
+    protected void loadTriggerTiles(String path) {
         loadTiles(path, triggerTiles);
     }
 
-    protected void loadTriggerTiles(@NotNull URL url) {
+    protected void loadTriggerTiles(URL url) {
         loadTiles(url, triggerTiles);
     }
 
@@ -108,7 +109,7 @@ public abstract class GameState implements Updatable, Renderable {
      * @param filePath // the filepath specified by the caller
      * @param dest // the destination integer array that the tileset will be loaded into
      */
-    protected void loadTiles(@NotNull String filePath, @Nullable int[] dest) {
+    protected void loadTiles(String filePath, int[] dest) {
         try {
             System.out.println("Trying to load file path: " + filePath + "...");
 
@@ -124,7 +125,7 @@ public abstract class GameState implements Updatable, Renderable {
         }
     }
 
-    protected void loadTiles(@NotNull URL url, @Nullable int[] dest) {
+    protected void loadTiles(URL url, int[] dest) {
         try {
             System.out.println("Trying to load url: " + url + "...");
 
@@ -144,7 +145,7 @@ public abstract class GameState implements Updatable, Renderable {
      * Renders map Tiles onto the given Screen.
      * @param screen The Screen on which to Renderable the Tiles.
      */
-    private void renderTiles(@NotNull Screen screen) {
+    private void renderTiles(Screen screen) {
         screen.setScroll(xScroll, yScroll);
 
         int x0 = (int) xScroll >> tileBitShift;
@@ -163,7 +164,7 @@ public abstract class GameState implements Updatable, Renderable {
      * Pushes a new GameState onto the GameStateManager's GameState stack.
      * @param intent The intent that contains the class metadata of the new GameState.
      */
-    public final void pushGameState(@NotNull Intent intent) {
+    public final void pushGameState(Intent intent) {
         engine.pushGameState(intent);
     }
 
@@ -178,7 +179,7 @@ public abstract class GameState implements Updatable, Renderable {
      * Pops this GameState from the GameStateManager's stack and pushes a new GameState in its place.
      * @param intent The intent containing the class metadata of the new GameState.
      */
-    public final void swapGameState(@NotNull Intent intent) {
+    public final void swapGameState(Intent intent) {
         engine.swapGameState(intent);
     }
 
@@ -204,7 +205,7 @@ public abstract class GameState implements Updatable, Renderable {
      * update cycle. Runs Entity#onCreate.
      * @param entity The new entity to add.
      */
-    public void addEntity(@NotNull Entity entity) {
+    public void addEntity(Entity entity) {
         entity.onCreate(this);
         pendingEntities.add(entity);
     }
@@ -237,7 +238,7 @@ public abstract class GameState implements Updatable, Renderable {
      * @param mapHeight The given map height in tile precision.
      * @param tileSize The given tile size in pixel precision.
      */
-    protected void initMap(int mapWidth, int mapHeight, @NotNull Tile.TileSize tileSize) {
+    protected void initMap(int mapWidth, int mapHeight, Tile.TileSize tileSize) {
         this.mapWidth = mapWidth;
         this.mapHeight = mapHeight;
         mapTiles = new int[mapWidth * mapHeight];
@@ -279,7 +280,7 @@ public abstract class GameState implements Updatable, Renderable {
      * sets this, and the user should probably never call this method).
      * @param intent The Intent to set.
      */
-    public final void setIntent(@NotNull Intent intent) {
+    public final void setIntent(Intent intent) {
         this.intent = intent;
     }
 
@@ -396,7 +397,7 @@ public abstract class GameState implements Updatable, Renderable {
      * @param key The Trigger's hex value RGB color key (i.e. 0xff0000)
      * @param trigger The Trigger object associated with the color
      */
-    public void putTrigger(int key, @NotNull Trigger trigger) {
+    public void putTrigger(int key, Trigger trigger) {
         triggers.put(key, trigger);
     }
 
