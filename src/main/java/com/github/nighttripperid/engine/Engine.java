@@ -1,11 +1,9 @@
 package com.github.nighttripperid.engine;
 
-import com.sun.istack.internal.NotNull;
 import com.github.nighttripperid.gamestate.GameState;
 import com.github.nighttripperid.gamestate.Intent;
 
 import javax.swing.*;
-
 import java.awt.*;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
@@ -168,7 +166,7 @@ public final class Engine extends Canvas {
      * setting the game into motion.
      * @param intent The intent representing the first GameState.
      */
-    public void start(@NotNull Intent intent) {
+    public void start(Intent intent) {
         frame.setResizable(false);
         frame.setTitle(title);
         frame.add(this);
@@ -187,7 +185,7 @@ public final class Engine extends Canvas {
      * gameStateStack and runs its onCreate() method.
      * @param intent The intent representing the GameState to be instantiated and pushed onto the stack.
      */
-    public void pushGameState(@NotNull Intent intent) {
+    public void pushGameState(Intent intent) {
 
         try {
             GameState gs = intent.getGsc().newInstance();
@@ -212,7 +210,7 @@ public final class Engine extends Canvas {
      * onCreate() method.
      * @param intent The intent representing the GameState to be instantiated and pushed onto the stack.
      */
-    public void swapGameState(@NotNull Intent intent) {
+    public void swapGameState(Intent intent) {
 
         try {
             GameState gs = intent.getGsc().newInstance();

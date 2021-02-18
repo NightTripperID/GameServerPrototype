@@ -2,7 +2,8 @@ package com.github.nighttripperid.engine;
 
 import com.github.nighttripperid.gamestate.Tile;
 import com.github.nighttripperid.graphics.Sprite;
-import com.sun.istack.internal.NotNull;
+
+import java.util.Arrays;
 
 /**
  * Object that contains a pixel buffer matching specified dimensions and methods for rendering
@@ -36,16 +37,14 @@ public class Screen {
      * @param col The color to fill the screen with.
      */
     public void fill(int col) {
-        for (int i = 0; i < pixels.length; i++)
-            pixels[i] = col;
+        Arrays.fill(pixels, col);
     }
 
     /**
      * Overwrites screen buffer with black (0x000000).
      */
     void clear() {
-        for (int i = 0; i < pixels.length; i++)
-            pixels[i] = 0x000000;
+        Arrays.fill(pixels, 0x000000);
     }
 
     /**
@@ -98,7 +97,7 @@ public class Screen {
      * @param col The specified color of the character using rgb hex notation (e.g. 0xaabbcc)
      * @param character The character to be rendered.
      */
-    private void renderChar8x8(double x, double y, int col, @NotNull char[] character) {
+    private void renderChar8x8(double x, double y, int col, char[] character) {
         for (int yy = 0; yy < 8; yy++)
             for (int xx = 0; xx < 8; xx++)
                 if (character[xx + (yy << 3)] == '#')
@@ -114,7 +113,7 @@ public class Screen {
      * @param col The specified color of the character using rgb hex notation (e.g. 0xaabbcc)
      * @param character The character to be rendered.
      */
-    private void renderChar5x5(double x, double y, int col, @NotNull char[] character) {
+    private void renderChar5x5(double x, double y, int col, char[] character) {
         for (int yy = 0; yy < 5; yy++)
             for (int xx = 0; xx < 5; xx++)
                 if (character[xx + yy * 5] == '#')
@@ -128,7 +127,7 @@ public class Screen {
      * @param col The specified color for the string using rgb hex notation (e.g. 0xaabbcc)
      * @param string The string to be rendered.
      */
-    public void renderString8x8(double x, double y, int col, @NotNull String string) {
+    public void renderString8x8(double x, double y, int col, String string) {
         for (int i = 0; i < string.length(); i++)
             renderChar8x8(x + (i << 3), y, col, Font8x8.getChar(string.charAt(i)));
     }
@@ -140,7 +139,7 @@ public class Screen {
      * @param col The specified color for the string using rgb hex notation (e.g. 0xaabbcc)
      * @param string The string to be rendered.
      */
-    public void renderString5x5(double x, double y, int col, @NotNull String string) {
+    public void renderString5x5(double x, double y, int col, String string) {
         for (int i = 0; i < string.length(); i++)
             renderChar5x5(x + (i * 5), y, col, Font5x5.getChar(string.charAt(i)));
     }
@@ -187,7 +186,7 @@ public class Screen {
      * @param y The y coordinate on screen.
      * @param sprite The sprite to Renderable.
      */
-    public void renderSprite(double x, double y, @NotNull Sprite sprite) {
+    public void renderSprite(double x, double y, Sprite sprite) {
         for (int yy = 0; yy < sprite.getHeight(); yy++) {
             if (yy + y <  0 || yy + y >= this.height)
                 continue;
@@ -207,7 +206,7 @@ public class Screen {
      * @param scale The scale at which to Renderable the Sprite.
      * @param sprite The sprite to Renderable.
      */
-    public void renderSprite(double x, double y, int scale, @NotNull Sprite sprite) {
+    public void renderSprite(double x, double y, int scale, Sprite sprite) {
         for (int yy = 0; yy < sprite.getHeight() * scale; yy += scale) {
             for (int xx = 0; xx < sprite.getWidth() * scale; xx += scale) {
                 for (int yyy = yy; yyy < yy + scale; yyy++) {
@@ -234,7 +233,7 @@ public class Screen {
      * @param color The color to fill the Sprite with.
      * @param sprite The Sprite to Renderable.
      */
-    public void renderSpriteColorFill(double x, double y, int scale, int color, @NotNull Sprite sprite) {
+    public void renderSpriteColorFill(double x, double y, int scale, int color, Sprite sprite) {
         for (int yy = 0; yy < sprite.getHeight() * scale; yy += scale) {
             for (int xx = 0; xx < sprite.getWidth() * scale; xx += scale) {
                 for (int yyy = yy; yyy < yy + scale; yyy++) {
@@ -259,7 +258,7 @@ public class Screen {
      * @param color The color to fill the Sprite with.
      * @param sprite The Sprite to Renderable.
      */
-    public void renderSpriteColorFill(double x, double y, int color, @NotNull Sprite sprite) {
+    public void renderSpriteColorFill(double x, double y, int color, Sprite sprite) {
         for (int yy = 0; yy < sprite.getHeight(); yy++) {
             if (yy + y <  0 || yy + y >= height)
                 continue;
@@ -278,7 +277,7 @@ public class Screen {
      * @param yPos The y position of the Tile in pixel precision.
      * @param tile The Tile to Renderable.
      */
-    public void renderTile(int xPos, int yPos, @NotNull Tile tile) {
+    public void renderTile(int xPos, int yPos, Tile tile) {
         int tileW = tile.getSprite().getWidth();
         int tileH = tile.getSprite().getHeight();
 
