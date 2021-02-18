@@ -6,7 +6,31 @@
 
     <groupId>com.github.nighttripperid</groupId>
     <artifactId>LittleEngine</artifactId>
-    <version>0.1-SNAPSHOT</version>
+    <version>0.1</version>
+
+    <name>LittleEngine</name>
+    <description>
+        LittleEngine, a Lightweight Java Game Engine to be pulled in as Maven dependency
+    </description>
+    <url>https://github.com/NightTripperID</url>
+    <licenses>
+        <license>
+            <name>The MIT License</name>
+            <url>https://raw.githubusercontent.com/NightTripperID/LittleEngine/master/LICENSE.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+    <developers>
+        <developer>
+            <name>Evan Doering</name>
+            <email>evan.doering.dev@gmail.com</email>
+        </developer>
+    </developers>
+    <scm>
+        <connection>scm:git:git://github.com/NightTripperID/LittleEngine.git</connection>
+        <developerConnection>scm:git:ssh://github.com/NightTripperID/LittleEngine.git</developerConnection>
+        <url>https://github.com/NightTripperID/LittleEngine/tree/master</url>
+    </scm>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
@@ -21,6 +45,7 @@
             <url>https://oss.sonatype.org/content/repositories/snapshots</url>
         </snapshotRepository>
     </distributionManagement>
+
     <build>
         <plugins>
             <plugin>
