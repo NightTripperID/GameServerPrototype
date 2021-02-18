@@ -16,6 +16,7 @@
     <licenses>
         <license>
             <name>The MIT License</name>
+            <url>https://raw.githubusercontent.com/NightTripperID/LittleEngine/master/LICENSE.txt</url>
             <distribution>repo</distribution>
         </license>
     </licenses>
