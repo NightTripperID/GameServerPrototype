@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021, Evan Doering
+ * Copyright (c) 2021, BitBurger, Evan Doering
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
