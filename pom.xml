@@ -10,7 +10,7 @@
 
     <name>LittleEngine</name>
     <description>
-        LittleEngine, a Lightweight Java Game Engine to be pulled in as Maven dependency
+        LittleEngine, a Lightweight Java Game Engine
     </description>
     <url>https://github.com/NightTripperID</url>
     <licenses>
@@ -45,6 +45,14 @@
             <url>https://oss.sonatype.org/content/repositories/snapshots</url>
         </snapshotRepository>
     </distributionManagement>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.googlecode.soundlibs</groupId>
+            <artifactId>vorbisspi</artifactId>
+            <version>1.0.3.3</version>
+        </dependency>
+    </dependencies>
 
     <build>
         <plugins>
@@ -101,5 +109,4 @@
             </plugin>
         </plugins>
     </build>
-    
 </project>
