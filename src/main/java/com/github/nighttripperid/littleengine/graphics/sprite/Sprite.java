@@ -25,7 +25,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.github.nighttripperid.littleengine.graphics;
+package com.github.nighttripperid.littleengine.graphics.sprite;
 
 /**
  * Represents a 2 dimensional graphic on screen. com.bitburger.graphics.Sprite data is loaded from a com.bitburger.graphics.SpriteSheet object.

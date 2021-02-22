@@ -27,20 +27,25 @@
 
 package com.github.nighttripperid.littleengine.gamestate;
 
+import com.github.cliftonlabs.json_simple.JsonException;
+import com.github.cliftonlabs.json_simple.JsonObject;
+import com.github.cliftonlabs.json_simple.Jsoner;
 import com.github.nighttripperid.littleengine.engine.Engine;
 import com.github.nighttripperid.littleengine.engine.Screen;
 import com.github.nighttripperid.littleengine.entity.Entity;
 import com.github.nighttripperid.littleengine.graphics.Renderable;
+import com.github.nighttripperid.littleengine.graphics.tilemapping.TileMap;
+import org.dozer.DozerBeanMapper;
+import org.dozer.Mapper;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Abstract object representing a GameState.
@@ -101,15 +106,39 @@ public abstract class GameState implements Updatable, Renderable {
         entities.forEach(e -> e.render(screen));
     }
 
+    protected void loadMapTilesJson(URL jsonUrl) {
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(jsonUrl.openStream()))) {
+            JsonObject jsonObject = (JsonObject) Jsoner.deserialize(reader);
+            Mapper mapper = new DozerBeanMapper();
+            TileMap tileMap = mapper.map(jsonObject, TileMap.class);
+
+            this.mapWidth = tileMap.getWidth();
+            this.mapHeight = tileMap.getHeight();
+            this.tileSize = tileMap.getTilewidth();
+            this.tileBitShift = (int) (Math.log(tileSize) / Math.log(2));
+
+            this.mapTiles = new int[this.mapWidth * this.mapHeight];
+            this.triggerTiles = new int[tileMap.getWidth() * tileMap.getHeight()];
+            System.arraycopy(tileMap.getLayers().stream().findFirst().orElse(null)
+                            .getData(), 0,  this.mapTiles, 0, this.mapTiles.length);
+
+            System.out.println("pause");
+        } catch (IOException | JsonException e) {
+            System.out.println("error loading " + jsonUrl);
+        }
+    }
+
     /**
      * Loads map tiles from a png file to an integer array. Each integer represents a pixel on the tilemap, which in turn
      * represents a Tile that will be rendered by the GameState to the Screen.
      * @param path the filepath of the png file specified by the caller.
      */
+    @Deprecated
     protected void loadMapTiles(String path) {
         loadTiles(path, mapTiles);
     }
 
+    @Deprecated
     protected void loadMapTiles(URL url) {
         loadTiles(url, mapTiles);
     }
@@ -123,10 +152,12 @@ public abstract class GameState implements Updatable, Renderable {
      * it is called by color, executing the runnable piece of code via lambda or anonymous inner class.
      * @param path the filepath of the png file specified by the caller.
      */
+    @Deprecated
     protected void loadTriggerTiles(String path) {
         loadTiles(path, triggerTiles);
     }
 
+    @Deprecated
     protected void loadTriggerTiles(URL url) {
         loadTiles(url, triggerTiles);
     }
@@ -136,6 +167,7 @@ public abstract class GameState implements Updatable, Renderable {
      * @param filePath // the filepath specified by the caller
      * @param dest // the destination integer array that the tileset will be loaded into
      */
+    @Deprecated
     protected void loadTiles(String filePath, int[] dest) {
         try {
             System.out.println("Trying to load file path: " + filePath + "...");
@@ -152,6 +184,7 @@ public abstract class GameState implements Updatable, Renderable {
         }
     }
 
+    @Deprecated
     protected void loadTiles(URL url, int[] dest) {
         try {
             System.out.println("Trying to load url: " + url + "...");
@@ -265,6 +298,7 @@ public abstract class GameState implements Updatable, Renderable {
      * @param mapHeight The given map height in tile precision.
      * @param tileSize The given tile size in pixel precision.
      */
+    @Deprecated
     protected void initMap(int mapWidth, int mapHeight, Tile.TileSize tileSize) {
         this.mapWidth = mapWidth;
         this.mapHeight = mapHeight;

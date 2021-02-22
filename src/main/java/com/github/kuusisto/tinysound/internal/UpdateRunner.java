@@ -24,9 +24,9 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.github.nighttripperid.kuusisto.tinysound.internal;
+package com.github.kuusisto.tinysound.internal;
 
-import com.github.nighttripperid.kuusisto.tinysound.TinySound;
+import com.github.kuusisto.tinysound.TinySound;
 
 import javax.sound.sampled.SourceDataLine;
 import java.util.concurrent.atomic.AtomicBoolean;

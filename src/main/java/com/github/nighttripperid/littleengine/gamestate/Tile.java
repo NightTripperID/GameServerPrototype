@@ -28,7 +28,7 @@
 package com.github.nighttripperid.littleengine.gamestate;
 
 import com.github.nighttripperid.littleengine.engine.Screen;
-import com.github.nighttripperid.littleengine.graphics.Sprite;
+import com.github.nighttripperid.littleengine.graphics.sprite.Sprite;
 
 /**
  * Square background object that is rendered to Screen.

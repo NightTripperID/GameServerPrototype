@@ -24,7 +24,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.github.nighttripperid.kuusisto.tinysound;
+package com.github.kuusisto.tinysound;
 
 /**
  * The Sound interface  is an abstraction for sound effects.  Sound objects

@@ -28,7 +28,7 @@
 package com.github.nighttripperid.littleengine.engine;
 
 import com.github.nighttripperid.littleengine.gamestate.Tile;
-import com.github.nighttripperid.littleengine.graphics.Sprite;
+import com.github.nighttripperid.littleengine.graphics.sprite.Sprite;
 
 import java.util.Arrays;
 

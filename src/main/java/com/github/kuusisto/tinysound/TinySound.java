@@ -24,10 +24,10 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.github.nighttripperid.kuusisto.tinysound;
+package com.github.kuusisto.tinysound;
 
-import com.github.nighttripperid.kuusisto.tinysound.internal.*;
-import com.github.nighttripperid.kuusisto.tinysound.internal.Mixer;
+import com.github.kuusisto.tinysound.internal.Mixer;
+import com.github.kuusisto.tinysound.internal.*;
 
 import javax.sound.sampled.*;
 import java.io.*;

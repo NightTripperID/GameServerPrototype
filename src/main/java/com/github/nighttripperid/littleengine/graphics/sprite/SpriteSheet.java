@@ -25,7 +25,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.github.nighttripperid.littleengine.graphics;
+package com.github.nighttripperid.littleengine.graphics.sprite;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
