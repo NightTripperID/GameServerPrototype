@@ -48,7 +48,7 @@ public final class Intent extends HashMaps {
      * never be called by the API user.
      * @return the GameState class metadata associated with the Intent.
      */
-    public final Class<? extends GameState> getGsc() {
+    public final Class<? extends GameState> getGameStateClass() {
         return gameStateClass;
     }
 }

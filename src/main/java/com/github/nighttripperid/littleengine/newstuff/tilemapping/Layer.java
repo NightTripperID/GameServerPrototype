@@ -25,18 +25,18 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.github.nighttripperid.littleengine.graphics.tilemapping;
+package com.github.nighttripperid.littleengine.newstuff.tilemapping;
 
 import lombok.Data;
 
-import java.util.List;
-
 @Data
-public class TileMap {
+public class Layer {
+    private String name;
+    private Integer[] data;
+    private int x;
+    private int y;
     private int width;
     private int height;
-    private int tilewidth;
-    private int tileheight;
-    private List<Layer> layers;
-    private List<Tileset> tilesets;
+    private int opacity;
+    private boolean visible;
 }

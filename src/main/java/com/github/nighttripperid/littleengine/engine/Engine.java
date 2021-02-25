@@ -215,7 +215,7 @@ public final class Engine extends Canvas {
     public void pushGameState(Intent intent) {
 
         try {
-            GameState gs = intent.getGsc().newInstance();
+            GameState gs = intent.getGameStateClass().newInstance();
             gs.setIntent(intent);
             gs.onCreate(this);
             gsm.push(gs);
@@ -240,7 +240,7 @@ public final class Engine extends Canvas {
     public void swapGameState(Intent intent) {
 
         try {
-            GameState gs = intent.getGsc().newInstance();
+            GameState gs = intent.getGameStateClass().newInstance();
             gs.setIntent(intent);
             gs.onCreate(this);
             gsm.swap(gs).onDestroy();

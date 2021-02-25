@@ -34,7 +34,7 @@ import com.github.nighttripperid.littleengine.engine.Engine;
 import com.github.nighttripperid.littleengine.engine.Screen;
 import com.github.nighttripperid.littleengine.entity.Entity;
 import com.github.nighttripperid.littleengine.graphics.Renderable;
-import com.github.nighttripperid.littleengine.graphics.tilemapping.TileMap;
+import com.github.nighttripperid.littleengine.newstuff.tilemapping.TileMap;
 import org.dozer.DozerBeanMapper;
 import org.dozer.Mapper;
 
@@ -89,7 +89,7 @@ public abstract class GameState implements Updatable, Renderable {
      * Called when Engine executes the update loop. Any pending entities are added to the Entity list. The update method
      * of each Entity is called. Finally, any entities flagged for removal are removed.
      */
-    public void update() {
+    public void update() { // delegate to EntityProcessor
         addPendingEntities();
         entities.sort(Entity::compareTo);
         entities.forEach(Entity::update);
@@ -101,12 +101,12 @@ public abstract class GameState implements Updatable, Renderable {
      * of each Entity is called.
      * @param screen the screen object to which Tiles and Entities are rendered
      */
-    public void render(Screen screen) {
+    public void render(Screen screen) { // delegate to ScreenBufferUtil
         renderTiles(screen);
         entities.forEach(e -> e.render(screen));
     }
 
-    protected void loadMapTilesJson(URL jsonUrl) {
+    protected void loadMapTilesJson(URL jsonUrl) { // delegate to MapLoader
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(jsonUrl.openStream()))) {
             JsonObject jsonObject = (JsonObject) Jsoner.deserialize(reader);
             Mapper mapper = new DozerBeanMapper();
@@ -122,7 +122,6 @@ public abstract class GameState implements Updatable, Renderable {
             System.arraycopy(tileMap.getLayers().stream().findFirst().orElse(null)
                             .getData(), 0,  this.mapTiles, 0, this.mapTiles.length);
 
-            System.out.println("pause");
         } catch (IOException | JsonException e) {
             System.out.println("error loading " + jsonUrl);
         }
@@ -205,7 +204,7 @@ public abstract class GameState implements Updatable, Renderable {
      * Renders map Tiles onto the given Screen.
      * @param screen The Screen on which to Renderable the Tiles.
      */
-    private void renderTiles(Screen screen) {
+    private void renderTiles(Screen screen) { // delegate to ScreenBufferUtil
         screen.setScroll(xScroll, yScroll);
 
         int x0 = (int) xScroll >> tileBitShift;
@@ -265,7 +264,7 @@ public abstract class GameState implements Updatable, Renderable {
      * update cycle. Runs Entity#onCreate.
      * @param entity The new entity to add.
      */
-    public void addEntity(Entity entity) {
+    public void addEntity(Entity entity) { // delegate to EntityProcessor
         entity.onCreate(this);
         pendingEntities.add(entity);
     }
@@ -274,7 +273,7 @@ public abstract class GameState implements Updatable, Renderable {
      * Adds all pending entities to ArrayList entities during the last update cycle.
      * Clears ArrayList pendingEntities once all pending entities are added.
      */
-    private void addPendingEntities() {
+    private void addPendingEntities() { // delegate to EntityProcessor
         entities.addAll(pendingEntities);
         pendingEntities.clear();
     }
@@ -282,7 +281,7 @@ public abstract class GameState implements Updatable, Renderable {
     /**
      * Removes all entities that were marked for removal in this update cycle. Runs marked entities' onDestroy method.
      */
-    private void removeMarkedEntities() {
+    private void removeMarkedEntities() { // delegate to EntityProcessor
         for(int i = 0; i < entities.size(); i++) {
             if(entities.get(i).removed()) {
                 entities.get(i).onDestroy();
@@ -299,7 +298,7 @@ public abstract class GameState implements Updatable, Renderable {
      * @param tileSize The given tile size in pixel precision.
      */
     @Deprecated
-    protected void initMap(int mapWidth, int mapHeight, Tile.TileSize tileSize) {
+    protected void initMap(int mapWidth, int mapHeight, Tile.TileSize tileSize) { // delegate to MapLoader, convert to logarithmic function
         this.mapWidth = mapWidth;
         this.mapHeight = mapHeight;
         mapTiles = new int[mapWidth * mapHeight];

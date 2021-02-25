@@ -42,13 +42,13 @@ public class Keyboard implements KeyListener {
     private static boolean[] keysPressed = new boolean[120];
     private static boolean[] keysReleased = new boolean[120];
 
-    Keyboard() {
+    public Keyboard() {
     }
 
     /**
      * Updates the state of the keys on the keyboard.
      */
-    void update() {
+    public static void update() {
         System.arraycopy(keysHeld, 0, keysLast, 0, keysHeld.length);
         System.arraycopy(keys, 0, keysHeld, 0, keys.length);
 

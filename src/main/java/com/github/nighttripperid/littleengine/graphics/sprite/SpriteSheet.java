@@ -27,6 +27,8 @@
 
 package com.github.nighttripperid.littleengine.graphics.sprite;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
@@ -38,6 +40,7 @@ import javax.imageio.ImageIO;
  * that is typically comprised of multiple sprite images, e.g. the animation frames for a video game character such as Mario.
  *
  */
+@Slf4j
 public class SpriteSheet {
 
     private URL url;
@@ -111,15 +114,15 @@ public class SpriteSheet {
      */
     private void load() {
         try {
-            System.out.print("Trying to load: " + url.toString() + "... ");
+            log.info("Loading: {}{}", url.toString(), "...");
             BufferedImage image = ImageIO.read(url);
             width = image.getWidth();
             height = image.getHeight();
             pixels = new int[width * height];
             image.getRGB(0, 0, width, height, pixels, 0, width);
-            System.out.println("Success!");
+            log.info("Loading: {} successful!", url.toString());
         } catch (IOException e) {
-            System.err.println("failed!");
+            log.info("Loading: {} failed!", url.toString());
             e.printStackTrace();
         }
     }

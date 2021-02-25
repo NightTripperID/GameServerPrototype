@@ -51,7 +51,7 @@ public class Mouse extends MouseAdapter {
      * Creates a Mouse object whose MouseMoved events are scaled to the screen scale.
      * @param screenScale The  screen scale used for adjusting the scale of MouseMoved events
      */
-    Mouse(int screenScale) {
+    public Mouse(int screenScale) {
         if(screenScale < 1)
             throw new IllegalArgumentException("Screen scale must be greater than 0");
 
@@ -61,7 +61,7 @@ public class Mouse extends MouseAdapter {
     /**
      * Updates the state of the mouse buttons.
      */
-    void update() {
+    public static void update() {
 
         boolean button1Last, button2Last, button3Last;
 
