@@ -136,9 +136,11 @@ public final class Engine {
      */
     private void render() {
         screenBufferUpdater.clearScreenBUffer();
-        screenBufferUpdater.renderTilesToScreenBuffer(gameStateUpdater.getActiveGameState().getGameMap());
+        screenBufferUpdater.renderTileLayerToScreenBuffer(gameStateUpdater.getActiveGameState().getGameMap(), "Tile Layer 1");
+        screenBufferUpdater.renderTileLayerToScreenBuffer(gameStateUpdater.getActiveGameState().getGameMap(), "Tile Layer 2");
         gameStateUpdater.getActiveGameState().getEntities()
-                .forEach(entity -> screenBufferUpdater.renderEntityToScreenBuffer(entity));
+                .forEach(entity -> screenBufferUpdater.renderEntityToScreenBuffer(entity, gameStateUpdater.getActiveGameState().getGameMap()));
+        screenBufferUpdater.renderTileLayerToScreenBuffer(gameStateUpdater.getActiveGameState().getGameMap(), "Tile Layer 3");
         ioController.renderBufferToScreen(screenBufferUpdater.getScreenBuffer());
     }
 

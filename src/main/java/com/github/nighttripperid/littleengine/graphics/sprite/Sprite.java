@@ -119,19 +119,19 @@ public class Sprite {
      * @return The array of Sprites retrieved from the SpriteSheet.
      */
     public static Sprite[] split(SpriteSheet sheet) {
-        int amount = (sheet.getWidth() * sheet.getHeight()) / (sheet.spriteWidth * sheet.spriteHeight);
+        int amount = (sheet.getSpriteSheetWidth() * sheet.getSpriteSheetHeight()) / (sheet.spriteWidth * sheet.spriteHeight);
         Sprite[] sprites = new Sprite[amount];
         int current = 0;
         int[] pixels = new int[sheet.spriteWidth * sheet.spriteHeight];
 
-        for (int yp = 0; yp < sheet.getHeight() / sheet.spriteHeight; yp++) {
-            for (int xp = 0; xp < sheet.getWidth() / sheet.spriteWidth; xp++) {
+        for (int yp = 0; yp < sheet.getSpriteSheetHeight() / sheet.spriteHeight; yp++) {
+            for (int xp = 0; xp < sheet.getSpriteSheetWidth() / sheet.spriteWidth; xp++) {
 
                 for (int y = 0; y < sheet.spriteHeight; y++) {
                     for (int x = 0; x < sheet.spriteWidth; x++) {
                         int xo = x + xp * sheet.spriteWidth;
                         int yo = y + yp * sheet.spriteHeight;
-                        pixels[x + y * sheet.spriteWidth] = sheet.getPixels()[xo + yo * sheet.getWidth()];
+                        pixels[x + y * sheet.spriteWidth] = sheet.getPixelBuffer()[xo + yo * sheet.getSpriteSheetWidth()];
                     }
                 }
                 sprites[current++] = new Sprite(pixels, sheet.spriteWidth, sheet.spriteHeight);
@@ -223,7 +223,7 @@ public class Sprite {
     private void load() {
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
-                pixels[x + y * width] = sheet.pixels[(x + xOfs) + (y + yOfs) * sheet.getWidth()];
+                pixels[x + y * width] = sheet.pixelBuffer[(x + xOfs) + (y + yOfs) * sheet.getSpriteSheetWidth()];
             }
         }
     }

@@ -27,6 +27,7 @@
 
 package com.github.nighttripperid.littleengine.graphics.sprite;
 
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.awt.image.BufferedImage;
@@ -44,10 +45,18 @@ import javax.imageio.ImageIO;
 public class SpriteSheet {
 
     private URL url;
-    public final int spriteWidth, spriteHeight;// pixel precision
-    private int width, height; // pixel precision
-    public int[] pixels;
+    public final int spriteWidth; // pixel precision
+    public final int spriteHeight;
 
+    @Getter
+    private int spriteSheetWidth; // pixel precision
+    @Getter
+    private int spriteSheetHeight;
+
+    @Getter
+    public int[] pixelBuffer;
+
+    @Getter
     private Sprite[] sprites;
 
     /**
@@ -70,36 +79,37 @@ public class SpriteSheet {
      * height = 5 creates a SpriteSheet object 5 sprite tiles wide and 5 sprite tiles tall, each sprite being spriteSize
      * pixels wide and spriteSize pixels tall.
      * @param sheet: the SpriteSheet object to copy from.
-     * @param xOfs: the starting x coordinate to copy from in tile precision.
-     * @param yOfs: the starting y coordinate to copy from in tile precision.
-     * @param width: the width of the new SpriteSheet in tile precision.
-     * @param height: the height of the new SpriteSheet in tile precision.
+     * @param xOfsInTiles: the starting x coordinate to copy from in tile precision.
+     * @param yOfsInTiles: the starting y coordinate to copy from in tile precision.
+     * @param spriteSheetWidthInTiles: the width of the new SpriteSheet in tile precision.
+     * @param spriteSheetHeightInTiles: the height of the new SpriteSheet in tile precision.
      * @param spriteWidth: the width of the sprite tiles in pixel precision.
      * @param spriteHeight: the height of the sprite tiles in pixel precision.
      */
-    public SpriteSheet(SpriteSheet sheet, int xOfs, int yOfs, int width, int height, int spriteWidth, int spriteHeight) {
-        int x = xOfs * spriteWidth;
-        int y = yOfs * spriteHeight;
-        int w = width * spriteWidth;
-        int h = height * spriteHeight;
+    public SpriteSheet(SpriteSheet sheet, int xOfsInTiles, int yOfsInTiles, int spriteSheetWidthInTiles,
+                       int spriteSheetHeightInTiles, int spriteWidth, int spriteHeight) {
+        int x = xOfsInTiles * spriteWidth;
+        int y = yOfsInTiles * spriteHeight;
+        int w = spriteSheetWidthInTiles * spriteWidth;
+        int h = spriteSheetHeightInTiles * spriteHeight;
         this.spriteWidth = w;
         this.spriteHeight = h;
-        pixels = new int[w * h];
+        pixelBuffer = new int[w * h];
         for (int yy = 0; yy < h; yy++) {
             int yp = y + yy;
             for (int xx = 0; xx < w; xx++) {
                 int xp = x + xx;
-                pixels[xx + yy * w] = sheet.pixels[xp + yp * sheet.spriteWidth];
+                pixelBuffer[xx + yy * w] = sheet.pixelBuffer[xp + yp * sheet.spriteWidth];
             }
         }
         int frame = 0;
-        sprites = new Sprite[width * height];
-        for (int yTile = 0; yTile < height; yTile++) {
-            for (int xTile = 0; xTile < width; xTile++) {
+        sprites = new Sprite[spriteSheetWidthInTiles * spriteSheetHeightInTiles];
+        for (int yTile = 0; yTile < spriteSheetHeightInTiles; yTile++) {
+            for (int xTile = 0; xTile < spriteSheetWidthInTiles; xTile++) {
                 int[] spritePixels = new int[spriteWidth * spriteHeight];
                 for (int yPixel = 0; yPixel < spriteHeight; yPixel++) {
                     for (int xPixel = 0; xPixel < spriteWidth; xPixel++) {
-                        spritePixels[xPixel + yPixel * spriteWidth] = pixels[(xPixel + xTile * spriteWidth)
+                        spritePixels[xPixel + yPixel * spriteWidth] = pixelBuffer[(xPixel + xTile * spriteWidth)
                                 + (yPixel + yTile * spriteHeight) * this.spriteWidth];
                     }
                 }
@@ -116,46 +126,14 @@ public class SpriteSheet {
         try {
             log.info("Loading: {}{}", url.toString(), "...");
             BufferedImage image = ImageIO.read(url);
-            width = image.getWidth();
-            height = image.getHeight();
-            pixels = new int[width * height];
-            image.getRGB(0, 0, width, height, pixels, 0, width);
+            spriteSheetWidth = image.getWidth();
+            spriteSheetHeight = image.getHeight();
+            pixelBuffer = new int[spriteSheetWidth * spriteSheetHeight];
+            image.getRGB(0, 0, spriteSheetWidth, spriteSheetHeight, pixelBuffer, 0, spriteSheetWidth);
             log.info("Loading: {} successful!", url.toString());
         } catch (IOException e) {
             log.info("Loading: {} failed!", url.toString());
             e.printStackTrace();
         }
-    }
-
-    /**
-     * Return array of Sprites contained by the SpriteSheet.
-     * @return Array of Sprites contained by the SpriteSheet.
-     */
-    public Sprite[] getSprites() {
-        return sprites;
-    }
-
-    /**
-     * Returns the Sprite's width.
-     * @return The Sprite's width.
-     */
-    public int getWidth() {
-        return width;
-    }
-
-    /**
-     * Returns the Sprite's height.
-     * @return The Sprite's height.
-     */
-    public int getHeight() {
-        return height;
-    }
-
-    /**
-     * Returns the pixel array that represents the Sprite.
-     * @return The pixel array that represents the Sprite.
-     */
-    public int[] getPixels() {
-        return pixels;
     }
 }

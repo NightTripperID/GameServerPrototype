@@ -34,7 +34,7 @@ import com.github.nighttripperid.littleengine.engine.Engine;
 import com.github.nighttripperid.littleengine.engine.Screen;
 import com.github.nighttripperid.littleengine.entity.Entity;
 import com.github.nighttripperid.littleengine.graphics.Renderable;
-import com.github.nighttripperid.littleengine.newstuff.tilemapping.TileMap;
+import com.github.nighttripperid.littleengine.newstuff.tilemapping.TILED_TileMap;
 import org.dozer.DozerBeanMapper;
 import org.dozer.Mapper;
 
@@ -110,16 +110,16 @@ public abstract class GameState implements Updatable, Renderable {
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(jsonUrl.openStream()))) {
             JsonObject jsonObject = (JsonObject) Jsoner.deserialize(reader);
             Mapper mapper = new DozerBeanMapper();
-            TileMap tileMap = mapper.map(jsonObject, TileMap.class);
+            TILED_TileMap tilEdTileMap = mapper.map(jsonObject, TILED_TileMap.class);
 
-            this.mapWidth = tileMap.getWidth();
-            this.mapHeight = tileMap.getHeight();
-            this.tileSize = tileMap.getTilewidth();
+            this.mapWidth = tilEdTileMap.getWidth();
+            this.mapHeight = tilEdTileMap.getHeight();
+            this.tileSize = tilEdTileMap.getTilewidth();
             this.tileBitShift = (int) (Math.log(tileSize) / Math.log(2));
 
             this.mapTiles = new int[this.mapWidth * this.mapHeight];
-            this.triggerTiles = new int[tileMap.getWidth() * tileMap.getHeight()];
-            System.arraycopy(tileMap.getLayers().stream().findFirst().orElse(null)
+            this.triggerTiles = new int[tilEdTileMap.getWidth() * tilEdTileMap.getHeight()];
+            System.arraycopy(tilEdTileMap.getLayers().stream().findFirst().orElse(null)
                             .getData(), 0,  this.mapTiles, 0, this.mapTiles.length);
 
         } catch (IOException | JsonException e) {

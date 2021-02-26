@@ -30,16 +30,16 @@ public class ScreenBufferUpdater {
         screenBuffer.setPixels(new int[width * height]);
     }
 
-    public void renderEntityToScreenBuffer(Entity entity) {
-        // TODO: implement this in some fashion.
+    public void renderEntityToScreenBuffer(Entity entity, GameMap gameMap) {
+        renderSprite(entity.getXPos() - gameMap.getXScroll(), entity.getYPos() - gameMap.getYScroll(), entity.getSprite());
     }
 
-    /**
-     * Renders map Tiles onto the ScreenBuffer.
-     *
-     * @param gameMap The GameMap containing the TileMap and Tile objects to render.
-     */
-    public void renderTilesToScreenBuffer(GameMap gameMap) {
+    public void renderTileLayerToScreenBuffer(GameMap gameMap, String layerName) {
+
+        if (gameMap.getMapTileHashMap().get(layerName) == null) {
+            return;
+        }
+
         screenBuffer.setXScroll(gameMap.getXScroll());
         screenBuffer.setYScroll(gameMap.getYScroll());
 
@@ -50,16 +50,16 @@ public class ScreenBufferUpdater {
         int y1 = (((int) gameMap.getYScroll() + screenBuffer.getHeight()) + gameMap.getTileSize())
                 >> gameMap.getTileBitShift();
 
-        gameMap.getMapTileList().forEach(mapTiles -> {
-            for (int y = y0; y < y1; y++) {
-                for (int x = x0; x < x1; x++) {
-                    if (mapTiles != null) {
-                        renderTile(x << gameMap.getTileBitShift(), y << gameMap.getTileBitShift(),
-                                gameMap.getMapTileObject(mapTiles, x, y));
-                    }
+        Integer[] mapTiles = gameMap.getMapTileHashMap().get(layerName);
+        for (int y = y0; y < y1; y++) {
+            for (int x = x0; x < x1; x++) {
+                if (mapTiles != null) {
+                    renderTile(x << gameMap.getTileBitShift(), y << gameMap.getTileBitShift(),
+                            gameMap.getMapTileObject(mapTiles, x, y));
                 }
             }
-        });
+
+        }
     }
 
 

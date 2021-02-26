@@ -32,11 +32,29 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class TileMap {
+public class TILED_TileMap {
+
     private int width;
     private int height;
     private int tilewidth;
     private int tileheight;
     private List<Layer> layers;
     private List<Tileset> tilesets;
+
+    @Data
+    public static class Tileset {
+        private List<Tile> tiles;
+    }
+    @Data
+    public static class Tile {
+        private int id;
+        private List<ObjectGroup> objectgroup;
+    }
+    @Data
+    public static class ObjectGroup {
+        private List<TilesetObject> objects;
+    }
+    @Data
+    public static class TilesetObject {
+    }
 }
