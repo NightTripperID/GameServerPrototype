@@ -34,6 +34,7 @@ import java.awt.event.KeyListener;
  * Object that listens to keys for keyboard input handling.
  *
  */
+@Deprecated
 public class Keyboard implements KeyListener {
 
     private static boolean[] keys = new boolean[120];

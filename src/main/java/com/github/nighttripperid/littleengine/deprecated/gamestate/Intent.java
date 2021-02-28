@@ -31,6 +31,7 @@ package com.github.nighttripperid.littleengine.deprecated.gamestate;
  * Object representing the bridge between GameStates. The Engine uses an Intent to instantiate a push a new GameState
  * onto the GameStateManager's GameState stack.
  */
+@Deprecated
 public final class Intent extends HashMaps {
 
     private Class<? extends GameState> gameStateClass;

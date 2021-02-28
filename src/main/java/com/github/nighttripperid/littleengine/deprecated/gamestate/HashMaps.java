@@ -38,7 +38,7 @@ import java.util.stream.LongStream;
 /**
  * Object representing a bundle of primitive and complex objexts. Values are stored in lazily instantiated HashMaps.
  */
-
+@Deprecated
 public abstract class HashMaps implements Serializable {
 
     public static final long serialVersionUID = 201710161356L;

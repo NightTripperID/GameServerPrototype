@@ -33,6 +33,7 @@ import lombok.Getter;
  * Represents a 2 dimensional graphic on screen. com.bitburger.graphics.Sprite data is loaded from a com.bitburger.graphics.SpriteSheet object.
  * Width, height, and coordinates can be specified. Sprites can also be rotated using affine matrix transformation.
  */
+@Deprecated
 public class Sprite {
 
     @Getter

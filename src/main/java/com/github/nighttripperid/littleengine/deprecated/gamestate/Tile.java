@@ -33,6 +33,7 @@ import com.github.nighttripperid.littleengine.deprecated.graphics.sprite.Sprite;
 /**
  * Square background object that is rendered to Screen.
  */
+@Deprecated
 public class Tile {
 
     private Sprite sprite;

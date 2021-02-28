@@ -25,12 +25,11 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.github.nighttripperid.littleengine.deprecated.graphics.sprite;
+package com.github.nighttripperid.littleengine.model.graphics;
 
 /**
  * Object that represents a Sprite animation sequence,
  */
-@Deprecated
 public class AnimSprite extends Sprite {
 
     private int frame;

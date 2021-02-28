@@ -36,6 +36,7 @@ import java.util.Arrays;
  * Object that contains a pixel buffer matching specified dimensions and methods for rendering
  * pixels, Sprites, and background Tiles on screen.
  */
+@Deprecated
 public class Screen {
 
     private int width, height, scale;

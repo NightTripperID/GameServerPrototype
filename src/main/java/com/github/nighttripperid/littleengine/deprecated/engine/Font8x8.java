@@ -30,6 +30,7 @@ package com.github.nighttripperid.littleengine.deprecated.engine;
 /**
  * Character arrays that represent an 8x8 Font for convenience. Used by Screen.
  */
+@Deprecated
 class Font8x8 {
 
     private Font8x8() {

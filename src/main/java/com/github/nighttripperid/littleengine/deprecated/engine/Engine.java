@@ -40,6 +40,7 @@ import java.awt.image.DataBufferInt;
  * The object that represents the kernel of the game engine. Contains the central loop that updates the game logic
  * and renders the graphics. Provides basic callbacks so GameStates can request resources and information.
  */
+@Deprecated
 public final class Engine extends Canvas {
 
     private Thread thread;

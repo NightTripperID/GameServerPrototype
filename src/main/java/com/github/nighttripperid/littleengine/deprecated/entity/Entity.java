@@ -37,6 +37,7 @@ import java.io.Serializable;
 /**
  * Abstract object representing a game entity that is updated and rendered by a GameState
  */
+@Deprecated
 public abstract class Entity implements Updatable, Renderable, Serializable, Comparable<Entity> {
 
     private static final long serialVersionUID = 201711110911L;

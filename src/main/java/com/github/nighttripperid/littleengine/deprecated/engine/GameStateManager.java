@@ -34,6 +34,7 @@ import java.util.Stack;
 /**
  * Wrapper that manages the pushing, popping, and swapping of GameStates to and from the GameState stack.
  */
+@Deprecated
 class GameStateManager {
 
     private Stack<GameState> gameStateStack = new Stack<>();

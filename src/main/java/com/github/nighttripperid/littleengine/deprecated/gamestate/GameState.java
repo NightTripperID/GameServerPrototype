@@ -50,6 +50,7 @@ import java.util.*;
 /**
  * Abstract object representing a GameState.
  */
+@Deprecated
 public abstract class GameState implements Updatable, Renderable {
 
     private Engine engine;

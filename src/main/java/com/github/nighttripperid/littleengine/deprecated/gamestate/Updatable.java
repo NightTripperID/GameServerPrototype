@@ -30,7 +30,7 @@ package com.github.nighttripperid.littleengine.deprecated.gamestate;
 /**
  * Classes that exercise game logic must implement this interface. Game logic will be contained inside this method.
  */
-
+@Deprecated
 public interface Updatable {
     void update();
 }

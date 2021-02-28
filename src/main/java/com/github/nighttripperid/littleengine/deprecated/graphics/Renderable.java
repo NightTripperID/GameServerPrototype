@@ -33,7 +33,7 @@ import com.github.nighttripperid.littleengine.deprecated.engine.Screen;
  * Classes that render graphics to the screen must implement this interface.
  * Rendering logic will be contained inside this method.
  */
-
+@Deprecated
 public interface Renderable {
     void render(Screen screen);
 }

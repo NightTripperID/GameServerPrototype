@@ -41,6 +41,7 @@ import javax.imageio.ImageIO;
  * that is typically comprised of multiple sprite images, e.g. the animation frames for a video game character such as Mario.
  *
  */
+@Deprecated
 @Slf4j
 public class SpriteSheet {
 

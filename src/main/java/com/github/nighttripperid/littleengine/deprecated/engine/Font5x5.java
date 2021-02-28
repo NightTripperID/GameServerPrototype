@@ -31,6 +31,7 @@ package com.github.nighttripperid.littleengine.deprecated.engine;
  * Character arrays that represent a 5x5 Font for convenience. Used by Screen.
  *
  */
+@Deprecated
 class Font5x5 {
 
     private Font5x5() {

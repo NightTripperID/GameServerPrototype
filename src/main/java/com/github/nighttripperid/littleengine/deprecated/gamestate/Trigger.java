@@ -30,6 +30,7 @@ package com.github.nighttripperid.littleengine.deprecated.gamestate;
 /**
  * Object that represents a tile trigger with a runnable piece of code.
  */
+@Deprecated
 public class Trigger {
 
     public final boolean active;

@@ -34,6 +34,7 @@ import java.awt.event.MouseWheelEvent;
 /**
  * Object that listens to mouse for mouse input handling.
  */
+@Deprecated
 public class Mouse extends MouseAdapter {
 
     private static boolean button1, button2, button3;
