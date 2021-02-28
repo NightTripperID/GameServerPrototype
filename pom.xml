@@ -6,7 +6,7 @@
 
     <groupId>com.github.nighttripperid</groupId>
     <artifactId>LittleEngine</artifactId>
-    <version>0.1</version>
+    <version>0.2-SNAPSHOT</version>
 
     <name>LittleEngine</name>
     <description>
@@ -67,6 +67,11 @@
             <artifactId>lombok</artifactId>
             <version>RELEASE</version>
             <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>1.7.30</version>
         </dependency>
     </dependencies>
 
