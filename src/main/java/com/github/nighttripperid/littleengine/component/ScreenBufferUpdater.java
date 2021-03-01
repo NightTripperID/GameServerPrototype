@@ -200,9 +200,8 @@ public class ScreenBufferUpdater {
     }
 
     public void processRenderRequests(List<RenderRequest> renderRequests) {
-        renderRequests.forEach(renderRequest -> {
-            renderRequest.process(renderRequestProcessor, screenBuffer);
-        });
+        renderRequests.forEach(renderRequest ->
+                renderRequest.process(renderRequestProcessor, screenBuffer));
     }
 
     public ScreenBuffer getScreenBuffer() {

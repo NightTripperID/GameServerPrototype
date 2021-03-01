@@ -101,7 +101,7 @@ public class SpriteSheet {
             image.getRGB(0, 0, width, height, pixelBuffer, 0, width);
             log.info("Loading: {} successful!", url.toString());
         } catch (IOException e) {
-            log.info("Loading: {} failed!", url.toString());
+            log.error("Loading: {} failed!", url.toString());
             e.printStackTrace();
         }
     }

@@ -9,7 +9,7 @@ import java.util.function.BiConsumer;
 
 public class RenderRequest {
     @Getter(AccessLevel.NONE)
-    private BiConsumer<RenderRequestProcessor, ScreenBuffer> renderRequest;
+    private final BiConsumer<RenderRequestProcessor, ScreenBuffer> renderRequest;
     
     public RenderRequest(BiConsumer<RenderRequestProcessor, ScreenBuffer> renderRequest) {
         this.renderRequest = renderRequest;

@@ -37,7 +37,7 @@ public class MapLoader {
             log.info("Loading {} successful!", jsonUrl.getPath());
 
         } catch (IOException | JsonException e) {
-            log.info("Loading {} failed!", jsonUrl.getPath());
+            log.error("Loading {} failed!", jsonUrl.getPath());
         }
     }
 }

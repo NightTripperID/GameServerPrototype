@@ -10,7 +10,7 @@ import java.util.Stack;
 @Slf4j
 public class GameStateUpdater {
 
-    private Stack<GameState> gameStateStack = new Stack<>();
+    private final Stack<GameState> gameStateStack = new Stack<>();
     private GameState activeGameState;
 
     /**
@@ -26,7 +26,7 @@ public class GameStateUpdater {
 
     void runEntityScript(Entity entity) {
         // TODO: implement groovy integration for entity updates (maybe)
-        entity.runUpdateScript(activeGameState.getGameMap());
+        entity.getUpdateScript().run(activeGameState.getGameMap());
     }
 
     /**

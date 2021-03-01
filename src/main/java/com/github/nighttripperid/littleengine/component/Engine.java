@@ -28,6 +28,7 @@
 package com.github.nighttripperid.littleengine.component;
 
 
+import com.github.nighttripperid.littleengine.model.gamestate.Entity;
 import com.github.nighttripperid.littleengine.model.gamestate.Intent;
 
 import java.util.stream.Collectors;
@@ -148,7 +149,7 @@ public final class Engine {
 
         screenBufferUpdater.processRenderRequests(
                 gameStateUpdater.getActiveGameState().getEntities().stream()
-                        .flatMap(entity -> entity.getRenderRequests().stream())
+                        .map(Entity::getRenderRequest)
                         .collect(Collectors.toList()));
 
         screenBufferUpdater.renderTileLayer(

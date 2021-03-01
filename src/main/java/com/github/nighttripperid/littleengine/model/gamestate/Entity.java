@@ -4,13 +4,7 @@ import com.github.nighttripperid.littleengine.model.Eventable;
 import com.github.nighttripperid.littleengine.model.PointDouble;
 import com.github.nighttripperid.littleengine.model.PointInt;
 import com.github.nighttripperid.littleengine.model.graphics.Sprite;
-import lombok.AccessLevel;
 import lombok.Data;
-import lombok.Getter;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.function.Consumer;
 
 @Data
 public abstract class Entity implements Eventable, Comparable<Entity> {
@@ -24,10 +18,8 @@ public abstract class Entity implements Eventable, Comparable<Entity> {
     public PointDouble position;
     public PointDouble speed;
 
-    private List<RenderRequest> renderRequests = new ArrayList<>();
-
-    @Getter(AccessLevel.NONE)
-    private Consumer<GameMap> updateScript;
+    private RenderRequest renderRequest;
+    private UpdateScript updateScript;
 
     /**
      * Compares the render priority of this entity to another entity.
@@ -39,9 +31,5 @@ public abstract class Entity implements Eventable, Comparable<Entity> {
     @Override
     public int compareTo(Entity entity) {
         return this.renderPriority - entity.renderPriority;
-    }
-
-    public void runUpdateScript(GameMap gameMap) {
-        updateScript.accept(gameMap);
     }
 }
