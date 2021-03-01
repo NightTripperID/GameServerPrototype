@@ -30,6 +30,8 @@ package com.github.nighttripperid.littleengine.component;
 
 import com.github.nighttripperid.littleengine.model.gamestate.Intent;
 
+import java.util.stream.Collectors;
+
 /**
  * The object that represents the kernel of the game engine. Contains the central loop that updates the game logic
  * and renders the graphics. Provides basic callbacks so GameStates can request resources and information.
@@ -41,7 +43,7 @@ public final class Engine {
     private boolean running;
 
     private IOController ioController;
-    private ScreenBufferUpdater screenBufferUpdater;
+    private final ScreenBufferUpdater screenBufferUpdater;
     private final GameStateUpdater gameStateUpdater;
 
     /**
@@ -52,12 +54,9 @@ public final class Engine {
      * @param title The given title for the screen.
      */
     public Engine(int screenWidth, int screenHeight, int screenScale, String title) {
-
         this.title = title;
-
         ioController = new IOController(screenWidth, screenHeight, screenScale);
         screenBufferUpdater = new ScreenBufferUpdater(screenWidth, screenHeight, screenScale);
-
         gameStateUpdater = new GameStateUpdater();
     }
 
@@ -88,7 +87,7 @@ public final class Engine {
      * approximately 60 ticks per second. The Renderable loop (containing all graphics rendering calls) runs as fast as
      * possible, executing once per loop iteration (actual speed depends on hardware).
      */
-    private Runnable mainLoop = () -> {
+    private final Runnable mainLoop = () -> {
         long lastTime = System.nanoTime();
         long timer = System.currentTimeMillis();
         final double ns = 1000000000D / 60D;
@@ -136,11 +135,25 @@ public final class Engine {
      */
     private void render() {
         screenBufferUpdater.clearScreenBuffer();
-        screenBufferUpdater.renderTileLayerToScreenBuffer(gameStateUpdater.getActiveGameState().getGameMap(), "Tile Layer 1");
-        screenBufferUpdater.renderTileLayerToScreenBuffer(gameStateUpdater.getActiveGameState().getGameMap(), "Tile Layer 2");
-        gameStateUpdater.getActiveGameState().getEntities()
-                .forEach(entity -> screenBufferUpdater.renderEntityToScreenBuffer(entity, gameStateUpdater.getActiveGameState().getGameMap()));
-        screenBufferUpdater.renderTileLayerToScreenBuffer(gameStateUpdater.getActiveGameState().getGameMap(), "Tile Layer 3");
+
+        screenBufferUpdater.renderTileLayer(
+                gameStateUpdater.getActiveGameState().getGameMap(), "Tile Layer 1");
+
+        screenBufferUpdater.renderTileLayer(
+                gameStateUpdater.getActiveGameState().getGameMap(), "Tile Layer 2");
+
+        screenBufferUpdater.renderEntities(
+                gameStateUpdater.getActiveGameState().getEntities(),
+                gameStateUpdater.getActiveGameState().getGameMap());
+
+        screenBufferUpdater.processRenderRequests(
+                gameStateUpdater.getActiveGameState().getEntities().stream()
+                        .flatMap(entity -> entity.getRenderRequests().stream())
+                        .collect(Collectors.toList()));
+
+        screenBufferUpdater.renderTileLayer(
+                gameStateUpdater.getActiveGameState().getGameMap(), "Tile Layer 3");
+
         ioController.renderBufferToScreen(screenBufferUpdater.getScreenBuffer());
     }
 
