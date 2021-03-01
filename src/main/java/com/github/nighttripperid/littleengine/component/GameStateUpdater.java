@@ -3,9 +3,11 @@ package com.github.nighttripperid.littleengine.component;
 import com.github.nighttripperid.littleengine.model.gamestate.Entity;
 import com.github.nighttripperid.littleengine.model.gamestate.GameState;
 import com.github.nighttripperid.littleengine.model.gamestate.Intent;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.Stack;
 
+@Slf4j
 public class GameStateUpdater {
 
     private Stack<GameState> gameStateStack = new Stack<>();
@@ -18,7 +20,7 @@ public class GameStateUpdater {
     public void update() {
         addPendingEntities();
         activeGameState.getEntities().sort(Entity::compareTo);
-        activeGameState.getEntities().forEach(entity -> runEntityScript(entity));
+        activeGameState.getEntities().forEach(this::runEntityScript);
         removeMarkedEntities();
     }
 
@@ -41,8 +43,7 @@ public class GameStateUpdater {
             gameStateStack.push(gameState);
             activeGameState = gameStateStack.peek();
         } catch(InstantiationException | IllegalAccessException e) {
-            System.out.println("Exception in " + getClass().getSimpleName() +
-                    ".pushGameState(intent):" + e.getMessage());
+            log.error("Error pushing gameState: {}", e.getMessage());
         }
     }
 
@@ -65,8 +66,7 @@ public class GameStateUpdater {
             gameStateStack.pop().onDestroy();
             gameStateStack.push(gameState);
         } catch(InstantiationException | IllegalAccessException e) {
-            System.out.println("Exception in " + getClass().getSimpleName() +
-                    ".swapGameState(intent): " + e.getMessage());
+            log.error("Error swapping gameState: {} " + e.getMessage());
         }
     }
 

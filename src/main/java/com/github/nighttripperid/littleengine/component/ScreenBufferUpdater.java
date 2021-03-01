@@ -233,8 +233,8 @@ public class ScreenBufferUpdater {
      * @param tile The Tile to Renderable.
      */
     public void renderTile(int xPos, int yPos, Tile tile) {
-        int tileW = tile.getSprite().getWidth();
-        int tileH = tile.getSprite().getHeight();
+        int tileW = tile.getSprite().width;
+        int tileH = tile.getSprite().height;
 
         xPos -= screenBuffer.getScroll().x;
         yPos -= screenBuffer.getScroll().y;
@@ -258,15 +258,15 @@ public class ScreenBufferUpdater {
      * @param sprite The sprite to Renderable.
      */
     public void renderSprite(double x, double y, Sprite sprite) {
-        for (int yy = 0; yy < sprite.getHeight(); yy++) {
+        for (int yy = 0; yy < sprite.height; yy++) {
             if (yy + y < 0 || yy + y >= this.screenBuffer.getHeight())
                 continue;
-            for (int xx = 0; xx < sprite.getWidth(); xx++) {
+            for (int xx = 0; xx < sprite.width; xx++) {
                 if (xx + x < 0 || xx + x >= this.screenBuffer.getWidth())
                     continue;
-                if (sprite.pixels[xx + yy * sprite.getWidth()] != 0xffff00ff)
+                if (sprite.pixels[xx + yy * sprite.width] != 0xffff00ff)
                     screenBuffer.getPixels()[xx + (int) x + (yy + (int) y) * screenBuffer.getWidth()]
-                            = sprite.pixels[xx + yy * sprite.getWidth()];
+                            = sprite.pixels[xx + yy * sprite.width];
             }
         }
     }
@@ -280,17 +280,17 @@ public class ScreenBufferUpdater {
      * @param sprite The sprite to Renderable.
      */
     public void renderSprite(double x, double y, int scale, Sprite sprite) {
-        for (int yy = 0; yy < sprite.getHeight() * scale; yy += scale) {
-            for (int xx = 0; xx < sprite.getWidth() * scale; xx += scale) {
+        for (int yy = 0; yy < sprite.height * scale; yy += scale) {
+            for (int xx = 0; xx < sprite.width * scale; xx += scale) {
                 for (int yyy = yy; yyy < yy + scale; yyy++) {
                     if (yyy + y < 0 || yyy + y >= screenBuffer.getHeight())
                         continue;
                     for (int xxx = xx; xxx < xx + scale; xxx++) {
                         if (xxx + x < 0 || xxx + x >= screenBuffer.getWidth())
                             continue;
-                        if (sprite.pixels[(xx / scale) + (yy / scale) * sprite.getWidth()] != 0xffff00ff)
+                        if (sprite.pixels[(xx / scale) + (yy / scale) * sprite.width] != 0xffff00ff)
                             screenBuffer.getPixels()[xxx + (int) x + (yyy + (int) y) * screenBuffer.getWidth()]
-                                    = sprite.pixels[(xx / scale) + (yy / scale) * sprite.getWidth()];
+                                    = sprite.pixels[(xx / scale) + (yy / scale) * sprite.width];
                     }
                 }
             }
@@ -308,15 +308,15 @@ public class ScreenBufferUpdater {
      * @param sprite The Sprite to Renderable.
      */
     public void renderSpriteColorFill(double x, double y, int scale, int color, Sprite sprite) {
-        for (int yy = 0; yy < sprite.getHeight() * scale; yy += scale) {
-            for (int xx = 0; xx < sprite.getWidth() * scale; xx += scale) {
+        for (int yy = 0; yy < sprite.height * scale; yy += scale) {
+            for (int xx = 0; xx < sprite.width * scale; xx += scale) {
                 for (int yyy = yy; yyy < yy + scale; yyy++) {
                     if (yyy + y < 0 || yyy + y >= screenBuffer.getHeight())
                         continue;
                     for (int xxx = xx; xxx < xx + scale; xxx++) {
                         if (xxx + x < 0 || xxx + x >= screenBuffer.getWidth())
                             continue;
-                        if (sprite.pixels[(xx / scale) + (yy / scale) * sprite.getWidth()] != 0xffff00ff)
+                        if (sprite.pixels[(xx / scale) + (yy / scale) * sprite.width] != 0xffff00ff)
                             screenBuffer.getPixels()[xxx + (int) x + (yyy + (int) y) * screenBuffer.getWidth()] = color;
                     }
                 }
@@ -334,13 +334,13 @@ public class ScreenBufferUpdater {
      * @param sprite The Sprite to Renderable.
      */
     public void renderSpriteColorFill(double x, double y, int color, Sprite sprite) {
-        for (int yy = 0; yy < sprite.getHeight(); yy++) {
+        for (int yy = 0; yy < sprite.height; yy++) {
             if (yy + y < 0 || yy + y >= screenBuffer.getHeight())
                 continue;
-            for (int xx = 0; xx < sprite.getWidth(); xx++) {
+            for (int xx = 0; xx < sprite.width; xx++) {
                 if (xx + x < 0 || xx + x >= screenBuffer.getWidth())
                     continue;
-                if (sprite.pixels[xx + yy * sprite.getWidth()] != 0xffff00ff)
+                if (sprite.pixels[xx + yy * sprite.width] != 0xffff00ff)
                     screenBuffer.getPixels()[xx + (int) x + (yy + (int) y) * screenBuffer.getWidth()] = color;
             }
         }

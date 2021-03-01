@@ -31,10 +31,10 @@ public class CollisionResolver {
     }
 
     private static PointInt getTileCorner(Entity entity, int xa, int ya, int corner) {
-        int xPos = xa > 1 ? (int) entity.getPosition().x + entity.getSprite().getWidth() : (int) entity.getPosition().x;
-        int yPos = ya > 1 ? (int) entity.getPosition().y + entity.getSprite().getHeight() : (int) entity.getPosition().y;
-        int cornerX = ((xPos + xa) + corner % 2) / entity.getSprite().getWidth();
-        int cornerY = ((yPos + ya) + corner / 2) / entity.getSprite().getHeight();
+        int xPos = xa > 1 ? (int) entity.getPosition().x + entity.getSprite().width : (int) entity.getPosition().x;
+        int yPos = ya > 1 ? (int) entity.getPosition().y + entity.getSprite().height : (int) entity.getPosition().y;
+        int cornerX = ((xPos + xa) + corner % 2) / entity.getSprite().width;
+        int cornerY = ((yPos + ya) + corner / 2) / entity.getSprite().height;
 //        int xt = ((int) (entity.getXPos() + xa) + corner % 2 * 2 + 6) / 16;
 //        int yt = ((int) (entity.getYPos() + ya) + corner / 2 * 2 + 14) / 16;
         return new PointInt(cornerX, cornerY);

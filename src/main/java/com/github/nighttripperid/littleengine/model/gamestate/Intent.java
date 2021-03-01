@@ -1,8 +1,5 @@
 package com.github.nighttripperid.littleengine.model.gamestate;
 
-
-import com.github.nighttripperid.littleengine.deprecated.gamestate.HashMaps;
-
 public class Intent extends HashMaps {
 
     private Class<? extends GameState> gameStateClass;
