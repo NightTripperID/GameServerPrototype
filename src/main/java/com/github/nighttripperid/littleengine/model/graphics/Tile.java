@@ -16,7 +16,7 @@ public class Tile {
      * Creates a Tile object from a given Sprite and given properties.
      * @param sprite The sprite associated with the Tile.
      * @param isSolid Indicates whether or not the Tile is traversable by Entities.
-     * @param isTrigger Indicates whetehr or not the Tile has an interactive event Trigger.
+     * @param isTrigger Indicates whether or not the Tile has an interactive event Trigger.
      */
     public Tile(Sprite sprite, boolean isSolid, boolean isTrigger) {
         this.sprite = sprite;

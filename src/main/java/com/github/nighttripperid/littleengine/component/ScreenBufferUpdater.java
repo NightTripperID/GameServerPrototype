@@ -1,14 +1,10 @@
 package com.github.nighttripperid.littleengine.component;
 
-import com.github.nighttripperid.littleengine.constant.Font5x5;
-import com.github.nighttripperid.littleengine.constant.Font8x8;
-import com.github.nighttripperid.littleengine.model.PointDouble;
 import com.github.nighttripperid.littleengine.model.gamestate.Entity;
 import com.github.nighttripperid.littleengine.model.gamestate.GameMap;
 import com.github.nighttripperid.littleengine.model.gamestate.RenderRequest;
 import com.github.nighttripperid.littleengine.model.graphics.ScreenBuffer;
 import com.github.nighttripperid.littleengine.model.graphics.Sprite;
-import com.github.nighttripperid.littleengine.model.graphics.Tile;
 
 import java.util.Arrays;
 import java.util.List;
@@ -16,7 +12,7 @@ import java.util.List;
 public class ScreenBufferUpdater {
 
     private final ScreenBuffer screenBuffer;
-    private final RenderRequestProcessor renderRequestProcessor = new RenderRequestProcessor();
+    private final RenderRequestProcessor renderRequestProcessor;
 
     /**
      * Creates a screen with specified dimensions.
@@ -35,6 +31,8 @@ public class ScreenBufferUpdater {
         screenBuffer.setHeight(height);
         screenBuffer.setScale(scale);
         screenBuffer.setPixels(new int[width * height]);
+
+        renderRequestProcessor = new RenderRequestProcessor();
     }
 
     public void renderEntities(List<Entity> entities, GameMap gameMap) {
@@ -63,8 +61,9 @@ public class ScreenBufferUpdater {
         for (int y = y0; y < y1; y++) {
             for (int x = x0; x < x1; x++) {
                 if (mapTiles != null) {
-                    renderTile(x << gameMap.getTileBitShift(), y << gameMap.getTileBitShift(),
-                            gameMap.getMapTileObject(mapTiles, x, y));
+                    renderSprite((x << gameMap.getTileBitShift()) - screenBuffer.getScroll().x,
+                            (y << gameMap.getTileBitShift()) - screenBuffer.getScroll().y,
+                            gameMap.getMapTileObject(mapTiles, x, y).getSprite());
                 }
             }
 
@@ -79,36 +78,11 @@ public class ScreenBufferUpdater {
     }
 
     /**
-     * Renders a tile at given Screen coordinates.
-     *
-     * @param xPos The x position of the Tile in pixel precision.
-     * @param yPos The y position of the Tile in pixel precision.
-     * @param tile The Tile to Renderable.
-     */
-    public void renderTile(int xPos, int yPos, Tile tile) {
-        int tileW = tile.getSprite().width;
-        int tileH = tile.getSprite().height;
-
-        xPos -= screenBuffer.getScroll().x;
-        yPos -= screenBuffer.getScroll().y;
-        for (int y = 0; y < tileH; y++) {
-            int yAbs = y + yPos;
-            for (int x = 0; x < tileW; x++) {
-                int xAbs = x + xPos;
-                if (xAbs < 0 || xAbs >= screenBuffer.getWidth() || yAbs < 0 || yAbs >= screenBuffer.getHeight()
-                        || tile.getSprite().pixels[x + y * tileW] == 0xFFFF00FF)
-                    continue;
-                screenBuffer.getPixels()[xAbs + yAbs * screenBuffer.getWidth()] = tile.getSprite().pixels[x + y * tileW];
-            }
-        }
-    }
-
-    /**
      * Renders specified Sprite at provided screen coordinates.
      *
      * @param x      The x coordinate on screen.
      * @param y      The y coordinate on screen.
-     * @param sprite The sprite to Renderable.
+     * @param sprite The sprite to Render.
      */
     public void renderSprite(double x, double y, Sprite sprite) {
         for (int yy = 0; yy < sprite.height; yy++) {

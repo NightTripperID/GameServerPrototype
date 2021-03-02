@@ -3,9 +3,8 @@ package com.github.nighttripperid.littleengine.model.gamestate;
 import com.github.nighttripperid.littleengine.model.PointDouble;
 import com.github.nighttripperid.littleengine.model.graphics.TILED_TileMap;
 import com.github.nighttripperid.littleengine.model.graphics.Tile;
-import lombok.AccessLevel;
+import com.github.nighttripperid.littleengine.model.graphics.TileMap;
 import lombok.Data;
-import lombok.Getter;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -15,22 +14,25 @@ public class GameMap {
 
     private PointDouble scroll = new PointDouble();
 
-    protected int tileSize;
-    protected int tileBitShift;
+    private int tileSize;
+    private int tileBitShift;
+    private int numLayers = 3;
 
     private final Map<String, Integer[]> mapTileHashMap = new HashMap<>();
 
     private TILED_TileMap tiled_TileMap;
 
-    @Getter(AccessLevel.NONE)
-    private TriFunction<Integer[], Integer, Integer, Tile> mapTileObjectGetter;
-
-    @FunctionalInterface
-    public static interface TriFunction<T1, T2, T3, R> {
-        R apply(T1 t1, T2 t2, T3 t3);
-    }
-
     public  Tile getMapTileObject(Integer[] mapTiles, int x, int y) {
-        return mapTileObjectGetter.apply(mapTiles, x, y);
+
+        if (x < 0 ||
+                y < 0 ||
+                x >= this.getTiled_TileMap().getWidth() ||
+                y >= this.getTiled_TileMap().getHeight()) {
+
+            return TileMap.VOID_TILE;
+
+        } else {
+            return TileMap.TILE_MAP.get(mapTiles[x + y * this.getTiled_TileMap().getWidth()] - 1);
+        }
     }
 }

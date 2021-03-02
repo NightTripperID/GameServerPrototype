@@ -6,10 +6,14 @@ import com.github.nighttripperid.littleengine.model.PointInt;
 import com.github.nighttripperid.littleengine.model.graphics.Sprite;
 import lombok.Data;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Data
 public abstract class Entity implements Eventable, Comparable<Entity> {
     private boolean removed;
     private int renderPriority;
+    private int renderLayer = 2;
     private static final int MIN_RENDER_PRIORITY = 0;
     private static final int MAX_RENDER_PRIORITY =  3;
     private Sprite sprite;
@@ -18,7 +22,7 @@ public abstract class Entity implements Eventable, Comparable<Entity> {
     public PointDouble position;
     public PointDouble speed;
 
-    private RenderRequest renderRequest;
+    private List<RenderRequest> renderRequests = new ArrayList<>();
     private UpdateScript updateScript;
 
     /**
