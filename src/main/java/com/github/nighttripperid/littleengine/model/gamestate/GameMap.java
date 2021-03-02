@@ -4,7 +4,6 @@ import com.github.nighttripperid.littleengine.model.PointDouble;
 import com.github.nighttripperid.littleengine.model.graphics.TILED_TileMap;
 import com.github.nighttripperid.littleengine.model.graphics.Tile;
 import com.github.nighttripperid.littleengine.model.graphics.TileMapGFX;
-import com.github.nighttripperid.littleengine.model.graphics.TileMaps;
 import lombok.Data;
 
 import java.util.HashMap;
@@ -31,7 +30,7 @@ public class GameMap {
                 x >= this.getTiled_TileMap().getWidth() ||
                 y >= this.getTiled_TileMap().getHeight()) {
 
-            return TileMaps.VOID_TILE;
+            return TileMapGFX.VOID_TILE;
 
         } else {
             return this.getTileMapGFX().getTILE_MAP().get(

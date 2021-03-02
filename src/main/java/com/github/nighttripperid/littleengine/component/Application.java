@@ -39,7 +39,7 @@ import java.util.stream.Collectors;
  * The object that represents the kernel of the game engine. Contains the central loop that updates the game logic
  * and renders the graphics. Provides basic callbacks so GameStates can request resources and information.
  */
-public final class Engine {
+public final class Application {
 
     private Thread thread;
     private String title = "";
@@ -56,7 +56,7 @@ public final class Engine {
      * @param screenScale The given scale for the screen.
      * @param title The given title for the screen.
      */
-    public Engine(int screenWidth, int screenHeight, int screenScale, String title) {
+    public Application(int screenWidth, int screenHeight, int screenScale, String title) {
         this.title = title;
         ioController = new IOController(screenWidth, screenHeight, screenScale);
         screenBufferUpdater = new ScreenBufferUpdater(screenWidth, screenHeight, screenScale);

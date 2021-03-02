@@ -8,6 +8,8 @@ import java.util.Map;
 
 @Data
 public class TileMapGFX {
+    public static final Tile VOID_TILE = new Tile(new Sprite(0xffff00ff,
+            Tile.TileSize.X16.getValue(), Tile.TileSize.X16.getValue()), true, false);
     private Map<Integer, Sprite> TILE_MAP_SPRITES = new HashMap<>();
     private Map<Integer, Tile> TILE_MAP = new HashMap<>();
 
