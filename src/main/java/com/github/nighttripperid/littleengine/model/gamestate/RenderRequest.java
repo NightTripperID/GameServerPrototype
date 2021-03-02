@@ -13,9 +13,9 @@ public class RenderRequest {
     @Getter(AccessLevel.NONE)
     private final BiConsumer<RenderRequestProcessor, ScreenBuffer> renderRequest;
     
-    public RenderRequest(BiConsumer<RenderRequestProcessor, ScreenBuffer> renderRequest, int renderLayer) {
-        this.renderRequest = renderRequest;
+    public RenderRequest(int renderLayer, BiConsumer<RenderRequestProcessor, ScreenBuffer> renderRequest) {
         this.renderLayer = renderLayer;
+        this.renderRequest = renderRequest;
     }
     
     public void process(RenderRequestProcessor processor, ScreenBuffer screenBuffer) {

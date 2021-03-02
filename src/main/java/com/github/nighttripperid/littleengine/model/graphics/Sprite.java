@@ -120,7 +120,7 @@ public class Sprite {
     private void load() {
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
-                pixels[x + y * width] = spriteSheet.pixelBuffer[(x + offset.x) + (y + offset.y) * spriteSheet.getWidth()];
+                pixels[x + y * width] = spriteSheet.pixelBuffer[(x + offset.x) + (y + offset.y) * spriteSheet.getSheetWidth()];
             }
         }
     }

@@ -44,7 +44,7 @@ public class ScreenBufferUpdater {
 
     public void renderTileLayer(GameMap gameMap, String layerName) {
 
-        if (gameMap.getMapTileHashMap().get(layerName) == null) {
+        if (gameMap.getTileMapLookups().get(layerName) == null) {
             return;
         }
 
@@ -57,13 +57,12 @@ public class ScreenBufferUpdater {
         int y1 = (((int) gameMap.getScroll().y + screenBuffer.getHeight()) + gameMap.getTileSize())
                 >> gameMap.getTileBitShift();
 
-        Integer[] mapTiles = gameMap.getMapTileHashMap().get(layerName);
         for (int y = y0; y < y1; y++) {
             for (int x = x0; x < x1; x++) {
-                if (mapTiles != null) {
+                if (gameMap.getTileMapLookups().get(layerName) != null) {
                     renderSprite((x << gameMap.getTileBitShift()) - screenBuffer.getScroll().x,
                             (y << gameMap.getTileBitShift()) - screenBuffer.getScroll().y,
-                            gameMap.getMapTileObject(mapTiles, x, y).getSprite());
+                            gameMap.getMapTileObject(layerName, x, y).getSprite());
                 }
             }
 

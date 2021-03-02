@@ -3,7 +3,8 @@ package com.github.nighttripperid.littleengine.model.gamestate;
 import com.github.nighttripperid.littleengine.model.PointDouble;
 import com.github.nighttripperid.littleengine.model.graphics.TILED_TileMap;
 import com.github.nighttripperid.littleengine.model.graphics.Tile;
-import com.github.nighttripperid.littleengine.model.graphics.TileMap;
+import com.github.nighttripperid.littleengine.model.graphics.TileMapGFX;
+import com.github.nighttripperid.littleengine.model.graphics.TileMaps;
 import lombok.Data;
 
 import java.util.HashMap;
@@ -18,21 +19,24 @@ public class GameMap {
     private int tileBitShift;
     private int numLayers = 3;
 
-    private final Map<String, Integer[]> mapTileHashMap = new HashMap<>();
+    private final Map<String, Integer[]> tileMapLookups = new HashMap<>(); // hashed by layerName
 
+    private TileMapGFX tileMapGFX;
     private TILED_TileMap tiled_TileMap;
 
-    public  Tile getMapTileObject(Integer[] mapTiles, int x, int y) {
+    public  Tile getMapTileObject(String layerName, int x, int y) {
 
         if (x < 0 ||
                 y < 0 ||
                 x >= this.getTiled_TileMap().getWidth() ||
                 y >= this.getTiled_TileMap().getHeight()) {
 
-            return TileMap.VOID_TILE;
+            return TileMaps.VOID_TILE;
 
         } else {
-            return TileMap.TILE_MAP.get(mapTiles[x + y * this.getTiled_TileMap().getWidth()] - 1);
+            return this.getTileMapGFX().getTILE_MAP().get(
+                    tileMapLookups.get(layerName)[x + y * this.getTiled_TileMap().getWidth()] - 1
+            );
         }
     }
 }

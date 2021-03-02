@@ -16,9 +16,9 @@ public class SpriteSheet {
     public final int spriteHeight;
 
     @Getter
-    private int width; // pixel precision
+    private int sheetWidth; // pixel precision
     @Getter
-    private int height;
+    private int sheetHeight;
 
     @Getter
     public int[] pixelBuffer;
@@ -95,10 +95,10 @@ public class SpriteSheet {
         try {
             log.info("Loading: {}{}", url.toString(), "...");
             BufferedImage image = ImageIO.read(url);
-            width = image.getWidth();
-            height = image.getHeight();
-            pixelBuffer = new int[width * height];
-            image.getRGB(0, 0, width, height, pixelBuffer, 0, width);
+            sheetWidth = image.getWidth();
+            sheetHeight = image.getHeight();
+            pixelBuffer = new int[sheetWidth * sheetHeight];
+            image.getRGB(0, 0, sheetWidth, sheetHeight, pixelBuffer, 0, sheetWidth);
             log.info("Loading: {} successful!", url.toString());
         } catch (IOException e) {
             log.error("Loading: {} failed!", url.toString());
