@@ -27,7 +27,6 @@ package com.github.nighttripperid.littleengine.model.gamestate;
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.Serializable;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -46,7 +45,7 @@ public abstract class HashMaps {
     private Map<String, Float> floatExtras;
     private Map<String, Integer> integerExtras;
     private Map<String, Long> longExtras;
-    private Map<String, Serializable> serializableExtras;
+    private Map<String, Object> objectExtras;
     private Map<String, String> stringExtras;
 
     private Map<String, Byte[]> byteArrayExtras;
@@ -55,7 +54,7 @@ public abstract class HashMaps {
     private Map<String, Float[]> floatArrayExtras;
     private Map<String, Integer[]> integerArrayExtras;
     private Map<String, Long[]> longArrayExtras;
-    private Map<String, Serializable[]> serializableArrayExtras;
+    private Map<String, Object[]> objectArrayExtras;
     private Map<String, String[]> stringArrayExtras;
 
 
@@ -95,10 +94,10 @@ public abstract class HashMaps {
         longExtras.put(key, value);
     }
 
-    public final void putExtra(String key, Serializable value) {
-        if (serializableExtras == null)
-            serializableExtras = new HashMap<>();
-        serializableExtras.put(key, value);
+    public final void putExtra(String key, Object value) {
+        if (objectExtras == null)
+            objectExtras = new HashMap<>();
+        objectExtras.put(key, value);
     }
 
     public final void putExtra(String key, String value) {
@@ -158,10 +157,10 @@ public abstract class HashMaps {
         longArrayExtras.put(key, result);
     }
 
-    public final void putExtra(String key, Serializable[] value) {
-        if (serializableArrayExtras == null)
-            serializableArrayExtras = new HashMap<>();
-        serializableArrayExtras.put(key, value);
+    public final void putExtra(String key, Object[] value) {
+        if (objectArrayExtras == null)
+            objectArrayExtras = new HashMap<>();
+        objectArrayExtras.put(key, value);
     }
 
     public final void putExtra(String key, String[] value) {
@@ -194,10 +193,10 @@ public abstract class HashMaps {
         return longExtras.get(key);
     }
 
-    public final Serializable getSerializableExtra(String key) {
-        if (serializableExtras == null)
-            serializableExtras = new HashMap<>();
-        return serializableExtras.get(key);
+    public final Object getObjectExtra(String key) {
+        if (objectExtras == null)
+            objectExtras = new HashMap<>();
+        return objectExtras.get(key);
     }
 
     public final String getStringExtra(String key) {
@@ -244,8 +243,8 @@ public abstract class HashMaps {
     }
 
 
-    public final Serializable[] getSerializableArrayExtra(String key) {
-        return serializableArrayExtras.get(key);
+    public final Object[] getObjectArrayExtra(String key) {
+        return objectArrayExtras.get(key);
     }
 
 
