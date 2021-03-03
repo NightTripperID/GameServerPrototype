@@ -37,10 +37,10 @@ public class EntityGFX {
 
     public void addSpriteMap(String key, SpriteSheet spriteSheet) {
         spriteMaps.put(key, new HashMap<>());
-        for (int y = 0, i = 0; y < spriteSheet.getSheetHeight() / spriteSheet.spriteHeight; y++) {
-            for (int x = 0; x < spriteSheet.getSheetWidth() / spriteSheet.spriteWidth; x++, i++)
-                spriteMaps.get(key).put(i, new Sprite(spriteSheet, spriteSheet.spriteWidth,
-                        spriteSheet.spriteHeight, x, y));
+        for (int y = 0, i = 0; y < spriteSheet.sheetH_P / spriteSheet.spriteH_P; y++) {
+            for (int x = 0; x < spriteSheet.sheetW_P / spriteSheet.spriteW_P; x++, i++)
+                spriteMaps.get(key).put(i, new Sprite(spriteSheet, spriteSheet.spriteW_P,
+                        spriteSheet.spriteH_P, x, y));
         }
     }
 }

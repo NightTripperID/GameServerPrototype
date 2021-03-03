@@ -26,7 +26,6 @@
  */
 package com.github.nighttripperid.littleengine.model.graphics;
 
-import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.imageio.ImageIO;
@@ -38,55 +37,52 @@ import java.net.URL;
 public class SpriteSheet {
 
     private URL url;
-    public final int spriteWidth; // pixel precision
-    public final int spriteHeight;
+    public final int spriteW_P; // pixel precision
+    public final int spriteH_P;
 
-    @Getter
-    private int sheetWidth; // pixel precision
-    @Getter
-    private int sheetHeight;
 
-    @Getter
+    public int sheetW_P; // pixel precision
+    public int sheetH_P;
+
     public int[] pixelBuffer;
 
-    @Getter
-    private Sprite[] sprites;
+    public Sprite[] sprites;
 
-    public SpriteSheet(String path, int spriteWidth, int spriteHeight) {
+    public SpriteSheet(String path, int spriteW_P, int spriteH_P) {
         url = getClass().getClassLoader().getResource(path);
-        this.spriteWidth = spriteWidth;
-        this.spriteHeight = spriteHeight;
+        this.spriteW_P = spriteW_P;
+        this.spriteH_P = spriteH_P;
         load();
     }
 
-    public SpriteSheet(SpriteSheet sheet, int xOfsInTiles, int yOfsInTiles, int spriteSheetWidthInTiles,
-                       int spriteSheetHeightInTiles, int spriteWidth, int spriteHeight) {
-        int x = xOfsInTiles * spriteWidth;
-        int y = yOfsInTiles * spriteHeight;
-        int w = spriteSheetWidthInTiles * spriteWidth;
-        int h = spriteSheetHeightInTiles * spriteHeight;
-        this.spriteWidth = w;
-        this.spriteHeight = h;
+    public SpriteSheet(SpriteSheet sheet, int xOfs_T, int yOfs_T, int sheetW_T,
+                       int sheetH_T, int spriteW_P, int sprite_P) {
+        int x = xOfs_T * spriteW_P;
+        int y = yOfs_T * sprite_P;
+        int w = sheetW_T * spriteW_P;
+        int h = sheetH_T * sprite_P;
+        this.spriteW_P = w;
+        this.spriteH_P = h;
         pixelBuffer = new int[w * h];
         for (int yy = 0; yy < h; yy++) {
             int yp = y + yy;
             for (int xx = 0; xx < w; xx++) {
                 int xp = x + xx;
-                pixelBuffer[xx + yy * w] = sheet.pixelBuffer[xp + yp * sheet.spriteWidth];
+                pixelBuffer[xx + yy * w] = sheet.pixelBuffer[xp + yp * sheet.spriteW_P];
             }
         }
         int frame = 0;
-        sprites = new Sprite[spriteSheetWidthInTiles * spriteSheetHeightInTiles];
-        for (int yTile = 0; yTile < spriteSheetHeightInTiles; yTile++) {
-            for (int xTile = 0; xTile < spriteSheetWidthInTiles; xTile++) {
-                int[] spritePixels = new int[spriteWidth * spriteHeight];
-                for (int yPixel = 0; yPixel < spriteHeight; yPixel++) {
-                    for (int xPixel = 0; xPixel < spriteWidth; xPixel++) {
-                        spritePixels[xPixel + yPixel * spriteWidth] = pixelBuffer[(xPixel + xTile * spriteWidth)
-                                + (yPixel + yTile * spriteHeight) * this.spriteWidth];
+        sprites = new Sprite[sheetW_T * sheetH_T];
+        for (int yTile = 0; yTile < sheetH_T; yTile++) {
+            for (int xTile = 0; xTile < sheetW_T; xTile++) {
+                int[] spritePixels = new int[spriteW_P * sprite_P];
+                for (int yPixel = 0; yPixel < sprite_P; yPixel++) {
+                    for (int xPixel = 0; xPixel < spriteW_P; xPixel++) {
+                        spritePixels[xPixel + yPixel * spriteW_P] = pixelBuffer[(xPixel + xTile * spriteW_P)
+                                + (yPixel + yTile * sprite_P) * this.spriteW_P];
                     }
                 }
-                Sprite sprite = new Sprite(spritePixels, spriteWidth, spriteHeight);
+                Sprite sprite = new Sprite(spritePixels, spriteW_P, sprite_P);
                 sprites[frame++] = sprite;
             }
         }
@@ -96,10 +92,10 @@ public class SpriteSheet {
         try {
             log.info("Loading: {}{}", url.toString(), "...");
             BufferedImage image = ImageIO.read(url);
-            sheetWidth = image.getWidth();
-            sheetHeight = image.getHeight();
-            pixelBuffer = new int[sheetWidth * sheetHeight];
-            image.getRGB(0, 0, sheetWidth, sheetHeight, pixelBuffer, 0, sheetWidth);
+            sheetW_P = image.getWidth();
+            sheetH_P = image.getHeight();
+            pixelBuffer = new int[sheetW_P * sheetH_P];
+            image.getRGB(0, 0, sheetW_P, sheetH_P, pixelBuffer, 0, sheetW_P);
             log.info("Loading: {} successful!", url.toString());
         } catch (IOException e) {
             log.error("Loading: {} failed!", url.toString());

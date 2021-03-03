@@ -46,8 +46,8 @@ public class TileMapGFX {
     public void setTileMap(SpriteSheet spriteSheet,
                            List<TILED_TileMap.Tile> TILED_tiles,
                            int tileSize) {
-        for(int y = 0, i = 0; y < spriteSheet.getSheetHeight() / tileSize; y++) {
-            for(int x = 0; x < spriteSheet.getSheetWidth() / tileSize; x++, i++) {
+        for(int y = 0, i = 0; y < spriteSheet.sheetH_P / tileSize; y++) {
+            for(int x = 0; x < spriteSheet.sheetW_P / tileSize; x++, i++) {
                 tileMapSprites.put(i, new Sprite(spriteSheet, tileSize, x, y));
             }
         }

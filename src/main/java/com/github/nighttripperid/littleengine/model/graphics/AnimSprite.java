@@ -30,46 +30,28 @@ package com.github.nighttripperid.littleengine.model.graphics;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class AnimSprite extends Sprite {
+public class AnimSprite {
 
-    private int frame;
+    public int frame;
     public int time;
     public int frameRate = 5;
     public Sprite sprite;
-    public int length = -1;
+    public int length;
+    public SpriteSheet spriteSheet;
 
-    public AnimSprite(SpriteSheet sheet, int width, int height, int length, int frameRate) {
-        this(sheet, width, height, length);
+    public AnimSprite(SpriteSheet spriteSheet, int length, int frameRate) {
+        this(spriteSheet, length);
+        this.spriteSheet = spriteSheet;
         this.frameRate = frameRate;
     }
 
-    public AnimSprite(SpriteSheet sheet, int width, int height, int length) {
-        super(sheet, width, height);
+    public AnimSprite(SpriteSheet spriteSheet, int length) {
+        this.sprite = spriteSheet.sprites[0];
         this.length = length;
+        this.spriteSheet = spriteSheet;
 
-        if(length > sheet.getSprites().length)
+        if(length > spriteSheet.sprites.length) {
             log.error("Error: animation length exceeds SpriteSheet length!");
-        sprite = sheet.getSprites()[0];
-    }
-
-    public AnimSprite(AnimSprite animSprite) {
-        super(animSprite.getSpriteSheet(), animSprite.width, animSprite.height);
-        this.length = animSprite.length;
-        this.frameRate = animSprite.frameRate;
-        this.frame = animSprite.frame;
-        this.time = animSprite.time;
-        sprite = animSprite.getSpriteSheet().getSprites()[0];
-    }
-
-    public void setFrame(int frame) {
-        if(frame < 0 || frame > this.getSpriteSheet().getSprites().length) {
-            log.error("Error: frame index is out of bounds!");
-            throw new ArrayIndexOutOfBoundsException();
         }
-        this.frame = frame;
-    }
-
-    public int getFrame() {
-        return frame;
     }
 }

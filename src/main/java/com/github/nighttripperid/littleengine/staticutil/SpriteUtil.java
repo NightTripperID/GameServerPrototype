@@ -36,22 +36,22 @@ public class SpriteUtil {
     }
 
     public static Sprite[] split(SpriteSheet sheet) {
-        int amount = (sheet.getSheetWidth() * sheet.getSheetHeight()) / (sheet.spriteWidth * sheet.spriteHeight);
+        int amount = (sheet.sheetW_P * sheet.sheetH_P) / (sheet.spriteW_P * sheet.spriteH_P);
         Sprite[] sprites = new Sprite[amount];
         int current = 0;
-        int[] pixels = new int[sheet.spriteWidth * sheet.spriteHeight];
+        int[] pixels = new int[sheet.spriteW_P * sheet.spriteH_P];
 
-        for (int yp = 0; yp < sheet.getSheetHeight() / sheet.spriteHeight; yp++) {
-            for (int xp = 0; xp < sheet.getSheetWidth() / sheet.spriteWidth; xp++) {
+        for (int yp = 0; yp < sheet.sheetH_P / sheet.spriteH_P; yp++) {
+            for (int xp = 0; xp < sheet.sheetW_P / sheet.spriteW_P; xp++) {
 
-                for (int y = 0; y < sheet.spriteHeight; y++) {
-                    for (int x = 0; x < sheet.spriteWidth; x++) {
-                        int xo = x + xp * sheet.spriteWidth;
-                        int yo = y + yp * sheet.spriteHeight;
-                        pixels[x + y * sheet.spriteWidth] = sheet.getPixelBuffer()[xo + yo * sheet.getSheetWidth()];
+                for (int y = 0; y < sheet.spriteH_P; y++) {
+                    for (int x = 0; x < sheet.spriteW_P; x++) {
+                        int xo = x + xp * sheet.spriteW_P;
+                        int yo = y + yp * sheet.spriteH_P;
+                        pixels[x + y * sheet.spriteW_P] = sheet.pixelBuffer[xo + yo * sheet.sheetW_P];
                     }
                 }
-                sprites[current++] = new Sprite(pixels, sheet.spriteWidth, sheet.spriteHeight);
+                sprites[current++] = new Sprite(pixels, sheet.spriteW_P, sheet.spriteH_P);
             }
         }
         return sprites;
@@ -61,15 +61,13 @@ public class SpriteUtil {
         return new Sprite(rotate(sprite.pixels, sprite.width, sprite.height, angle), sprite.width, sprite.height);
     }
 
-    public static AnimSprite updateAnimFrame(AnimSprite animSprite) {
-        AnimSprite copy = new AnimSprite(animSprite);
-        if(++copy.time % copy.frameRate == 0) {
-            if (copy.getFrame() == copy.length)
-                copy.setFrame(0);
-            copy.sprite = copy.getSpriteSheet().getSprites()[copy.getFrame()];
-            copy.setFrame(copy.getFrame() + 1);
+    public static void updateAnimFrame(AnimSprite animSprite) {
+        if(++animSprite.time % animSprite.frameRate == 0) {
+            if (animSprite.frame == animSprite.length)
+                animSprite.frame = 0;
+            animSprite.sprite = animSprite.spriteSheet.sprites[animSprite.frame];
+            animSprite.frame += 1;
         }
-        return copy;
     }
 
     private static int[] rotate(int[] pixels, int width, int height, double angle) {
@@ -89,7 +87,7 @@ public class SpriteUtil {
             for (int x = 0; x < width; x++) {
                 int xx = (int) x1;
                 int yy = (int) y1;
-                int col = 0;
+                int col;
                 if (xx < 0 || xx >= width || yy < 0 || yy >= height)
                     col = 0xffff00ff;
                 else
@@ -106,14 +104,14 @@ public class SpriteUtil {
     }
 
     private static double rot_x(double angle, double x, double y) {
-        double cos = Math.cos(angle-Math.PI/2);
-        double sin = Math.sin(angle- Math.PI/2);
+        double cos = Math.cos(angle-Math.PI / 2);
+        double sin = Math.sin(angle- Math.PI / 2);
         return x * cos + y * -sin;
     }
 
     private static double rot_y(double angle, double x, double y) {
-        double cos = Math.cos(angle-Math.PI/2);
-        double sin = Math.sin(angle-Math.PI/2);
+        double cos = Math.cos(angle-Math.PI / 2);
+        double sin = Math.sin(angle-Math.PI / 2);
         return x * sin + y * cos;
     }
 
