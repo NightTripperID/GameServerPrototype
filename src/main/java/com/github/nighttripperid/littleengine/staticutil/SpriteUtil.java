@@ -50,7 +50,7 @@ public class SpriteUtil {
      * Advances the frame of an AnimSprite by its frame rate.
      * @param animSprite The animSprite to update
      */
-    public AnimSprite updateAnimFrame(AnimSprite animSprite) {
+    public static AnimSprite updateAnimFrame(AnimSprite animSprite) {
         AnimSprite copy = new AnimSprite(animSprite);
         if(++copy.time % copy.frameRate == 0) {
             if (copy.getFrame() == copy.length)

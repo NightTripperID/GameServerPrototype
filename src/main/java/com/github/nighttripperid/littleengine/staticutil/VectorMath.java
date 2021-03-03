@@ -27,7 +27,7 @@ public class VectorMath {
                 new PointDouble(diff.x / denom, diff.y / denom);
     }
 
-    public static PointDouble lerp(PointDouble p1, PointDouble p2, double percent) {
+    public static PointDouble lerp(PointDouble p1, PointDouble p2, double percent) { // linear interpolation
         if (percent < 0 || percent > 1) {
             log.error("Error: percent must be less than zero or greater than one, but is {} ", percent);
             throw new IllegalArgumentException();
