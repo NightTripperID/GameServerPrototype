@@ -1,5 +1,3 @@
-package com.github.nighttripperid.littleengine.model.gamestate;
-
 /*
  * Copyright (c) 2021, BitBurger, Evan Doering
  * All rights reserved.
@@ -26,6 +24,7 @@ package com.github.nighttripperid.littleengine.model.gamestate;
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
+package com.github.nighttripperid.littleengine.model.gamestate;
 
 import java.util.Arrays;
 import java.util.HashMap;

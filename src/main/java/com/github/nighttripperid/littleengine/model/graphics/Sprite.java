@@ -28,10 +28,6 @@ package com.github.nighttripperid.littleengine.model.graphics;
 import com.github.nighttripperid.littleengine.model.PointInt;
 import lombok.Getter;
 
-/**
- * Represents a 2 dimensional graphic on screen. Sprite data is loaded from a SpriteSheet object.
- * Width, height, and coordinates can be specified. Sprites can also be rotated using affine matrix transformation.
- */
 public class Sprite {
 
     public final int width;
@@ -43,24 +39,12 @@ public class Sprite {
     private PointInt offset = new PointInt();
     public int[] pixels;
 
-    /**
-     * Creates a sprite strip from a SpriteSheet object
-     * @param spriteSheet: The sheet from which the sprite strip is grabbed.
-     * @param width: The width of the sprite strip.
-     * @param height: The height of the sprite strip.
-     */
     protected Sprite(SpriteSheet spriteSheet, int width, int height) {
         this.width = width;
         this.height = height;
         this.spriteSheet = spriteSheet;
     }
 
-    /**
-     * Creates a Sprite object using a specified pixel array.
-     * @param pixels The pixels representing the Sprite.
-     * @param width The Sprite width.
-     * @param height The Sprite height.
-     */
     public Sprite(int[] pixels, int width, int height) {
         this.width = width;
         this.height = height;
@@ -68,14 +52,6 @@ public class Sprite {
         System.arraycopy(pixels, 0, this.pixels, 0, pixels.length);
     }
 
-    /**
-     * Creates a Sprite object using a specified SpriteSheet
-     * @param spriteSheet The given SpriteSheet.
-     * @param width The Sprite width.
-     * @param height The Sprite height.
-     * @param xOfs The x offset of the Sprite on the SpriteSheet in tile precision.
-     * @param yOfs The y offset of the Sprite on the SpriteSheet in tile precision.
-     */
     public Sprite(SpriteSheet spriteSheet, int width, int height, int xOfs, int yOfs) {
         this.spriteSheet = spriteSheet;
         this.width = width;
@@ -85,13 +61,6 @@ public class Sprite {
         load();
     }
 
-    /**
-     * Creates a Sprite object using a specified SpriteSheet
-     * @param spriteSheet The given SpriteSheet.
-     * @param size The Sprite size.
-     * @param xOfs The x offset of the Sprite on the SpriteSheet in tile precision.
-     * @param yOfs The y offset of the Sprite on the SpriteSheet in tile precision.
-     */
     public Sprite(SpriteSheet spriteSheet, int size, int xOfs, int yOfs) {
         this.spriteSheet = spriteSheet;
         this.width = size;
@@ -101,12 +70,6 @@ public class Sprite {
         load();
     }
 
-    /**
-     * Creates a Sprite object that is filled with a solid color.
-     * @param col The given color.
-     * @param width The given width.
-     * @param height The given height.
-     */
     public Sprite(int col, int width, int height) {
         this.width = width;
         this.height = height;
@@ -114,9 +77,6 @@ public class Sprite {
         setColor(col);
     }
 
-    /**
-     * Loads the Sprite pixels from the Sprite's SpriteSheet.
-     */
     private void load() {
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
@@ -125,10 +85,6 @@ public class Sprite {
         }
     }
 
-    /**
-     * Fills the Sprite with the specified color.
-     * @param col The given color
-     */
     private void setColor(int col) {
         for(int i = 0; i < pixels.length; i++)
             pixels[i] = col;
