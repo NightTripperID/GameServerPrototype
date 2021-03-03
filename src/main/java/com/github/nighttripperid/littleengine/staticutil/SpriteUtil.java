@@ -9,11 +9,6 @@ public class SpriteUtil {
     private SpriteUtil() {
     }
 
-    /**
-     * Returns an array of Sprites that are retrieved from a SpriteSheet.
-     * @param sheet The SpriteSheet from which the Sprite array is retrieved.
-     * @return The array of Sprites retrieved from the SpriteSheet.
-     */
     public static Sprite[] split(SpriteSheet sheet) {
         int amount = (sheet.getSheetWidth() * sheet.getSheetHeight()) / (sheet.spriteWidth * sheet.spriteHeight);
         Sprite[] sprites = new Sprite[amount];
@@ -36,20 +31,10 @@ public class SpriteUtil {
         return sprites;
     }
 
-    /**
-     * Rotate specified sprite by the specified angle.
-     * @param sprite: The specified com.bitburger.graphics.Sprite object.
-     * @param angle: The angle in radians.
-     * @return the rotated sprite
-     */
     public static Sprite rotate(Sprite sprite, double angle){
         return new Sprite(rotate(sprite.pixels, sprite.width, sprite.height, angle), sprite.width, sprite.height);
     }
 
-    /**
-     * Advances the frame of an AnimSprite by its frame rate.
-     * @param animSprite The animSprite to update
-     */
     public static AnimSprite updateAnimFrame(AnimSprite animSprite) {
         AnimSprite copy = new AnimSprite(animSprite);
         if(++copy.time % copy.frameRate == 0) {
@@ -61,14 +46,6 @@ public class SpriteUtil {
         return copy;
     }
 
-    /**
-     * Rotates the Sprite using an affine matrix
-     * @param pixels The pixels representing the Sprite
-     * @param width The Sprite width
-     * @param height The Sprite height
-     * @param angle The angle in radians by which to rotate the Sprite
-     * @return the affine matrix rotated pixel array
-     */
     private static int[] rotate(int[] pixels, int width, int height, double angle) {
         int[] result = new int[width * height];
 
@@ -102,26 +79,12 @@ public class SpriteUtil {
         return result;
     }
 
-    /**
-     * Returns the new x coordinate of a pixel rotated by a specified angle.
-     * @param angle The given rotation angle in radians.
-     * @param x The initial x coordinate of the given pixel.
-     * @param y The initial y coordinate of the given pixel.
-     * @return The new x coordinate of the given pixel.
-     */
     private static double rot_x(double angle, double x, double y) {
         double cos = Math.cos(angle-Math.PI/2);
         double sin = Math.sin(angle- Math.PI/2);
         return x * cos + y * -sin;
     }
 
-    /**
-     * Returns the new y coordinate of a pixel rotated by a specified angle.
-     * @param angle The given rotation angle in radians.
-     * @param x The initial x coordinate of the given pixel.
-     * @param y The initial y coordinate of the given pixel.
-     * @return The new y coordinate of the given pixel.
-     */
     private static double rot_y(double angle, double x, double y) {
         double cos = Math.cos(angle-Math.PI/2);
         double sin = Math.sin(angle-Math.PI/2);

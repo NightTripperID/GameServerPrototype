@@ -30,10 +30,6 @@ package com.github.nighttripperid.littleengine.constant;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Character arrays that represent a 5x5 Font for convenience. Used by Screen.
- *
- */
 public class Font5x5 {
     private static final Map<Character, Character[]> chars = new HashMap<>();
 

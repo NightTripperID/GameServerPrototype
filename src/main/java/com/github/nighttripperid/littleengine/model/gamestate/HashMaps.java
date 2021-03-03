@@ -34,9 +34,6 @@ import java.util.stream.DoubleStream;
 import java.util.stream.IntStream;
 import java.util.stream.LongStream;
 
-/**
- * Object representing a bundle of primitive and complex objexts. Values are stored in lazily instantiated HashMaps.
- */
 public abstract class HashMaps {
 
     private Map<String, Byte> byteExtras;

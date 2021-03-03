@@ -27,13 +27,6 @@ public abstract class Entity implements Eventable, Comparable<Entity> {
     private AnimationScript animationScript;
     private InitGFX initGFX;
 
-    /**
-     * Compares the render priority of this entity to another entity.
-     * @param entity the other entity to compare to.
-     * @return less than 1 if this entity has a higher render priority,
-     * 0 if they have the same prioriy, and 1 if the other entity has a
-     * higher priority.
-     */
     @Override
     public int compareTo(Entity entity) {
         return this.renderPriority - entity.renderPriority;

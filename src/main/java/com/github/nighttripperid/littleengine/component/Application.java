@@ -31,14 +31,11 @@ package com.github.nighttripperid.littleengine.component;
 import com.github.nighttripperid.littleengine.model.gamestate.Entity;
 import com.github.nighttripperid.littleengine.model.gamestate.Intent;
 import com.github.nighttripperid.littleengine.model.gamestate.RenderRequest;
+import com.github.nighttripperid.littleengine.model.graphics.ScreenBuffer;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * The object that represents the kernel of the game engine. Contains the central loop that updates the game logic
- * and renders the graphics. Provides basic callbacks so GameStates can request resources and information.
- */
 public final class Application {
 
     private Thread thread;
@@ -49,32 +46,20 @@ public final class Application {
     private final ScreenBufferUpdater screenBufferUpdater;
     private final GameStateUpdater gameStateUpdater;
 
-    /**
-     * Creates a new Engine with a specified screen width, height and scale, and a title to appear in the window's title bar.
-     * @param screenWidth The given width for the screen.
-     * @param screenHeight The given height for the screen.
-     * @param screenScale The given scale for the screen.
-     * @param title The given title for the screen.
-     */
     public Application(int screenWidth, int screenHeight, int screenScale, String title) {
         this.title = title;
         ioController = new IOController(screenWidth, screenHeight, screenScale);
-        screenBufferUpdater = new ScreenBufferUpdater(screenWidth, screenHeight, screenScale);
+        screenBufferUpdater = new ScreenBufferUpdater(new RenderRequestProcessor(),
+                new ScreenBuffer(screenWidth, screenHeight, screenScale));
         gameStateUpdater = new GameStateUpdater();
     }
 
-    /**
-     * Launches the game thread, setting the game into motion.
-     */
     private synchronized void start() {
         running = true;
         thread = new Thread(mainLoop, "LittleEngine");
         thread.start();
     }
 
-    /**
-     * Stops the game Thread, effectively halting the game.
-     */
     private void stop() {
         running = false;
 
@@ -85,11 +70,6 @@ public final class Application {
         }
     }
 
-    /**
-     * The runnable containing the core game loop. The update loop (containing the game logic) is timed to run at
-     * approximately 60 ticks per second. The Renderable loop (containing all graphics rendering calls) runs as fast as
-     * possible, executing once per loop iteration (actual speed depends on hardware).
-     */
     private final Runnable mainLoop = () -> {
         long lastTime = System.nanoTime();
         long timer = System.currentTimeMillis();
@@ -125,22 +105,16 @@ public final class Application {
         stop();
     };
 
-    /**
-     * Runs the core update method. Updates input devices and the active GameState.
-     */
     private void update() {
         IOController.updateInput();
         gameStateUpdater.update();
     }
 
-    /**
-     * Runs the core render method. Renders all Sprites and the displays them on the Canvas.
-     */
     private void render() {
         screenBufferUpdater.clearScreenBuffer();
 
-        for (int i = 0; i < gameStateUpdater.getActiveGameState().getGameMap().getNumLayers(); i++) {
-            final int layer = i + 1;
+        for (int i = 1; i <= gameStateUpdater.getActiveGameState().getGameMap().getNumLayers(); i++) {
+            final int layer = i;
             screenBufferUpdater.renderTileLayer(
                     gameStateUpdater.getActiveGameState().getGameMap(), "Tile Layer " + layer);
 
@@ -164,11 +138,6 @@ public final class Application {
         ioController.renderBufferToScreen(screenBufferUpdater.getScreenBuffer());
     }
 
-    /**
-     * Prepares the JFrame for rendering, pushes the GameState represented by the Intent, and runs the start() method,
-     * setting the game into motion.
-     * @param intent The intent representing the first GameState.
-     */
     public void start(Intent intent) {
         gameStateUpdater.pushGameNewState(intent);
         start();
