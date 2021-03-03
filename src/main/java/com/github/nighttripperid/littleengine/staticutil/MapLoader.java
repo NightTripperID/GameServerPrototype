@@ -37,6 +37,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.dozer.DozerBeanMapper;
 import org.dozer.Mapper;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -50,9 +52,9 @@ public class MapLoader {
 
     public static void loadTileMap(String pngPath, String jsonPath, GameMap gameMap) {
 
-        URL jsonUrl = MapLoader.class.getClassLoader().getResource(jsonPath);
-        log.info("Loading: {}{}", jsonUrl.getPath(), "...");
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(jsonUrl.openStream()))) {
+        URL url = MapLoader.class.getClassLoader().getResource(jsonPath);
+        log.info("Loading: {}{}", url.getPath(), "...");
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()))) {
             JsonObject jsonObject = (JsonObject) Jsoner.deserialize(reader);
             Mapper mapper = new DozerBeanMapper();
             TILED_TileMap tiled_TileMap = mapper.map(jsonObject, TILED_TileMap.class);
@@ -65,20 +67,29 @@ public class MapLoader {
                 gameMap.getTileMapLookups().put(layer.getName(), layer.getData())
             );
 
-            log.info("Loading {} successful!", jsonUrl.getPath());
+            log.info("Loading {} successful!", url.getPath());
 
         } catch (IOException | JsonException e) {
-            log.error("Loading {} failed!", jsonUrl.getPath());
+            log.error("Loading {} failed!", url.getPath());
         }
 
         loadTileMapGFX(pngPath, gameMap);
     }
 
     private static void loadTileMapGFX(String pngPath, GameMap gameMap) {
-        SpriteSheet spriteSheet = new SpriteSheet(pngPath, gameMap.getTileSize(), gameMap.getTileSize());
-        List<TILED_TileMap.Tile> TILED_tiles = gameMap.getTiled_TileMap().getTilesets().stream()
-                .findFirst().orElse(null).getTiles();
-        gameMap.setTileMapGFX(new TileMapGFX());
-        gameMap.getTileMapGFX().setTileMap(spriteSheet, TILED_tiles, gameMap.getTileSize());
+
+        URL url = MapLoader.class.getClassLoader().getResource(pngPath);
+        try {
+            log.info("Loading: {}{}", url.getPath(), "...");
+            BufferedImage image = ImageIO.read(url);
+            log.info("Loading {} successful!", url.getPath());
+            SpriteSheet spriteSheet = new SpriteSheet(image, gameMap.getTileSize(), gameMap.getTileSize());
+            List<TILED_TileMap.Tile> TILED_tiles = gameMap.getTiled_TileMap().getTilesets().stream()
+                    .findFirst().orElse(null).getTiles();
+            gameMap.setTileMapGFX(new TileMapGFX());
+            gameMap.getTileMapGFX().setTileMap(spriteSheet, TILED_tiles, gameMap.getTileSize());
+        } catch (IOException e) {
+            log.error("Loading {} failed!", url.getPath());
+        }
     }
 }

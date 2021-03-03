@@ -26,14 +26,9 @@
  */
 package com.github.nighttripperid.littleengine.model.graphics;
 
-import lombok.extern.slf4j.Slf4j;
-
-import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.net.URL;
 
-@Slf4j
 public class SpriteSheet {
 
     private URL url;
@@ -48,11 +43,13 @@ public class SpriteSheet {
 
     public Sprite[] sprites;
 
-    public SpriteSheet(String path, int spriteW_P, int spriteH_P) {
-        url = getClass().getClassLoader().getResource(path);
+    public SpriteSheet(BufferedImage image, int spriteW_P, int spriteH_P) {
         this.spriteW_P = spriteW_P;
         this.spriteH_P = spriteH_P;
-        load();
+        sheetW_P = image.getWidth();
+        sheetH_P = image.getHeight();
+        pixelBuffer = new int[sheetW_P * sheetH_P];
+        image.getRGB(0, 0, sheetW_P, sheetH_P, pixelBuffer, 0, sheetW_P);
     }
 
     public SpriteSheet(SpriteSheet sheet, int xOfs_T, int yOfs_T, int sheetW_T,
@@ -85,20 +82,6 @@ public class SpriteSheet {
                 Sprite sprite = new Sprite(spritePixels, spriteW_P, sprite_P);
                 sprites[frame++] = sprite;
             }
-        }
-    }
-
-    private void load() {
-        try {
-            log.info("Loading: {}{}", url.toString(), "...");
-            BufferedImage image = ImageIO.read(url);
-            sheetW_P = image.getWidth();
-            sheetH_P = image.getHeight();
-            pixelBuffer = new int[sheetW_P * sheetH_P];
-            image.getRGB(0, 0, sheetW_P, sheetH_P, pixelBuffer, 0, sheetW_P);
-            log.info("Loading: {} successful!", url.toString());
-        } catch (IOException e) {
-            log.error("Loading: {} failed!", url.toString());
         }
     }
 }

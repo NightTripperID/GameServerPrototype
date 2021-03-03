@@ -32,12 +32,12 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class AnimSprite {
 
-    public int frame;
-    public int time;
-    public int frameRate = 5;
-    public Sprite sprite;
-    public int length;
     public SpriteSheet spriteSheet;
+    public Sprite sprite;
+    public int frame;
+    public int frameRate = 5;
+    public int time;
+    public int length;
 
     public AnimSprite(SpriteSheet spriteSheet, int length, int frameRate) {
         this(spriteSheet, length);
