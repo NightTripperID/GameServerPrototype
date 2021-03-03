@@ -5,15 +5,15 @@ import lombok.Getter;
 
 import java.util.function.Consumer;
 
-public class UpdateScript {
+public class BehaviorScript {
     @Getter(AccessLevel.NONE)
-    private final Consumer<GameMap> updateScript;
+    private final Consumer<GameMap> script;
 
-    public UpdateScript(Consumer<GameMap> updateScript) {
-        this.updateScript = updateScript;
+    public BehaviorScript(Consumer<GameMap> script) {
+        this.script = script;
     }
 
     public void run(GameMap gameMap) {
-        updateScript.accept(gameMap);
+        script.accept(gameMap);
     }
 }
