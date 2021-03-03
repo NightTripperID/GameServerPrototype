@@ -24,17 +24,17 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.github.nighttripperid.littleengine.model.gamestate;
+package com.github.nighttripperid.littleengine.staticutil;
 
-public class Intent extends HashMaps {
+import com.github.nighttripperid.littleengine.model.graphics.EntityGFX;
+import com.github.nighttripperid.littleengine.model.graphics.SpriteSheet;
 
-    private Class<? extends GameState> gameStateClass;
-
-    public Intent(Class<? extends GameState> gameStateClass) {
-        this.gameStateClass = gameStateClass;
+public class SpriteLoader {
+    private SpriteLoader(){
     }
-
-    public final Class<? extends GameState> getGameStateClass() {
-        return gameStateClass;
+    public static void loadSprites(String filePath, String key, int spriteWidth, int spriteHeight,
+                                   EntityGFX entityGFX) {
+        SpriteSheet spriteSheet = new SpriteSheet(filePath, spriteWidth, spriteHeight);
+        entityGFX.addSpriteMap(key, spriteSheet);
     }
 }

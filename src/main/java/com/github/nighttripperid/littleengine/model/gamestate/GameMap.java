@@ -1,11 +1,36 @@
+/*
+ * Copyright (c) 2021, BitBurger, Evan Doering
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ *     Redistributions of source code must retain the above copyright notice,
+ *     this list of conditions and the following disclaimer.
+ *
+ *     Redistributions in binary form must reproduce the above copyright notice,
+ *     this list of conditions and the following disclaimer in the documentation
+ *     and/or other materials provided with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ */
 package com.github.nighttripperid.littleengine.model.gamestate;
 
 import com.github.nighttripperid.littleengine.model.PointDouble;
 import com.github.nighttripperid.littleengine.model.graphics.TILED_TileMap;
 import com.github.nighttripperid.littleengine.model.graphics.Tile;
-import lombok.AccessLevel;
+import com.github.nighttripperid.littleengine.model.graphics.TileMapGFX;
 import lombok.Data;
-import lombok.Getter;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -15,22 +40,28 @@ public class GameMap {
 
     private PointDouble scroll = new PointDouble();
 
-    protected int tileSize;
-    protected int tileBitShift;
+    private int tileSize;
+    private int tileBitShift;
+    private int numLayers = 3;
 
-    private final Map<String, Integer[]> mapTileHashMap = new HashMap<>();
+    private final Map<String, Integer[]> tileMapLookups = new HashMap<>(); // hashed by layerName
 
+    private TileMapGFX tileMapGFX;
     private TILED_TileMap tiled_TileMap;
 
-    @Getter(AccessLevel.NONE)
-    private TriFunction<Integer[], Integer, Integer, Tile> mapTileObjectGetter;
+    public  Tile getMapTileObject(String layerName, int x, int y) {
 
-    @FunctionalInterface
-    public static interface TriFunction<T1, T2, T3, R> {
-        R apply(T1 t1, T2 t2, T3 t3);
-    }
+        if (x < 0 ||
+                y < 0 ||
+                x >= this.getTiled_TileMap().getWidth() ||
+                y >= this.getTiled_TileMap().getHeight()) {
 
-    public  Tile getMapTileObject(Integer[] mapTiles, int x, int y) {
-        return mapTileObjectGetter.apply(mapTiles, x, y);
+            return TileMapGFX.VOID_TILE;
+
+        } else {
+            return this.getTileMapGFX().getTileMap().get(
+                    tileMapLookups.get(layerName)[x + y * this.getTiled_TileMap().getWidth()] - 1
+            );
+        }
     }
 }

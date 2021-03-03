@@ -24,52 +24,23 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
 package com.github.nighttripperid.littleengine.model.graphics;
 
-import lombok.extern.slf4j.Slf4j;
+import lombok.Data;
 
-@Slf4j
-public class AnimSprite extends Sprite {
+import java.util.HashMap;
+import java.util.Map;
 
-    private int frame;
-    public int time;
-    public int frameRate = 5;
-    public Sprite sprite;
-    public int length = -1;
+@Data
+public class EntityGFX {
+    private final Map<String, Map<Integer, Sprite>> spriteMaps = new HashMap<>();
 
-    public AnimSprite(SpriteSheet sheet, int width, int height, int length, int frameRate) {
-        this(sheet, width, height, length);
-        this.frameRate = frameRate;
-    }
-
-    public AnimSprite(SpriteSheet sheet, int width, int height, int length) {
-        super(sheet, width, height);
-        this.length = length;
-
-        if(length > sheet.getSprites().length)
-            log.error("Error: animation length exceeds SpriteSheet length!");
-        sprite = sheet.getSprites()[0];
-    }
-
-    public AnimSprite(AnimSprite animSprite) {
-        super(animSprite.getSpriteSheet(), animSprite.width, animSprite.height);
-        this.length = animSprite.length;
-        this.frameRate = animSprite.frameRate;
-        this.frame = animSprite.frame;
-        this.time = animSprite.time;
-        sprite = animSprite.getSpriteSheet().getSprites()[0];
-    }
-
-    public void setFrame(int frame) {
-        if(frame < 0 || frame > this.getSpriteSheet().getSprites().length) {
-            ArrayIndexOutOfBoundsException e = new ArrayIndexOutOfBoundsException("frame index is out of bounds!");
-            e.printStackTrace();
+    public void addSpriteMap(String key, SpriteSheet spriteSheet) {
+        spriteMaps.put(key, new HashMap<>());
+        for (int y = 0, i = 0; y < spriteSheet.getSheetHeight() / spriteSheet.spriteHeight; y++) {
+            for (int x = 0; x < spriteSheet.getSheetWidth() / spriteSheet.spriteWidth; x++, i++)
+                spriteMaps.get(key).put(i, new Sprite(spriteSheet, spriteSheet.spriteWidth,
+                        spriteSheet.spriteHeight, x, y));
         }
-        this.frame = frame;
-    }
-
-    public int getFrame() {
-        return frame;
     }
 }

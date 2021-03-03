@@ -24,26 +24,22 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
+package com.github.nighttripperid.littleengine.model.gamestate;
 
-package com.github.nighttripperid.littleengine.deprecated.gamestate;
+import lombok.AccessLevel;
+import lombok.Getter;
 
-/**
- * Object that represents a tile trigger with a runnable piece of code.
- */
-@Deprecated
-public class Trigger {
+import java.util.function.Consumer;
 
-    public final boolean active;
-    public final Runnable runnable;
+public class BehaviorScript {
+    @Getter(AccessLevel.NONE)
+    private final Consumer<GameMap> script;
 
-    /**
-     * Creates a new Trigger with a given Runnable.
-     * @param runnable The given runnable piece of code that executes when the Trigger is activated.
-     * @param active Indicates whether or not the trigger is active (activates when user presses a button)
-     *               Or passive (activates when user traverses over a trigger tile.
-     */
-    public Trigger(Runnable runnable, boolean active) {
-        this.runnable = runnable;
-        this.active = active;
+    public BehaviorScript(Consumer<GameMap> script) {
+        this.script = script;
+    }
+
+    public void run(GameMap gameMap) {
+        script.accept(gameMap);
     }
 }

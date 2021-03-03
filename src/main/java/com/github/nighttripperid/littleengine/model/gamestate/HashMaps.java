@@ -24,10 +24,8 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
+package com.github.nighttripperid.littleengine.model.gamestate;
 
-package com.github.nighttripperid.littleengine.deprecated.gamestate;
-
-import java.io.Serializable;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -35,13 +33,7 @@ import java.util.stream.DoubleStream;
 import java.util.stream.IntStream;
 import java.util.stream.LongStream;
 
-/**
- * Object representing a bundle of primitive and complex objexts. Values are stored in lazily instantiated HashMaps.
- */
-@Deprecated
-public abstract class HashMaps implements Serializable {
-
-    public static final long serialVersionUID = 201710161356L;
+public abstract class HashMaps {
 
     private Map<String, Byte> byteExtras;
     private Map<String, Character> characterExtras;
@@ -49,7 +41,7 @@ public abstract class HashMaps implements Serializable {
     private Map<String, Float> floatExtras;
     private Map<String, Integer> integerExtras;
     private Map<String, Long> longExtras;
-    private Map<String, Serializable> serializableExtras;
+    private Map<String, Object> objectExtras;
     private Map<String, String> stringExtras;
 
     private Map<String, Byte[]> byteArrayExtras;
@@ -58,117 +50,117 @@ public abstract class HashMaps implements Serializable {
     private Map<String, Float[]> floatArrayExtras;
     private Map<String, Integer[]> integerArrayExtras;
     private Map<String, Long[]> longArrayExtras;
-    private Map<String, Serializable[]> serializableArrayExtras;
+    private Map<String, Object[]> objectArrayExtras;
     private Map<String, String[]> stringArrayExtras;
 
 
     public final void putExtra(String key, byte value) {
-        if(byteExtras == null)
+        if (byteExtras == null)
             byteExtras = new HashMap<>();
         byteExtras.put(key, value);
     }
 
     public final void putExtra(String key, char value) {
-        if(characterExtras == null)
+        if (characterExtras == null)
             characterExtras = new HashMap<>();
         characterExtras.put(key, value);
     }
 
     public final void putExtra(String key, double value) {
-        if(doubleExtras == null)
+        if (doubleExtras == null)
             doubleExtras = new HashMap<>();
         doubleExtras.put(key, value);
     }
 
     public final void putExtra(String key, float value) {
-        if(floatExtras == null)
+        if (floatExtras == null)
             floatExtras = new HashMap<>();
         floatExtras.put(key, value);
     }
 
     public final void putExtra(String key, int value) {
-        if(integerExtras == null)
+        if (integerExtras == null)
             integerExtras = new HashMap<>();
         integerExtras.put(key, value);
     }
 
     public final void putExtra(String key, long value) {
-        if(longExtras == null)
+        if (longExtras == null)
             longExtras = new HashMap<>();
         longExtras.put(key, value);
     }
 
-    public final void putExtra(String key, Serializable value) {
-        if(serializableExtras == null)
-            serializableExtras = new HashMap<>();
-        serializableExtras.put(key, value);
+    public final void putExtra(String key, Object value) {
+        if (objectExtras == null)
+            objectExtras = new HashMap<>();
+        objectExtras.put(key, value);
     }
 
     public final void putExtra(String key, String value) {
-        if(stringExtras == null)
+        if (stringExtras == null)
             stringExtras = new HashMap<>();
         stringExtras.put(key, value);
     }
 
     public final void putExtra(String key, byte[] value) {
-        if(byteArrayExtras == null)
+        if (byteArrayExtras == null)
             byteArrayExtras = new HashMap<>();
         Byte[] result = new Byte[value.length];
         int index = 0;
-        for(byte b: value)
+        for (byte b : value)
             result[index++] = b;
         byteArrayExtras.put(key, result);
     }
 
     public final void putExtra(String key, char[] value) {
-        if(characterArrayExtras == null)
+        if (characterArrayExtras == null)
             characterArrayExtras = new HashMap<>();
         Character[] result = new Character[value.length];
         int index = 0;
-        for(Character c: value)
+        for (Character c : value)
             result[index++] = c;
         characterArrayExtras.put(key, result);
     }
 
     public final void putExtra(String key, double[] value) {
-        if(doubleArrayExtras == null)
+        if (doubleArrayExtras == null)
             doubleArrayExtras = new HashMap<>();
         Double[] result = DoubleStream.of(value).boxed().toArray(Double[]::new);
         doubleArrayExtras.put(key, result);
     }
 
     public final void putExtra(String key, float[] value) {
-        if(floatArrayExtras == null)
+        if (floatArrayExtras == null)
             floatArrayExtras = new HashMap<>();
         Float[] result = new Float[value.length];
         int index = 0;
-        for(Float f: value)
+        for (Float f : value)
             result[index++] = f;
         floatArrayExtras.put(key, result);
     }
 
     public final void putExtra(String key, int[] value) {
-        if(integerArrayExtras == null)
+        if (integerArrayExtras == null)
             integerArrayExtras = new HashMap<>();
         Integer[] result = IntStream.of(value).boxed().toArray(Integer[]::new);
         integerArrayExtras.put(key, result);
     }
 
     public final void putExtra(String key, long[] value) {
-        if(longArrayExtras == null)
+        if (longArrayExtras == null)
             longArrayExtras = new HashMap<>();
         Long[] result = LongStream.of(value).boxed().toArray(Long[]::new);
         longArrayExtras.put(key, result);
     }
 
-    public final void putExtra(String key, Serializable[] value) {
-        if(serializableArrayExtras == null)
-            serializableArrayExtras = new HashMap<>();
-        serializableArrayExtras.put(key, value);
+    public final void putExtra(String key, Object[] value) {
+        if (objectArrayExtras == null)
+            objectArrayExtras = new HashMap<>();
+        objectArrayExtras.put(key, value);
     }
 
     public final void putExtra(String key, String[] value) {
-        if(stringArrayExtras == null)
+        if (stringArrayExtras == null)
             stringArrayExtras = new HashMap<>();
         stringArrayExtras.put(key, value);
     }
@@ -197,10 +189,10 @@ public abstract class HashMaps implements Serializable {
         return longExtras.get(key);
     }
 
-    public final Serializable getSerializableExtra(String key) {
-        if(serializableExtras == null)
-            serializableExtras = new HashMap<>();
-        return serializableExtras.get(key);
+    public final Object getObjectExtra(String key) {
+        if (objectExtras == null)
+            objectExtras = new HashMap<>();
+        return objectExtras.get(key);
     }
 
     public final String getStringExtra(String key) {
@@ -211,7 +203,7 @@ public abstract class HashMaps implements Serializable {
         Byte[] boxed = byteArrayExtras.get(key);
         byte[] unboxed = new byte[boxed.length];
         int index = 0;
-        for(Byte b: boxed)
+        for (Byte b : boxed)
             unboxed[index++] = b;
         return unboxed;
     }
@@ -220,7 +212,7 @@ public abstract class HashMaps implements Serializable {
         Character[] boxed = characterArrayExtras.get(key);
         char[] unboxed = new char[boxed.length];
         int index = 0;
-        for(Character c: boxed)
+        for (Character c : boxed)
             unboxed[index++] = c;
         return unboxed;
     }
@@ -233,7 +225,7 @@ public abstract class HashMaps implements Serializable {
         Float[] boxed = floatArrayExtras.get(key);
         float[] unboxed = new float[boxed.length];
         int index = 0;
-        for(Float f: boxed)
+        for (Float f : boxed)
             unboxed[index++] = f;
         return unboxed;
     }
@@ -247,8 +239,8 @@ public abstract class HashMaps implements Serializable {
     }
 
 
-    public final Serializable[] getSerializableArrayExtra(String key) {
-        return serializableArrayExtras.get(key);
+    public final Object[] getObjectArrayExtra(String key) {
+        return objectArrayExtras.get(key);
     }
 
 

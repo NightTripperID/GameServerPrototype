@@ -24,13 +24,23 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
+package com.github.nighttripperid.littleengine.model.gamestate;
 
-package com.github.nighttripperid.littleengine.deprecated.gamestate;
+import com.github.nighttripperid.littleengine.model.graphics.EntityGFX;
+import lombok.AccessLevel;
+import lombok.Getter;
 
-/**
- * Classes that exercise game logic must implement this interface. Game logic will be contained inside this method.
- */
-@Deprecated
-public interface Updatable {
-    void update();
+import java.util.function.Consumer;
+
+public class InitGFX {
+    @Getter(AccessLevel.NONE)
+    private Consumer<EntityGFX> script;
+
+    public InitGFX(Consumer<EntityGFX> script) {
+        this.script = script;
+    }
+
+    public void run(EntityGFX entityGFX) {
+        script.accept(entityGFX);
+    }
 }

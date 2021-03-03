@@ -24,13 +24,23 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
+package com.github.nighttripperid.littleengine.model.gamestate;
 
-package com.github.nighttripperid.littleengine.deprecated.gamestate;
+import com.github.nighttripperid.littleengine.model.graphics.Sprite;
+import lombok.AccessLevel;
+import lombok.Getter;
 
-/**
- * Object representing a bundle of primitive and complex objexts. Values are stored in lazily instantiated HashMaps.
- *
- */
-@Deprecated
-public final class Bundle extends HashMaps {
+import java.util.Map;
+import java.util.function.Consumer;
+
+public class AnimationScript {
+    @Getter(AccessLevel.NONE)
+    private Consumer<Map<Integer, Sprite>> script;
+
+    public AnimationScript(Consumer<Map<Integer, Sprite>> script) {
+        this.script = script;
+    }
+    public void run(Map<Integer, Sprite> spriteMap) {
+        script.accept(spriteMap);
+    }
 }

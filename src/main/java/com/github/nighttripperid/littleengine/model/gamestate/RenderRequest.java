@@ -24,53 +24,27 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
+package com.github.nighttripperid.littleengine.model.gamestate;
 
-package com.github.nighttripperid.littleengine.deprecated.engine;
+import com.github.nighttripperid.littleengine.component.RenderRequestProcessor;
+import com.github.nighttripperid.littleengine.model.graphics.ScreenBuffer;
+import lombok.AccessLevel;
+import lombok.Getter;
 
-import com.github.nighttripperid.littleengine.deprecated.gamestate.GameState;
+import java.util.function.BiConsumer;
 
-import java.util.Stack;
-
-/**
- * Wrapper that manages the pushing, popping, and swapping of GameStates to and from the GameState stack.
- */
-@Deprecated
-class GameStateManager {
-
-    private Stack<GameState> gameStateStack = new Stack<>();
-
-    /**
-     * Pushes a new GameState onto gameStateStack.
-     * @param gs the new GameState to push onto gameStateStack.
-     */
-    void push(GameState gs) {
-        gameStateStack.push(gs);
+public class RenderRequest {
+    @Getter
+    private final int renderLayer;
+    @Getter(AccessLevel.NONE)
+    private final BiConsumer<RenderRequestProcessor, ScreenBuffer> renderRequest;
+    
+    public RenderRequest(int renderLayer, BiConsumer<RenderRequestProcessor, ScreenBuffer> renderRequest) {
+        this.renderLayer = renderLayer;
+        this.renderRequest = renderRequest;
     }
-
-    /**
-     * Pops the top GameState from the gameStateStack.
-     * @return the GameState popped from the gameStateStack.
-     */
-    GameState pop() {
-        return gameStateStack.pop();
-    }
-
-    /**
-     * Returns the top GameState on gameStateStack.
-     * @return The top GameState on the gameStateStack,
-     */
-    GameState peek() {
-        return gameStateStack.peek();
-    }
-
-    /**
-     * Pops the top GameState from the gameStateStack.
-     * @param gs The new GameState to push onto gameStateStack.
-     * @return The old GameState that was popped from gameStateStack.
-     */
-    GameState swap(GameState gs) {
-        GameState old = gameStateStack.pop();
-        gameStateStack.push(gs);
-        return old;
+    
+    public void process(RenderRequestProcessor processor, ScreenBuffer screenBuffer) {
+        renderRequest.accept(processor, screenBuffer);
     }
 }
