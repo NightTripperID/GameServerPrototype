@@ -33,7 +33,7 @@ public class GameMap {
             return TileMapGFX.VOID_TILE;
 
         } else {
-            return this.getTileMapGFX().getTILE_MAP().get(
+            return this.getTileMapGFX().getTileMap().get(
                     tileMapLookups.get(layerName)[x + y * this.getTiled_TileMap().getWidth()] - 1
             );
         }
