@@ -103,7 +103,6 @@ public class SpriteSheet {
             log.info("Loading: {} successful!", url.toString());
         } catch (IOException e) {
             log.error("Loading: {} failed!", url.toString());
-            e.printStackTrace();
         }
     }
 }

@@ -63,8 +63,8 @@ public class AnimSprite extends Sprite {
 
     public void setFrame(int frame) {
         if(frame < 0 || frame > this.getSpriteSheet().getSprites().length) {
-            ArrayIndexOutOfBoundsException e = new ArrayIndexOutOfBoundsException("frame index is out of bounds!");
-            e.printStackTrace();
+            log.error("Error: frame index is out of bounds!");
+            throw new ArrayIndexOutOfBoundsException();
         }
         this.frame = frame;
     }

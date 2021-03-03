@@ -86,7 +86,8 @@ public class GameStateUpdater {
         }
     }
 
-    public void addEntity(Entity entity) { // delegate to EntityProcessor
+    // TODO: delegate entity methods to EntityProcessor (maybe)
+    public void addEntity(Entity entity) {
         entity.onCreate();
         activeGameState.getGameStateEntities().getPendingEntities().add(entity);
     }

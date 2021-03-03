@@ -31,10 +31,12 @@ import com.github.nighttripperid.littleengine.model.gamestate.Entity;
 import com.github.nighttripperid.littleengine.model.gamestate.Intent;
 import com.github.nighttripperid.littleengine.model.gamestate.RenderRequest;
 import com.github.nighttripperid.littleengine.model.graphics.ScreenBuffer;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 public final class Application {
 
     private Thread thread;
@@ -65,7 +67,7 @@ public final class Application {
         try {
             thread.join();
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            log.error("Error stopping game loop: {}", e.getMessage());
         }
     }
 
