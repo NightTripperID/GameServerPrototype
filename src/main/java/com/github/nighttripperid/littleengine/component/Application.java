@@ -144,14 +144,16 @@ public final class Application {
             screenBufferUpdater.renderTileLayer(
                     gameStateUpdater.getActiveGameState().getGameMap(), "Tile Layer " + layer);
 
-            List<Entity> entities = gameStateUpdater.getActiveGameState().getEntities().stream()
+            List<Entity> entities = gameStateUpdater.getActiveGameState()
+                    .getGameStateEntities().getEntities().stream()
                     .filter(entity -> entity.getRenderLayer() == layer)
                     .collect(Collectors.toList());
 
             screenBufferUpdater.renderEntities(entities, gameStateUpdater.getActiveGameState().getGameMap());
 
-            List<RenderRequest> renderRequests = gameStateUpdater.getActiveGameState().getEntities()
-                    .stream().flatMap(entity -> entity.getRenderRequests().stream())
+            List<RenderRequest> renderRequests = gameStateUpdater.getActiveGameState()
+                    .getGameStateEntities().getEntities().stream()
+                    .flatMap(entity -> entity.getRenderRequests().stream())
                     .filter(renderRequest -> renderRequest.getRenderLayer() == layer)
                     .collect(Collectors.toList());
 

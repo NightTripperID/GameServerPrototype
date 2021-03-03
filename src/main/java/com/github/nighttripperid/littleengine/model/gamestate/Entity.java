@@ -23,7 +23,9 @@ public abstract class Entity implements Eventable, Comparable<Entity> {
     public PointDouble speed;
 
     private List<RenderRequest> renderRequests = new ArrayList<>();
-    private UpdateScript updateScript;
+    private BehaviorScript behaviorScript;
+    private AnimationScript animationScript;
+    private InitGFX initGFX;
 
     /**
      * Compares the render priority of this entity to another entity.

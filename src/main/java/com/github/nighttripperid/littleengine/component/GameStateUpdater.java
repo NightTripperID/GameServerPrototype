@@ -19,14 +19,14 @@ public class GameStateUpdater {
      */
     public void update() {
         addPendingEntities();
-        activeGameState.getEntities().sort(Entity::compareTo);
-        activeGameState.getEntities().forEach(this::runEntityScript);
+        activeGameState.getGameStateEntities().getEntities().sort(Entity::compareTo);
+        activeGameState.getGameStateEntities().getEntities().forEach(this::runBehaviorScript);
         removeMarkedEntities();
     }
 
-    void runEntityScript(Entity entity) {
+    void runBehaviorScript(Entity entity) {
         // TODO: implement groovy integration for entity updates (maybe)
-        entity.getUpdateScript().run(activeGameState.getGameMap());
+        entity.getBehaviorScript().run(activeGameState.getGameMap());
     }
 
     /**
@@ -39,7 +39,12 @@ public class GameStateUpdater {
             GameState gameState = intent.getGameStateClass().newInstance();
             gameState.setIntent(intent);
             gameState.onCreate();
-            gameState.getEntities().forEach(Entity::onCreate);
+            gameState.getGameStateEntities().getEntities().forEach(Entity::onCreate);
+            gameState.getGameStateEntities().getEntities().forEach(entity -> {
+                if (entity.getInitGFX() != null) {
+                    entity.getInitGFX().run(gameState.getGameStateEntities().getEntityGFX());
+                }
+            });
             gameStateStack.push(gameState);
             activeGameState = gameStateStack.peek();
         } catch(InstantiationException | IllegalAccessException e) {
@@ -77,7 +82,7 @@ public class GameStateUpdater {
      */
     public void addEntity(Entity entity) { // delegate to EntityProcessor
         entity.onCreate();
-        activeGameState.getPendingEntities().add(entity);
+        activeGameState.getGameStateEntities().getPendingEntities().add(entity);
     }
 
     /**
@@ -85,18 +90,20 @@ public class GameStateUpdater {
      * Clears ArrayList pendingEntities once all pending entities are added.
      */
     private void addPendingEntities() {
-        activeGameState.getEntities().addAll(activeGameState.getPendingEntities());
-        activeGameState.getPendingEntities().clear();
+        activeGameState.getGameStateEntities().getEntities()
+                .addAll(activeGameState.getGameStateEntities().getPendingEntities());
+        activeGameState.getGameStateEntities().getPendingEntities().clear();
     }
 
     /**
      * Removes all entities that were marked for removal in this update cycle. Runs marked entities' onDestroy method.
      */
     private void removeMarkedEntities() {
-        for(int i = 0; i < activeGameState.getEntities().size(); i++) {
-            if(activeGameState.getEntities().get(i).isRemoved()) {
-                activeGameState.getEntities().get(i).onDestroy();
-                activeGameState.getEntities().remove(activeGameState.getEntities().get(i--));
+        for(int i = 0; i < activeGameState.getGameStateEntities().getEntities().size(); i++) {
+            if(activeGameState.getGameStateEntities().getEntities().get(i).isRemoved()) {
+                activeGameState.getGameStateEntities().getEntities().get(i).onDestroy();
+                activeGameState.getGameStateEntities().getEntities()
+                        .remove(activeGameState.getGameStateEntities().getEntities().get(i--));
             }
         }
     }
