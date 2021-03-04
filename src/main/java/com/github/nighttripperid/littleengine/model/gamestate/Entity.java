@@ -58,6 +58,7 @@ public abstract class Entity implements Eventable, Comparable<Entity> {
 
     @Override
     public int compareTo(Entity entity) {
-        return this.renderPriority - entity.renderPriority;
+        return (int) (this.getPosition().y - entity.getPosition().y);
+//        return this.renderPriority - entity.renderPriority;
     }
 }

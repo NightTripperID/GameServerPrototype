@@ -33,7 +33,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
-public class GameStateEntities {
+public class GameStateEntityData {
     private EntityGFX entityGFX = new EntityGFX();
     private List<Entity> entities = new ArrayList<>();
     private List<Entity> pendingEntities = new ArrayList<>();
