@@ -26,7 +26,7 @@
  */
 package com.github.nighttripperid.littleengine.staticutil;
 
-import com.github.nighttripperid.littleengine.model.graphics.AnimSprite;
+import com.github.nighttripperid.littleengine.model.graphics.AnimReel;
 import com.github.nighttripperid.littleengine.model.graphics.Sprite;
 import com.github.nighttripperid.littleengine.model.graphics.SpriteSheet;
 
@@ -61,12 +61,12 @@ public class SpriteUtil {
         return new Sprite(rotate(sprite.pixels, sprite.width, sprite.height, angle), sprite.width, sprite.height);
     }
 
-    public static void updateAnimFrame(AnimSprite animSprite) {
-        if(++animSprite.time % animSprite.frameRate == 0) {
-            if (animSprite.frame == animSprite.length)
-                animSprite.frame = 0;
-            animSprite.sprite = animSprite.spriteSheet.sprites[animSprite.frame];
-            animSprite.frame += 1;
+    public static void updateAnimReel(AnimReel animReel) {
+        if(++animReel.time % animReel.frameRate == 0) {
+            animReel.frame += 1;
+            if (animReel.frame == animReel.length + animReel.offset) {
+                animReel.frame = animReel.offset;
+            }
         }
     }
 
