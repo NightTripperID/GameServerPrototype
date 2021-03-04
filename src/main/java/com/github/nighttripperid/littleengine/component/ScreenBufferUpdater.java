@@ -43,9 +43,11 @@ public class ScreenBufferUpdater {
     public ScreenBufferUpdater(RenderRequestProcessor renderRequestProcessor, ScreenBuffer screenBuffer) {
         this.screenBuffer = screenBuffer;
         this. renderRequestProcessor = renderRequestProcessor;
+        this.renderRequestProcessor.setScreenBuffer(this.screenBuffer);
     }
 
     public void renderEntities(List<Entity> entities, GameMap gameMap) {
+        entities.sort(Entity::compareTo);
         entities.forEach(entity -> {
             renderSprite(entity.getPosition().x - gameMap.getScroll().x,
                     entity.getPosition().y - gameMap.getScroll().y, entity.getSprite());
@@ -117,8 +119,8 @@ public class ScreenBufferUpdater {
 
 
     public void processRenderRequests(List<RenderRequest> renderRequests) {
-        renderRequests.forEach(renderRequest ->
-                renderRequest.process(renderRequestProcessor, screenBuffer));
+        renderRequests.sort(RenderRequest::compareTo);
+        renderRequests.forEach(renderRequestProcessor::process);
     }
 
     public ScreenBuffer getScreenBuffer() {
