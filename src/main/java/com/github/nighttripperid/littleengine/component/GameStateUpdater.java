@@ -29,8 +29,10 @@ package com.github.nighttripperid.littleengine.component;
 import com.github.nighttripperid.littleengine.model.gamestate.Entity;
 import com.github.nighttripperid.littleengine.model.gamestate.GameState;
 import com.github.nighttripperid.littleengine.model.gamestate.Intent;
+import com.github.nighttripperid.littleengine.model.graphics.Sprite;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.Map;
 import java.util.Stack;
 
 @Slf4j
@@ -43,7 +45,13 @@ public class GameStateUpdater {
         addPendingEntities();
         activeGameState.getGameStateEntities().getEntities().sort(Entity::compareTo);
         activeGameState.getGameStateEntities().getEntities().forEach(this::runBehaviorScript);
+        activeGameState.getGameStateEntities().getEntities().forEach(entity -> runAnimationScript(entity,
+                activeGameState.getGameStateEntities().getEntityGFX().getSpriteMaps().get(entity.getSpriteKey())));
         removeMarkedEntities();
+    }
+
+    void runAnimationScript(Entity entity, Map<Integer, Sprite> spriteMap) {
+        entity.getAnimationScript().run(spriteMap);
     }
 
     void runBehaviorScript(Entity entity) {
