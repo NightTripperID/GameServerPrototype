@@ -28,6 +28,7 @@ package com.github.nighttripperid.littleengine.component;
 
 
 import com.github.nighttripperid.littleengine.model.gamestate.Entity;
+import com.github.nighttripperid.littleengine.model.gamestate.GameMap;
 import com.github.nighttripperid.littleengine.model.gamestate.Intent;
 import com.github.nighttripperid.littleengine.model.gamestate.RenderRequest;
 import com.github.nighttripperid.littleengine.model.graphics.ScreenBuffer;
@@ -114,26 +115,23 @@ public final class Application {
     private void render() {
         screenBufferUpdater.clearScreenBuffer();
 
-        for (int i = 1; i <= gameStateUpdater.getActiveGameState().getGameMap().getNumLayers(); i++) {
-            final int layer = i;
-            screenBufferUpdater.renderTileLayer(
-                    gameStateUpdater.getActiveGameState().getGameMap(), "Tile Layer " + layer);
+        GameMap gameMap = gameStateUpdater.getActiveGameState().getGameMap();
+        List<Entity> entities = gameStateUpdater.getActiveGameState().getGameStateEntityData().getEntities();
 
-            List<Entity> entities = gameStateUpdater.getActiveGameState()
-                    .getGameStateEntities().getEntities().stream()
+        for (int i = 1; i <= gameMap.getNumLayers(); i++) {
+            final int layer = i;
+            screenBufferUpdater.renderTileLayer(gameMap, "Tile Layer " + layer);
+
+            List<Entity> entitiesInLayer = entities.stream()
                     .filter(entity -> entity.getRenderLayer() == layer)
                     .collect(Collectors.toList());
+            screenBufferUpdater.renderEntities(entitiesInLayer, gameMap);
 
-            screenBufferUpdater.renderEntities(entities, gameStateUpdater.getActiveGameState().getGameMap());
-
-            List<RenderRequest> renderRequests = gameStateUpdater.getActiveGameState()
-                    .getGameStateEntities().getEntities().stream()
+            List<RenderRequest> renderRequests = entities.stream()
                     .flatMap(entity -> entity.getRenderRequests().stream())
                     .filter(renderRequest -> renderRequest.getRenderLayer() == layer)
                     .collect(Collectors.toList());
-
             screenBufferUpdater.processRenderRequests(renderRequests);
-
         }
 
         ioController.renderBufferToScreen(screenBufferUpdater.getScreenBuffer());
