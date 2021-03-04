@@ -29,13 +29,13 @@ package com.github.nighttripperid.littleengine.staticutil;
 public class TimeConverter {
     private TimeConverter() {
     }
-    public static int secondsToFrames(int seconds) {
+    public static double secondsToFrames(double seconds) {
         return seconds * 60;
     }
-    public static int minutesToFrames(int minutes) {
+    public static double minutesToFrames(double minutes) {
         return minutes * 3600;
     }
-    public static int hoursToFrames(int hours) {
+    public static double hoursToFrames(double hours) {
         return hours * 216000;
     }
     public static double framesToSeconds(int frames) {
