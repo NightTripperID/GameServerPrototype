@@ -25,24 +25,18 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 package com.github.nighttripperid.littleengine.model.graphics;
+
 import com.github.nighttripperid.littleengine.model.PointInt;
-import lombok.Getter;
 
 public class Sprite {
 
     public final int width;
     public final int height;
-
-    @Getter
-    private SpriteSheet spriteSheet;
-
-    private PointInt offset = new PointInt();
     public int[] pixels;
 
     protected Sprite(SpriteSheet spriteSheet, int width, int height) {
         this.width = width;
         this.height = height;
-        this.spriteSheet = spriteSheet;
     }
 
     public Sprite(int[] pixels, int width, int height) {
@@ -53,21 +47,17 @@ public class Sprite {
     }
 
     public Sprite(SpriteSheet spriteSheet, int width, int height, int xOfs, int yOfs) {
-        this.spriteSheet = spriteSheet;
         this.width = width;
         this.height = height;
-        this.offset = new PointInt(xOfs * width, yOfs * height);
         pixels = new int[width * height];
-        load();
+        load(spriteSheet, new PointInt(xOfs * width, yOfs * height));
     }
 
     public Sprite(SpriteSheet spriteSheet, int size, int xOfs, int yOfs) {
-        this.spriteSheet = spriteSheet;
         this.width = size;
         this.height = size;
-        this.offset = new PointInt(xOfs * size, yOfs * size);
         pixels = new int[size * size];
-        load();
+        load(spriteSheet, new PointInt(xOfs * size, yOfs * size));
     }
 
     public Sprite(int col, int width, int height) {
@@ -77,17 +67,17 @@ public class Sprite {
         setColor(col);
     }
 
-    private void load() {
+    private void load(SpriteSheet spriteSheet, PointInt offset) {
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
-                pixels[x + y * width] = spriteSheet.pixelBuffer[(x + offset.x) + (y + offset.y) * spriteSheet.getSheetWidth()];
+                pixels[x + y * width] = spriteSheet.pixelBuffer[(x + offset.x) + (y + offset.y) * spriteSheet.sheetW_P];
             }
         }
     }
 
     private void setColor(int col) {
         for(int i = 0; i < pixels.length; i++)
-            pixels[i] = col;
+            pixels[i] = pixels[i] == 0xffff00ff ? pixels[i] : col;
     }
 }
 

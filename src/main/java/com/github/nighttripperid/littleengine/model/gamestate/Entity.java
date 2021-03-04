@@ -29,6 +29,7 @@ package com.github.nighttripperid.littleengine.model.gamestate;
 import com.github.nighttripperid.littleengine.model.Eventable;
 import com.github.nighttripperid.littleengine.model.PointDouble;
 import com.github.nighttripperid.littleengine.model.PointInt;
+import com.github.nighttripperid.littleengine.model.graphics.AnimReel;
 import com.github.nighttripperid.littleengine.model.graphics.Sprite;
 import lombok.Data;
 
@@ -42,7 +43,9 @@ public abstract class Entity implements Eventable, Comparable<Entity> {
     private int renderLayer = 2;
     private static final int MIN_RENDER_PRIORITY = 0;
     private static final int MAX_RENDER_PRIORITY =  3;
+    private String spriteKey;
     private Sprite sprite;
+    private AnimReel animReel;
 
     public PointInt direction;
     public PointDouble position;
