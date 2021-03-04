@@ -54,9 +54,9 @@ public class ScreenBufferUpdater {
         });
     }
 
-    public void renderTileLayer(GameMap gameMap, String layerName) {
+    public void renderTileLayer(GameMap gameMap, int layerId) {
 
-        if (gameMap.getTileMapLookups().get(layerName) == null) {
+        if (gameMap.getTileMapLookups().get(layerId) == null) {
             return;
         }
 
@@ -71,10 +71,10 @@ public class ScreenBufferUpdater {
 
         for (int y = y0; y < y1; y++) {
             for (int x = x0; x < x1; x++) {
-                if (gameMap.getTileMapLookups().get(layerName) != null) {
+                if (gameMap.getTileMapLookups().get(layerId) != null) {
                     renderSprite((x << gameMap.getTileBitShift()) - screenBuffer.getScroll().x,
                             (y << gameMap.getTileBitShift()) - screenBuffer.getScroll().y,
-                            gameMap.getMapTileObject(layerName, x, y).getSprite());
+                            gameMap.getMapTileObject(layerId, x, y).getSprite());
                 }
             }
 

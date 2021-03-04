@@ -63,9 +63,10 @@ public class MapLoader {
             gameMap.setTileSize(tiled_TileMap.getTilewidth());
             gameMap.setTileBitShift((int) (Math.log(gameMap.getTileSize()) / Math.log(2)));
 
-            tiled_TileMap.getLayers().forEach(layer ->
-                gameMap.getTileMapLookups().put(layer.getName(), layer.getData())
-            );
+            tiled_TileMap.getLayers().forEach(layer -> {
+                if (layer.getType().equals("tilelayer"))
+                gameMap.getTileMapLookups().put(layer.getId(), layer.getData());
+            });
 
             log.info("Loading {} successful!", url.getPath());
 

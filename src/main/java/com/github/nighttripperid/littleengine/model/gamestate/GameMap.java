@@ -42,14 +42,13 @@ public class GameMap {
 
     private int tileSize;
     private int tileBitShift;
-    private int numLayers = 3;
 
-    private final Map<String, Integer[]> tileMapLookups = new HashMap<>(); // hashed by layerName
+    private final Map<Integer, Integer[]> tileMapLookups = new HashMap<>(); // hashed by id
 
     private TileMapGFX tileMapGFX;
     private TILED_TileMap tiled_TileMap;
 
-    public  Tile getMapTileObject(String layerName, int x, int y) {
+    public  Tile getMapTileObject(int layerId, int x, int y) {
 
         if (x < 0 ||
                 y < 0 ||
@@ -60,7 +59,7 @@ public class GameMap {
 
         } else {
             return this.getTileMapGFX().getTileMap().get(
-                    tileMapLookups.get(layerName)[x + y * this.getTiled_TileMap().getWidth()] - 1
+                    tileMapLookups.get(layerId)[x + y * this.getTiled_TileMap().getWidth()] - 1
             );
         }
     }

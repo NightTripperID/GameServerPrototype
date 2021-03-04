@@ -118,9 +118,9 @@ public final class Application {
         GameMap gameMap = gameStateUpdater.getActiveGameState().getGameMap();
         List<Entity> entities = gameStateUpdater.getActiveGameState().getGameStateEntityData().getEntities();
 
-        for (int i = 1; i <= gameMap.getNumLayers(); i++) {
+        for (int i = 1; i <= gameMap.getTileMapLookups().size(); i++) {
             final int layer = i;
-            screenBufferUpdater.renderTileLayer(gameMap, "Tile Layer " + layer);
+            screenBufferUpdater.renderTileLayer(gameMap, layer);
 
             List<Entity> entitiesInLayer = entities.stream()
                     .filter(entity -> entity.getRenderLayer() == layer)
