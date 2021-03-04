@@ -53,11 +53,11 @@ public class SpriteSheet {
     }
 
     public SpriteSheet(SpriteSheet sheet, int xOfs_T, int yOfs_T, int sheetW_T,
-                       int sheetH_T, int spriteW_P, int sprite_P) {
+                       int sheetH_T, int spriteW_P, int spriteH_P) {
         int x = xOfs_T * spriteW_P;
-        int y = yOfs_T * sprite_P;
+        int y = yOfs_T * spriteH_P;
         int w = sheetW_T * spriteW_P;
-        int h = sheetH_T * sprite_P;
+        int h = sheetH_T * spriteH_P;
         this.spriteW_P = w;
         this.spriteH_P = h;
         pixelBuffer = new int[w * h];
@@ -72,14 +72,14 @@ public class SpriteSheet {
         sprites = new Sprite[sheetW_T * sheetH_T];
         for (int yTile = 0; yTile < sheetH_T; yTile++) {
             for (int xTile = 0; xTile < sheetW_T; xTile++) {
-                int[] spritePixels = new int[spriteW_P * sprite_P];
-                for (int yPixel = 0; yPixel < sprite_P; yPixel++) {
+                int[] spritePixels = new int[spriteW_P * spriteH_P];
+                for (int yPixel = 0; yPixel < spriteH_P; yPixel++) {
                     for (int xPixel = 0; xPixel < spriteW_P; xPixel++) {
                         spritePixels[xPixel + yPixel * spriteW_P] = pixelBuffer[(xPixel + xTile * spriteW_P)
-                                + (yPixel + yTile * sprite_P) * this.spriteW_P];
+                                + (yPixel + yTile * spriteH_P) * this.spriteW_P];
                     }
                 }
-                Sprite sprite = new Sprite(spritePixels, spriteW_P, sprite_P);
+                Sprite sprite = new Sprite(spritePixels, spriteW_P, spriteH_P);
                 sprites[frame++] = sprite;
             }
         }
