@@ -27,24 +27,27 @@
 package com.github.nighttripperid.littleengine.model.gamestate;
 
 import com.github.nighttripperid.littleengine.component.RenderRequestProcessor;
-import com.github.nighttripperid.littleengine.model.graphics.ScreenBuffer;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
-public class RenderRequest {
+@AllArgsConstructor
+public class RenderRequest implements Comparable<RenderRequest> {
     @Getter
     private final int renderLayer;
+    @Getter
+    private final int renderPriority;
     @Getter(AccessLevel.NONE)
-    private final BiConsumer<RenderRequestProcessor, ScreenBuffer> renderRequest;
+    private final Consumer<RenderRequestProcessor> renderRequest;
     
-    public RenderRequest(int renderLayer, BiConsumer<RenderRequestProcessor, ScreenBuffer> renderRequest) {
-        this.renderLayer = renderLayer;
-        this.renderRequest = renderRequest;
+    public void process(RenderRequestProcessor processor) {
+        renderRequest.accept(processor);
     }
-    
-    public void process(RenderRequestProcessor processor, ScreenBuffer screenBuffer) {
-        renderRequest.accept(processor, screenBuffer);
+
+    @Override
+    public int compareTo(RenderRequest renderRequest) {
+        return this.renderPriority - renderRequest.renderPriority;
     }
 }
