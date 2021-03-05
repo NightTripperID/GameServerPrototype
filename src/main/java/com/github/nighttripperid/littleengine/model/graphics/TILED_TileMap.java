@@ -42,7 +42,9 @@ public class TILED_TileMap {
 
     @Data
     public static class Layer {
+        private int id;
         private String name;
+        private String type;
         private Integer[] data;
         private int x;
         private int y;
@@ -50,6 +52,7 @@ public class TILED_TileMap {
         private int height;
         private int opacity;
         private boolean visible;
+        private List<Object> objects;
     }
     @Data
     public static class Tileset {
@@ -62,9 +65,26 @@ public class TILED_TileMap {
     }
     @Data
     public static class ObjectGroup {
-        private List<TilesetObject> objects;
+        private List<Object> objects;
     }
     @Data
-    public static class TilesetObject {
+    public static class Object {
+        private int id;
+        private String name;
+        private String type;
+        private int x;
+        private int y;
+        private int width;
+        private int height;
+        private boolean visible;
+        private double rotation;
+        private List<Property> properties;
+    }
+
+    @Data
+    public static class Property {
+        private String name;
+        private String type;
+        private String value;
     }
 }
