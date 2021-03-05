@@ -40,18 +40,16 @@ public class IOController extends Canvas {
     @Setter
     private String title;
 
-    private final JFrame jFrame;
     private final BufferedImage bufferedImage;
-    private int[] pixels;
+    private final int[] pixels;
 
     public IOController(int width, int height, int scale) {
         bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         pixels = ((DataBufferInt) bufferedImage.getRaster().getDataBuffer()).getData();
 
-        Dimension size = new Dimension(width * scale, height * scale);
-        setPreferredSize(size);
+        setPreferredSize(new Dimension(width * scale, height * scale));
 
-        jFrame = new JFrame();
+        JFrame jFrame = new JFrame();
         jFrame.setResizable(false);
         jFrame.setTitle(title);
         jFrame.add(this);

@@ -30,6 +30,7 @@ import com.github.nighttripperid.littleengine.model.gamestate.Entity;
 import com.github.nighttripperid.littleengine.model.gamestate.GameState;
 import com.github.nighttripperid.littleengine.model.gamestate.Intent;
 import com.github.nighttripperid.littleengine.model.graphics.Sprite;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
@@ -40,6 +41,8 @@ import java.util.Stack;
 public class GameStateUpdater {
 
     private final Stack<GameState> gameStateStack = new Stack<>();
+
+    @Getter
     private GameState activeGameState;
 
     public void update() {
@@ -118,9 +121,5 @@ public class GameStateUpdater {
     private void runBehaviorScript(Entity entity) {
         // TODO: implement groovy integration for entity updates (maybe)
         entity.getBehaviorScript().run(activeGameState.getGameMap());
-    }
-
-    public GameState getActiveGameState() {
-        return activeGameState;
     }
 }

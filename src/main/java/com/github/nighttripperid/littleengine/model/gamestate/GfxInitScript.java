@@ -32,11 +32,11 @@ import lombok.Getter;
 
 import java.util.function.Consumer;
 
-public class gfxInitScript {
+public class GfxInitScript {
     @Getter(AccessLevel.NONE)
     private final Consumer<EntityGFX> script;
 
-    public gfxInitScript(Consumer<EntityGFX> script) {
+    public GfxInitScript(Consumer<EntityGFX> script) {
         this.script = script;
     }
 
