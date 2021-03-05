@@ -32,7 +32,7 @@ import com.github.cliftonlabs.json_simple.Jsoner;
 import com.github.nighttripperid.littleengine.model.gamestate.GameMap;
 import com.github.nighttripperid.littleengine.model.graphics.SpriteSheet;
 import com.github.nighttripperid.littleengine.model.graphics.TILED_TileMap;
-import com.github.nighttripperid.littleengine.model.graphics.TileMapGFX;
+import com.github.nighttripperid.littleengine.model.graphics.Tilemap;
 import lombok.extern.slf4j.Slf4j;
 import org.dozer.DozerBeanMapper;
 import org.dozer.Mapper;
@@ -87,8 +87,8 @@ public class MapLoader {
             SpriteSheet spriteSheet = new SpriteSheet(image, gameMap.getTileSize(), gameMap.getTileSize());
             List<TILED_TileMap.Tile> TILED_tiles = gameMap.getTiled_TileMap().getTilesets().stream()
                     .findFirst().orElse(null).getTiles();
-            gameMap.setTileMapGFX(new TileMapGFX());
-            gameMap.getTileMapGFX().setTileMap(spriteSheet, TILED_tiles, gameMap.getTileSize());
+            gameMap.setTilemap(new Tilemap());
+            gameMap.getTilemap().setTileset(spriteSheet, TILED_tiles, gameMap.getTileSize());
         } catch (IOException e) {
             log.error("Loading {} failed!", url.getPath());
         }

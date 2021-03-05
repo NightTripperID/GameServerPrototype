@@ -33,8 +33,8 @@ import java.util.List;
 import java.util.Map;
 
 @Data
-public class TileMapGFX {
-    private final Map<Integer, Sprite> tileMapSprites = new HashMap<>();
+public class Tilemap {
+    private final Map<Integer, Sprite> tileset = new HashMap<>();
     private final Map<Integer, Tile> tileMap = new HashMap<>();
 
     public static final Tile VOID_TILE = new Tile(new Sprite(0xffff00ff,
@@ -43,18 +43,18 @@ public class TileMapGFX {
             true,
             false);
 
-    public void setTileMap(SpriteSheet spriteSheet,
+    public void setTileset(SpriteSheet spriteSheet,
                            List<TILED_TileMap.Tile> TILED_tiles,
                            int tileSize) {
         for(int y = 0, i = 0; y < spriteSheet.sheetH_P / tileSize; y++) {
             for(int x = 0; x < spriteSheet.sheetW_P / tileSize; x++, i++) {
-                tileMapSprites.put(i, new Sprite(spriteSheet, tileSize, x, y));
+                tileset.put(i, new Sprite(spriteSheet, tileSize, x, y));
             }
         }
 
-        tileMapSprites.forEach((tiledKey, tileMapSprite) -> TILED_tiles.forEach(tile -> {
+        tileset.forEach((tiledKey, tileMapSprite) -> TILED_tiles.forEach(tile -> {
             boolean solid = tile.getObjectgroup() != null;
-            tileMap.put(tiledKey, new Tile(tileMapSprites.get(tiledKey), solid, false));
+            tileMap.put(tiledKey, new Tile(tileset.get(tiledKey), solid, false));
         }));
     }
 }
