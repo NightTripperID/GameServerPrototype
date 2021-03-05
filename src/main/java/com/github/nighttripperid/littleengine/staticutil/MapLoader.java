@@ -30,6 +30,7 @@ import com.github.cliftonlabs.json_simple.JsonException;
 import com.github.cliftonlabs.json_simple.JsonObject;
 import com.github.cliftonlabs.json_simple.Jsoner;
 import com.github.nighttripperid.littleengine.model.gamestate.GameMap;
+import com.github.nighttripperid.littleengine.model.gamestate.TileMap;
 import com.github.nighttripperid.littleengine.model.graphics.SpriteSheet;
 import com.github.nighttripperid.littleengine.model.graphics.TILED_TileMap;
 import com.github.nighttripperid.littleengine.model.graphics.Tileset;
@@ -58,13 +59,14 @@ public class MapLoader {
             Mapper mapper = new DozerBeanMapper();
             TILED_TileMap tiled_TileMap = mapper.map(jsonObject, TILED_TileMap.class);
 
-            gameMap.setTiled_TileMap(tiled_TileMap);
+            gameMap.setTileMap(new TileMap());
+            gameMap.getTileMap().setTiled_TileMap(tiled_TileMap);
             gameMap.setTileSize(tiled_TileMap.getTilewidth());
             gameMap.setTileBitShift((int) (Math.log(gameMap.getTileSize()) / Math.log(2)));
 
             tiled_TileMap.getLayers().forEach(layer -> {
                 if (layer.getType().equals("tilelayer"))
-                gameMap.getTileMap().put(layer.getId(), layer.getData());
+                gameMap.getTileMap().putLayer(layer.getId(), layer.getData());
             });
 
             log.info("Loading {} successful!", url.getPath());

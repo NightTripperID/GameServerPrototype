@@ -33,27 +33,27 @@ import com.github.nighttripperid.littleengine.model.PointInt;
 public class CollisionResolver {
 
     public static boolean resolveTileCollision(GameMap gameMap, Entity entity, double xSpeed, double ySpeed) {
-        for (int corner = 0; corner < 4; corner++) {
-
-            for (int x = 1; x <= Math.abs(xSpeed); x++) {
-                PointInt p = getTileCorner(entity, x * entity.direction.x, 0, corner);
-
-                for(int layerId : gameMap.getTileMap().keySet()) {
-                    if (gameMap.getMapTileObject(layerId, p.x, p.y).isSolid()) {
-                        return true;
-                    }
-                }
-            }
-
-            for (int y = 1; y <= Math.abs(ySpeed); y++) {
-                PointInt p = getTileCorner(entity,0, y * entity.direction.y, corner);
-                for(int layerId : gameMap.getTileMap().keySet()) {
-                    if (gameMap.getMapTileObject(layerId, p.x, p.y).isSolid()) {
-                        return true;
-                    }
-                }
-            }
-        }
+//        for (int corner = 0; corner < 4; corner++) {
+//
+//            for (int x = 1; x <= Math.abs(xSpeed); x++) {
+//                PointInt p = getTileCorner(entity, x * entity.direction.x, 0, corner);
+//
+//                for(int layerId : gameMap.getTileMap().keySet()) {
+//                    if (gameMap.getMapTileObject(layerId, p.x, p.y).isSolid()) {
+//                        return true;
+//                    }
+//                }
+//            }
+//
+//            for (int y = 1; y <= Math.abs(ySpeed); y++) {
+//                PointInt p = getTileCorner(entity,0, y * entity.direction.y, corner);
+//                for(int layerId : gameMap.getTileMap().keySet()) {
+//                    if (gameMap.getMapTileObject(layerId, p.x, p.y).isSolid()) {
+//                        return true;
+//                    }
+//                }
+//            }
+//        }
         return false;
     }
 
