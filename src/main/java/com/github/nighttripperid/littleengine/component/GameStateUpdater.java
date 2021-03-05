@@ -44,12 +44,12 @@ public class GameStateUpdater {
 
     public void update() {
         addPendingEntities();
-        List<Entity> entities = activeGameState.getGameStateEntityData().getEntities();
+        List<Entity> entities = activeGameState.getEntityData().getEntities();
         entities.forEach(entity -> {
             entity.getRenderRequests().clear();
             runBehaviorScript(entity);
             runAnimationScript(entity,
-                activeGameState.getGameStateEntityData().getEntityGFX().getSpriteMaps().get(entity.getSpriteKey()));
+                activeGameState.getEntityData().getEntityGFX().getSpriteMaps().get(entity.getSpriteKey()));
         });
         removeMarkedEntities();
     }
@@ -60,10 +60,10 @@ public class GameStateUpdater {
             GameState gameState = intent.getGameStateClass().newInstance();
             gameState.setIntent(intent);
             gameState.onCreate();
-            gameState.getGameStateEntityData().getEntities().forEach(Entity::onCreate);
-            gameState.getGameStateEntityData().getEntities().forEach(entity -> {
+            gameState.getEntityData().getEntities().forEach(Entity::onCreate);
+            gameState.getEntityData().getEntities().forEach(entity -> {
                 if (entity.getInitGFX() != null) {
-                    entity.getInitGFX().run(gameState.getGameStateEntityData().getEntityGFX());
+                    entity.getInitGFX().run(gameState.getEntityData().getEntityGFX());
                 }
             });
             gameStateStack.push(gameState);
@@ -92,21 +92,21 @@ public class GameStateUpdater {
     // TODO: delegate entity methods to EntityProcessor (maybe)
     public void addEntity(Entity entity) {
         entity.onCreate();
-        activeGameState.getGameStateEntityData().getPendingEntities().add(entity);
+        activeGameState.getEntityData().getPendingEntities().add(entity);
     }
 
     private void addPendingEntities() {
-        activeGameState.getGameStateEntityData().getEntities()
-                .addAll(activeGameState.getGameStateEntityData().getPendingEntities());
-        activeGameState.getGameStateEntityData().getPendingEntities().clear();
+        activeGameState.getEntityData().getEntities()
+                .addAll(activeGameState.getEntityData().getPendingEntities());
+        activeGameState.getEntityData().getPendingEntities().clear();
     }
 
     private void removeMarkedEntities() {
-        for(int i = 0; i < activeGameState.getGameStateEntityData().getEntities().size(); i++) {
-            if(activeGameState.getGameStateEntityData().getEntities().get(i).isRemoved()) {
-                activeGameState.getGameStateEntityData().getEntities().get(i).onDestroy();
-                activeGameState.getGameStateEntityData().getEntities()
-                        .remove(activeGameState.getGameStateEntityData().getEntities().get(i--));
+        for(int i = 0; i < activeGameState.getEntityData().getEntities().size(); i++) {
+            if(activeGameState.getEntityData().getEntities().get(i).isRemoved()) {
+                activeGameState.getEntityData().getEntities().get(i).onDestroy();
+                activeGameState.getEntityData().getEntities()
+                        .remove(activeGameState.getEntityData().getEntities().get(i--));
             }
         }
     }

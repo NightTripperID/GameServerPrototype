@@ -116,7 +116,7 @@ public final class Application {
         screenBufferUpdater.clearScreenBuffer();
 
         GameMap gameMap = gameStateUpdater.getActiveGameState().getGameMap();
-        List<Entity> entities = gameStateUpdater.getActiveGameState().getGameStateEntityData().getEntities();
+        List<Entity> entities = gameStateUpdater.getActiveGameState().getEntityData().getEntities();
 
         for (int i = 1; i <= gameMap.getTileMap().getNumLayers(); i++) {
             final int layer = i;

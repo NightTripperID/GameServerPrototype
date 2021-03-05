@@ -32,6 +32,6 @@ import lombok.Data;
 @Data
 public abstract class GameState implements Eventable {
     private Intent intent;
-    private GameStateEntityData gameStateEntityData = new GameStateEntityData();
+    private EntityData entityData = new EntityData();
     private GameMap gameMap = new GameMap();
 }
