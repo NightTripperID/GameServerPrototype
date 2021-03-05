@@ -45,6 +45,10 @@ public class SpriteLoader {
         URL url = SpriteLoader.class.getClassLoader().getResource(fileName);
 
         try {
+            if (entityGFX.getSpriteMaps().get(fileName) != null) {
+                log.info("{} already loaded, skipping load process!", url.toString());
+                return;
+            }
             log.info("Loading: {}{}", url.toString(), "...");
             BufferedImage bufferedImage = ImageIO.read(url);
             log.info("Loading: {} successful!", url.toString());
@@ -60,6 +64,10 @@ public class SpriteLoader {
         URL url = SpriteLoader.class.getClassLoader().getResource(fileName);
 
         try {
+            if (entityGFX.getSpriteMaps().get(fileName) != null) {
+                log.info("{} already loaded, skipping load process!", url.toString());
+                return;
+            }
             log.info("Loading: {}{}", url.toString(), "...");
             BufferedImage bufferedImage = ImageIO.read(url);
             log.info("Loading: {} successful!", url.toString());
