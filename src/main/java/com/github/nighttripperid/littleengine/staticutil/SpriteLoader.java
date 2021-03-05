@@ -40,31 +40,31 @@ public class SpriteLoader {
     private SpriteLoader(){
     }
 
-    public static void loadSpritesByColumns(String filePath, String key, int spriteWidth, int spriteHeight,
+    public static void loadSpritesByColumns(String fileName, int spriteWidth, int spriteHeight,
                                             EntityGFX entityGFX) {
-        URL url = SpriteLoader.class.getClassLoader().getResource(filePath);
+        URL url = SpriteLoader.class.getClassLoader().getResource(fileName);
 
         try {
             log.info("Loading: {}{}", url.toString(), "...");
             BufferedImage bufferedImage = ImageIO.read(url);
             log.info("Loading: {} successful!", url.toString());
             SpriteSheet spriteSheet = new SpriteSheet(bufferedImage, spriteWidth, spriteHeight);
-            entityGFX.addSpritesByColumns(key, spriteSheet);
+            entityGFX.addSpritesByColumns(fileName, spriteSheet);
         } catch (IOException e) {
             log.error("Loading: {} failed!", url.toString());
         }
     }
 
-    public static void loadSpritesByRows(String filePath, String key, int spriteWidth, int spriteHeight,
+    public static void loadSpritesByRows(String fileName, int spriteWidth, int spriteHeight,
                                          EntityGFX entityGFX) {
-        URL url = SpriteLoader.class.getClassLoader().getResource(filePath);
+        URL url = SpriteLoader.class.getClassLoader().getResource(fileName);
 
         try {
             log.info("Loading: {}{}", url.toString(), "...");
             BufferedImage bufferedImage = ImageIO.read(url);
             log.info("Loading: {} successful!", url.toString());
             SpriteSheet spriteSheet = new SpriteSheet(bufferedImage, spriteWidth, spriteHeight);
-            entityGFX.addSpritesByRows(key, spriteSheet);
+            entityGFX.addSpritesByRows(fileName, spriteSheet);
         } catch (IOException e) {
             log.error("Loading: {} failed!", url.toString());
         }
