@@ -24,47 +24,42 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.github.nighttripperid.littleengine.model.graphics;
+package com.github.nighttripperid.littleengine.model.entity;
 
+import com.github.nighttripperid.littleengine.model.Eventable;
+import com.github.nighttripperid.littleengine.model.PointDouble;
+import com.github.nighttripperid.littleengine.model.PointInt;
+import com.github.nighttripperid.littleengine.model.graphics.AnimReel;
+import com.github.nighttripperid.littleengine.model.graphics.Sprite;
 import lombok.Data;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
-public class TILED_TileMap {
+public abstract class Entity implements Eventable, Comparable<Entity> {
+    private static final int MIN_RENDER_PRIORITY = 0;
+    private static final int MAX_RENDER_PRIORITY =  3;
 
-    private int width;
-    private int height;
-    private int tilewidth;
-    private int tileheight;
-    private List<Layer> layers;
-    private List<Tileset> tilesets;
+    private boolean removed;
+    private int renderPriority;
+    private int renderLayer;
+    private String spriteKey;
+    private Sprite sprite;
+    private AnimReel animReel = new AnimReel();
 
-    @Data
-    public static class Layer {
-        private String name;
-        private Integer[] data;
-        private int x;
-        private int y;
-        private int width;
-        private int height;
-        private int opacity;
-        private boolean visible;
-    }
-    @Data
-    public static class Tileset {
-        private List<Tile> tiles;
-    }
-    @Data
-    public static class Tile {
-        private int id;
-        private List<ObjectGroup> objectgroup;
-    }
-    @Data
-    public static class ObjectGroup {
-        private List<TilesetObject> objects;
-    }
-    @Data
-    public static class TilesetObject {
+    public PointInt direction = new PointInt();
+    public PointDouble position = new PointDouble();
+    public PointDouble speed = new PointDouble();
+
+    private List<RenderRequest> renderRequests = new ArrayList<>();
+    private BehaviorScript behaviorScript;
+    private AnimationScript animationScript;
+    private GfxInitScript gfxInitScript;
+
+    @Override
+    public int compareTo(Entity entity) {
+        return (int) (this.getPosition().y - entity.getPosition().y);
+//        return this.renderPriority - entity.renderPriority;
     }
 }

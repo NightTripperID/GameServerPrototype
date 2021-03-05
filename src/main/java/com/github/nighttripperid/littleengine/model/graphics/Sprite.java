@@ -34,11 +34,6 @@ public class Sprite {
     public final int height;
     public int[] pixels;
 
-    protected Sprite(SpriteSheet spriteSheet, int width, int height) {
-        this.width = width;
-        this.height = height;
-    }
-
     public Sprite(int[] pixels, int width, int height) {
         this.width = width;
         this.height = height;

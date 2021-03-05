@@ -36,13 +36,12 @@ public class ScreenBuffer {
     private int height;
     private int scale;
     private int[] pixels;
-    private PointDouble scroll;
+    private PointDouble scroll = new PointDouble(0D, 0D);
 
     public ScreenBuffer(int width, int height, int scale) {
         this.width = width;
         this.height = height;
         this.scale = scale;
         this.pixels = new int[width * height];
-        this.scroll = new PointDouble(0D, 0D);
     }
 }

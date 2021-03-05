@@ -24,40 +24,23 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.github.nighttripperid.littleengine.model.gamestate;
+package com.github.nighttripperid.littleengine.model.entity;
 
-import com.github.nighttripperid.littleengine.model.Eventable;
-import com.github.nighttripperid.littleengine.model.PointDouble;
-import com.github.nighttripperid.littleengine.model.PointInt;
-import com.github.nighttripperid.littleengine.model.graphics.AnimReel;
-import com.github.nighttripperid.littleengine.model.graphics.Sprite;
-import lombok.Data;
+import com.github.nighttripperid.littleengine.model.gamestate.GameMap;
+import lombok.AccessLevel;
+import lombok.Getter;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.function.Consumer;
 
-@Data
-public abstract class Entity implements Eventable, Comparable<Entity> {
-    private boolean removed;
-    private int renderPriority;
-    private int renderLayer = 2;
-    private static final int MIN_RENDER_PRIORITY = 0;
-    private static final int MAX_RENDER_PRIORITY =  3;
-    private String spriteKey;
-    private Sprite sprite;
-    private AnimReel animReel;
+public class BehaviorScript {
+    @Getter(AccessLevel.NONE)
+    private final Consumer<GameMap> script;
 
-    public PointInt direction;
-    public PointDouble position;
-    public PointDouble speed;
+    public BehaviorScript(Consumer<GameMap> script) {
+        this.script = script;
+    }
 
-    private List<RenderRequest> renderRequests = new ArrayList<>();
-    private BehaviorScript behaviorScript;
-    private AnimationScript animationScript;
-    private InitGFX initGFX;
-
-    @Override
-    public int compareTo(Entity entity) {
-        return this.renderPriority - entity.renderPriority;
+    public void run(GameMap gameMap) {
+        script.accept(gameMap);
     }
 }

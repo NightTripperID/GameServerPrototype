@@ -24,27 +24,48 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.github.nighttripperid.littleengine.model.gamestate;
+package com.github.nighttripperid.littleengine.model.tiles;
 
-import com.github.nighttripperid.littleengine.component.RenderRequestProcessor;
-import com.github.nighttripperid.littleengine.model.graphics.ScreenBuffer;
-import lombok.AccessLevel;
-import lombok.Getter;
+import com.github.nighttripperid.littleengine.model.tiles.TILED_TileMap;
+import com.github.nighttripperid.littleengine.model.tiles.Tile;
+import com.github.nighttripperid.littleengine.model.tiles.Tileset;
+import lombok.Setter;
 
-import java.util.function.BiConsumer;
+import java.util.HashMap;
+import java.util.Map;
 
-public class RenderRequest {
-    @Getter
-    private final int renderLayer;
-    @Getter(AccessLevel.NONE)
-    private final BiConsumer<RenderRequestProcessor, ScreenBuffer> renderRequest;
-    
-    public RenderRequest(int renderLayer, BiConsumer<RenderRequestProcessor, ScreenBuffer> renderRequest) {
-        this.renderLayer = renderLayer;
-        this.renderRequest = renderRequest;
+public class TileMap {
+
+    @Setter
+    private TILED_TileMap tiled_TileMap;
+
+    private final Map<Integer, Integer[]> tileMap = new HashMap<>(); // hashed by layerId
+
+        public Tile getTile(Tileset tileset, int layerId, int x, int y) {
+
+        if (x < 0 ||
+                y < 0 ||
+                x >= tiled_TileMap.getWidth() ||
+                y >= tiled_TileMap.getHeight()) {
+
+            return Tileset.VOID_TILE;
+
+        } else {
+            return tileset.getTileset().get(
+                    tileMap.get(layerId)[x + y * tiled_TileMap.getWidth()] - 1
+            );
+        }
     }
-    
-    public void process(RenderRequestProcessor processor, ScreenBuffer screenBuffer) {
-        renderRequest.accept(processor, screenBuffer);
+
+    public void putLayer(int layerId, Integer[] data) {
+            tileMap.put(layerId, data);
+    }
+
+    public int getNumLayers() {
+            return tileMap.size();
+    }
+
+    public boolean hasLayer(int layerId) {
+            return tileMap.get(layerId) != null;
     }
 }

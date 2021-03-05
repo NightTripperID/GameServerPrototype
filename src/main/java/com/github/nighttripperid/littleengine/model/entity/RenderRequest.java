@@ -24,23 +24,30 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.github.nighttripperid.littleengine.model.gamestate;
+package com.github.nighttripperid.littleengine.model.entity;
 
-import com.github.nighttripperid.littleengine.model.graphics.EntityGFX;
+import com.github.nighttripperid.littleengine.component.RenderRequestProcessor;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import java.util.function.Consumer;
 
-public class InitGFX {
+@AllArgsConstructor
+public class RenderRequest implements Comparable<RenderRequest> {
+    @Getter
+    private final int renderLayer;
+    @Getter
+    private final int renderPriority;
     @Getter(AccessLevel.NONE)
-    private Consumer<EntityGFX> script;
-
-    public InitGFX(Consumer<EntityGFX> script) {
-        this.script = script;
+    private final Consumer<RenderRequestProcessor> renderRequest;
+    
+    public void process(RenderRequestProcessor processor) {
+        renderRequest.accept(processor);
     }
 
-    public void run(EntityGFX entityGFX) {
-        script.accept(entityGFX);
+    @Override
+    public int compareTo(RenderRequest renderRequest) {
+        return this.renderPriority - renderRequest.renderPriority;
     }
 }

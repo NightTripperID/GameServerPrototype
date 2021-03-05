@@ -26,9 +26,9 @@
  */
 package com.github.nighttripperid.littleengine.component;
 
-import com.github.nighttripperid.littleengine.model.gamestate.Entity;
+import com.github.nighttripperid.littleengine.model.entity.Entity;
 import com.github.nighttripperid.littleengine.model.gamestate.GameMap;
-import com.github.nighttripperid.littleengine.model.gamestate.RenderRequest;
+import com.github.nighttripperid.littleengine.model.entity.RenderRequest;
 import com.github.nighttripperid.littleengine.model.graphics.ScreenBuffer;
 import com.github.nighttripperid.littleengine.model.graphics.Sprite;
 
@@ -43,20 +43,20 @@ public class ScreenBufferUpdater {
     public ScreenBufferUpdater(RenderRequestProcessor renderRequestProcessor, ScreenBuffer screenBuffer) {
         this.screenBuffer = screenBuffer;
         this. renderRequestProcessor = renderRequestProcessor;
+        this.renderRequestProcessor.setScreenBuffer(this.screenBuffer);
     }
 
     public void renderEntities(List<Entity> entities, GameMap gameMap) {
+        entities.sort(Entity::compareTo);
         entities.forEach(entity -> {
-            renderSprite(entity.getPosition().x - gameMap.getScroll().x,
-                    entity.getPosition().y - gameMap.getScroll().y, entity.getSprite());
+            if(entity.getSprite() != null ) {
+                renderSprite(entity.getPosition().x - gameMap.getScroll().x,
+                        entity.getPosition().y - gameMap.getScroll().y, entity.getSprite());
+            }
         });
     }
 
-    public void renderTileLayer(GameMap gameMap, String layerName) {
-
-        if (gameMap.getTileMapLookups().get(layerName) == null) {
-            return;
-        }
+    public void renderTileLayer(GameMap gameMap, int layerId) {
 
         screenBuffer.setScroll(gameMap.getScroll());
 
@@ -69,13 +69,12 @@ public class ScreenBufferUpdater {
 
         for (int y = y0; y < y1; y++) {
             for (int x = x0; x < x1; x++) {
-                if (gameMap.getTileMapLookups().get(layerName) != null) {
+                if (gameMap.getTileMap().hasLayer(layerId)) {
                     renderSprite((x << gameMap.getTileBitShift()) - screenBuffer.getScroll().x,
                             (y << gameMap.getTileBitShift()) - screenBuffer.getScroll().y,
-                            gameMap.getMapTileObject(layerName, x, y).getSprite());
+                            gameMap.getTileMap().getTile(gameMap.getTileset(), layerId, x, y).getSprite());
                 }
             }
-
         }
     }
 
@@ -117,8 +116,8 @@ public class ScreenBufferUpdater {
 
 
     public void processRenderRequests(List<RenderRequest> renderRequests) {
-        renderRequests.forEach(renderRequest ->
-                renderRequest.process(renderRequestProcessor, screenBuffer));
+        renderRequests.sort(RenderRequest::compareTo);
+        renderRequests.forEach(renderRequestProcessor::process);
     }
 
     public ScreenBuffer getScreenBuffer() {

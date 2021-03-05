@@ -24,22 +24,29 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.github.nighttripperid.littleengine.model.gamestate;
+package com.github.nighttripperid.littleengine.model.tiles;
 
-import lombok.AccessLevel;
-import lombok.Getter;
+import com.github.nighttripperid.littleengine.model.graphics.Sprite;
+import com.github.nighttripperid.littleengine.model.graphics.SpriteSheet;
+import lombok.Data;
 
-import java.util.function.Consumer;
+import java.util.HashMap;
+import java.util.Map;
 
-public class BehaviorScript {
-    @Getter(AccessLevel.NONE)
-    private final Consumer<GameMap> script;
+@Data
+public class Tileset {
+    private final Map<Integer, Tile> tileset = new HashMap<>();
+    public static final Tile VOID_TILE = new Tile(new Sprite(0xffff00ff,
+            Tile.TileSize.X16.getValue(),
+            Tile.TileSize.X16.getValue()),
+            true,
+            false);
 
-    public BehaviorScript(Consumer<GameMap> script) {
-        this.script = script;
-    }
-
-    public void run(GameMap gameMap) {
-        script.accept(gameMap);
+    public void setTileset(SpriteSheet spriteSheet, int tileSize) {
+        for(int y = 0, i = 0; y < spriteSheet.sheetH_P / tileSize; y++) {
+            for(int x = 0; x < spriteSheet.sheetW_P / tileSize; x++, i++) {
+                tileset.put(i, new Tile(new Sprite(spriteSheet, tileSize, x, y), false, false));
+            }
+        }
     }
 }

@@ -36,6 +36,8 @@ public class EntityGFX {
     private final Map<String, Map<Integer, Sprite>> spriteMaps = new HashMap<>();
 
     public void addSpritesByColumns(String key, SpriteSheet spriteSheet) {
+        if(spriteMaps.get(key) != null)
+            return;
         spriteMaps.put(key, new HashMap<>());
         for (int x = 0, i = 0; x < spriteSheet.sheetW_P / spriteSheet.spriteW_P; x++) {
             for (int y = 0; y < spriteSheet.sheetH_P / spriteSheet.spriteH_P; y++, i++)
@@ -45,6 +47,8 @@ public class EntityGFX {
     }
 
     public void addSpritesByRows(String key, SpriteSheet spriteSheet) {
+        if(spriteMaps.get(key) != null)
+            return;
         spriteMaps.put(key, new HashMap<>());
         for (int y = 0, i = 0; y < spriteSheet.sheetH_P / spriteSheet.spriteH_P; y++) {
             for (int x = 0; x < spriteSheet.sheetW_P / spriteSheet.spriteW_P; x++, i++)

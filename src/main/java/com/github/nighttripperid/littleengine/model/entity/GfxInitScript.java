@@ -24,14 +24,23 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.github.nighttripperid.littleengine.model.gamestate;
+package com.github.nighttripperid.littleengine.model.entity;
 
-import com.github.nighttripperid.littleengine.model.Eventable;
-import lombok.Data;
+import com.github.nighttripperid.littleengine.model.graphics.EntityGFX;
+import lombok.AccessLevel;
+import lombok.Getter;
 
-@Data
-public abstract class GameState implements Eventable {
-    private Intent intent;
-    private EntityData entityData = new EntityData();
-    private GameMap gameMap = new GameMap();
+import java.util.function.Consumer;
+
+public class GfxInitScript {
+    @Getter(AccessLevel.NONE)
+    private final Consumer<EntityGFX> script;
+
+    public GfxInitScript(Consumer<EntityGFX> script) {
+        this.script = script;
+    }
+
+    public void run(EntityGFX entityGFX) {
+        script.accept(entityGFX);
+    }
 }
