@@ -92,11 +92,11 @@ public class AssetLoader {
                                 entity.setSpriteKey(properties.get("filename"));
                                 entityData.getEntities().add(entity);
                             } catch (ClassNotFoundException e) {
-                                log.error("ClassNotFoundException thrown");
+                                log.error("Error loading Class with name {}", properties.get("class"));
                             } catch (IllegalAccessException e) {
-                                log.error("IllegalAccessException thrown");
+                                log.error("Error accessing Class to instantiate with name {}", properties.get("class"));
                             } catch (InstantiationException e) {
-                                log.error("InstantiationException thrown");
+                                log.error("Error instantiating Class with name {}", properties.get("class") );
                             }
                         }
                     });
