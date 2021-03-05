@@ -26,7 +26,7 @@
  */
 package com.github.nighttripperid.littleengine.component;
 
-import com.github.nighttripperid.littleengine.model.gamestate.Entity;
+import com.github.nighttripperid.littleengine.model.entity.Entity;
 import com.github.nighttripperid.littleengine.model.gamestate.GameState;
 import com.github.nighttripperid.littleengine.model.gamestate.Intent;
 import com.github.nighttripperid.littleengine.model.graphics.Sprite;

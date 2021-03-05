@@ -27,7 +27,8 @@
 package com.github.nighttripperid.littleengine.model.gamestate;
 
 import com.github.nighttripperid.littleengine.model.PointDouble;
-import com.github.nighttripperid.littleengine.model.graphics.Tileset;
+import com.github.nighttripperid.littleengine.model.tiles.TileMap;
+import com.github.nighttripperid.littleengine.model.tiles.Tileset;
 import lombok.Data;
 
 @Data

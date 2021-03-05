@@ -26,9 +26,9 @@
  */
 package com.github.nighttripperid.littleengine.component;
 
-import com.github.nighttripperid.littleengine.model.gamestate.Entity;
+import com.github.nighttripperid.littleengine.model.entity.Entity;
 import com.github.nighttripperid.littleengine.model.gamestate.GameMap;
-import com.github.nighttripperid.littleengine.model.gamestate.RenderRequest;
+import com.github.nighttripperid.littleengine.model.entity.RenderRequest;
 import com.github.nighttripperid.littleengine.model.graphics.ScreenBuffer;
 import com.github.nighttripperid.littleengine.model.graphics.Sprite;
 

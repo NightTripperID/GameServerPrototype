@@ -26,6 +26,7 @@
  */
 package com.github.nighttripperid.littleengine.model.gamestate;
 
+import com.github.nighttripperid.littleengine.model.entity.Entity;
 import com.github.nighttripperid.littleengine.model.graphics.EntityGFX;
 import lombok.Data;
 

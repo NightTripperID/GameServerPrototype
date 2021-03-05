@@ -28,7 +28,7 @@ package com.github.nighttripperid.littleengine.component;
 
 import com.github.nighttripperid.littleengine.constant.Font5x5;
 import com.github.nighttripperid.littleengine.constant.Font8x8;
-import com.github.nighttripperid.littleengine.model.gamestate.RenderRequest;
+import com.github.nighttripperid.littleengine.model.entity.RenderRequest;
 import com.github.nighttripperid.littleengine.model.graphics.ScreenBuffer;
 import lombok.Setter;
 
