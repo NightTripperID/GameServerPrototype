@@ -24,23 +24,42 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.github.nighttripperid.littleengine.model.gamestate;
+package com.github.nighttripperid.littleengine.model.entity;
 
-import com.github.nighttripperid.littleengine.model.graphics.EntityGFX;
-import lombok.AccessLevel;
-import lombok.Getter;
+import com.github.nighttripperid.littleengine.model.Eventable;
+import com.github.nighttripperid.littleengine.model.PointDouble;
+import com.github.nighttripperid.littleengine.model.PointInt;
+import com.github.nighttripperid.littleengine.model.graphics.AnimReel;
+import com.github.nighttripperid.littleengine.model.graphics.Sprite;
+import lombok.Data;
 
-import java.util.function.Consumer;
+import java.util.ArrayList;
+import java.util.List;
 
-public class GfxInitScript {
-    @Getter(AccessLevel.NONE)
-    private final Consumer<EntityGFX> script;
+@Data
+public abstract class Entity implements Eventable, Comparable<Entity> {
+    private static final int MIN_RENDER_PRIORITY = 0;
+    private static final int MAX_RENDER_PRIORITY =  3;
 
-    public GfxInitScript(Consumer<EntityGFX> script) {
-        this.script = script;
-    }
+    private boolean removed;
+    private int renderPriority;
+    private int renderLayer;
+    private String spriteKey;
+    private Sprite sprite;
+    private AnimReel animReel = new AnimReel();
 
-    public void run(EntityGFX entityGFX) {
-        script.accept(entityGFX);
+    public PointInt direction = new PointInt();
+    public PointDouble position = new PointDouble();
+    public PointDouble speed = new PointDouble();
+
+    private List<RenderRequest> renderRequests = new ArrayList<>();
+    private BehaviorScript behaviorScript;
+    private AnimationScript animationScript;
+    private GfxInitScript gfxInitScript;
+
+    @Override
+    public int compareTo(Entity entity) {
+        return (int) (this.getPosition().y - entity.getPosition().y);
+//        return this.renderPriority - entity.renderPriority;
     }
 }

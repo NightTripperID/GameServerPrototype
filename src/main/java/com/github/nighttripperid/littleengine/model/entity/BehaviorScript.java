@@ -24,8 +24,9 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.github.nighttripperid.littleengine.model.gamestate;
+package com.github.nighttripperid.littleengine.model.entity;
 
+import com.github.nighttripperid.littleengine.model.gamestate.GameMap;
 import lombok.AccessLevel;
 import lombok.Getter;
 

@@ -24,23 +24,23 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.github.nighttripperid.littleengine.model.gamestate;
+package com.github.nighttripperid.littleengine.model.entity;
 
-import com.github.nighttripperid.littleengine.model.graphics.Sprite;
+import com.github.nighttripperid.littleengine.model.graphics.EntityGFX;
 import lombok.AccessLevel;
 import lombok.Getter;
 
-import java.util.Map;
 import java.util.function.Consumer;
 
-public class AnimationScript {
+public class GfxInitScript {
     @Getter(AccessLevel.NONE)
-    private final Consumer<Map<Integer, Sprite>> script;
+    private final Consumer<EntityGFX> script;
 
-    public AnimationScript(Consumer<Map<Integer, Sprite>> script) {
+    public GfxInitScript(Consumer<EntityGFX> script) {
         this.script = script;
     }
-    public void run(Map<Integer, Sprite> spriteMap) {
-        script.accept(spriteMap);
+
+    public void run(EntityGFX entityGFX) {
+        script.accept(entityGFX);
     }
 }
