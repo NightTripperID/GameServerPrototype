@@ -115,11 +115,13 @@ public class GameStateUpdater {
     }
 
     private void runAnimationScript(Entity entity, Map<Integer, Sprite> spriteMap) {
-        entity.getAnimationScript().run(spriteMap);
+        if (entity.getAnimationScript() != null)
+            entity.getAnimationScript().run(spriteMap);
     }
 
     private void runBehaviorScript(Entity entity) {
         // TODO: implement groovy integration for entity updates (maybe)
-        entity.getBehaviorScript().run(activeGameState.getGameMap());
+        if (entity.getBehaviorScript() != null)
+            entity.getBehaviorScript().run(activeGameState.getGameMap());
     }
 }
