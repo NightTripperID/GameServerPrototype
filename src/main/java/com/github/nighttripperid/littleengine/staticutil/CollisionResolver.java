@@ -30,6 +30,7 @@ import com.github.nighttripperid.littleengine.model.gamestate.Entity;
 import com.github.nighttripperid.littleengine.model.gamestate.GameMap;
 import com.github.nighttripperid.littleengine.model.PointInt;
 
+//TODO: rewrite this class when once physics and collision are ready to be tackled as a feature
 public class CollisionResolver {
 
     public static boolean resolveTileCollision(GameMap gameMap, Entity entity, double xSpeed, double ySpeed) {
