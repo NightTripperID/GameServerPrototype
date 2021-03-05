@@ -38,23 +38,24 @@ import java.util.List;
 
 @Data
 public abstract class Entity implements Eventable, Comparable<Entity> {
-    private boolean removed;
-    private int renderPriority;
-    private int renderLayer = 2;
     private static final int MIN_RENDER_PRIORITY = 0;
     private static final int MAX_RENDER_PRIORITY =  3;
+
+    private boolean removed;
+    private int renderPriority;
+    private int renderLayer;
     private String spriteKey;
     private Sprite sprite;
-    private AnimReel animReel;
+    private AnimReel animReel = new AnimReel();
 
-    public PointInt direction;
-    public PointDouble position;
-    public PointDouble speed;
+    public PointInt direction = new PointInt();
+    public PointDouble position = new PointDouble();
+    public PointDouble speed = new PointDouble();
 
     private List<RenderRequest> renderRequests = new ArrayList<>();
     private BehaviorScript behaviorScript;
     private AnimationScript animationScript;
-    private InitGFX initGFX;
+    private com.github.nighttripperid.littleengine.model.gamestate.gfxInitScript gfxInitScript;
 
     @Override
     public int compareTo(Entity entity) {

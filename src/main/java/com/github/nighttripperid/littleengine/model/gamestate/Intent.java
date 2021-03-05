@@ -26,15 +26,15 @@
  */
 package com.github.nighttripperid.littleengine.model.gamestate;
 
+import lombok.Getter;
+
 public class Intent extends HashMaps {
 
-    private Class<? extends GameState> gameStateClass;
+    @Getter
+    private final Class<? extends GameState> gameStateClass;
 
     public Intent(Class<? extends GameState> gameStateClass) {
         this.gameStateClass = gameStateClass;
     }
 
-    public final Class<? extends GameState> getGameStateClass() {
-        return gameStateClass;
-    }
 }

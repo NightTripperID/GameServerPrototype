@@ -35,7 +35,7 @@ import java.util.function.Consumer;
 
 public class AnimationScript {
     @Getter(AccessLevel.NONE)
-    private Consumer<Map<Integer, Sprite>> script;
+    private final Consumer<Map<Integer, Sprite>> script;
 
     public AnimationScript(Consumer<Map<Integer, Sprite>> script) {
         this.script = script;

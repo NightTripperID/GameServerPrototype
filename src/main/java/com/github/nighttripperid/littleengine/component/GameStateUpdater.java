@@ -62,8 +62,8 @@ public class GameStateUpdater {
             gameState.onCreate();
             gameState.getEntityData().getEntities().forEach(Entity::onCreate);
             gameState.getEntityData().getEntities().forEach(entity -> {
-                if (entity.getInitGFX() != null) {
-                    entity.getInitGFX().run(gameState.getEntityData().getEntityGFX());
+                if (entity.getGfxInitScript() != null) {
+                    entity.getGfxInitScript().run(gameState.getEntityData().getEntityGFX());
                 }
             });
             gameStateStack.push(gameState);

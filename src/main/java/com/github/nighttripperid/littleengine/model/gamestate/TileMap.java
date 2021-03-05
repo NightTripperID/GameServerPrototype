@@ -3,19 +3,16 @@ package com.github.nighttripperid.littleengine.model.gamestate;
 import com.github.nighttripperid.littleengine.model.graphics.TILED_TileMap;
 import com.github.nighttripperid.littleengine.model.graphics.Tile;
 import com.github.nighttripperid.littleengine.model.graphics.Tileset;
-import lombok.AccessLevel;
-import lombok.Data;
-import lombok.Getter;
+import lombok.Setter;
 
 import java.util.HashMap;
 import java.util.Map;
 
-@Data
 public class TileMap {
 
+    @Setter
     private TILED_TileMap tiled_TileMap;
 
-    @Getter(AccessLevel.NONE)
     private final Map<Integer, Integer[]> tileMap = new HashMap<>(); // hashed by layerId
 
         public Tile getTile(Tileset tileset, int layerId, int x, int y) {
