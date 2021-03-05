@@ -49,8 +49,10 @@ public class ScreenBufferUpdater {
     public void renderEntities(List<Entity> entities, GameMap gameMap) {
         entities.sort(Entity::compareTo);
         entities.forEach(entity -> {
-            renderSprite(entity.getPosition().x - gameMap.getScroll().x,
-                    entity.getPosition().y - gameMap.getScroll().y, entity.getSprite());
+            if(entity.getSprite() != null ) {
+                renderSprite(entity.getPosition().x - gameMap.getScroll().x,
+                        entity.getPosition().y - gameMap.getScroll().y, entity.getSprite());
+            }
         });
     }
 
