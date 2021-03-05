@@ -24,11 +24,11 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.github.nighttripperid.littleengine.model.gamestate;
+package com.github.nighttripperid.littleengine.model.tiles;
 
-import com.github.nighttripperid.littleengine.model.graphics.TILED_TileMap;
-import com.github.nighttripperid.littleengine.model.graphics.Tile;
-import com.github.nighttripperid.littleengine.model.graphics.Tileset;
+import com.github.nighttripperid.littleengine.model.tiles.TILED_TileMap;
+import com.github.nighttripperid.littleengine.model.tiles.Tile;
+import com.github.nighttripperid.littleengine.model.tiles.Tileset;
 import lombok.Setter;
 
 import java.util.HashMap;
