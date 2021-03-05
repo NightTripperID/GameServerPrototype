@@ -32,7 +32,7 @@ import com.github.cliftonlabs.json_simple.Jsoner;
 import com.github.nighttripperid.littleengine.model.gamestate.GameMap;
 import com.github.nighttripperid.littleengine.model.graphics.SpriteSheet;
 import com.github.nighttripperid.littleengine.model.graphics.TILED_TileMap;
-import com.github.nighttripperid.littleengine.model.graphics.Tilemap;
+import com.github.nighttripperid.littleengine.model.graphics.Tileset;
 import lombok.extern.slf4j.Slf4j;
 import org.dozer.DozerBeanMapper;
 import org.dozer.Mapper;
@@ -43,7 +43,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
-import java.util.List;
 
 @Slf4j
 public class MapLoader {
@@ -65,7 +64,7 @@ public class MapLoader {
 
             tiled_TileMap.getLayers().forEach(layer -> {
                 if (layer.getType().equals("tilelayer"))
-                gameMap.getTileMapLookups().put(layer.getId(), layer.getData());
+                gameMap.getTileMap().put(layer.getId(), layer.getData());
             });
 
             log.info("Loading {} successful!", url.getPath());
@@ -74,10 +73,10 @@ public class MapLoader {
             log.error("Loading {} failed!", url.getPath());
         }
 
-        loadTileMapGFX(pngPath, gameMap);
+        loadTileset(pngPath, gameMap);
     }
 
-    private static void loadTileMapGFX(String pngPath, GameMap gameMap) {
+    private static void loadTileset(String pngPath, GameMap gameMap) {
 
         URL url = MapLoader.class.getClassLoader().getResource(pngPath);
         try {
@@ -85,10 +84,8 @@ public class MapLoader {
             BufferedImage image = ImageIO.read(url);
             log.info("Loading {} successful!", url.getPath());
             SpriteSheet spriteSheet = new SpriteSheet(image, gameMap.getTileSize(), gameMap.getTileSize());
-            List<TILED_TileMap.Tile> TILED_tiles = gameMap.getTiled_TileMap().getTilesets().stream()
-                    .findFirst().orElse(null).getTiles();
-            gameMap.setTilemap(new Tilemap());
-            gameMap.getTilemap().setTileset(spriteSheet, TILED_tiles, gameMap.getTileSize());
+            gameMap.setTileset(new Tileset());
+            gameMap.getTileset().setTileset(spriteSheet, gameMap.getTileSize());
         } catch (IOException e) {
             log.error("Loading {} failed!", url.getPath());
         }

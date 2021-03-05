@@ -29,32 +29,22 @@ package com.github.nighttripperid.littleengine.model.graphics;
 import lombok.Data;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Data
-public class Tilemap {
-    private final Map<Integer, Sprite> tileset = new HashMap<>();
-    private final Map<Integer, Tile> tileMap = new HashMap<>();
-
+public class Tileset {
+    private final Map<Integer, Tile> tileset = new HashMap<>();
     public static final Tile VOID_TILE = new Tile(new Sprite(0xffff00ff,
             Tile.TileSize.X16.getValue(),
             Tile.TileSize.X16.getValue()),
             true,
             false);
 
-    public void setTileset(SpriteSheet spriteSheet,
-                           List<TILED_TileMap.Tile> TILED_tiles,
-                           int tileSize) {
+    public void setTileset(SpriteSheet spriteSheet, int tileSize) {
         for(int y = 0, i = 0; y < spriteSheet.sheetH_P / tileSize; y++) {
             for(int x = 0; x < spriteSheet.sheetW_P / tileSize; x++, i++) {
-                tileset.put(i, new Sprite(spriteSheet, tileSize, x, y));
+                tileset.put(i, new Tile(new Sprite(spriteSheet, tileSize, x, y), false, false));
             }
         }
-
-        tileset.forEach((tiledKey, tileMapSprite) -> TILED_tiles.forEach(tile -> {
-            boolean solid = tile.getObjectgroup() != null;
-            tileMap.put(tiledKey, new Tile(tileset.get(tiledKey), solid, false));
-        }));
     }
 }

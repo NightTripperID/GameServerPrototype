@@ -118,7 +118,7 @@ public final class Application {
         GameMap gameMap = gameStateUpdater.getActiveGameState().getGameMap();
         List<Entity> entities = gameStateUpdater.getActiveGameState().getGameStateEntityData().getEntities();
 
-        for (int i = 1; i <= gameMap.getTileMapLookups().size(); i++) {
+        for (int i = 1; i <= gameMap.getTileMap().size(); i++) {
             final int layer = i;
             screenBufferUpdater.renderTileLayer(gameMap, layer);
 

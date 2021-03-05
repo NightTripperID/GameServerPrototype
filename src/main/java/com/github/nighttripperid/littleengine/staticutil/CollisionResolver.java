@@ -38,7 +38,7 @@ public class CollisionResolver {
             for (int x = 1; x <= Math.abs(xSpeed); x++) {
                 PointInt p = getTileCorner(entity, x * entity.direction.x, 0, corner);
 
-                for(int layerId : gameMap.getTileMapLookups().keySet()) {
+                for(int layerId : gameMap.getTileMap().keySet()) {
                     if (gameMap.getMapTileObject(layerId, p.x, p.y).isSolid()) {
                         return true;
                     }
@@ -47,7 +47,7 @@ public class CollisionResolver {
 
             for (int y = 1; y <= Math.abs(ySpeed); y++) {
                 PointInt p = getTileCorner(entity,0, y * entity.direction.y, corner);
-                for(int layerId : gameMap.getTileMapLookups().keySet()) {
+                for(int layerId : gameMap.getTileMap().keySet()) {
                     if (gameMap.getMapTileObject(layerId, p.x, p.y).isSolid()) {
                         return true;
                     }
