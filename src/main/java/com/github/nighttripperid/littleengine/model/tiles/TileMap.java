@@ -32,9 +32,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class TileMap {
-
     @Setter
-    private TILED_TileMap tiled_TileMap;
+    private int width_T;
+    @Setter
+    private int height_T;
 
     private final Map<Integer, Integer[]> tileMap = new HashMap<>(); // hashed by layerId
 
@@ -42,14 +43,14 @@ public class TileMap {
 
         if (x < 0 ||
                 y < 0 ||
-                x >= tiled_TileMap.getWidth() ||
-                y >= tiled_TileMap.getHeight()) {
+                x >= width_T ||
+                y >= height_T) {
 
             return Tileset.VOID_TILE;
 
         } else {
             return tileset.getTileset().get(
-                    tileMap.get(layerId)[x + y * tiled_TileMap.getWidth()] - 1
+                    tileMap.get(layerId)[x + y * width_T] - 1
             );
         }
     }
