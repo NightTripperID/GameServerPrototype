@@ -26,9 +26,6 @@
  */
 package com.github.nighttripperid.littleengine.model.tiles;
 
-import com.github.nighttripperid.littleengine.model.tiles.TILED_TileMap;
-import com.github.nighttripperid.littleengine.model.tiles.Tile;
-import com.github.nighttripperid.littleengine.model.tiles.Tileset;
 import lombok.Setter;
 
 import java.util.HashMap;
