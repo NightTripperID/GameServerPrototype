@@ -27,9 +27,12 @@
 package com.github.nighttripperid.littleengine.model.gamestate;
 
 import com.github.nighttripperid.littleengine.model.PointDouble;
+import com.github.nighttripperid.littleengine.model.tiles.TILED_TileMap;
 import com.github.nighttripperid.littleengine.model.tiles.TileMap;
 import com.github.nighttripperid.littleengine.model.tiles.Tileset;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 @Data
 public class GameMap {
@@ -41,4 +44,8 @@ public class GameMap {
 
     private Tileset tileset;
     private TileMap tileMap;
+
+    @Getter
+    @Setter
+    private TILED_TileMap tiled_TileMap;
 }
