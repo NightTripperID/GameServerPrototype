@@ -41,10 +41,11 @@ public abstract class Entity implements Eventable, Comparable<Entity> {
     private static final int MIN_RENDER_PRIORITY = 0;
     private static final int MAX_RENDER_PRIORITY =  3;
 
+    private String filename;
+
     private boolean removed;
     private int renderPriority;
     private int renderLayer;
-    private String spriteKey;
     private Sprite sprite;
     private AnimReel animReel = new AnimReel();
 

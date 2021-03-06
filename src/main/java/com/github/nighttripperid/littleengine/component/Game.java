@@ -38,7 +38,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Slf4j
-public final class Application {
+public final class Game {
 
     private Thread thread;
     private String title = "";
@@ -48,7 +48,7 @@ public final class Application {
     private final ScreenBufferUpdater screenBufferUpdater;
     private final GameStateUpdater gameStateUpdater;
 
-    public Application(int screenWidth, int screenHeight, int screenScale, String title) {
+    public Game(int screenWidth, int screenHeight, int screenScale, String title) {
         this.title = title;
         ioController = new IOController(screenWidth, screenHeight, screenScale);
         screenBufferUpdater = new ScreenBufferUpdater(new RenderRequestProcessor(),

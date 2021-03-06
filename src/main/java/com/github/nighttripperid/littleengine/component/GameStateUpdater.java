@@ -52,7 +52,7 @@ public class GameStateUpdater {
             entity.getRenderRequests().clear();
             runBehaviorScript(entity);
             runAnimationScript(entity,
-                activeGameState.getEntityData().getEntityGFX().getSpriteMaps().get(entity.getSpriteKey()));
+                activeGameState.getEntityData().getEntityGFX().getSpriteMaps().get(entity.getFilename()));
         });
         removeMarkedEntities();
     }
