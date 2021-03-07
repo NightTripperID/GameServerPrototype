@@ -50,7 +50,7 @@ public class IOController extends Canvas {
         setPreferredSize(new Dimension(width * scale, height * scale));
 
         JFrame jFrame = new JFrame();
-        jFrame.setResizable(false);
+        jFrame.setResizable(true);
         jFrame.setTitle(title);
         jFrame.add(this);
         jFrame.pack();
@@ -66,7 +66,7 @@ public class IOController extends Canvas {
         addMouseWheelListener(mouse);
     }
 
-    public static void updateInput() {
+    public void updateInput() {
         Keyboard.update();
         Mouse.update();
     }
@@ -79,9 +79,7 @@ public class IOController extends Canvas {
             return;
         }
 
-        for(int i = 0; i < pixels.length; i++) {
-            pixels[i] = screenBuffer.getPixels()[i];
-        }
+        System.arraycopy(screenBuffer.getPixels(), 0, pixels, 0, pixels.length);
 
         Graphics graphics = bufferStrategy.getDrawGraphics();
         graphics.setColor(Color.MAGENTA);
