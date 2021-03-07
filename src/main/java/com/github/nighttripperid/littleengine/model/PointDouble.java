@@ -27,29 +27,38 @@
 package com.github.nighttripperid.littleengine.model;
 
 public class PointDouble {
-    public double x;
-    public double y;
+
+    public NumWrap<Double> x;
+    public NumWrap<Double> y;
 
     public PointDouble(){
-        this.x = 0;
-        this.y = 0;
+        x = new NumWrap<>(0D);
+        y = new NumWrap<>(0D);
     }
 
-    public PointDouble(double x, double y) {
-        this.x = x;
-        this.y = y;
+    public PointDouble(Double x, Double y) {
+        this();
+        if (x == null) this.x = null;
+        else this.x.num = x;
+        if (y == null) this.y = null;
+        else this.y.num = y;
     }
 
     public PointDouble plus(PointDouble that) {
-        return new PointDouble(this.x + that.x, this.y + that.y);
+        return new PointDouble(this.x.num + that.x.num, this.y.num + that.y.num);
     }
 
     public PointDouble minus(PointDouble that) {
-        return new PointDouble(this.x - that.x, this.y - that.y);
+        return new PointDouble(this.x.num - that.x.num, this.y.num - that.y.num);
     }
 
     public PointDouble times(PointDouble that) {
-        return new PointDouble(this.x * that.x, this.y * that.y);
+        return new PointDouble(this.x.num * that.x.num, this.y.num * that.y.num);
+    }
+
+    public PointDouble div(PointDouble that) {
+
+        return new PointDouble(that.x.num == 0 ? null : this.x.num / that.x.num, that.y.num == 0 ? null : this.y.num / that.y.num);
     }
 
     @Override
@@ -57,6 +66,6 @@ public class PointDouble {
         if (this == p) return true;
         if (p == null || getClass() != p.getClass()) return false;
         PointDouble that = (PointDouble) p;
-        return Double.compare(that.x, this.x) == 0 && Double.compare(that.y, this.y) == 0;
+        return Double.compare(that.x.num, this.x.num) == 0 && Double.compare(that.y.num, this.y.num) == 0;
     }
 }

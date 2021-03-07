@@ -50,8 +50,8 @@ public class ScreenBufferUpdater {
         entities.sort(Entity::compareTo);
         entities.forEach(entity -> {
             if(entity.getSprite() != null ) {
-                renderSprite(entity.getPosition().x - gameMap.getScroll().x,
-                        entity.getPosition().y - gameMap.getScroll().y, entity.getSprite());
+                renderSprite(entity.getPosition().x.num - gameMap.getScroll().x.num,
+                        entity.getPosition().y.num - gameMap.getScroll().y.num, entity.getSprite());
             }
         });
     }
@@ -60,18 +60,18 @@ public class ScreenBufferUpdater {
 
         screenBuffer.setScroll(gameMap.getScroll());
 
-        int x0 = (int) gameMap.getScroll().x >> gameMap.getTileBitShift();
-        int x1 = (((int) gameMap.getScroll().x + screenBuffer.getWidth()) + gameMap.getTileSize())
+        int x0 = (int) (double) gameMap.getScroll().x.num >> gameMap.getTileBitShift();
+        int x1 = (((int) (double) gameMap.getScroll().x.num + screenBuffer.getWidth()) + gameMap.getTileSize())
                 >> gameMap.getTileBitShift();
-        int y0 = (int) gameMap.getScroll().y >> gameMap.getTileBitShift();
-        int y1 = (((int) gameMap.getScroll().y + screenBuffer.getHeight()) + gameMap.getTileSize())
+        int y0 = (int) (double) gameMap.getScroll().y.num >> gameMap.getTileBitShift();
+        int y1 = (((int) (double) gameMap.getScroll().y.num + screenBuffer.getHeight()) + gameMap.getTileSize())
                 >> gameMap.getTileBitShift();
 
         for (int y = y0; y < y1; y++) {
             for (int x = x0; x < x1; x++) {
                 if (gameMap.getTileMap().hasLayer(layerId)) {
-                    renderSprite((x << gameMap.getTileBitShift()) - screenBuffer.getScroll().x,
-                            (y << gameMap.getTileBitShift()) - screenBuffer.getScroll().y,
+                    renderSprite((x << gameMap.getTileBitShift()) - screenBuffer.getScroll().x.num,
+                            (y << gameMap.getTileBitShift()) - screenBuffer.getScroll().y.num,
                             gameMap.getTileMap().getTile(gameMap.getTileset(), layerId, x, y).getSprite());
                 }
             }
