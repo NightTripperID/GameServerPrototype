@@ -61,10 +61,10 @@ public class RenderRequestProcessor {
     }
 
     public void fillRect(double x, double y, int width, int height, int col) {
-        for (int yy = (int) y; yy < y + height; yy++) {
+        for (int yy = (int) y; yy < (int) y + height; yy++) {
             if (yy < 0 || yy >= screenBuffer.getHeight())
                 continue;
-            for (int xx = (int) x; xx < x + width; xx++) {
+            for (int xx = (int) x; xx < (int) x + width; xx++) {
                 if (xx < 0 || xx >= screenBuffer.getWidth())
                     continue;
                 screenBuffer.getPixels()[xx + yy * screenBuffer.getWidth()] = col;
