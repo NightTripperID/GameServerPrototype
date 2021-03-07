@@ -27,7 +27,6 @@
 package com.github.nighttripperid.littleengine.model.entity;
 
 import com.github.nighttripperid.littleengine.component.RenderRequestProcessor;
-import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -39,11 +38,11 @@ public class RenderRequest implements Comparable<RenderRequest> {
     private final int renderLayer;
     @Getter
     private final int renderPriority;
-    @Getter(AccessLevel.NONE)
-    private final Consumer<RenderRequestProcessor> renderRequest;
+
+    private final Consumer<RenderRequestProcessor> request;
     
     public void process(RenderRequestProcessor processor) {
-        renderRequest.accept(processor);
+        request.accept(processor);
     }
 
     @Override
