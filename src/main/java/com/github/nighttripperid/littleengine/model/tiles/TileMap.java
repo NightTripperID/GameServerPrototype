@@ -26,6 +26,7 @@
  */
 package com.github.nighttripperid.littleengine.model.tiles;
 
+import lombok.Getter;
 import lombok.Setter;
 
 import java.util.HashMap;
@@ -33,8 +34,10 @@ import java.util.Map;
 
 public class TileMap {
     @Setter
+    @Getter
     private int width_T;
     @Setter
+    @Getter
     private int height_T;
 
     private final Map<Integer, Integer[]> tileMap = new HashMap<>(); // hashed by layerId

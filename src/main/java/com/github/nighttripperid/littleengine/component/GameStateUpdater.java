@@ -27,89 +27,54 @@
 package com.github.nighttripperid.littleengine.component;
 
 import com.github.nighttripperid.littleengine.model.entity.Entity;
-import com.github.nighttripperid.littleengine.model.gamestate.GameState;
-import com.github.nighttripperid.littleengine.model.gamestate.Intent;
 import com.github.nighttripperid.littleengine.model.graphics.Sprite;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Stack;
 
 @Slf4j
 public class GameStateUpdater {
 
-    private final Stack<GameState> gameStateStack = new Stack<>();
-
     @Getter
-    private GameState activeGameState;
+    private final GameStateStackController gameStateStackController;
+
+    public GameStateUpdater(GameStateStackController gameStateStackController) {
+        this.gameStateStackController = gameStateStackController;
+    }
 
     public void update() {
         addPendingEntities();
-        List<Entity> entities = activeGameState.getEntityData().getEntities();
+        List<Entity> entities = gameStateStackController.getActiveGameState().getEntityData().getEntities();
         entities.forEach(entity -> {
             entity.getRenderRequests().clear();
             runBehaviorScript(entity);
             runAnimationScript(entity,
-                activeGameState.getEntityData().getEntityGFX().getSpriteMaps().get(entity.getFilename()));
+                gameStateStackController.getActiveGameState().getEntityData().getEntityGFX().getSpriteMaps().get(entity.getFilename()));
+            gameStateStackController.performGameStateTransition(entity.getGameStateTransition());
         });
         removeMarkedEntities();
-    }
-
-    public final void pushGameNewState(Intent intent) {
-
-        try {
-            GameState gameState = intent.getGameStateClass().newInstance();
-            gameState.setIntent(intent);
-            gameState.onCreate();
-            gameState.getEntityData().getEntities().forEach(Entity::onCreate);
-            gameState.getEntityData().getEntities().forEach(entity -> {
-                if (entity.getGfxInitScript() != null) {
-                    entity.getGfxInitScript().run(gameState.getEntityData().getEntityGFX());
-                }
-            });
-            gameStateStack.push(gameState);
-            activeGameState = gameStateStack.peek();
-        } catch(InstantiationException | IllegalAccessException e) {
-            log.error("Error pushing gameState: {}", e.getMessage());
-        }
-    }
-
-    public final void popGameState() {
-        gameStateStack.pop().onDestroy();
-    }
-
-    public final void swapGameState(Intent intent) {
-        try {
-            GameState gameState = intent.getGameStateClass().newInstance();
-            gameState.setIntent(intent);
-            gameState.onCreate();
-            gameStateStack.pop().onDestroy();
-            gameStateStack.push(gameState);
-        } catch(InstantiationException | IllegalAccessException e) {
-            log.error("Error swapping gameState: {} " + e.getMessage());
-        }
     }
 
     // TODO: delegate entity methods to EntityProcessor (maybe)
     public void addEntity(Entity entity) {
         entity.onCreate();
-        activeGameState.getEntityData().getPendingEntities().add(entity);
+        gameStateStackController.getActiveGameState().getEntityData().getPendingEntities().add(entity);
     }
 
     private void addPendingEntities() {
-        activeGameState.getEntityData().getEntities()
-                .addAll(activeGameState.getEntityData().getPendingEntities());
-        activeGameState.getEntityData().getPendingEntities().clear();
+        gameStateStackController.getActiveGameState().getEntityData().getEntities()
+                .addAll(gameStateStackController.getActiveGameState().getEntityData().getPendingEntities());
+        gameStateStackController.getActiveGameState().getEntityData().getPendingEntities().clear();
     }
 
     private void removeMarkedEntities() {
-        for(int i = 0; i < activeGameState.getEntityData().getEntities().size(); i++) {
-            if(activeGameState.getEntityData().getEntities().get(i).isRemoved()) {
-                activeGameState.getEntityData().getEntities().get(i).onDestroy();
-                activeGameState.getEntityData().getEntities()
-                        .remove(activeGameState.getEntityData().getEntities().get(i--));
+        for(int i = 0; i < gameStateStackController.getActiveGameState().getEntityData().getEntities().size(); i++) {
+            if(gameStateStackController.getActiveGameState().getEntityData().getEntities().get(i).isRemoved()) {
+                gameStateStackController.getActiveGameState().getEntityData().getEntities().get(i).onDestroy();
+                gameStateStackController.getActiveGameState().getEntityData().getEntities()
+                        .remove(gameStateStackController.getActiveGameState().getEntityData().getEntities().get(i--));
             }
         }
     }
@@ -122,6 +87,6 @@ public class GameStateUpdater {
     private void runBehaviorScript(Entity entity) {
         // TODO: implement groovy integration for entity updates (maybe)
         if (entity.getBehaviorScript() != null)
-            entity.getBehaviorScript().run(activeGameState.getGameMap());
+            entity.getBehaviorScript().run(gameStateStackController.getActiveGameState().getGameMap());
     }
 }

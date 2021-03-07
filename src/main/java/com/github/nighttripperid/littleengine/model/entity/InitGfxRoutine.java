@@ -27,20 +27,17 @@
 package com.github.nighttripperid.littleengine.model.entity;
 
 import com.github.nighttripperid.littleengine.model.graphics.EntityGFX;
-import lombok.AccessLevel;
-import lombok.Getter;
 
 import java.util.function.Consumer;
 
-public class GfxInitScript {
-    @Getter(AccessLevel.NONE)
-    private final Consumer<EntityGFX> script;
+public class InitGfxRoutine {
+    private final Consumer<EntityGFX> routine;
 
-    public GfxInitScript(Consumer<EntityGFX> script) {
-        this.script = script;
+    public InitGfxRoutine(Consumer<EntityGFX> routine) {
+        this.routine = routine;
     }
 
     public void run(EntityGFX entityGFX) {
-        script.accept(entityGFX);
+        routine.accept(entityGFX);
     }
 }
