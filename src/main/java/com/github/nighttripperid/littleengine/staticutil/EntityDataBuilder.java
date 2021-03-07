@@ -26,7 +26,7 @@ public class EntityDataBuilder {
                 try {
                     Class<?> clazz = Class.forName(properties.get("class"));
                     Entity entity = (Entity) clazz.newInstance();
-                    entity.setPosition(new PointDouble(object.getX(), object.getY()));
+                    entity.setPosition((new PointDouble((double) object.getX(), (double) object.getY())));
                     properties.remove("class");
                     properties.keySet().forEach(fieldName ->
                             injectField(entity.getClass(), entity,

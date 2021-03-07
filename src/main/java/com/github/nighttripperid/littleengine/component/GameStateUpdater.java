@@ -27,20 +27,27 @@
 package com.github.nighttripperid.littleengine.component;
 
 import com.github.nighttripperid.littleengine.model.entity.Entity;
+import com.github.nighttripperid.littleengine.model.entity.RenderRequest;
+import com.github.nighttripperid.littleengine.model.gamestate.GameMap;
 import com.github.nighttripperid.littleengine.model.graphics.Sprite;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Slf4j
 public class GameStateUpdater {
 
     @Getter
+    private final ScreenBufferUpdater screenBufferUpdater;
+    @Getter
     private final GameStateStackController gameStateStackController;
 
-    public GameStateUpdater(GameStateStackController gameStateStackController) {
+    public GameStateUpdater(ScreenBufferUpdater screenBufferUpdater,
+                            GameStateStackController gameStateStackController) {
+        this.screenBufferUpdater = screenBufferUpdater;
         this.gameStateStackController = gameStateStackController;
     }
 
@@ -56,6 +63,29 @@ public class GameStateUpdater {
             gameStateStackController.performGameStateTransition(entity.getGameStateTransition());
         });
         removeMarkedEntities();
+    }
+
+    public void renderToScreenBuffer() {
+        screenBufferUpdater.clearScreenBuffer();
+
+        GameMap gameMap = gameStateStackController.getActiveGameState().getGameMap();
+        List<Entity> entities = gameStateStackController.getActiveGameState().getEntityData().getEntities();
+
+        for (int i = 1; i <= gameMap.getTileMap().getNumLayers(); i++) {
+            final int layer = i;
+            screenBufferUpdater.renderTileLayer(gameMap, layer);
+
+            List<Entity> entitiesInLayer = entities.stream()
+                    .filter(entity -> entity.getRenderLayer() == layer)
+                    .collect(Collectors.toList());
+            screenBufferUpdater.renderEntities(entitiesInLayer, gameMap);
+
+            List<RenderRequest> renderRequests = entities.stream()
+                    .flatMap(entity -> entity.getRenderRequests().stream())
+                    .filter(renderRequest -> renderRequest.getRenderLayer() == layer)
+                    .collect(Collectors.toList());
+            screenBufferUpdater.processRenderRequests(renderRequests);
+        }
     }
 
     // TODO: delegate entity methods to EntityProcessor (maybe)

@@ -27,15 +27,9 @@
 package com.github.nighttripperid.littleengine.component;
 
 
-import com.github.nighttripperid.littleengine.model.entity.Entity;
-import com.github.nighttripperid.littleengine.model.gamestate.GameMap;
 import com.github.nighttripperid.littleengine.model.gamestate.Intent;
-import com.github.nighttripperid.littleengine.model.entity.RenderRequest;
 import com.github.nighttripperid.littleengine.model.graphics.ScreenBuffer;
 import lombok.extern.slf4j.Slf4j;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Slf4j
 public final class Game {
@@ -45,15 +39,16 @@ public final class Game {
     private boolean running;
 
     private IOController ioController;
-    private final ScreenBufferUpdater screenBufferUpdater;
     private final GameStateUpdater gameStateUpdater;
 
-    public Game(int screenWidth, int screenHeight, int screenScale, String title) {
+    public Game(int width, int height, int scale, String title) {
         this.title = title;
-        ioController = new IOController(screenWidth, screenHeight, screenScale);
-        screenBufferUpdater = new ScreenBufferUpdater(new RenderRequestProcessor(),
-                new ScreenBuffer(screenWidth, screenHeight, screenScale));
-        gameStateUpdater = new GameStateUpdater(new GameStateStackController());
+        ioController = new IOController(width, height, scale);
+
+        ScreenBufferUpdater screenBufferUpdater = new ScreenBufferUpdater(new RenderRequestProcessor(),
+                                                  new ScreenBuffer(width, height, scale));
+
+        gameStateUpdater = new GameStateUpdater(screenBufferUpdater, new GameStateStackController());
     }
 
     private synchronized void start() {
@@ -108,34 +103,13 @@ public final class Game {
     };
 
     private void update() {
-        IOController.updateInput();
+        ioController.updateInput();
         gameStateUpdater.update();
+        gameStateUpdater.renderToScreenBuffer();
     }
 
     private void render() {
-        screenBufferUpdater.clearScreenBuffer();
-
-        GameMap gameMap = gameStateUpdater.getGameStateStackController().getActiveGameState().getGameMap();
-        List<Entity> entities = gameStateUpdater.getGameStateStackController()
-                .getActiveGameState().getEntityData().getEntities();
-
-        for (int i = 1; i <= gameMap.getTileMap().getNumLayers(); i++) {
-            final int layer = i;
-            screenBufferUpdater.renderTileLayer(gameMap, layer);
-
-            List<Entity> entitiesInLayer = entities.stream()
-                    .filter(entity -> entity.getRenderLayer() == layer)
-                    .collect(Collectors.toList());
-            screenBufferUpdater.renderEntities(entitiesInLayer, gameMap);
-
-            List<RenderRequest> renderRequests = entities.stream()
-                    .flatMap(entity -> entity.getRenderRequests().stream())
-                    .filter(renderRequest -> renderRequest.getRenderLayer() == layer)
-                    .collect(Collectors.toList());
-            screenBufferUpdater.processRenderRequests(renderRequests);
-        }
-
-        ioController.renderBufferToScreen(screenBufferUpdater.getScreenBuffer());
+        ioController.renderBufferToScreen(gameStateUpdater.getScreenBufferUpdater().getScreenBuffer());
     }
 
     public void start(Intent intent) {
