@@ -30,8 +30,12 @@ import com.github.nighttripperid.littleengine.model.entity.Entity;
 import com.github.nighttripperid.littleengine.model.gamestate.GameMap;
 import com.github.nighttripperid.littleengine.model.PointInt;
 
-//TODO: rewrite this class when once physics and collision are ready to be tackled as a feature
+// TODO: finish implementing projected rectangle collision
 public class CollisionResolver {
+
+    public static boolean resolveEntityCollision(Entity e1, Entity e2) {
+        return false;
+    }
 
     public static boolean resolveTileCollision(GameMap gameMap, Entity entity, double xSpeed, double ySpeed) {
 //        for (int corner = 0; corner < 4; corner++) {
@@ -59,8 +63,8 @@ public class CollisionResolver {
     }
 
     private static PointInt getTileCorner(Entity entity, int xa, int ya, int corner) {
-        int xPos = xa > 1 ? (int) entity.getPosition().x + entity.getSprite().width : (int) entity.getPosition().x;
-        int yPos = ya > 1 ? (int) entity.getPosition().y + entity.getSprite().height : (int) entity.getPosition().y;
+        int xPos = xa > 1 ? (int) (double) entity.getPosition().x.num + entity.getSprite().width : (int) (double) entity.getPosition().x.num;
+        int yPos = ya > 1 ? (int) (double) entity.getPosition().y.num + entity.getSprite().height : (int) (double) entity.getPosition().y.num;
         int cornerX = ((xPos + xa) + corner % 2) / entity.getSprite().width;
         int cornerY = ((yPos + ya) + corner / 2) / entity.getSprite().height;
 //        int xt = ((int) (entity.getXPos() + xa) + corner % 2 * 2 + 6) / 16;

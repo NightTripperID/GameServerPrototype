@@ -80,6 +80,22 @@ public class GameStateUpdater {
         }
     }
 
+    // TODO: finish implementing projected rectangle collision
+//    private void runCollisionCheck() {
+//        List<Entity> entities = gameStateStackController.getActiveGameState().getEntityData().getEntities();
+//        for (int i = 0; i < entities.size(); i++) {
+//            for (int k = i + 1; k < entities.size(); k++) {
+//                if (CollisionResolver.resolveEntityCollision()) {
+//
+//                }
+//                if (entities.get(i).collidesWith(entities.get(k))) {
+//                    entities.get(i).runCollision(entities.get(k));
+//                    entities.get(k).runCollision(entities.get(i));
+//                }
+//            }
+//        }
+//    }
+
     private void runAnimationScript(Entity entity, Map<Integer, Sprite> spriteMap) {
         if (entity.getAnimationScript() != null)
             entity.getAnimationScript().run(spriteMap);
