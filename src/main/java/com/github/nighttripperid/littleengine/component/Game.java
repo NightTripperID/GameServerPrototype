@@ -53,7 +53,7 @@ public final class Game {
         ioController = new IOController(screenWidth, screenHeight, screenScale);
         screenBufferUpdater = new ScreenBufferUpdater(new RenderRequestProcessor(),
                 new ScreenBuffer(screenWidth, screenHeight, screenScale));
-        gameStateUpdater = new GameStateUpdater();
+        gameStateUpdater = new GameStateUpdater(new GameStateStackController());
     }
 
     private synchronized void start() {
@@ -115,8 +115,9 @@ public final class Game {
     private void render() {
         screenBufferUpdater.clearScreenBuffer();
 
-        GameMap gameMap = gameStateUpdater.getActiveGameState().getGameMap();
-        List<Entity> entities = gameStateUpdater.getActiveGameState().getEntityData().getEntities();
+        GameMap gameMap = gameStateUpdater.getGameStateStackController().getActiveGameState().getGameMap();
+        List<Entity> entities = gameStateUpdater.getGameStateStackController()
+                .getActiveGameState().getEntityData().getEntities();
 
         for (int i = 1; i <= gameMap.getTileMap().getNumLayers(); i++) {
             final int layer = i;
@@ -138,7 +139,7 @@ public final class Game {
     }
 
     public void start(Intent intent) {
-        gameStateUpdater.pushGameNewState(intent);
+        gameStateUpdater.getGameStateStackController().pushGameState(intent);
         start();
     }
 }

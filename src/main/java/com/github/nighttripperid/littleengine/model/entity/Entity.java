@@ -56,7 +56,8 @@ public abstract class Entity implements Eventable, Comparable<Entity> {
     private List<RenderRequest> renderRequests = new ArrayList<>();
     private BehaviorScript behaviorScript;
     private AnimationScript animationScript;
-    private GfxInitScript gfxInitScript;
+    private InitGfxRoutine initGfxRoutine;
+    private GameStateTransition gameStateTransition;
 
     @Override
     public int compareTo(Entity entity) {
