@@ -65,7 +65,7 @@ public class Sprite {
     private void load(SpriteSheet spriteSheet, PointInt offset) {
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
-                pixels[x + y * width] = spriteSheet.pixelBuffer[(x + offset.x.num) + (y + offset.y.num) * spriteSheet.sheetW_P];
+                pixels[x + y * width] = spriteSheet.pixelBuffer[(x + offset.x) + (y + offset.y) * spriteSheet.sheetW_P];
             }
         }
     }

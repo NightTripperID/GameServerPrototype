@@ -37,7 +37,7 @@ import lombok.Setter;
 @Data
 public class GameMap {
 
-    private PointDouble scroll = new PointDouble();
+    private PointDouble scroll = PointDouble.of(0.0);
 
     private int tileSize;
     private int tileBitShift;

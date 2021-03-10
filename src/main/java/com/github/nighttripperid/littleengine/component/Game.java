@@ -77,6 +77,7 @@ public final class Game {
 
         ioController.requestFocus();
 
+        double before, after, elapsed = 0;
         while (running) {
 
             long now = System.nanoTime();
@@ -84,7 +85,10 @@ public final class Game {
             lastTime = now;
 
             while (delta >= 1) {
-                update(); // 60 times per second
+                before = System.nanoTime() / 1000000000D;
+                update(elapsed); // 60 times per second
+                after = System.nanoTime() / 1000000000D;
+                elapsed = after - before;
                 delta--;
                 updates++;
             }
@@ -102,9 +106,9 @@ public final class Game {
         stop();
     };
 
-    private void update() {
+    private void update(double elapsedTime) {
         ioController.updateInput();
-        gameStateUpdater.update();
+        gameStateUpdater.update(elapsedTime);
         gameStateUpdater.renderToScreenBuffer();
     }
 

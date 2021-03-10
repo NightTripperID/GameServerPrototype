@@ -27,37 +27,33 @@
 package com.github.nighttripperid.littleengine.model;
 
 public class PointInt {
-    public NumWrap<Integer> x;
-    public NumWrap<Integer> y;
+    public Integer x;
+    public Integer y;
 
     public PointInt(){
-        x = new NumWrap<>(0);
-        y = new NumWrap<>(0);
+        x = 0;
+        y = 0;
     }
 
     public PointInt(int x, int y) {
         this();
-        this.x.num = x;
-        this.y.num = y;
+        this.x = x;
+        this.y = y;
     }
 
     public PointInt plus(PointInt that) {
-        return new PointInt(this.x.num + that.x.num, this.y.num + that.y.num);
+        return new PointInt(this.x + that.x, this.y + that.y);
     }
 
     public PointInt minus(PointInt that) {
-        return new PointInt(this.x.num - that.x.num, this.y.num - that.y.num);
+        return new PointInt(this.x - that.x, this.y - that.y);
     }
 
     public PointInt times(PointInt that) {
-        return new PointInt(this.x.num * that.x.num, this.y.num * that.y.num);
+        return new PointInt(this.x * that.x, this.y * that.y);
     }
-
-    @Override
-    public boolean equals(Object p) {
-        if (this == p) return true;
-        if (p == null || getClass() != p.getClass()) return false;
-        PointInt that = (PointInt) p;
-        return that.x.num.equals(this.x.num) && that.y.num.equals(this.y.num);
+    
+    public PointInt div(PointInt that) {
+        return new PointInt(that.x == 0 ? null : this.x / that.x, that.y == 0 ? null : this.y / that.y);
     }
 }

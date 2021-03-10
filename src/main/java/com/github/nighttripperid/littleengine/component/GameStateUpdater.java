@@ -26,17 +26,24 @@
  */
 package com.github.nighttripperid.littleengine.component;
 
+import com.github.nighttripperid.littleengine.model.NumWrap;
+import com.github.nighttripperid.littleengine.model.PointDouble;
+import com.github.nighttripperid.littleengine.model.Rect;
 import com.github.nighttripperid.littleengine.model.entity.Entity;
 import com.github.nighttripperid.littleengine.model.entity.RenderRequest;
 import com.github.nighttripperid.littleengine.model.gamestate.GameMap;
 import com.github.nighttripperid.littleengine.model.graphics.Sprite;
+import com.github.nighttripperid.littleengine.staticutil.VectorMath;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.AbstractMap;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+// TODO: flatten encapsulation. This is getting too bloated and complex. Needs a major redesign.
 @Slf4j
 public class GameStateUpdater {
 
@@ -51,16 +58,17 @@ public class GameStateUpdater {
         this.gameStateStackController = gameStateStackController;
     }
 
-    public void update() {
+    public void update(double elapsedTime) {
         addPendingEntities();
-        List<Entity> entities = gameStateStackController.getActiveGameState().getEntityData().getEntities();
-        entities.forEach(entity -> {
+        gameStateStackController.getActiveGameState().getEntityData().getEntities()
+        .forEach(entity -> {
             entity.getRenderRequests().clear();
-            runBehaviorScript(entity);
+            runBehaviorScript(entity, elapsedTime);
             runAnimationScript(entity,
                 gameStateStackController.getActiveGameState().getEntityData().getEntityGFX()
                         .getSpriteMap(entity.getFilename()));
             gameStateStackController.performGameStateTransition(entity.getGameStateTransition());
+            runCollisionCheck(entity, elapsedTime);
         });
         removeMarkedEntities();
     }
@@ -110,30 +118,66 @@ public class GameStateUpdater {
         }
     }
 
-    // TODO: finish implementing projected rectangle collision
-//    private void runCollisionCheck() {
-//        List<Entity> entities = gameStateStackController.getActiveGameState().getEntityData().getEntities();
-//        for (int i = 0; i < entities.size(); i++) {
-//            for (int k = i + 1; k < entities.size(); k++) {
-//                if (CollisionResolver.resolveEntityCollision()) {
+    // TODO: finish implementing projected rectangle tile collision
+    private void runCollisionCheck(Entity entity, double elapsedTime) {
+
+        List<Entity> entities = gameStateStackController.getActiveGameState().getEntityData().getEntities();
+
+        for (int i = 0; i < entities.size(); i++) {
+            PointDouble cp = PointDouble.of(0.0);
+            PointDouble cn = PointDouble.of(0.0);
+            NumWrap<Double> ct = new NumWrap<>(0.0);
+            List<AbstractMap.SimpleEntry<Integer, Double>> z = new ArrayList<>();
+            if (entity.equals(entities.get(i)))
+                continue;
+
+            if (VectorMath.dynamicRectVsRect(entity.getRect(), elapsedTime, entities.get(i).getRect(), cp, cn, ct))
+                z.add(new AbstractMap.SimpleEntry<>(i, ct.num));
+
+            z = z.stream()
+                    .sorted(Map.Entry.<Integer, Double>comparingByValue().reversed())
+                    .collect(Collectors.toList());
+
+            z.forEach(z1 -> VectorMath.resolveDynamicRectVsRect(entity.getRect(), elapsedTime, entities.get(z1.getKey()).getRect()));
+
+        }
+        entity.getRect().pos.set(
+                entity.getRect().pos
+                        .plus(entity.getRect().vel.times(PointDouble.of(elapsedTime)))
+        );
+    }
+
+    // TODO: figure out how to determine which tiles to check without checking every tile on the map
+//    public void tileCollision(Rect dRect, List<Rect> sRects, double elapsedTime) {
 //
-//                }
-//                if (entities.get(i).collidesWith(entities.get(k))) {
-//                    entities.get(i).runCollision(entities.get(k));
-//                    entities.get(k).runCollision(entities.get(i));
-//                }
-//            }
+//        for (int i = 0; i < sRects.size(); i++) {
+//            PointDouble cp = PointDouble.of(0.0);
+//            PointDouble cn = PointDouble.of(0.0);
+//            NumWrap<Double> ct = new NumWrap<>(0.0);
+//            List<AbstractMap.SimpleEntry<Integer, Double>> z = new ArrayList<>();
+//
+//            if (VectorMath.dynamicRectVsRect(dRect, elapsedTime, sRects.get(i), cp, cn, ct))
+//                z.add(new AbstractMap.SimpleEntry<>(i, ct.num));
+//
+//            z = z.stream()
+//                    .sorted(Map.Entry.<Integer, Double>comparingByValue().reversed())
+//                    .collect(Collectors.toList());
+//
+//            z.forEach(z1 -> VectorMath.resolveDynamicRectVsRect(dRect, elapsedTime, sRects.get(z1.getKey())));
+//
 //        }
+//        dRect.pos.set(dRect.pos.plus(dRect.vel.times(PointDouble.of(elapsedTime))));
 //    }
+
 
     private void runAnimationScript(Entity entity, Map<Integer, Sprite> spriteMap) {
         if (entity.getAnimationScript() != null)
             entity.getAnimationScript().run(spriteMap);
     }
 
-    private void runBehaviorScript(Entity entity) {
+    private void runBehaviorScript(Entity entity, double timeElapsed) {
         // TODO: implement groovy integration for entity updates (maybe)
         if (entity.getBehaviorScript() != null)
-            entity.getBehaviorScript().run(gameStateStackController.getActiveGameState().getGameMap());
+            entity.getBehaviorScript().run(gameStateStackController.getActiveGameState().getGameMap(), timeElapsed);
     }
 }

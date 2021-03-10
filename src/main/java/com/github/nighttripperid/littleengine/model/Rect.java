@@ -8,9 +8,17 @@ public class Rect {
     public PointDouble size;
     public PointDouble vel;
 
+    public Rect[] contact = new Rect[4];
+
     public Rect() {
-        pos = new PointDouble();
-        size = new PointDouble();
-        vel = new PointDouble();
+        pos = PointDouble.of(0D);
+        size = PointDouble.of(0D);
+        vel = PointDouble.of(0D);
+    }
+
+    public Rect(PointDouble pos, PointDouble size) {
+        this.pos = pos;
+        this.size = size;
+        this.vel = PointDouble.of(0D);
     }
 }

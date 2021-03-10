@@ -28,6 +28,8 @@ package com.github.nighttripperid.littleengine.component;
 
 import com.github.nighttripperid.littleengine.constant.Font5x5;
 import com.github.nighttripperid.littleengine.constant.Font8x8;
+import com.github.nighttripperid.littleengine.model.PointDouble;
+import com.github.nighttripperid.littleengine.model.Rect;
 import com.github.nighttripperid.littleengine.model.entity.RenderRequest;
 import com.github.nighttripperid.littleengine.model.graphics.ScreenBuffer;
 import lombok.Setter;
@@ -45,6 +47,65 @@ public class RenderRequestProcessor {
 
     public void fill(int col) {
         Arrays.fill(screenBuffer.getPixels(), col);
+    }
+
+    // source: https://stackoverflow.com/questions/8113629/simplified-bresenhams-line-algorithm-what-does-it-exactly-do
+    public void drawLine(PointDouble start, PointDouble end, int col, ScreenBuffer screenBuffer) {
+        int x1 = (int)(double) start.x;
+        int x2 = (int)(double) end.x;
+        int y1 = (int)(double) start.y;
+        int y2 = (int)(double) end.y;
+        int dx = Math.abs(x2 - x1);
+        int dy = Math.abs(y2 - y1);
+
+        int sx = (x1 < x2) ? 1 : -1;
+        int sy = (y1 < y2) ? 1 : -1;
+
+        int err = dx - dy;
+
+        while (true) {
+            renderPixel(x1, y1, col);
+            if (x1 == x2 && y1 == y2) {
+                break;
+            }
+            int e2 = 2 * err;
+            if (e2 > -dy) {
+                err = err - dy;
+                x1 = x1 + sx;
+            }
+            if (e2 < dx) {
+                err = err + dx;
+                y1 = y1 + sy;
+            }
+        }
+    }
+
+    public void drawRect(Rect rect, int col) {
+        for (int y = (int)(double) rect.pos.y; y < (int)(double) rect.pos.y + rect.size.y; y++) {
+            if (y < 0 || y >= screenBuffer.getHeight())
+                continue;
+            for (int x = (int)(double)rect.pos.x; x < (int)(double) rect.pos.x + rect.size.x; x++) {
+                if (x < 0 || x >= screenBuffer.getWidth())
+                    continue;
+                if (x == (int)(double) rect.pos.x || x == (int)(double) rect.pos.x + rect.size.x - 1 ||
+                        y == (int)(double) rect.pos.y || y == (int)(double) rect.pos.y + rect.size.y - 1)
+                    screenBuffer.getPixels()[x + y * screenBuffer.getWidth()] = col;
+            }
+        }
+    }
+
+    public void drawRect(PointDouble pos, PointDouble size, int col) {
+        for (int y = (int)(double) pos.y; y < (int)(double) pos.y + size.y; y++) {
+            if (y < 0 || y >= screenBuffer.getHeight())
+                continue;
+            for (int x = (int)(double)pos.x; x < (int)(double) pos.x + size.x; x++) {
+                if (x < 0 || x >= screenBuffer.getWidth())
+                    continue;
+                if (x == (int)(double) pos.x || x == (int)(double) pos.x + size.x - 1 ||
+                        y == (int)(double) pos.y || y == (int)(double) pos.y + size.y - 1)
+                    screenBuffer.getPixels()[x + y * screenBuffer.getWidth()] = col;
+            }
+        }
     }
 
     public void drawRect(double x, double y, int width, int height, int col) {
