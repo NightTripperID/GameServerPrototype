@@ -30,7 +30,6 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.nighttripperid.littleengine.model.graphics.SpriteSheet;
 import com.github.nighttripperid.littleengine.model.tiles.TILED_TileMap;
-import com.github.nighttripperid.littleengine.model.tiles.Tileset;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.imageio.ImageIO;
@@ -62,20 +61,17 @@ public class MapResourceLoader {
         return tiled_TileMap;
     }
 
-    public static Tileset fetchTileset(String pngPath, int tileW, int tileH) {
+    public static SpriteSheet fetchTilesetImage(String pngPath, int tileW, int tileH) {
         URL url = MapResourceLoader.class.getClassLoader().getResource(pngPath);
         assert url != null;
-        Tileset tileset = null;
         try {
             log.info("Loading: {}{}", url.getPath(), "...");
             BufferedImage image = ImageIO.read(url);
             log.info("Loading {} successful!", url.getPath());
-            SpriteSheet spriteSheet = new SpriteSheet(image, tileW, tileH);
-            tileset = new Tileset();
-            tileset.setTileset(spriteSheet, tileW, tileH);
+            return new SpriteSheet(image, tileW, tileH);
         } catch (IOException e) {
             log.error("Loading {} failed: {}", url.getPath(), e.getMessage());
         }
-        return tileset;
+        return null;
     }
 }
