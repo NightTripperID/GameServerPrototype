@@ -29,6 +29,7 @@ package com.github.nighttripperid.littleengine.component;
 import com.github.nighttripperid.littleengine.model.entity.Entity;
 import com.github.nighttripperid.littleengine.model.entity.RenderTask;
 import com.github.nighttripperid.littleengine.model.gamestate.GameMap;
+import com.github.nighttripperid.littleengine.model.gamestate.GameState;
 import com.github.nighttripperid.littleengine.model.graphics.Sprite;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -57,15 +58,14 @@ public class GameStateUpdater {
 
     public void update(double elapsedTime) {
         addPendingEntities();
-        gameStateStackController.getActiveGameState().getEntityData().getEntities()
+        GameState activeGameState = gameStateStackController.getActiveGameState();
+        activeGameState.getEntityData().getEntities()
         .forEach(entity -> {
             entity.getRenderTasks().clear();
             runBehaviorScript(entity, elapsedTime);
             runAnimationScript(entity,
-                gameStateStackController.getActiveGameState().getEntityData().getEntityGFX()
-                        .getSpriteMap(entity.getGfxKey()));
-            collisionResolver.runTileCollision(entity,
-                    gameStateStackController.getActiveGameState().getGameMap(), elapsedTime);
+                activeGameState.getEntityData().getEntityGFX().getSpriteMap(entity.getGfxKey()));
+            collisionResolver.runTileCollision(entity, activeGameState.getGameMap(), elapsedTime);
             gameStateStackController.performGameStateTransition(entity.getGameStateTransition());
         });
         removeMarkedEntities();

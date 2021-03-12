@@ -6,7 +6,6 @@ import com.github.nighttripperid.littleengine.model.PointInt;
 import com.github.nighttripperid.littleengine.model.Rect;
 import com.github.nighttripperid.littleengine.model.entity.Entity;
 import com.github.nighttripperid.littleengine.model.gamestate.GameMap;
-import com.github.nighttripperid.littleengine.model.tiles.TILED_TileMap;
 import com.github.nighttripperid.littleengine.model.tiles.Tile;
 import com.github.nighttripperid.littleengine.staticutil.VectorMath;
 
@@ -39,41 +38,53 @@ public class CollisionResolver {
         List<PointDouble> outerPoints = new ArrayList<>();
         // top row of perimeter
         for (int x = currTile_TL.x - 1; x <= currTile_TR.x + 1; x++)
-            outerPoints.add(new PointDouble((double)x, (double)currTile_TL.y - 1));
-
+            outerPoints.add(new PointDouble((double) x, (double) currTile_TL.y - 1));
 
         // bottom row of perimeter
         for (int x = currTile_TL.x - 1; x <= currTile_TR.x + 1; x++)
-            outerPoints.add(new PointDouble((double)x, (double)currTile_BL.y + 1));
-
+            outerPoints.add(new PointDouble((double) x, (double) currTile_BL.y + 1));
 
         // left column of perimeter
         for (int y = currTile_TL.y - 1; y <= currTile_BL.y + 1; y++)
-            outerPoints.add(new PointDouble((double)currTile_TL.x - 1, (double)y));
-
+            outerPoints.add(new PointDouble((double) currTile_TL.x - 1, (double) y));
 
         // right column of perimeter
         for (int y = currTile_TL.y - 1; y <= currTile_BL.y + 1; y++)
-            outerPoints.add(new PointDouble((double)currTile_TR.x + 1,  (double)y));
+            outerPoints.add(new PointDouble((double) currTile_TR.x + 1,  (double) y));
 
+        for (int i = 1; i <= gameMap.getTileMap().getNumLayers(); i++) {
+            List<Tile> tiles = new ArrayList<>();
+            final int layer = i;
+            outerPoints.forEach(outerPoint -> tiles.add(gameMap.getTileMap().getTile(gameMap.getTileset(), layer,
+                    (int) (double) outerPoint.x, (int) (double) outerPoint.y)));
 
-        List<Tile> tiles = new ArrayList<>();
-        outerPoints.forEach(outerPoint -> tiles.add(gameMap.getTileMap().getTile(gameMap.getTileset(), 1,
-                (int)(double)outerPoint.x, (int)(double)outerPoint.y)));
-
-        List<Rect> tileRects = new ArrayList<>();
-        for (int i = 0; i < tiles.size(); i++) {
-            Tile tile = tiles.get(i);
-            if (tile != null && tile.getAttributes().contains("solid")) {
-                Rect r = new Rect();
-                r.pos = outerPoints.get(i).times(gameMap.getTileSize());
-                r.size = tiles.get(i).getRect().size;
-                tileRects.add(r);
+            List<Rect> tileRects = new ArrayList<>();
+            for (int k = 0; k < tiles.size(); k++) {
+                Tile tile = tiles.get(k);
+                if (tile != null && tile.getAttributes().contains("solid")) {
+                    Rect r = new Rect();
+                    r.pos = outerPoints.get(k).times(gameMap.getTileSize());
+                    r.size = tiles.get(k).getRect().size;
+                    tileRects.add(r);
+                }
             }
+
+            resolveTileCollision(entity, tileRects, elapsedTime);
         }
 
-        resolveTileCollision(entity, tileRects, elapsedTime);
+        if (entity.getBody().vel.x > 0) {
+            entity.getBody().pos.x += Math.ceil(entity.getBody().vel.x * elapsedTime);
+        }
+        else if (entity.getBody().vel.x < 0) {
+            entity.getBody().pos.x += Math.floor(entity.getBody().vel.x * elapsedTime);
+        }
 
+        if (entity.getBody().vel.y > 0) {
+            entity.getBody().pos.y += Math.ceil(entity.getBody().vel.y * elapsedTime);
+        }
+        else if (entity.getBody().vel.y < 0) {
+            entity.getBody().pos.y += Math.floor(entity.getBody().vel.y * elapsedTime);
+        }
     }
 
     private void resolveTileCollision(Entity entity, List<Rect> sRects, double elapsedTime) {
@@ -92,20 +103,6 @@ public class CollisionResolver {
 
             z.forEach(z1 -> VectorMath.resolveDynamicRectVsRect(entity.getBody(), elapsedTime, sRects.get(z1.getKey())));
 
-        }
-
-        if (entity.getBody().vel.x > 0) {
-            entity.getBody().pos.x += Math.ceil(entity.getBody().vel.x * elapsedTime);
-        }
-        else if (entity.getBody().vel.x < 0) {
-            entity.getBody().pos.x += Math.floor(entity.getBody().vel.x * elapsedTime);
-        }
-
-        if (entity.getBody().vel.y > 0) {
-            entity.getBody().pos.y += Math.ceil(entity.getBody().vel.y * elapsedTime);
-        }
-        else if (entity.getBody().vel.y < 0) {
-            entity.getBody().pos.y += Math.floor(entity.getBody().vel.y * elapsedTime);
         }
     }
 }
