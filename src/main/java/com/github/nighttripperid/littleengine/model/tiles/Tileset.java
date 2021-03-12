@@ -27,14 +27,20 @@
 package com.github.nighttripperid.littleengine.model.tiles;
 
 import com.github.nighttripperid.littleengine.model.graphics.Sprite;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.util.Map;
 
 @Data
-@AllArgsConstructor
 public class Tileset {
+
     private final Map<Integer, Tile> tileset; // hashed by tile id
-    public static final Tile VOID_TILE = new Tile(new Sprite(0xffff00ff, 16, 16), 16, 16);
+    public final Tile VOID_TILE;
+
+    public Tileset(Map<Integer, Tile> tileset, int tileW, int tileH) {
+        VOID_TILE = new Tile(new Sprite(0xffff00ff, tileW, tileH), tileW, tileH);
+        VOID_TILE.getAttributes().add("solid");
+        this.tileset = tileset;
+    }
+
 }

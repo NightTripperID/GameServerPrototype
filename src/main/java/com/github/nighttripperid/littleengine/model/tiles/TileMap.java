@@ -49,7 +49,7 @@ public class TileMap {
                     x_T >= width_T ||
                     y_T >= height_T) {
 
-            return Tileset.VOID_TILE;
+            return tileset.VOID_TILE;
 
         } else {
             return tileset.getTileset().get(getTileId(layerId, x_T, y_T));
