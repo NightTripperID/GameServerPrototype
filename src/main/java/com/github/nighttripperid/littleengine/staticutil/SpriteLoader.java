@@ -43,9 +43,9 @@ public class SpriteLoader {
     public static void loadSpritesByColumns(String fileName, int spriteWidth, int spriteHeight,
                                             EntityGFX entityGFX) {
         URL url = SpriteLoader.class.getClassLoader().getResource(fileName);
-
+        assert(url != null);
         try {
-            if (entityGFX.getSpriteMaps().get(fileName) != null) {
+            if (entityGFX.getSpriteMap(fileName) != null) {
                 log.info("{} already loaded, skipping load process!", url.toString());
                 return;
             }
@@ -62,9 +62,9 @@ public class SpriteLoader {
     public static void loadSpritesByRows(String fileName, int spriteWidth, int spriteHeight,
                                          EntityGFX entityGFX) {
         URL url = SpriteLoader.class.getClassLoader().getResource(fileName);
-
+        assert(url != null);
         try {
-            if (entityGFX.getSpriteMaps().get(fileName) != null) {
+            if (entityGFX.getSpriteMap(fileName) != null) {
                 log.info("{} already loaded, skipping load process!", url.toString());
                 return;
             }

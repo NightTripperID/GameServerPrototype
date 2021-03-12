@@ -35,17 +35,13 @@ import java.util.Map;
 
 @Data
 public class Tileset {
-    private final Map<Integer, Tile> tileset = new HashMap<>();
-    public static final Tile VOID_TILE = new Tile(new Sprite(0xffff00ff,
-            Tile.TileSize.X16.getValue(),
-            Tile.TileSize.X16.getValue()),
-            true,
-            false);
+    private final Map<Integer, Tile> tileset = new HashMap<>(); // hashed by tile id
+    public static final Tile VOID_TILE = new Tile(new Sprite(0xffff00ff, 16, 16), 16, 16);
 
-    public void setTileset(SpriteSheet spriteSheet, int tileSize) {
-        for(int y = 0, i = 0; y < spriteSheet.sheetH_P / tileSize; y++) {
-            for(int x = 0; x < spriteSheet.sheetW_P / tileSize; x++, i++) {
-                tileset.put(i, new Tile(new Sprite(spriteSheet, tileSize, x, y), false, false));
+    public void setTileset(SpriteSheet spriteSheet, int tileW, int tileH) {
+        for(int y = 0, i = 0; y < spriteSheet.sheetH_P / tileH; y++) {
+            for(int x = 0; x < spriteSheet.sheetW_P / tileW; x++, i++) {
+                tileset.put(i, new Tile(new Sprite(spriteSheet, tileW, tileH, x, y), tileW, tileH));
             }
         }
     }

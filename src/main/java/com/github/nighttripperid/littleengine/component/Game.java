@@ -27,15 +27,13 @@
 package com.github.nighttripperid.littleengine.component;
 
 
-import com.github.nighttripperid.littleengine.model.entity.Entity;
-import com.github.nighttripperid.littleengine.model.gamestate.GameMap;
 import com.github.nighttripperid.littleengine.model.gamestate.Intent;
-import com.github.nighttripperid.littleengine.model.entity.RenderRequest;
 import com.github.nighttripperid.littleengine.model.graphics.ScreenBuffer;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import java.time.Clock;
+import java.time.Duration;
+import java.time.Instant;
 
 @Slf4j
 public final class Game {
@@ -45,15 +43,17 @@ public final class Game {
     private boolean running;
 
     private IOController ioController;
-    private final ScreenBufferUpdater screenBufferUpdater;
     private final GameStateUpdater gameStateUpdater;
 
-    public Game(int screenWidth, int screenHeight, int screenScale, String title) {
+    public Game(int width, int height, int scale, String title) {
         this.title = title;
-        ioController = new IOController(screenWidth, screenHeight, screenScale);
-        screenBufferUpdater = new ScreenBufferUpdater(new RenderRequestProcessor(),
-                new ScreenBuffer(screenWidth, screenHeight, screenScale));
-        gameStateUpdater = new GameStateUpdater(new GameStateStackController());
+        ioController = new IOController(width, height, scale);
+
+        ScreenBufferUpdater screenBufferUpdater = new ScreenBufferUpdater(new RenderTaskHandler(),
+                new ScreenBuffer(width, height, scale));
+
+        gameStateUpdater = new GameStateUpdater(screenBufferUpdater, new GameStateStackController(),
+                new CollisionResolver());
     }
 
     private synchronized void start() {
@@ -72,70 +72,45 @@ public final class Game {
         }
     }
 
-    private final Runnable mainLoop = () -> {
-        long lastTime = System.nanoTime();
-        long timer = System.currentTimeMillis();
-        final double ns = 1000000000D / 60D;
-        double delta = 0D;
-        int frames = 0;
-        int updates = 0;
+    Clock clock = Clock.systemDefaultZone();
 
+
+    private final Runnable mainLoop = () -> {
+        long timer = System.currentTimeMillis();
+        int frames = 0;
         ioController.requestFocus();
 
+        Instant before;
+        Instant after = clock.instant();
+        Duration elapsed;
+
         while (running) {
+            before = clock.instant();
+            elapsed = Duration.between(after, before);
+            after = before;
 
-            long now = System.nanoTime();
-            delta += (now - lastTime) / ns;
-            lastTime = now;
+            update((double)(elapsed.toMillis()) / 1000);
+            render();
 
-            while (delta >= 1) {
-                update(); // 60 times per second
-                delta--;
-                updates++;
-            }
-
-            render(); // as fast as possible
             frames++;
 
             if(System.currentTimeMillis() - timer > 1000) {
                 timer += 1000;
-                ioController.setTitle(title + " | " + updates + " ups " + " | " + frames + " fps");
+                ioController.setTitle(title + " | " + frames + " fps");
                 frames = 0;
-                updates = 0;
             }
         }
         stop();
     };
 
-    private void update() {
-        IOController.updateInput();
-        gameStateUpdater.update();
+    private void update(double elapsedTime) {
+        ioController.updateInput();
+        gameStateUpdater.update(elapsedTime);
+        gameStateUpdater.renderToScreenBuffer();
     }
 
     private void render() {
-        screenBufferUpdater.clearScreenBuffer();
-
-        GameMap gameMap = gameStateUpdater.getGameStateStackController().getActiveGameState().getGameMap();
-        List<Entity> entities = gameStateUpdater.getGameStateStackController()
-                .getActiveGameState().getEntityData().getEntities();
-
-        for (int i = 1; i <= gameMap.getTileMap().getNumLayers(); i++) {
-            final int layer = i;
-            screenBufferUpdater.renderTileLayer(gameMap, layer);
-
-            List<Entity> entitiesInLayer = entities.stream()
-                    .filter(entity -> entity.getRenderLayer() == layer)
-                    .collect(Collectors.toList());
-            screenBufferUpdater.renderEntities(entitiesInLayer, gameMap);
-
-            List<RenderRequest> renderRequests = entities.stream()
-                    .flatMap(entity -> entity.getRenderRequests().stream())
-                    .filter(renderRequest -> renderRequest.getRenderLayer() == layer)
-                    .collect(Collectors.toList());
-            screenBufferUpdater.processRenderRequests(renderRequests);
-        }
-
-        ioController.renderBufferToScreen(screenBufferUpdater.getScreenBuffer());
+        ioController.renderBufferToScreen(gameStateUpdater.getScreenBufferUpdater().getScreenBuffer());
     }
 
     public void start(Intent intent) {

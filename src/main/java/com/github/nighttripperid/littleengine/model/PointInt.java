@@ -27,8 +27,8 @@
 package com.github.nighttripperid.littleengine.model;
 
 public class PointInt {
-    public int x;
-    public int y;
+    public Integer x;
+    public Integer y;
 
     public PointInt(){
         x = 0;
@@ -36,6 +36,7 @@ public class PointInt {
     }
 
     public PointInt(int x, int y) {
+        this();
         this.x = x;
         this.y = y;
     }
@@ -51,12 +52,8 @@ public class PointInt {
     public PointInt times(PointInt that) {
         return new PointInt(this.x * that.x, this.y * that.y);
     }
-
-    @Override
-    public boolean equals(Object p) {
-        if (this == p) return true;
-        if (p == null || getClass() != p.getClass()) return false;
-        PointInt pointInt = (PointInt) p;
-        return x == pointInt.x && y == pointInt.y;
+    
+    public PointInt div(PointInt that) {
+        return new PointInt(that.x == 0 ? null : this.x / that.x, that.y == 0 ? null : this.y / that.y);
     }
 }

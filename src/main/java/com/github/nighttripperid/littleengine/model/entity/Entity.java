@@ -27,9 +27,8 @@
 package com.github.nighttripperid.littleengine.model.entity;
 
 import com.github.nighttripperid.littleengine.model.Eventable;
-import com.github.nighttripperid.littleengine.model.PointDouble;
-import com.github.nighttripperid.littleengine.model.PointInt;
-import com.github.nighttripperid.littleengine.model.graphics.AnimReel;
+import com.github.nighttripperid.littleengine.model.Rect;
+import com.github.nighttripperid.littleengine.model.graphics.AnimationReel;
 import com.github.nighttripperid.littleengine.model.graphics.Sprite;
 import lombok.Data;
 
@@ -38,22 +37,17 @@ import java.util.List;
 
 @Data
 public abstract class Entity implements Eventable, Comparable<Entity> {
-    private static final int MIN_RENDER_PRIORITY = 0;
-    private static final int MAX_RENDER_PRIORITY =  3;
 
-    private String filename;
-
-    private boolean removed;
+    private String gfxKey;
     private int renderPriority;
     private int renderLayer;
     private Sprite sprite;
-    private AnimReel animReel = new AnimReel();
+    private AnimationReel animationReel = new AnimationReel();
 
-    public PointInt direction = new PointInt();
-    public PointDouble position = new PointDouble();
-    public PointDouble speed = new PointDouble();
+    private Rect body = new Rect();
+    private boolean removed;
 
-    private List<RenderRequest> renderRequests = new ArrayList<>();
+    private List<RenderTask> renderTasks = new ArrayList<>();
     private BehaviorScript behaviorScript;
     private AnimationScript animationScript;
     private InitGfxRoutine initGfxRoutine;
@@ -61,7 +55,7 @@ public abstract class Entity implements Eventable, Comparable<Entity> {
 
     @Override
     public int compareTo(Entity entity) {
-        return (int) (this.getPosition().y - entity.getPosition().y);
+        return (int) (this.body.pos.y - entity.body.pos.y);
 //        return this.renderPriority - entity.renderPriority;
     }
 }

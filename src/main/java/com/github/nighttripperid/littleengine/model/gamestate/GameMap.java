@@ -31,21 +31,26 @@ import com.github.nighttripperid.littleengine.model.tiles.TILED_TileMap;
 import com.github.nighttripperid.littleengine.model.tiles.TileMap;
 import com.github.nighttripperid.littleengine.model.tiles.Tileset;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
 @Data
 public class GameMap {
 
-    private PointDouble scroll = new PointDouble();
+    private PointDouble scroll = PointDouble.of(0.0);
+    private PointDouble tileSize;
 
-    private int tileSize;
     private int tileBitShift;
 
     private Tileset tileset;
     private TileMap tileMap;
 
-    @Getter
-    @Setter
     private TILED_TileMap tiled_TileMap;
+
+    public void setScroll(PointDouble scroll) {
+        this.scroll.x = (scroll.x > 0) ? Math.ceil(scroll.x) : Math.floor(scroll.x);
+        this.scroll.y = (scroll.y > 0) ? Math.ceil(scroll.y) : Math.floor(scroll.y);
+    }
+
+    public PointDouble getScroll() {
+        return new PointDouble(scroll.x, scroll.y);
+    }
 }

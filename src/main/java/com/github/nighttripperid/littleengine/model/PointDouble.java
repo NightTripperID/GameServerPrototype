@@ -27,15 +27,11 @@
 package com.github.nighttripperid.littleengine.model;
 
 public class PointDouble {
-    public double x;
-    public double y;
 
-    public PointDouble(){
-        this.x = 0;
-        this.y = 0;
-    }
+    public Double x;
+    public Double y;
 
-    public PointDouble(double x, double y) {
+    public PointDouble(Double x, Double y) {
         this.x = x;
         this.y = y;
     }
@@ -52,11 +48,43 @@ public class PointDouble {
         return new PointDouble(this.x * that.x, this.y * that.y);
     }
 
-    @Override
-    public boolean equals(Object p) {
-        if (this == p) return true;
-        if (p == null || getClass() != p.getClass()) return false;
-        PointDouble that = (PointDouble) p;
-        return Double.compare(that.x, this.x) == 0 && Double.compare(that.y, this.y) == 0;
+    public PointDouble div(PointDouble that) {
+        return new PointDouble(this.x / that.x, this.y / that.y);
+    }
+
+    public void set(double x, double y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    public void set(PointDouble p) {
+        this.x = p.x;
+        this.y = p.y;
+    }
+
+    public void set(PointDoubleW p) {
+        this.x = p.x.num;
+        this.y = p.y.num;
+    }
+
+    public PointDoubleW wrap() {
+        return new PointDoubleW(this.x, this.y);
+    }
+
+    public Double mag() {
+        return Math.sqrt(x * x + y * y);
+    }
+
+    public Double mag2() {
+        return x * x + y * y;
+    }
+
+    public PointDouble norm() {
+        double r = 1 / mag();
+        return new PointDouble(x * r, y * r);
+    }
+
+    public static PointDouble of(Double num) {
+        return new PointDouble(num, num);
     }
 }

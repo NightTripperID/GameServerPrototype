@@ -27,34 +27,71 @@
 package com.github.nighttripperid.littleengine.component;
 
 import com.github.nighttripperid.littleengine.model.entity.Entity;
+import com.github.nighttripperid.littleengine.model.entity.RenderTask;
+import com.github.nighttripperid.littleengine.model.gamestate.GameMap;
+import com.github.nighttripperid.littleengine.model.gamestate.GameState;
 import com.github.nighttripperid.littleengine.model.graphics.Sprite;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
+// TODO: flatten encapsulation. This is getting too bloated and complex. Needs a major redesign.
 @Slf4j
 public class GameStateUpdater {
 
     @Getter
+    private final ScreenBufferUpdater screenBufferUpdater;
+    @Getter
     private final GameStateStackController gameStateStackController;
+    private final CollisionResolver collisionResolver;
 
-    public GameStateUpdater(GameStateStackController gameStateStackController) {
+    public GameStateUpdater(ScreenBufferUpdater screenBufferUpdater,
+                            GameStateStackController gameStateStackController,
+                            CollisionResolver collisionResolver) {
+        this.screenBufferUpdater = screenBufferUpdater;
         this.gameStateStackController = gameStateStackController;
+        this.collisionResolver = collisionResolver;
     }
 
-    public void update() {
+    public void update(double elapsedTime) {
         addPendingEntities();
-        List<Entity> entities = gameStateStackController.getActiveGameState().getEntityData().getEntities();
-        entities.forEach(entity -> {
-            entity.getRenderRequests().clear();
-            runBehaviorScript(entity);
+        GameState activeGameState = gameStateStackController.getActiveGameState();
+        activeGameState.getEntityData().getEntities()
+        .forEach(entity -> {
+            entity.getRenderTasks().clear();
+            runBehaviorScript(entity, elapsedTime);
             runAnimationScript(entity,
-                gameStateStackController.getActiveGameState().getEntityData().getEntityGFX().getSpriteMaps().get(entity.getFilename()));
+                activeGameState.getEntityData().getEntityGFX().getSpriteMap(entity.getGfxKey()));
+            collisionResolver.runTileCollision(entity, activeGameState.getGameMap(), elapsedTime);
             gameStateStackController.performGameStateTransition(entity.getGameStateTransition());
         });
         removeMarkedEntities();
+    }
+
+    public void renderToScreenBuffer() {
+        screenBufferUpdater.clearScreenBuffer();
+
+        GameMap gameMap = gameStateStackController.getActiveGameState().getGameMap();
+        List<Entity> entities = gameStateStackController.getActiveGameState().getEntityData().getEntities();
+
+        for (int i = 1; i <= gameMap.getTileMap().getNumLayers(); i++) {
+            final int layer = i;
+            screenBufferUpdater.renderTileLayer(gameMap, layer);
+
+            List<Entity> entitiesInLayer = entities.stream()
+                    .filter(entity -> entity.getRenderLayer() == layer)
+                    .collect(Collectors.toList());
+            screenBufferUpdater.renderEntities(entitiesInLayer, gameMap);
+
+            List<RenderTask> renderTasks = entities.stream()
+                    .flatMap(entity -> entity.getRenderTasks().stream())
+                    .filter(renderRequest -> renderRequest.getRenderLayer() == layer)
+                    .collect(Collectors.toList());
+            screenBufferUpdater.processRenderTasks(renderTasks);
+        }
     }
 
     // TODO: delegate entity methods to EntityProcessor (maybe)
@@ -84,9 +121,9 @@ public class GameStateUpdater {
             entity.getAnimationScript().run(spriteMap);
     }
 
-    private void runBehaviorScript(Entity entity) {
+    private void runBehaviorScript(Entity entity, double timeElapsed) {
         // TODO: implement groovy integration for entity updates (maybe)
         if (entity.getBehaviorScript() != null)
-            entity.getBehaviorScript().run(gameStateStackController.getActiveGameState().getGameMap());
+            entity.getBehaviorScript().run(gameStateStackController.getActiveGameState().getGameMap(), timeElapsed);
     }
 }

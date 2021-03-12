@@ -1,6 +1,6 @@
 package com.github.nighttripperid.littleengine.model.graphics;
 
-public class AnimReel {
+public class AnimationReel {
     public int frame;
     public int frameRate = 5;
     public int time;

@@ -28,7 +28,7 @@ package com.github.nighttripperid.littleengine.component;
 
 import com.github.nighttripperid.littleengine.model.entity.Entity;
 import com.github.nighttripperid.littleengine.model.gamestate.GameMap;
-import com.github.nighttripperid.littleengine.model.entity.RenderRequest;
+import com.github.nighttripperid.littleengine.model.entity.RenderTask;
 import com.github.nighttripperid.littleengine.model.graphics.ScreenBuffer;
 import com.github.nighttripperid.littleengine.model.graphics.Sprite;
 
@@ -38,20 +38,20 @@ import java.util.List;
 public class ScreenBufferUpdater {
 
     private final ScreenBuffer screenBuffer;
-    private final RenderRequestProcessor renderRequestProcessor;
+    private final RenderTaskHandler renderTaskHandler;
 
-    public ScreenBufferUpdater(RenderRequestProcessor renderRequestProcessor, ScreenBuffer screenBuffer) {
+    public ScreenBufferUpdater(RenderTaskHandler renderTaskHandler, ScreenBuffer screenBuffer) {
         this.screenBuffer = screenBuffer;
-        this. renderRequestProcessor = renderRequestProcessor;
-        this.renderRequestProcessor.setScreenBuffer(this.screenBuffer);
+        this.renderTaskHandler = renderTaskHandler;
+        this.renderTaskHandler.setScreenBuffer(this.screenBuffer);
     }
 
     public void renderEntities(List<Entity> entities, GameMap gameMap) {
         entities.sort(Entity::compareTo);
         entities.forEach(entity -> {
             if(entity.getSprite() != null ) {
-                renderSprite(entity.getPosition().x - gameMap.getScroll().x,
-                        entity.getPosition().y - gameMap.getScroll().y, entity.getSprite());
+                renderSprite(entity.getBody().pos.x - gameMap.getScroll().x,
+                        entity.getBody().pos.y - gameMap.getScroll().y, entity.getSprite());
             }
         });
     }
@@ -60,11 +60,11 @@ public class ScreenBufferUpdater {
 
         screenBuffer.setScroll(gameMap.getScroll());
 
-        int x0 = (int) gameMap.getScroll().x >> gameMap.getTileBitShift();
-        int x1 = (((int) gameMap.getScroll().x + screenBuffer.getWidth()) + gameMap.getTileSize())
+        int x0 = (int) (double) gameMap.getScroll().x >> gameMap.getTileBitShift();
+        int x1 = (((int) (double) gameMap.getScroll().x + screenBuffer.getWidth()) + (int) (double) gameMap.getTileSize().x)
                 >> gameMap.getTileBitShift();
-        int y0 = (int) gameMap.getScroll().y >> gameMap.getTileBitShift();
-        int y1 = (((int) gameMap.getScroll().y + screenBuffer.getHeight()) + gameMap.getTileSize())
+        int y0 = (int) (double) gameMap.getScroll().y >> gameMap.getTileBitShift();
+        int y1 = (((int) (double) gameMap.getScroll().y + screenBuffer.getHeight()) + (int) (double) gameMap.getTileSize().y)
                 >> gameMap.getTileBitShift();
 
         for (int y = y0; y < y1; y++) {
@@ -115,9 +115,9 @@ public class ScreenBufferUpdater {
     }
 
 
-    public void processRenderRequests(List<RenderRequest> renderRequests) {
-        renderRequests.sort(RenderRequest::compareTo);
-        renderRequests.forEach(renderRequestProcessor::process);
+    public void processRenderTasks(List<RenderTask> renderTasks) {
+        renderTasks.sort(RenderTask::compareTo);
+        renderTasks.forEach(renderTaskHandler::process);
     }
 
     public ScreenBuffer getScreenBuffer() {

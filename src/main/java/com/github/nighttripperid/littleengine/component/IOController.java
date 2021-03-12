@@ -27,7 +27,6 @@
 package com.github.nighttripperid.littleengine.component;
 
 import com.github.nighttripperid.littleengine.model.graphics.ScreenBuffer;
-import lombok.Setter;
 
 import javax.swing.*;
 import java.awt.*;
@@ -37,11 +36,9 @@ import java.awt.image.DataBufferInt;
 
 public class IOController extends Canvas {
 
-    @Setter
-    private String title;
-
     private final BufferedImage bufferedImage;
     private final int[] pixels;
+    private final JFrame jFrame;
 
     public IOController(int width, int height, int scale) {
         bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
@@ -49,9 +46,8 @@ public class IOController extends Canvas {
 
         setPreferredSize(new Dimension(width * scale, height * scale));
 
-        JFrame jFrame = new JFrame();
-        jFrame.setResizable(false);
-        jFrame.setTitle(title);
+        jFrame = new JFrame();
+        jFrame.setResizable(true);
         jFrame.add(this);
         jFrame.pack();
         jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -66,7 +62,7 @@ public class IOController extends Canvas {
         addMouseWheelListener(mouse);
     }
 
-    public static void updateInput() {
+    public void updateInput() {
         Keyboard.update();
         Mouse.update();
     }
@@ -79,9 +75,7 @@ public class IOController extends Canvas {
             return;
         }
 
-        for(int i = 0; i < pixels.length; i++) {
-            pixels[i] = screenBuffer.getPixels()[i];
-        }
+        System.arraycopy(screenBuffer.getPixels(), 0, pixels, 0, pixels.length);
 
         Graphics graphics = bufferStrategy.getDrawGraphics();
         graphics.setColor(Color.MAGENTA);
@@ -91,5 +85,9 @@ public class IOController extends Canvas {
                 screenBuffer.getHeight() * screenBuffer.getScale(), null);
         graphics.dispose();
         bufferStrategy.show();
+    }
+
+    public void setTitle(String title) {
+        jFrame.setTitle(title);
     }
 }

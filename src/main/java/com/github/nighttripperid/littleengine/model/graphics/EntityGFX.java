@@ -26,12 +26,9 @@
  */
 package com.github.nighttripperid.littleengine.model.graphics;
 
-import lombok.Data;
-
 import java.util.HashMap;
 import java.util.Map;
 
-@Data
 public class EntityGFX {
     private final Map<String, Map<Integer, Sprite>> spriteMaps = new HashMap<>();
 
@@ -55,5 +52,9 @@ public class EntityGFX {
                 spriteMaps.get(key).put(i, new Sprite(spriteSheet, spriteSheet.spriteW_P,
                         spriteSheet.spriteH_P, x, y));
         }
+    }
+
+    public Map<Integer, Sprite> getSpriteMap(String key) {
+        return spriteMaps.get(key);
     }
 }

@@ -40,21 +40,33 @@ public class TileMap {
     @Getter
     private int height_T;
 
-    private final Map<Integer, Integer[]> tileMap = new HashMap<>(); // hashed by layerId
+    private final Map<Integer, Integer[]> tileMap = new HashMap<>(); // hashed by layerId, returns a tileId
 
-        public Tile getTile(Tileset tileset, int layerId, int x, int y) {
+        public Tile getTile(Tileset tileset, int layerId, int x_T, int y_T) {
 
-        if (x < 0 ||
-                y < 0 ||
-                x >= width_T ||
-                y >= height_T) {
+            if (    x_T < 0 ||
+                    y_T < 0 ||
+                    x_T >= width_T ||
+                    y_T >= height_T) {
 
             return Tileset.VOID_TILE;
 
         } else {
-            return tileset.getTileset().get(
-                    tileMap.get(layerId)[x + y * width_T] - 1
-            );
+            return tileset.getTileset().get(getTileId(layerId, x_T, y_T));
+        }
+    }
+
+    public Integer getTileId(int layerId, int x_T, int y_T) {
+
+        if (    x_T < 0 ||
+                y_T < 0 ||
+                x_T >= width_T ||
+                y_T >= height_T) {
+
+            return null;
+
+        } else {
+            return tileMap.get(layerId)[x_T + y_T * width_T] - 1;
         }
     }
 

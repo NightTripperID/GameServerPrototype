@@ -18,32 +18,31 @@ public class EntityDataBuilder {
         EntityData entityData = new EntityData();
         tiled_tileMap.getLayers().stream().filter(layer -> layer.getType().equals("objectgroup"))
                 .collect(Collectors.toList()).forEach(layer -> {
-            layer.getObjects().stream().filter(object -> object.getType().equals("entity"))
+                    layer.getObjects().stream().filter(object -> object.getType().equals("entity"))
                     .collect(Collectors.toList()).forEach(object -> {
-                Map<String, String> properties = new HashMap<>();
-                object.getProperties().forEach(property ->
-                        properties.put(property.getName(), property.getValue()));
-                try {
-                    Class<?> clazz = Class.forName(properties.get("class"));
-                    Entity entity = (Entity) clazz.newInstance();
-                    entity.setPosition(new PointDouble(object.getX(), object.getY()));
-                    properties.remove("class");
-                    properties.keySet().forEach(fieldName ->
-                            injectField(entity.getClass(), entity,
+                        Map<String, String> properties = new HashMap<>();
+                        object.getProperties().forEach(property ->
+                                properties.put(property.getName(), property.getValue()));
+                        try {
+                            Class<?> clazz = Class.forName(properties.get("class"));
+                            Entity entity = (Entity) clazz.newInstance();
+                            entity.getBody().pos = (new PointDouble((double) object.getX(), (double) object.getY()));
+                            properties.remove("class");
+                            properties.keySet().forEach(fieldName -> injectField(entity.getClass(), entity,
                                     fieldName, properties.get(fieldName))
-                    );
-                    entityData.getEntities().add(entity);
-                } catch (ClassNotFoundException e) {
-                    log.error("Error finding Class with name \"{}\". " +
-                            "Make sure to use fully qualified class name.", properties.get("class"));
-                } catch (IllegalAccessException e) {
-                    log.error("Error accessing Class to instantiate with name \"{}\". " +
-                            "make sure class is public.", properties.get("class"));
-                } catch (InstantiationException e) {
-                    log.error("Error instantiating Class with name \"{}\"", properties.get("class"));
-                }
-            });
-        });
+                            );
+                            entityData.getEntities().add(entity);
+                        } catch (ClassNotFoundException e) {
+                            log.error("Error finding Class with name \"{}\". " +
+                                    "Make sure to use fully qualified class name.", properties.get("class"));
+                        } catch (IllegalAccessException e) {
+                            log.error("Error accessing Class to instantiate with name \"{}\". " +
+                                    "make sure class is public.", properties.get("class"));
+                        } catch (InstantiationException e) {
+                            log.error("Error instantiating Class with name \"{}\"", properties.get("class"));
+                        }
+                    });
+                });
         return entityData;
     }
 

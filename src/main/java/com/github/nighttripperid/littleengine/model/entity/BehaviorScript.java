@@ -28,16 +28,16 @@ package com.github.nighttripperid.littleengine.model.entity;
 
 import com.github.nighttripperid.littleengine.model.gamestate.GameMap;
 
-import java.util.function.Consumer;
+import java.util.function.BiConsumer;
 
 public class BehaviorScript {
-    private final Consumer<GameMap> script;
+    private final BiConsumer<GameMap, Double> script;
 
-    public BehaviorScript(Consumer<GameMap> script) {
+    public BehaviorScript(BiConsumer<GameMap, Double> script) {
         this.script = script;
     }
 
-    public void run(GameMap gameMap) {
-        script.accept(gameMap);
+    public void run(GameMap gameMap, Double timeElapsed) {
+        script.accept(gameMap, timeElapsed);
     }
 }

@@ -309,6 +309,13 @@ public class Font5x5 {
 
     };
 
+    private static final Character[] MINUS = {0 , 0 , 0 , 0 , 0 ,
+                                              0 , 0 , 0 , 0 , 0 ,
+                                              0 ,'#','#','#', 0 ,
+                                              0 , 0 , 0 , 0 , 0 ,
+                                              0 , 0 , 0 , 0 , 0
+    };
+
     private static final Character[] SPACE = { 0 , 0 , 0 , 0 , 0 ,
                                                0 , 0 , 0 , 0 , 0 ,
                                                0 , 0 , 0 , 0 , 0 ,
@@ -353,6 +360,7 @@ public class Font5x5 {
         chars.put('7', Font5x5._7);
         chars.put('8', Font5x5._8);
         chars.put('9', Font5x5._9);
+        chars.put('-', Font5x5.MINUS);
         chars.put(' ', Font5x5.SPACE);
     }
 }

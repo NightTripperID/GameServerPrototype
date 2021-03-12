@@ -26,40 +26,24 @@
  */
 package com.github.nighttripperid.littleengine.model.tiles;
 
+import com.github.nighttripperid.littleengine.model.PointDouble;
+import com.github.nighttripperid.littleengine.model.Rect;
 import com.github.nighttripperid.littleengine.model.graphics.Sprite;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 public class Tile {
 
     private Sprite sprite;
-    private boolean isSolid;
-    private boolean isTrigger;
-    private TileSize tileSize;
+    private Rect rect;
+    private List<String> attributes = new ArrayList<>();
 
-    /**
-     * Creates a Tile object from a given Sprite and given properties.
-     * @param sprite The sprite associated with the Tile.
-     * @param isSolid Indicates whether or not the Tile is traversable by Entities.
-     * @param isTrigger Indicates whether or not the Tile has an interactive event Trigger.
-     */
-    public Tile(Sprite sprite, boolean isSolid, boolean isTrigger) {
+    public Tile(Sprite sprite, int width, int height) {
         this.sprite = sprite;
-        this.isSolid = isSolid;
-        this.isTrigger = isTrigger;
-    }
-
-    /**
-     * The size of the tile in square dimensions. Limited to common and reasonable dimensions.
-     */
-    @Getter
-    @AllArgsConstructor
-    public enum TileSize {
-        X8(8), X16(16), X32(32), X64(64), X128(128);
-
-        private final int value;
-
+        this.rect = new Rect();
+        this.rect.size = new PointDouble((double) width, (double) height);
     }
 }

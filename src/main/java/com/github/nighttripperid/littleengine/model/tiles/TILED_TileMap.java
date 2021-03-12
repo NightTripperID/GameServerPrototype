@@ -61,7 +61,7 @@ public class TILED_TileMap {
     @Data
     public static class Tile {
         private int id;
-        private List<ObjectGroup> objectgroup;
+        private ObjectGroup objectgroup;
     }
     @Data
     public static class ObjectGroup {
@@ -80,7 +80,6 @@ public class TILED_TileMap {
         private double rotation;
         private List<Property> properties;
     }
-
     @Data
     public static class Property {
         private String name;
