@@ -117,8 +117,8 @@ public class GameStateUpdater {
     }
 
     private void runAnimationScript(Entity entity, Map<Integer, Sprite> spriteMap) {
-        if (entity.getAnimationScript() != null)
-            entity.getAnimationScript().run(spriteMap);
+        if (entity.getAnimation() != null)
+            entity.getAnimation().run(spriteMap);
     }
 
     private void runBehaviorScript(Entity entity, double timeElapsed) {

@@ -31,14 +31,14 @@ import com.github.nighttripperid.littleengine.model.graphics.Sprite;
 import java.util.Map;
 import java.util.function.Consumer;
 
-public class AnimationScript {
-    private final Consumer<Map<Integer, Sprite>> script;
+public class Animation {
+    private final Consumer<Map<Integer, Sprite>> animation;
 
-    public AnimationScript(Consumer<Map<Integer, Sprite>> script) {
-        this.script = script;
+    public Animation(Consumer<Map<Integer, Sprite>> animation) {
+        this.animation = animation;
     }
 
     public void run(Map<Integer, Sprite> spriteMap) {
-        script.accept(spriteMap);
+        animation.accept(spriteMap);
     }
 }
