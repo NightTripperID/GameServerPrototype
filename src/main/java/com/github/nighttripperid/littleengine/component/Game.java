@@ -52,7 +52,8 @@ public final class Game {
         ScreenBufferUpdater screenBufferUpdater = new ScreenBufferUpdater(new RenderTaskHandler(),
                 new ScreenBuffer(width, height, scale));
 
-        gameStateUpdater = new GameStateUpdater(screenBufferUpdater, new GameStateStackController());
+        gameStateUpdater = new GameStateUpdater(screenBufferUpdater, new GameStateStackController(),
+                new CollisionResolver());
     }
 
     private synchronized void start() {
