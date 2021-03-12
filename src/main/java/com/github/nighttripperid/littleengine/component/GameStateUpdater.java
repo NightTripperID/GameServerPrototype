@@ -63,7 +63,7 @@ public class GameStateUpdater {
             runBehaviorScript(entity, elapsedTime);
             runAnimationScript(entity,
                 gameStateStackController.getActiveGameState().getEntityData().getEntityGFX()
-                        .getSpriteMap(entity.getFilename()));
+                        .getSpriteMap(entity.getGfxKey()));
             collisionResolver.runTileCollision(entity,
                     gameStateStackController.getActiveGameState().getGameMap(), elapsedTime);
             gameStateStackController.performGameStateTransition(entity.getGameStateTransition());

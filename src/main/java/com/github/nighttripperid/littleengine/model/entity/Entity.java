@@ -28,7 +28,7 @@ package com.github.nighttripperid.littleengine.model.entity;
 
 import com.github.nighttripperid.littleengine.model.Eventable;
 import com.github.nighttripperid.littleengine.model.Rect;
-import com.github.nighttripperid.littleengine.model.graphics.AnimReel;
+import com.github.nighttripperid.littleengine.model.graphics.AnimationReel;
 import com.github.nighttripperid.littleengine.model.graphics.Sprite;
 import lombok.Data;
 
@@ -37,16 +37,15 @@ import java.util.List;
 
 @Data
 public abstract class Entity implements Eventable, Comparable<Entity> {
-    private String filename;
 
-    private boolean removed;
+    private String gfxKey;
     private int renderPriority;
     private int renderLayer;
     private Sprite sprite;
-    private AnimReel animReel = new AnimReel();
+    private AnimationReel animationReel = new AnimationReel();
 
-    private Rect rect = new Rect();
-
+    private Rect body = new Rect();
+    private boolean removed;
 
     private List<RenderTask> renderTasks = new ArrayList<>();
     private BehaviorScript behaviorScript;
@@ -56,7 +55,7 @@ public abstract class Entity implements Eventable, Comparable<Entity> {
 
     @Override
     public int compareTo(Entity entity) {
-        return (int) (this.rect.pos.y - entity.rect.pos.y);
+        return (int) (this.body.pos.y - entity.body.pos.y);
 //        return this.renderPriority - entity.renderPriority;
     }
 }
