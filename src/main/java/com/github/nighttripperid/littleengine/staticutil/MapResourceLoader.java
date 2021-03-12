@@ -41,9 +41,6 @@ import java.net.URL;
 @Slf4j
 public class MapResourceLoader {
 
-    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper()
-            .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-
     private MapResourceLoader() {
     }
 
@@ -53,7 +50,7 @@ public class MapResourceLoader {
         TILED_TileMap tiled_TileMap = null;
         try {
             log.info("Loading: {}{}", url.getPath(), "...");
-            tiled_TileMap = OBJECT_MAPPER.readValue(url, TILED_TileMap.class);
+            tiled_TileMap = ObjectMapperW.getObjectMapper().readValue(url, TILED_TileMap.class);
             log.info("Loading {} successful!", url.getPath());
         } catch (IOException e) {
             log.error("Loading: {} failed: {}: {}", url.getPath(), e.getClass().getSimpleName(), e.getMessage());

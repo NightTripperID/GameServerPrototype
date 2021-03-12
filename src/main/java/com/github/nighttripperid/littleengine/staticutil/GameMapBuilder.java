@@ -1,5 +1,6 @@
 package com.github.nighttripperid.littleengine.staticutil;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.github.nighttripperid.littleengine.model.PointDouble;
 import com.github.nighttripperid.littleengine.model.PointInt;
 import com.github.nighttripperid.littleengine.model.gamestate.GameMap;
@@ -11,6 +12,7 @@ import com.github.nighttripperid.littleengine.model.tiles.TileMap;
 import com.github.nighttripperid.littleengine.model.tiles.Tileset;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,8 +24,8 @@ public class GameMapBuilder {
         GameMap gameMap = new GameMap();
         gameMap.setTileSize(new PointDouble((double) tiled_tileMap.getTilewidth(),
                                             (double) tiled_tileMap.getTileheight()));
-        gameMap.setTileset(buildTileset(tilesetImage, gameMap.getTileSize(), tiled_tileMap.getTilesets()));
         gameMap.setTileBitShift((int) (Math.log(gameMap.getTileSize().x) / Math.log(2)));
+        gameMap.setTileset(buildTileset(tilesetImage, gameMap.getTileSize(), tiled_tileMap.getTilesets()));
         gameMap.setTileMap(buildTileMap(tiled_tileMap, gameMap.getTileset()));
         gameMap.setTiled_TileMap(tiled_tileMap);
         return gameMap;
@@ -45,8 +47,25 @@ public class GameMapBuilder {
                 return;
             tiled_tileset.getTiles().forEach(tile -> {
                 if (tile.getObjectgroup() != null) {
-                    tile.getObjectgroup().getObjects().forEach(object ->
-                            tileset.getTileset().get(tile.getId()).getAttributes().add(object.getType()));
+                    tile.getObjectgroup().getObjects().forEach(object -> {
+                        if (object.getProperties() != null) {
+                            object.getProperties().forEach(property -> {
+                                if (property.getName().equals("attributes")) {
+                                    try {
+                                        List<?> attributes =
+                                                ObjectMapperW.getObjectMapper()
+                                                        .readValue(property.getValue(), List.class);
+                                        attributes.forEach(attribute ->
+                                            tileset.getTileset().get(tile.getId())
+                                                    .getAttributes().add((String) attribute)
+                                        );
+                                    } catch (JsonProcessingException e) {
+                                        log.error("Error loading tileset attributes: {}", e.getMessage());
+                                    }
+                                }
+                            });
+                        }
+                    });
                 }
             });
         });
