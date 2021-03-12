@@ -28,19 +28,19 @@ package com.github.nighttripperid.littleengine.component;
 
 import com.github.nighttripperid.littleengine.model.NumWrap;
 import com.github.nighttripperid.littleengine.model.PointDouble;
+import com.github.nighttripperid.littleengine.model.PointInt;
 import com.github.nighttripperid.littleengine.model.Rect;
 import com.github.nighttripperid.littleengine.model.entity.Entity;
-import com.github.nighttripperid.littleengine.model.entity.RenderRequest;
+import com.github.nighttripperid.littleengine.model.entity.RenderTask;
 import com.github.nighttripperid.littleengine.model.gamestate.GameMap;
 import com.github.nighttripperid.littleengine.model.graphics.Sprite;
+import com.github.nighttripperid.littleengine.model.tiles.TILED_TileMap;
+import com.github.nighttripperid.littleengine.model.tiles.Tile;
 import com.github.nighttripperid.littleengine.staticutil.VectorMath;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.AbstractMap;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 // TODO: flatten encapsulation. This is getting too bloated and complex. Needs a major redesign.
@@ -62,13 +62,14 @@ public class GameStateUpdater {
         addPendingEntities();
         gameStateStackController.getActiveGameState().getEntityData().getEntities()
         .forEach(entity -> {
-            entity.getRenderRequests().clear();
+            entity.getRenderTasks().clear();
             runBehaviorScript(entity, elapsedTime);
             runAnimationScript(entity,
                 gameStateStackController.getActiveGameState().getEntityData().getEntityGFX()
                         .getSpriteMap(entity.getFilename()));
             gameStateStackController.performGameStateTransition(entity.getGameStateTransition());
-            runCollisionCheck(entity, elapsedTime);
+            runTileCollision(entity, gameStateStackController.getActiveGameState().getGameMap(), elapsedTime);
+//            runEntityCollision(entity, elapsedTime);
         });
         removeMarkedEntities();
     }
@@ -88,11 +89,11 @@ public class GameStateUpdater {
                     .collect(Collectors.toList());
             screenBufferUpdater.renderEntities(entitiesInLayer, gameMap);
 
-            List<RenderRequest> renderRequests = entities.stream()
-                    .flatMap(entity -> entity.getRenderRequests().stream())
+            List<RenderTask> renderTasks = entities.stream()
+                    .flatMap(entity -> entity.getRenderTasks().stream())
                     .filter(renderRequest -> renderRequest.getRenderLayer() == layer)
                     .collect(Collectors.toList());
-            screenBufferUpdater.processRenderRequests(renderRequests);
+            screenBufferUpdater.processRenderTasks(renderTasks);
         }
     }
 
@@ -118,57 +119,97 @@ public class GameStateUpdater {
         }
     }
 
-    // TODO: finish implementing projected rectangle tile collision
-    private void runCollisionCheck(Entity entity, double elapsedTime) {
+    private void runEntityCollision(Entity entity, double elapsedTime) {
+    }
 
-        List<Entity> entities = gameStateStackController.getActiveGameState().getEntityData().getEntities();
+    public void runTileCollision(Entity entity, GameMap gameMap, double elapsedTime) {
+        // broad phase pass
 
-        for (int i = 0; i < entities.size(); i++) {
+        Rect rect = entity.getRect();
+        // calculate 3 of 4 tile corners (the smallest entity can occupy from 1 to 4 bg tiles,
+        // so any entity can occupy at the very least 4 tiles.
+        // we only need to know 3 of the 4 corner tiles to get the perimeter tiles
+        PointInt currTile_TL = new PointInt((int) (rect.pos.x / gameMap.getTileSize().x), // top left corner
+                (int) (rect.pos.y / gameMap.getTileSize().y));
+        PointInt currTile_TR = new PointInt((int) ((rect.pos.x + rect.size.x - 1) / gameMap.getTileSize().x), // top right corner
+                (int) (rect.pos.y / gameMap.getTileSize().y));
+        PointInt currTile_BL = new PointInt((int) (rect.pos.x / gameMap.getTileSize().x),  // bottom left corner
+                (int) ((rect.pos.y + rect.size.y - 1) / gameMap.getTileSize().y));
+
+        // get x,y coords of all tiles outside the perimeter. these are the tiles we want to check for collision.
+        List<PointDouble> outerPoints = new ArrayList<>();
+        // top row of perimeter (working correctly)
+        for (int x = currTile_TL.x - 1; x <= currTile_TR.x + 1; x++)
+            outerPoints.add(new PointDouble((double)x, (double)currTile_TL.y - 1));
+
+
+        // bottom row of perimeter
+        for (int x = currTile_TL.x - 1; x <= currTile_TR.x + 1; x++)
+            outerPoints.add(new PointDouble((double)x, (double)currTile_BL.y + 1));
+
+
+        // left column of perimeter (working correctly)
+        for (int y = currTile_TL.y - 1; y <= currTile_BL.y + 1; y++)
+            outerPoints.add(new PointDouble((double)currTile_TL.x - 1, (double)y));
+
+
+        // right column of perimeter
+        for (int y = currTile_TL.y - 1; y <= currTile_BL.y + 1; y++)
+            outerPoints.add(new PointDouble((double)currTile_TR.x + 1,  (double)y));
+
+
+        List<Tile> tiles = new ArrayList<>();
+        outerPoints.forEach(outerPoint -> tiles.add(gameMap.getTileMap().getTile(gameMap.getTileset(), 1,
+                (int)(double)outerPoint.x, (int)(double)outerPoint.y)));
+
+        List<Rect> tileRects = new ArrayList<>();
+        for (int i = 0; i < tiles.size(); i++) {
+            TILED_TileMap.Object tileObject = gameMap.getTileMap().getTileObject(gameMap.getTileMap().getTileId(1,
+                    (int)(double)outerPoints.get(i).x, (int)(double)outerPoints.get(i).y));
+            if (tileObject != null && tileObject.getName().equals("solid")) {
+                Rect r = new Rect();
+                r.pos = outerPoints.get(i).times(gameMap.getTileSize());
+                r.size = tiles.get(i).getRect().size;
+                tileRects.add(r);
+            }
+        }
+
+        resolveTileCollision(entity, tileRects, elapsedTime);
+
+    }
+
+    public void resolveTileCollision(Entity entity, List<Rect> sRects, double elapsedTime) {
+        for (int i = 0; i < sRects.size(); i++) {
             PointDouble cp = PointDouble.of(0.0);
             PointDouble cn = PointDouble.of(0.0);
             NumWrap<Double> ct = new NumWrap<>(0.0);
             List<AbstractMap.SimpleEntry<Integer, Double>> z = new ArrayList<>();
-            if (entity.equals(entities.get(i)))
-                continue;
 
-            if (VectorMath.dynamicRectVsRect(entity.getRect(), elapsedTime, entities.get(i).getRect(), cp, cn, ct))
+            if (VectorMath.dynamicRectVsRect(entity.getRect(), elapsedTime, sRects.get(i), cp, cn, ct))
                 z.add(new AbstractMap.SimpleEntry<>(i, ct.num));
 
             z = z.stream()
                     .sorted(Map.Entry.<Integer, Double>comparingByValue().reversed())
                     .collect(Collectors.toList());
 
-            z.forEach(z1 -> VectorMath.resolveDynamicRectVsRect(entity.getRect(), elapsedTime, entities.get(z1.getKey()).getRect()));
+            z.forEach(z1 -> VectorMath.resolveDynamicRectVsRect(entity.getRect(), elapsedTime, sRects.get(z1.getKey())));
 
         }
-        entity.getRect().pos.set(
-                entity.getRect().pos
-                        .plus(entity.getRect().vel.times(PointDouble.of(elapsedTime)))
-        );
+
+        if (entity.getRect().vel.x > 0) {
+            entity.getRect().pos.x += Math.ceil(entity.getRect().vel.x * elapsedTime);
+        }
+        else if (entity.getRect().vel.x < 0) {
+            entity.getRect().pos.x += Math.floor(entity.getRect().vel.x * elapsedTime);
+        }
+
+        if (entity.getRect().vel.y > 0) {
+            entity.getRect().pos.y += Math.ceil(entity.getRect().vel.y * elapsedTime);
+        }
+        else if (entity.getRect().vel.y < 0) {
+            entity.getRect().pos.y += Math.floor(entity.getRect().vel.y * elapsedTime);
+        }
     }
-
-    // TODO: figure out how to determine which tiles to check without checking every tile on the map
-//    public void tileCollision(Rect dRect, List<Rect> sRects, double elapsedTime) {
-//
-//        for (int i = 0; i < sRects.size(); i++) {
-//            PointDouble cp = PointDouble.of(0.0);
-//            PointDouble cn = PointDouble.of(0.0);
-//            NumWrap<Double> ct = new NumWrap<>(0.0);
-//            List<AbstractMap.SimpleEntry<Integer, Double>> z = new ArrayList<>();
-//
-//            if (VectorMath.dynamicRectVsRect(dRect, elapsedTime, sRects.get(i), cp, cn, ct))
-//                z.add(new AbstractMap.SimpleEntry<>(i, ct.num));
-//
-//            z = z.stream()
-//                    .sorted(Map.Entry.<Integer, Double>comparingByValue().reversed())
-//                    .collect(Collectors.toList());
-//
-//            z.forEach(z1 -> VectorMath.resolveDynamicRectVsRect(dRect, elapsedTime, sRects.get(z1.getKey())));
-//
-//        }
-//        dRect.pos.set(dRect.pos.plus(dRect.vel.times(PointDouble.of(elapsedTime))));
-//    }
-
 
     private void runAnimationScript(Entity entity, Map<Integer, Sprite> spriteMap) {
         if (entity.getAnimationScript() != null)

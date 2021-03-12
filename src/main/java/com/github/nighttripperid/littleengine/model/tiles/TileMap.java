@@ -41,25 +41,45 @@ public class TileMap {
     private int height_T;
 
     private final Map<Integer, Integer[]> tileMap = new HashMap<>(); // hashed by layerId
+    private final Map<Integer, TILED_TileMap.Object> tileObjects = new HashMap<>(); // hashed by tileId
 
-        public Tile getTile(Tileset tileset, int layerId, int x, int y) {
+        public Tile getTile(Tileset tileset, int layerId, int x_T, int y_T) {
 
-        if (x < 0 ||
-                y < 0 ||
-                x >= width_T ||
-                y >= height_T) {
+            if (    x_T < 0 ||
+                    y_T < 0 ||
+                    x_T >= width_T ||
+                    y_T >= height_T) {
 
             return Tileset.VOID_TILE;
 
         } else {
-            return tileset.getTileset().get(
-                    tileMap.get(layerId)[x + y * width_T] - 1
-            );
+            return tileset.getTileset().get(getTileId(layerId, x_T, y_T));
+        }
+    }
+
+    public Integer getTileId(int layerId, int x_T, int y_T) {
+
+        if (    x_T < 0 ||
+                y_T < 0 ||
+                x_T >= width_T ||
+                y_T >= height_T) {
+
+            return null;
+
+        } else {
+            return tileMap.get(layerId)[x_T + y_T * width_T] - 1;
         }
     }
 
     public void putLayer(int layerId, Integer[] data) {
             tileMap.put(layerId, data);
+    }
+
+    public void putTileObject(int tileId, TILED_TileMap.Object object) {
+            tileObjects.put(tileId, object);
+    }
+    public TILED_TileMap.Object getTileObject(Integer tileId) {
+            return tileId == null ? null : tileObjects.get(tileId);
     }
 
     public int getNumLayers() {

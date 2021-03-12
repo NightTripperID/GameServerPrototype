@@ -26,27 +26,27 @@
  */
 package com.github.nighttripperid.littleengine.model.entity;
 
-import com.github.nighttripperid.littleengine.component.RenderRequestProcessor;
+import com.github.nighttripperid.littleengine.component.RenderTaskHandler;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import java.util.function.Consumer;
 
 @AllArgsConstructor
-public class RenderRequest implements Comparable<RenderRequest> {
+public class RenderTask implements Comparable<RenderTask> {
     @Getter
     private final int renderLayer;
     @Getter
     private final int renderPriority;
 
-    private final Consumer<RenderRequestProcessor> request;
+    private final Consumer<RenderTaskHandler> request;
     
-    public void process(RenderRequestProcessor processor) {
+    public void process(RenderTaskHandler processor) {
         request.accept(processor);
     }
 
     @Override
-    public int compareTo(RenderRequest renderRequest) {
-        return this.renderPriority - renderRequest.renderPriority;
+    public int compareTo(RenderTask renderTask) {
+        return this.renderPriority - renderTask.renderPriority;
     }
 }

@@ -48,7 +48,7 @@ public abstract class Entity implements Eventable, Comparable<Entity> {
     private Rect rect = new Rect();
 
 
-    private List<RenderRequest> renderRequests = new ArrayList<>();
+    private List<RenderTask> renderTasks = new ArrayList<>();
     private BehaviorScript behaviorScript;
     private AnimationScript animationScript;
     private InitGfxRoutine initGfxRoutine;

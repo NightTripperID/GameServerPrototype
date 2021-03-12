@@ -62,7 +62,7 @@ public class MapResourceLoader {
         return tiled_TileMap;
     }
 
-    public static Tileset fetchTileset(String pngPath, int tileSize) {
+    public static Tileset fetchTileset(String pngPath, int tileW, int tileH) {
         URL url = MapResourceLoader.class.getClassLoader().getResource(pngPath);
         assert url != null;
         Tileset tileset = null;
@@ -70,9 +70,9 @@ public class MapResourceLoader {
             log.info("Loading: {}{}", url.getPath(), "...");
             BufferedImage image = ImageIO.read(url);
             log.info("Loading {} successful!", url.getPath());
-            SpriteSheet spriteSheet = new SpriteSheet(image, tileSize, tileSize);
+            SpriteSheet spriteSheet = new SpriteSheet(image, tileW, tileH);
             tileset = new Tileset();
-            tileset.setTileset(spriteSheet, tileSize);
+            tileset.setTileset(spriteSheet, tileW, tileH);
         } catch (IOException e) {
             log.error("Loading {} failed: {}", url.getPath(), e.getMessage());
         }

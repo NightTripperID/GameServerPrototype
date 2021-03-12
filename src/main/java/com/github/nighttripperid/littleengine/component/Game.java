@@ -31,6 +31,10 @@ import com.github.nighttripperid.littleengine.model.gamestate.Intent;
 import com.github.nighttripperid.littleengine.model.graphics.ScreenBuffer;
 import lombok.extern.slf4j.Slf4j;
 
+import java.time.Clock;
+import java.time.Duration;
+import java.time.Instant;
+
 @Slf4j
 public final class Game {
 
@@ -45,8 +49,8 @@ public final class Game {
         this.title = title;
         ioController = new IOController(width, height, scale);
 
-        ScreenBufferUpdater screenBufferUpdater = new ScreenBufferUpdater(new RenderRequestProcessor(),
-                                                  new ScreenBuffer(width, height, scale));
+        ScreenBufferUpdater screenBufferUpdater = new ScreenBufferUpdater(new RenderTaskHandler(),
+                new ScreenBuffer(width, height, scale));
 
         gameStateUpdater = new GameStateUpdater(screenBufferUpdater, new GameStateStackController());
     }
@@ -67,40 +71,32 @@ public final class Game {
         }
     }
 
-    private final Runnable mainLoop = () -> {
-        long lastTime = System.nanoTime();
-        long timer = System.currentTimeMillis();
-        final double ns = 1000000000D / 60D;
-        double delta = 0D;
-        int frames = 0;
-        int updates = 0;
+    Clock clock = Clock.systemDefaultZone();
 
+
+    private final Runnable mainLoop = () -> {
+        long timer = System.currentTimeMillis();
+        int frames = 0;
         ioController.requestFocus();
 
-        double before, after, elapsed = 0;
+        Instant before;
+        Instant after = clock.instant();
+        Duration elapsed;
+
         while (running) {
+            before = clock.instant();
+            elapsed = Duration.between(after, before);
+            after = before;
 
-            long now = System.nanoTime();
-            delta += (now - lastTime) / ns;
-            lastTime = now;
+            update((double)(elapsed.toMillis()) / 1000);
+            render();
 
-            while (delta >= 1) {
-                before = System.nanoTime() / 1000000000D;
-                update(elapsed); // 60 times per second
-                after = System.nanoTime() / 1000000000D;
-                elapsed = after - before;
-                delta--;
-                updates++;
-            }
-
-            render(); // as fast as possible
             frames++;
 
             if(System.currentTimeMillis() - timer > 1000) {
                 timer += 1000;
-                ioController.setTitle(title + " | " + updates + " ups " + " | " + frames + " fps");
+                ioController.setTitle(title + " | " + frames + " fps");
                 frames = 0;
-                updates = 0;
             }
         }
         stop();

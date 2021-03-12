@@ -61,7 +61,7 @@ public class TILED_TileMap {
     @Data
     public static class Tile {
         private int id;
-        private List<ObjectGroup> objectgroup;
+        private ObjectGroup objectgroup;
     }
     @Data
     public static class ObjectGroup {

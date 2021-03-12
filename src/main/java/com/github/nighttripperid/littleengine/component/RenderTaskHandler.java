@@ -30,19 +30,19 @@ import com.github.nighttripperid.littleengine.constant.Font5x5;
 import com.github.nighttripperid.littleengine.constant.Font8x8;
 import com.github.nighttripperid.littleengine.model.PointDouble;
 import com.github.nighttripperid.littleengine.model.Rect;
-import com.github.nighttripperid.littleengine.model.entity.RenderRequest;
+import com.github.nighttripperid.littleengine.model.entity.RenderTask;
 import com.github.nighttripperid.littleengine.model.graphics.ScreenBuffer;
 import lombok.Setter;
 
 import java.util.Arrays;
 
-public class RenderRequestProcessor {
+public class RenderTaskHandler {
 
     @Setter
     private ScreenBuffer screenBuffer;
 
-    public void process(RenderRequest renderRequest) {
-        renderRequest.process(this);
+    public void process(RenderTask renderTask) {
+        renderTask.process(this);
     }
 
     public void fill(int col) {
@@ -117,6 +117,30 @@ public class RenderRequestProcessor {
                     continue;
                 if (xx == (int) x || xx == (int) x + width - 1 || yy == (int) y || yy == (int) y + height - 1)
                     screenBuffer.getPixels()[xx + yy * screenBuffer.getWidth()] = col;
+            }
+        }
+    }
+
+    public void fillRect(Rect rect, int col) {
+        for (int y = (int)(double) rect.pos.y; y < (int)(double) rect.pos.y + rect.size.y; y++) {
+            if (y < 0 || y >= screenBuffer.getHeight())
+                continue;
+            for (int x = (int)(double)rect.pos.x; x < (int)(double) rect.pos.x + rect.size.x; x++) {
+                if (x < 0 || x >= screenBuffer.getWidth())
+                    continue;
+                screenBuffer.getPixels()[x + y * screenBuffer.getWidth()] = col;
+            }
+        }
+    }
+
+    public void fillRect(PointDouble pos, PointDouble size, int col) {
+        for (int y = (int)(double) pos.y; y < (int)(double) pos.y + size.y; y++) {
+            if (y < 0 || y >= screenBuffer.getHeight())
+                continue;
+            for (int x = (int)(double)pos.x; x < (int)(double) pos.x + size.x; x++) {
+                if (x < 0 || x >= screenBuffer.getWidth())
+                    continue;
+                screenBuffer.getPixels()[x + y * screenBuffer.getWidth()] = col;
             }
         }
     }
