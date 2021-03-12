@@ -29,14 +29,16 @@ public class GameMapBuilder {
         tiled_tileMap.getLayers().stream().filter(layer -> layer.getType().equals("tilelayer"))
                 .collect(Collectors.toList()).forEach(layer -> tileMap.putLayer(layer.getId(), layer.getData())
         );
-        tiled_tileMap.getTilesets().forEach(tiled_tileset ->
-                tiled_tileset.getTiles().forEach(tile -> {
-                    if (tile.getObjectgroup() != null) {
-                        tile.getObjectgroup().getObjects().forEach(object ->
+        tiled_tileMap.getTilesets().forEach(tiled_tileset -> {
+            if (tiled_tileset.getTiles() == null)
+                return;
+            tiled_tileset.getTiles().forEach(tile -> {
+                if (tile.getObjectgroup() != null) {
+                    tile.getObjectgroup().getObjects().forEach(object ->
                                 tileset.getTileset().get(tile.getId()).getAttributes().add(object.getType()));
-                    }
-                })
-        );
+                }
+            });
+        });
         return tileMap;
     }
 }
