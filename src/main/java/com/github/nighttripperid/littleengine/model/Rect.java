@@ -11,14 +11,14 @@ public class Rect {
     public Rect[] contact = new Rect[4];
 
     public Rect() {
-        pos = PointDouble.of(0D);
-        size = PointDouble.of(0D);
-        vel = PointDouble.of(0D);
+        pos = PointDouble.of(0.0d);
+        size = PointDouble.of(0.0d);
+        vel = PointDouble.of(0.0d);
     }
 
     public Rect(PointDouble pos, PointDouble size) {
         this.pos = pos;
         this.size = size;
-        this.vel = PointDouble.of(0D);
+        this.vel = PointDouble.of(0.0d);
     }
 }

@@ -39,12 +39,12 @@ public class TimeConverter {
         return hours * 216000;
     }
     public static double framesToSeconds(int frames) {
-        return frames / 60D;
+        return frames / 60.0d;
     }
     public static double framesToMinutes(int frames) {
-        return frames / 3600D;
+        return frames / 3600.0d;
     }
     public static double framesToHours(int frames) {
-        return frames /216000D;
+        return frames /216000.0d;
     }
 }

@@ -32,8 +32,8 @@ public class PointDoubleW {
     public NumWrap<Double> y;
 
     public PointDoubleW(){
-        x = new NumWrap<>(0D);
-        y = new NumWrap<>(0D);
+        x = new NumWrap<>(0.0d);
+        y = new NumWrap<>(0.0d);
     }
 
     public PointDoubleW(Double x, Double y) {
