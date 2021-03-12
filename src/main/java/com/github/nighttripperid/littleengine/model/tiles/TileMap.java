@@ -40,8 +40,7 @@ public class TileMap {
     @Getter
     private int height_T;
 
-    private final Map<Integer, Integer[]> tileMap = new HashMap<>(); // hashed by layerId
-    private final Map<Integer, TILED_TileMap.Object> tileObjects = new HashMap<>(); // hashed by tileId
+    private final Map<Integer, Integer[]> tileMap = new HashMap<>(); // hashed by layerId, returns a tileId
 
         public Tile getTile(Tileset tileset, int layerId, int x_T, int y_T) {
 
@@ -73,13 +72,6 @@ public class TileMap {
 
     public void putLayer(int layerId, Integer[] data) {
             tileMap.put(layerId, data);
-    }
-
-    public void putTileObject(int tileId, TILED_TileMap.Object object) {
-            tileObjects.put(tileId, object);
-    }
-    public TILED_TileMap.Object getTileObject(Integer tileId) {
-            return tileId == null ? null : tileObjects.get(tileId);
     }
 
     public int getNumLayers() {

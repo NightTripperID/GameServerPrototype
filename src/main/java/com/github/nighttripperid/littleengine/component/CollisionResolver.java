@@ -63,9 +63,8 @@ public class CollisionResolver {
 
         List<Rect> tileRects = new ArrayList<>();
         for (int i = 0; i < tiles.size(); i++) {
-            TILED_TileMap.Object tileObject = gameMap.getTileMap().getTileObject(gameMap.getTileMap().getTileId(1,
-                    (int)(double)outerPoints.get(i).x, (int)(double)outerPoints.get(i).y));
-            if (tileObject != null && tileObject.getName().equals("solid")) {
+            Tile tile = tiles.get(i);
+            if (tile != null && tile.getAttributes().contains("solid")) {
                 Rect r = new Rect();
                 r.pos = outerPoints.get(i).times(gameMap.getTileSize());
                 r.size = tiles.get(i).getRect().size;

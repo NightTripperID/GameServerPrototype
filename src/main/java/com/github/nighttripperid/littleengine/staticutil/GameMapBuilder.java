@@ -17,24 +17,23 @@ public class GameMapBuilder {
         gameMap.setTileSize(new PointDouble((double) tiled_tileMap.getTilewidth(),
                                             (double) tiled_tileMap.getTileheight()));
         gameMap.setTileBitShift((int) (Math.log(gameMap.getTileSize().x) / Math.log(2)));
-        gameMap.setTileMap(buildTileMap(tiled_tileMap));
+        gameMap.setTileMap(buildTileMap(tiled_tileMap, tileset));
         gameMap.setTiled_TileMap(tiled_tileMap);
         return gameMap;
     }
 
-    private static TileMap buildTileMap(TILED_TileMap tiled_tileMap) {
+    private static TileMap buildTileMap(TILED_TileMap tiled_tileMap, Tileset tileset) {
         TileMap tileMap = new TileMap();
         tileMap.setWidth_T(tiled_tileMap.getWidth());
         tileMap.setHeight_T(tiled_tileMap.getHeight());
         tiled_tileMap.getLayers().stream().filter(layer -> layer.getType().equals("tilelayer"))
                 .collect(Collectors.toList()).forEach(layer -> tileMap.putLayer(layer.getId(), layer.getData())
         );
-        tiled_tileMap.getTilesets().forEach(tileset ->
-                tileset.getTiles().forEach(tile -> {
+        tiled_tileMap.getTilesets().forEach(tiled_tileset ->
+                tiled_tileset.getTiles().forEach(tile -> {
                     if (tile.getObjectgroup() != null) {
                         tile.getObjectgroup().getObjects().forEach(object ->
-                                tileMap.putTileObject(tile.getId(), object)
-                        );
+                                tileset.getTileset().get(tile.getId()).getAttributes().add(object.getType()));
                     }
                 })
         );

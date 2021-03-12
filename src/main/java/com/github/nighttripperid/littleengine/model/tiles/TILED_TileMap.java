@@ -80,7 +80,6 @@ public class TILED_TileMap {
         private double rotation;
         private List<Property> properties;
     }
-
     @Data
     public static class Property {
         private String name;

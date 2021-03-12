@@ -31,11 +31,15 @@ import com.github.nighttripperid.littleengine.model.Rect;
 import com.github.nighttripperid.littleengine.model.graphics.Sprite;
 import lombok.Data;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Data
 public class Tile {
 
     private Sprite sprite;
     private Rect rect;
+    private List<String> attributes = new ArrayList<>();
 
     public Tile(Sprite sprite, int width, int height) {
         this.sprite = sprite;
