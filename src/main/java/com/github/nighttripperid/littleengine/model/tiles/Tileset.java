@@ -35,7 +35,7 @@ import java.util.Map;
 
 @Data
 public class Tileset {
-    private final Map<Integer, Tile> tileset = new HashMap<>();
+    private final Map<Integer, Tile> tileset = new HashMap<>(); // hashed by tile id
     public static final Tile VOID_TILE = new Tile(new Sprite(0xffff00ff, 16, 16), 16, 16);
 
     public void setTileset(SpriteSheet spriteSheet, int tileW, int tileH) {
