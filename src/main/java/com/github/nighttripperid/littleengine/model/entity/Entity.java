@@ -49,7 +49,7 @@ public abstract class Entity implements Eventable, Comparable<Entity> {
 
     private List<RenderTask> renderTasks = new ArrayList<>();
     private BehaviorScript behaviorScript;
-    private AnimationScript animationScript;
+    private Animation animation;
     private InitGfxRoutine initGfxRoutine;
     private GameStateTransition gameStateTransition;
 
