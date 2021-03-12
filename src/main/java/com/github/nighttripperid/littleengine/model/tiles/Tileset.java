@@ -27,22 +27,14 @@
 package com.github.nighttripperid.littleengine.model.tiles;
 
 import com.github.nighttripperid.littleengine.model.graphics.Sprite;
-import com.github.nighttripperid.littleengine.model.graphics.SpriteSheet;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
-import java.util.HashMap;
 import java.util.Map;
 
 @Data
+@AllArgsConstructor
 public class Tileset {
-    private final Map<Integer, Tile> tileset = new HashMap<>(); // hashed by tile id
+    private final Map<Integer, Tile> tileset; // hashed by tile id
     public static final Tile VOID_TILE = new Tile(new Sprite(0xffff00ff, 16, 16), 16, 16);
-
-    public void setTileset(SpriteSheet spriteSheet, int tileW, int tileH) {
-        for(int y = 0, i = 0; y < spriteSheet.sheetH_P / tileH; y++) {
-            for(int x = 0; x < spriteSheet.sheetW_P / tileW; x++, i++) {
-                tileset.put(i, new Tile(new Sprite(spriteSheet, tileW, tileH, x, y), tileW, tileH));
-            }
-        }
-    }
 }
