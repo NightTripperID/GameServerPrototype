@@ -32,8 +32,6 @@ import com.github.nighttripperid.littleengine.model.graphics.ScreenBuffer;
 import lombok.extern.slf4j.Slf4j;
 
 import java.time.Clock;
-import java.time.Duration;
-import java.time.Instant;
 
 @Slf4j
 public final class Game {
@@ -72,37 +70,6 @@ public final class Game {
         }
     }
 
-    Clock clock = Clock.systemDefaultZone();
-
-
-    private final Runnable mainLoop = () -> {
-        long timer = System.currentTimeMillis();
-        int frames = 0;
-        ioController.requestFocus();
-
-        Instant before;
-        Instant after = clock.instant();
-        Duration elapsed;
-
-        while (running) {
-            before = clock.instant();
-            elapsed = Duration.between(after, before);
-            after = before;
-
-            update((double)(elapsed.toMillis()) / 1000);
-            render();
-
-            frames++;
-
-            if(System.currentTimeMillis() - timer > 1000) {
-                timer += 1000;
-                ioController.setTitle(title + " | " + frames + " fps");
-                frames = 0;
-            }
-        }
-        stop();
-    };
-
     private void update(double elapsedTime) {
         ioController.updateInput();
         gameStateUpdater.update(elapsedTime);
@@ -117,4 +84,33 @@ public final class Game {
         gameStateUpdater.getGameStateStackController().pushGameState(intent);
         start();
     }
+
+    private final Runnable mainLoop = () -> {
+        ioController.requestFocus();
+        long timer = System.currentTimeMillis();
+        int frames = 0;
+        long lastLoopTime = System.nanoTime();
+        final int TARGET_FPS = 60;
+        final long OPTIMAL_TIME = 1000000000 / TARGET_FPS;
+
+        while (running) {
+            long now = System.nanoTime();
+            long delta = now - lastLoopTime;
+            lastLoopTime = now;
+
+            double elapsed = delta / (double) OPTIMAL_TIME;
+
+            update(elapsed);
+            render();
+
+            frames++;
+
+            if(System.currentTimeMillis() - timer > 1000) {
+                timer += 1000;
+                ioController.setTitle(title + " | " + frames + " fps");
+                frames = 0;
+            }
+        }
+        stop();
+    };
 }
