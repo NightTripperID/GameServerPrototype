@@ -12,7 +12,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @Slf4j
-public class EntityDataBuilder {
+public class EntityHydrator {
 
     public static EntityData build(TILED_TileMap tiled_tileMap) {
         EntityData entityData = new EntityData();
