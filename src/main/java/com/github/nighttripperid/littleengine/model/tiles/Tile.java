@@ -37,13 +37,22 @@ import java.util.List;
 @Data
 public class Tile {
 
+    private int id;
     private Sprite sprite;
     private Rect rect;
     private List<String> attributes = new ArrayList<>();
 
-    public Tile(Sprite sprite, int width, int height) {
+    public Tile(int id, Sprite sprite, int width, int height) {
+        this.id = id;
         this.sprite = sprite;
         this.rect = new Rect();
         this.rect.size = new PointDouble((double) width, (double) height);
+    }
+
+    public Tile (Tile tile) {
+        this.id = tile.getId();
+        this.sprite = tile.getSprite();;
+        this.rect = tile.getRect();
+        this.attributes = tile.getAttributes();
     }
 }

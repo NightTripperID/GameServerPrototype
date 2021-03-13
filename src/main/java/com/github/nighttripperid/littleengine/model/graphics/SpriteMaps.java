@@ -29,7 +29,7 @@ package com.github.nighttripperid.littleengine.model.graphics;
 import java.util.HashMap;
 import java.util.Map;
 
-public class EntityGFX {
+public class SpriteMaps {
     private final Map<String, Map<Integer, Sprite>> spriteMaps = new HashMap<>();
 
     public void addSpritesByColumns(String key, SpriteSheet spriteSheet) {
@@ -54,7 +54,7 @@ public class EntityGFX {
         }
     }
 
-    public Map<Integer, Sprite> getSpriteMap(String key) {
+    public Map<Integer, Sprite> getMap(String key) {
         return spriteMaps.get(key);
     }
 }

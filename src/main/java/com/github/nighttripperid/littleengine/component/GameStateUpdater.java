@@ -31,6 +31,7 @@ import com.github.nighttripperid.littleengine.model.entity.RenderTask;
 import com.github.nighttripperid.littleengine.model.gamestate.GameMap;
 import com.github.nighttripperid.littleengine.model.gamestate.GameState;
 import com.github.nighttripperid.littleengine.model.graphics.Sprite;
+import com.github.nighttripperid.littleengine.model.tiles.AnimatedTile;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
@@ -59,14 +60,17 @@ public class GameStateUpdater {
     public void update(double elapsedTime) {
         addPendingEntities();
         GameState activeGameState = gameStateStackController.getActiveGameState();
+        GameMap gameMap = gameStateStackController.getActiveGameState().getGameMap();
         activeGameState.getEntityData().getEntities()
         .forEach(entity -> {
             entity.getRenderTasks().clear();
             runBehaviorScript(entity, elapsedTime);
-            runAnimationScript(entity,
-                activeGameState.getEntityData().getEntityGFX().getSpriteMap(entity.getGfxKey()));
-            collisionResolver.runTileCollision(entity, activeGameState.getGameMap(), elapsedTime);
+            runEntityAnimation(entity, activeGameState.getEntityData().getSpriteMaps().getMap(entity.getGfxKey()));
+            collisionResolver.runTileCollision(entity, gameMap, elapsedTime);
             gameStateStackController.performGameStateTransition(entity.getGameStateTransition());
+        });
+        gameMap.getTileset().getAnimatedTiles().forEach(animatedTile -> {
+            runTileAnimation(animatedTile, gameMap.getTileset().getSpriteMaps().getMap(animatedTile.getGfxKey()));
         });
         removeMarkedEntities();
     }
@@ -116,14 +120,18 @@ public class GameStateUpdater {
         }
     }
 
-    private void runAnimationScript(Entity entity, Map<Integer, Sprite> spriteMap) {
-        if (entity.getAnimation() != null)
-            entity.getAnimation().run(spriteMap);
-    }
-
     private void runBehaviorScript(Entity entity, double timeElapsed) {
         // TODO: implement groovy integration for entity updates (maybe)
         if (entity.getBehaviorScript() != null)
             entity.getBehaviorScript().run(gameStateStackController.getActiveGameState().getGameMap(), timeElapsed);
+    }
+
+    private void runEntityAnimation(Entity entity, Map<Integer, Sprite> spriteMap) {
+        if (entity.getAnimation() != null)
+            entity.getAnimation().run(spriteMap);
+    }
+
+    private void runTileAnimation(AnimatedTile tile, Map<Integer, Sprite> spriteMap) {
+        tile.getAnimation().run(spriteMap);
     }
 }

@@ -72,8 +72,11 @@ public class GameStateStackController {
             gameState.getEntityData().getEntities().forEach(Entity::onCreate);
             gameState.getEntityData().getEntities().forEach(entity -> {
                 if (entity.getInitGfxRoutine() != null) {
-                    entity.getInitGfxRoutine().run(gameState.getEntityData().getEntityGFX());
+                    entity.getInitGfxRoutine().run(gameState.getEntityData().getSpriteMaps());
                 }
+            });
+            gameState.getGameMap().getTileset().getAnimatedTiles().forEach(tile -> {
+               tile.getInitGfxRoutine().run(gameState.getGameMap().getTileset().getSpriteMaps());
             });
             return gameState;
         } catch (InstantiationException | IllegalAccessException e) {

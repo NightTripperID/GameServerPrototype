@@ -26,18 +26,18 @@
  */
 package com.github.nighttripperid.littleengine.model.entity;
 
-import com.github.nighttripperid.littleengine.model.graphics.EntityGFX;
+import com.github.nighttripperid.littleengine.model.graphics.SpriteMaps;
 
 import java.util.function.Consumer;
 
 public class InitGfxRoutine {
-    private final Consumer<EntityGFX> routine;
+    private final Consumer<SpriteMaps> routine;
 
-    public InitGfxRoutine(Consumer<EntityGFX> routine) {
+    public InitGfxRoutine(Consumer<SpriteMaps> routine) {
         this.routine = routine;
     }
 
-    public void run(EntityGFX entityGFX) {
-        routine.accept(entityGFX);
+    public void run(SpriteMaps spriteMaps) {
+        routine.accept(spriteMaps);
     }
 }

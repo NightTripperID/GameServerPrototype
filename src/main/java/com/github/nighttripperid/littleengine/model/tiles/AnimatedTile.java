@@ -26,39 +26,40 @@
  */
 package com.github.nighttripperid.littleengine.model.tiles;
 
-import com.github.nighttripperid.littleengine.model.graphics.Sprite;
-import com.github.nighttripperid.littleengine.model.graphics.SpriteMaps;
+import com.github.nighttripperid.littleengine.model.entity.Animation;
+import com.github.nighttripperid.littleengine.model.entity.InitGfxRoutine;
+import com.github.nighttripperid.littleengine.model.graphics.AnimationReel;
+import com.github.nighttripperid.littleengine.staticutil.SpriteLoader;
+import com.github.nighttripperid.littleengine.staticutil.SpriteUtil;
 import lombok.Getter;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+@Getter
+public class AnimatedTile extends Tile {
 
-public class Tileset {
-    public final Tile VOID_TILE;
+    private final AnimationReel animationReel;
+    private final Animation animation = setAnimation();
+    private final InitGfxRoutine initGfxRoutine = setInitGfxRoutine();
+    private final String gfxKey;
 
-    private final Map<Integer, Tile> tileset; // hashed by tile id
-    private final List<AnimatedTile> animatedTiles = new ArrayList<>();
+    public AnimatedTile(Tile tile, String gfxKey) {
+        super(tile);
+        this.gfxKey = gfxKey;
+        this.animationReel = new AnimationReel();
+        this.animationReel.frameRate = 10;
+        this.animationReel.length = 2;
+    }
 
-    @Getter
-    private final SpriteMaps spriteMaps = new SpriteMaps();
-
-    public Tileset(Map<Integer, Tile> tileset, int tileW, int tileH) {
-        VOID_TILE = new Tile(0, new Sprite(0xffff00ff, tileW, tileH), tileW, tileH);
-        VOID_TILE.getAttributes().add("solid");
-        this.tileset = tileset;
-        this.tileset.values().forEach(tile -> {
-            if (tile instanceof AnimatedTile) {
-                animatedTiles.add((AnimatedTile) tile);
-            }
+    private Animation setAnimation() {
+        return new Animation(spriteMap -> {
+            SpriteUtil.updateAnimReel(this.animationReel);
+            this.setSprite(spriteMap.get(this.animationReel.frame));
         });
     }
 
-    public List<AnimatedTile> getAnimatedTiles() {
-        return new ArrayList<>(animatedTiles);
-    }
-
-    public Tile getTile(int tileId) {
-        return tileset.get(tileId);
+    private InitGfxRoutine setInitGfxRoutine() {
+        return new InitGfxRoutine(spriteMaps -> {
+            SpriteLoader.loadSpritesByColumns(this.gfxKey, this.getSprite().width, this.getSprite().height, spriteMaps);
+            this.setSprite(spriteMaps.getMap(this.gfxKey).get(this.animationReel.frame));
+        });
     }
 }

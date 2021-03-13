@@ -6,10 +6,7 @@ import com.github.nighttripperid.littleengine.model.PointInt;
 import com.github.nighttripperid.littleengine.model.gamestate.GameMap;
 import com.github.nighttripperid.littleengine.model.graphics.Sprite;
 import com.github.nighttripperid.littleengine.model.graphics.SpriteSheet;
-import com.github.nighttripperid.littleengine.model.tiles.TILED_TileMap;
-import com.github.nighttripperid.littleengine.model.tiles.Tile;
-import com.github.nighttripperid.littleengine.model.tiles.TileMap;
-import com.github.nighttripperid.littleengine.model.tiles.Tileset;
+import com.github.nighttripperid.littleengine.model.tiles.*;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.HashMap;
@@ -25,7 +22,7 @@ public class GameMapBuilder {
                                             (double) tiled_tileMap.getTileheight()));
         gameMap.setTileBitShift((int) (Math.log(gameMap.getTileSize().x) / Math.log(2)));
         gameMap.setTileset(buildTileset(tilesetImage, gameMap.getTileSize(), tiled_tileMap.getTilesets()));
-        gameMap.setTileMap(buildTileMap(tiled_tileMap, gameMap.getTileset()));
+        gameMap.setTileMap(buildTileMap(tiled_tileMap));
         gameMap.setTiled_TileMap(tiled_tileMap);
         return gameMap;
     }
@@ -36,17 +33,17 @@ public class GameMapBuilder {
         Map<Integer, Tile> tiles = new HashMap<>();
         for(int y = 0, i = 0; y < tilesetImage.sheetH_P / ts.y; y++) {
             for(int x = 0; x < tilesetImage.sheetW_P / ts.x; x++, i++) {
-                Tile t = new Tile(new Sprite(tilesetImage, ts.x, ts.y, x, y), ts.x, ts.y);
+                Tile t = new Tile(i, new Sprite(tilesetImage, ts.x, ts.y, x, y), ts.x, ts.y);
                 tiles.put(i, t);
             }
         }
-        Tileset tileset = new Tileset(tiles, ts.x, ts.y);
+
         tiled_tilesets.forEach(tiled_tileset -> {
             if (tiled_tileset.getTiles() == null)
                 return;
-            tiled_tileset.getTiles().forEach(tile -> {
-                if (tile.getObjectgroup() != null) {
-                    tile.getObjectgroup().getObjects().forEach(object -> {
+            tiled_tileset.getTiles().forEach(tiled_t -> {
+                if (tiled_t.getObjectgroup() != null) {
+                    tiled_t.getObjectgroup().getObjects().forEach(object -> {
                         if (object.getProperties() != null) {
                             object.getProperties().forEach(property -> {
                                 if (property.getName().equals("attributes")) {
@@ -55,12 +52,17 @@ public class GameMapBuilder {
                                                 ObjectMapperW.getObjectMapper()
                                                         .readValue(property.getValue(), List.class);
                                         attributes.forEach(attribute ->
-                                            tileset.getTileset().get(tile.getId())
-                                                    .getAttributes().add((String) attribute)
+                                            tiles.get(tiled_t.getId()).getAttributes().add((String) attribute)
                                         );
                                     } catch (JsonProcessingException e) {
                                         log.error("Error loading tileset attributes: {}", e.getMessage());
                                     }
+                                }
+                                Tile t = tiles.get(tiled_t.getId());
+                                if (t.getAttributes().contains("animated") && property.getName().equals("gfxKey")) {
+                                    // transform the Tile into an AnimatedTile
+                                    AnimatedTile at = new AnimatedTile(t, property.getValue());
+                                    tiles.put(t.getId(), at);
                                 }
                             });
                         }
@@ -68,10 +70,11 @@ public class GameMapBuilder {
                 }
             });
         });
-        return tileset;
+
+        return new Tileset(tiles, ts.x, ts.y);
     }
 
-    private static TileMap buildTileMap(TILED_TileMap tiled_tileMap, Tileset tileset) {
+    private static TileMap buildTileMap(TILED_TileMap tiled_tileMap) {
         TileMap tileMap = new TileMap();
         tileMap.setWidth_T(tiled_tileMap.getWidth());
         tileMap.setHeight_T(tiled_tileMap.getHeight());

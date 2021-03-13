@@ -27,7 +27,7 @@
 package com.github.nighttripperid.littleengine.model.gamestate;
 
 import com.github.nighttripperid.littleengine.model.entity.Entity;
-import com.github.nighttripperid.littleengine.model.graphics.EntityGFX;
+import com.github.nighttripperid.littleengine.model.graphics.SpriteMaps;
 import lombok.Data;
 
 import java.util.ArrayList;
@@ -35,7 +35,7 @@ import java.util.List;
 
 @Data
 public class EntityData {
-    private EntityGFX entityGFX = new EntityGFX();
+    private SpriteMaps spriteMaps = new SpriteMaps();
     private List<Entity> entities = new ArrayList<>();
     private List<Entity> pendingEntities = new ArrayList<>();
 }

@@ -52,7 +52,7 @@ public class TileMap {
             return tileset.VOID_TILE;
 
         } else {
-            return tileset.getTileset().get(getTileId(layerId, x_T, y_T));
+            return tileset.getTile(getTileId(layerId, x_T, y_T));
         }
     }
 
