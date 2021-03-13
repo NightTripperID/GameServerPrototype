@@ -41,12 +41,12 @@ public class AnimatedTile extends Tile {
     private final InitGfxRoutine initGfxRoutine = setInitGfxRoutine();
     private final String gfxKey;
 
-    public AnimatedTile(Tile tile, String gfxKey) {
+    public AnimatedTile(Tile tile, String gfxKey, String frameRate, String length) {
         super(tile);
         this.gfxKey = gfxKey;
         this.animationReel = new AnimationReel();
-        this.animationReel.frameRate = 10;
-        this.animationReel.length = 2;
+        this.animationReel.frameRate = Integer.parseInt(frameRate);
+        this.animationReel.length = Integer.parseInt(length);
     }
 
     private Animation setAnimation() {

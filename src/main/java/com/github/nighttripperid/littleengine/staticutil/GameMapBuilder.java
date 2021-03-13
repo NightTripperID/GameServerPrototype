@@ -45,26 +45,25 @@ public class GameMapBuilder {
                 if (tiled_t.getObjectgroup() != null) {
                     tiled_t.getObjectgroup().getObjects().forEach(object -> {
                         if (object.getProperties() != null) {
-                            object.getProperties().forEach(property -> {
-                                if (property.getName().equals("attributes")) {
-                                    try {
-                                        List<?> attributes =
-                                                ObjectMapperW.getObjectMapper()
-                                                        .readValue(property.getValue(), List.class);
-                                        attributes.forEach(attribute ->
-                                            tiles.get(tiled_t.getId()).getAttributes().add((String) attribute)
-                                        );
-                                    } catch (JsonProcessingException e) {
-                                        log.error("Error loading tileset attributes: {}", e.getMessage());
-                                    }
-                                }
-                                Tile t = tiles.get(tiled_t.getId());
-                                if (t.getAttributes().contains("animated") && property.getName().equals("gfxKey")) {
-                                    // transform the Tile into an AnimatedTile
-                                    AnimatedTile at = new AnimatedTile(t, property.getValue());
-                                    tiles.put(t.getId(), at);
-                                }
-                            });
+                            Map<String, String> properties = new HashMap<>();
+                            object.getProperties().forEach(property ->
+                                    properties.put(property.getName(), property.getValue()));
+                            try {
+                                List<?> attributes =
+                                        ObjectMapperW.getObjectMapper()
+                                                .readValue(properties.get("attributes"), List.class);
+                                attributes.forEach(attribute ->
+                                    tiles.get(tiled_t.getId()).getAttributes().add((String) attribute)
+                                );
+                            } catch (JsonProcessingException e) {
+                                log.error("Error loading tileset attributes: {}", e.getMessage());
+                            }
+                            if (tiles.get(tiled_t.getId()).getAttributes().contains("animated")) {
+                                tiles.put(tiled_t.getId(), new AnimatedTile(tiles.get(tiled_t.getId()),
+                                        properties.get("gfxKey"),
+                                        properties.get("frameRate"),
+                                        properties.get("length")));
+                            }
                         }
                     });
                 }
