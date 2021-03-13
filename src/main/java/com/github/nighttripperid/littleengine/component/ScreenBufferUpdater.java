@@ -27,8 +27,8 @@
 package com.github.nighttripperid.littleengine.component;
 
 import com.github.nighttripperid.littleengine.model.entity.Entity;
-import com.github.nighttripperid.littleengine.model.gamestate.GameMap;
 import com.github.nighttripperid.littleengine.model.entity.RenderTask;
+import com.github.nighttripperid.littleengine.model.gamestate.GameMap;
 import com.github.nighttripperid.littleengine.model.graphics.ScreenBuffer;
 import com.github.nighttripperid.littleengine.model.graphics.Sprite;
 
@@ -79,7 +79,7 @@ public class ScreenBufferUpdater {
     }
 
     public void clearScreenBuffer() {
-        Arrays.fill(screenBuffer.getPixels(), 0x000000);
+        Arrays.fill(screenBuffer.getPixels(), 0x00008b);
     }
 
     public void renderSprite(double x, double y, Sprite sprite) {
@@ -113,7 +113,6 @@ public class ScreenBufferUpdater {
             }
         }
     }
-
 
     public void processRenderTasks(List<RenderTask> renderTasks) {
         renderTasks.sort(RenderTask::compareTo);
