@@ -51,8 +51,8 @@ public class BasicTile implements Tile, BasicObject {
 
     public BasicTile(Tile tile) {
         this.id = tile.getId();
-        this.setSprite(tile.getSprite());
-        this.setHitBox(tile.getHitBox());
+        this.sprite = tile.getSprite();
+        this.hitBox = tile.getHitBox();
         this.attributes = tile.getAttributes();
     }
 }

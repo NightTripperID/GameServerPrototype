@@ -57,8 +57,8 @@ public class DynamicTile implements Tile, DynamicObject {
         this.hitBox = tile.getHitBox();
         this.attributes = tile.getAttributes();
         this.gfxKey = gfxKey;
-        this.getAnimationReel().frameRate = Integer.parseInt(frameRate);
-        this.getAnimationReel().length = Integer.parseInt(length);
+        this.animationReel.frameRate = Integer.parseInt(frameRate);
+        this.animationReel.length = Integer.parseInt(length);
         this.animation = initAnimation();
         this.initGfxRoutine = initGfxRoutine();
     }
@@ -72,8 +72,8 @@ public class DynamicTile implements Tile, DynamicObject {
 
     private InitGfxRoutine initGfxRoutine() {
         return new InitGfxRoutine(spriteMaps -> {
-            SpriteLoader.loadSpritesByColumns(this.getGfxKey(), this.getSprite().width, this.getSprite().height, spriteMaps);
-            this.sprite = spriteMaps.getMap(this.getGfxKey()).get(this.getAnimationReel().frame);
+            SpriteLoader.loadSpritesByColumns(this.gfxKey, this.sprite.width, this.sprite.height, spriteMaps);
+            this.sprite = spriteMaps.getMap(this.gfxKey).get(this.animationReel.frame);
         });
     }
 }
