@@ -23,7 +23,7 @@ public class CollisionResolver {
     public void runTileCollision(Entity entity, GameMap gameMap, double elapsedTime) {
         // broad phase pass
 
-        Rect rect = entity.getBody();
+        Rect rect = entity.getHitBox();
         // calculate 3 of 4 tile corners (the smallest entity can occupy from 1 to 4 bg tiles,
         // so any entity can occupy at the very least 4 tiles.
         // we only need to know 3 of the 4 corner tiles to get the perimeter tiles
@@ -72,18 +72,18 @@ public class CollisionResolver {
             resolveTileCollision(entity, tileRects, elapsedTime);
         }
 
-        if (entity.getBody().vel.x > 0) {
-            entity.getBody().pos.x += Math.ceil(entity.getBody().vel.x * elapsedTime);
+        if (entity.getHitBox().vel.x > 0) {
+            entity.getHitBox().pos.x += Math.ceil(entity.getHitBox().vel.x * elapsedTime);
         }
-        else if (entity.getBody().vel.x < 0) {
-            entity.getBody().pos.x += Math.floor(entity.getBody().vel.x * elapsedTime);
+        else if (entity.getHitBox().vel.x < 0) {
+            entity.getHitBox().pos.x += Math.floor(entity.getHitBox().vel.x * elapsedTime);
         }
 
-        if (entity.getBody().vel.y > 0) {
-            entity.getBody().pos.y += Math.ceil(entity.getBody().vel.y * elapsedTime);
+        if (entity.getHitBox().vel.y > 0) {
+            entity.getHitBox().pos.y += Math.ceil(entity.getHitBox().vel.y * elapsedTime);
         }
-        else if (entity.getBody().vel.y < 0) {
-            entity.getBody().pos.y += Math.floor(entity.getBody().vel.y * elapsedTime);
+        else if (entity.getHitBox().vel.y < 0) {
+            entity.getHitBox().pos.y += Math.floor(entity.getHitBox().vel.y * elapsedTime);
         }
     }
 
@@ -94,14 +94,14 @@ public class CollisionResolver {
             NumWrap<Double> ct = new NumWrap<>(0.0);
             List<AbstractMap.SimpleEntry<Integer, Double>> z = new ArrayList<>();
 
-            if (VectorMath.dynamicRectVsRect(entity.getBody(), elapsedTime, sRects.get(i), cp, cn, ct))
+            if (VectorMath.dynamicRectVsRect(entity.getHitBox(), elapsedTime, sRects.get(i), cp, cn, ct))
                 z.add(new AbstractMap.SimpleEntry<>(i, ct.num));
 
             z = z.stream()
                     .sorted(Map.Entry.<Integer, Double>comparingByValue().reversed())
                     .collect(Collectors.toList());
 
-            z.forEach(z1 -> VectorMath.resolveDynamicRectVsRect(entity.getBody(), elapsedTime, sRects.get(z1.getKey())));
+            z.forEach(z1 -> VectorMath.resolveDynamicRectVsRect(entity.getHitBox(), elapsedTime, sRects.get(z1.getKey())));
 
         }
     }

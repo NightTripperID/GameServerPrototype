@@ -50,8 +50,8 @@ public class ScreenBufferUpdater {
         entities.sort(Entity::compareTo);
         entities.forEach(entity -> {
             if(entity.getSprite() != null ) {
-                renderSprite(entity.getBody().pos.x - gameMap.getScroll().x,
-                        entity.getBody().pos.y - gameMap.getScroll().y, entity.getSprite());
+                renderSprite(entity.getHitBox().pos.x - gameMap.getScroll().x,
+                        entity.getHitBox().pos.y - gameMap.getScroll().y, entity.getSprite());
             }
         });
     }

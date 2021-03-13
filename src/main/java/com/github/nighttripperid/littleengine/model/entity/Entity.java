@@ -44,7 +44,7 @@ public abstract class Entity implements Eventable, Comparable<Entity> {
     private Sprite sprite;
     private AnimationReel animationReel = new AnimationReel();
 
-    private Rect body = new Rect();
+    private Rect hitBox = new Rect();
     private boolean removed;
 
     private List<RenderTask> renderTasks = new ArrayList<>();
@@ -55,7 +55,7 @@ public abstract class Entity implements Eventable, Comparable<Entity> {
 
     @Override
     public int compareTo(Entity entity) {
-        return (int) (this.body.pos.y - entity.body.pos.y);
+        return (int) (this.hitBox.pos.y - entity.hitBox.pos.y);
 //        return this.renderPriority - entity.renderPriority;
     }
 }
