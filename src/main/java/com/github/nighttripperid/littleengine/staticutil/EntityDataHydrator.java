@@ -12,9 +12,9 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @Slf4j
-public class EntityHydrator {
+public class EntityDataHydrator {
 
-    public static EntityData build(TILED_TileMap tiled_tileMap) {
+    public static EntityData hydrate(TILED_TileMap tiled_tileMap) {
         EntityData entityData = new EntityData();
         tiled_tileMap.getLayers().stream().filter(layer -> layer.getType().equals("objectgroup"))
                 .collect(Collectors.toList()).forEach(layer -> {
