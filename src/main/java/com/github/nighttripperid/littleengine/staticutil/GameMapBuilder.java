@@ -3,7 +3,7 @@ package com.github.nighttripperid.littleengine.staticutil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.github.nighttripperid.littleengine.model.PointDouble;
 import com.github.nighttripperid.littleengine.model.PointInt;
-import com.github.nighttripperid.littleengine.model.gamestate.GameMap;
+import com.github.nighttripperid.littleengine.model.scene.GameMap;
 import com.github.nighttripperid.littleengine.model.graphics.Sprite;
 import com.github.nighttripperid.littleengine.model.graphics.SpriteSheet;
 import com.github.nighttripperid.littleengine.model.tiles.*;

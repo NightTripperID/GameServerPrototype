@@ -51,7 +51,7 @@ public abstract class Entity implements Eventable, Comparable<Entity> {
     private BehaviorScript behaviorScript;
     private Animation animation;
     private InitGfxRoutine initGfxRoutine;
-    private GameStateTransition gameStateTransition;
+    private SceneTransition sceneTransition;
 
     @Override
     public int compareTo(Entity entity) {

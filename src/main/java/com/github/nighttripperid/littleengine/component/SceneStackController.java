@@ -27,60 +27,60 @@
 package com.github.nighttripperid.littleengine.component;
 
 import com.github.nighttripperid.littleengine.model.entity.Entity;
-import com.github.nighttripperid.littleengine.model.entity.GameStateTransition;
-import com.github.nighttripperid.littleengine.model.gamestate.GameState;
-import com.github.nighttripperid.littleengine.model.gamestate.Intent;
+import com.github.nighttripperid.littleengine.model.entity.SceneTransition;
+import com.github.nighttripperid.littleengine.model.scene.Scene;
+import com.github.nighttripperid.littleengine.model.scene.Intent;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Stack;
 
 @Slf4j
-public class GameStateStackController {
-    private final Stack<GameState> gameStateStack = new Stack<>();
+public class SceneStackController {
+    private final Stack<Scene> sceneStack = new Stack<>();
     @Getter
-    private GameState activeGameState;
+    private Scene activeScene;
 
 
-    public final void pushGameState(Intent intent) {
-        GameState gameState = buildGameState(intent);
-        gameStateStack.push(gameState);
-        activeGameState = gameStateStack.peek();
+    public final void pushScene(Intent intent) {
+        Scene scene = buildScene(intent);
+        sceneStack.push(scene);
+        activeScene = sceneStack.peek();
     }
 
-    public final void popGameState() {
-        gameStateStack.pop().onDestroy();
+    public final void popScene() {
+        sceneStack.pop().onDestroy();
     }
 
-    public final void swapGameState(Intent intent) {
-        GameState gameState = buildGameState(intent);
-        gameStateStack.pop().onDestroy();
-        gameStateStack.push(gameState);
-        activeGameState = gameStateStack.peek();
+    public final void swapScene(Intent intent) {
+        Scene scene = buildScene(intent);
+        sceneStack.pop().onDestroy();
+        sceneStack.push(scene);
+        activeScene = sceneStack.peek();
     }
 
-    public final void performGameStateTransition(GameStateTransition gameStateTransition) {
-        if (gameStateTransition != null)
-            gameStateTransition.perform(this);
+    public final void performSceneTransition(SceneTransition sceneTransition) {
+        if (sceneTransition != null)
+            sceneTransition.perform(this);
     }
 
-    private GameState buildGameState(Intent intent) {
+    private Scene buildScene(Intent intent) {
         try {
-            GameState gameState = intent.getGameStateClass().newInstance();
-            gameState.setIntent(intent);
-            gameState.onCreate();
-            gameState.getEntityData().getEntities().forEach(Entity::onCreate);
-            gameState.getEntityData().getEntities().forEach(entity -> {
+            Scene scene = intent.getSceneClass().newInstance();
+            scene.setIntent(intent);
+            scene.onCreate();
+            scene.getEntityData().getEntities().forEach(Entity::onCreate);
+            scene.getEntityData().getEntities().forEach(entity -> {
                 if (entity.getInitGfxRoutine() != null) {
-                    entity.getInitGfxRoutine().run(gameState.getEntityData().getSpriteMaps());
+                    entity.getInitGfxRoutine().run(scene.getEntityData().getSpriteMaps());
                 }
             });
-            gameState.getGameMap().getTileset().getAnimatedTiles().forEach(tile -> {
-               tile.getInitGfxRoutine().run(gameState.getGameMap().getTileset().getSpriteMaps());
+            scene.getGameMap().getTileset().getAnimatedTiles().forEach(tile -> {
+               tile.getInitGfxRoutine().run(scene.getGameMap().getTileset().getSpriteMaps());
             });
-            return gameState;
+            return scene;
         } catch (InstantiationException | IllegalAccessException e) {
-            log.error("Error swapping gameState: {} " + e.getMessage());
+            log.error("Error swapping scene: {} " + e.getMessage());
         }
         return null;
     }

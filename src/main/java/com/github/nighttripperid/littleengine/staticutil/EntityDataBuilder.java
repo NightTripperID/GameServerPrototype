@@ -2,7 +2,7 @@ package com.github.nighttripperid.littleengine.staticutil;
 
 import com.github.nighttripperid.littleengine.model.PointDouble;
 import com.github.nighttripperid.littleengine.model.entity.Entity;
-import com.github.nighttripperid.littleengine.model.gamestate.EntityData;
+import com.github.nighttripperid.littleengine.model.scene.EntityData;
 import com.github.nighttripperid.littleengine.model.tiles.TILED_TileMap;
 import lombok.extern.slf4j.Slf4j;
 

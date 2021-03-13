@@ -24,17 +24,18 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.github.nighttripperid.littleengine.model.gamestate;
+package com.github.nighttripperid.littleengine.model.scene;
 
-import lombok.Getter;
+import com.github.nighttripperid.littleengine.model.entity.Entity;
+import com.github.nighttripperid.littleengine.model.graphics.SpriteMaps;
+import lombok.Data;
 
-public class Intent extends HashMaps {
+import java.util.ArrayList;
+import java.util.List;
 
-    @Getter
-    private final Class<? extends GameState> gameStateClass;
-
-    public Intent(Class<? extends GameState> gameStateClass) {
-        this.gameStateClass = gameStateClass;
-    }
-
+@Data
+public class EntityData {
+    private SpriteMaps spriteMaps = new SpriteMaps();
+    private List<Entity> entities = new ArrayList<>();
+    private List<Entity> pendingEntities = new ArrayList<>();
 }

@@ -5,7 +5,7 @@ import com.github.nighttripperid.littleengine.model.PointDouble;
 import com.github.nighttripperid.littleengine.model.PointInt;
 import com.github.nighttripperid.littleengine.model.Rect;
 import com.github.nighttripperid.littleengine.model.entity.Entity;
-import com.github.nighttripperid.littleengine.model.gamestate.GameMap;
+import com.github.nighttripperid.littleengine.model.scene.GameMap;
 import com.github.nighttripperid.littleengine.model.tiles.Tile;
 import com.github.nighttripperid.littleengine.staticutil.VectorMath;
 

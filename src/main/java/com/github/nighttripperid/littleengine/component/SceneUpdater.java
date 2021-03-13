@@ -28,8 +28,8 @@ package com.github.nighttripperid.littleengine.component;
 
 import com.github.nighttripperid.littleengine.model.entity.Entity;
 import com.github.nighttripperid.littleengine.model.entity.RenderTask;
-import com.github.nighttripperid.littleengine.model.gamestate.GameMap;
-import com.github.nighttripperid.littleengine.model.gamestate.GameState;
+import com.github.nighttripperid.littleengine.model.scene.GameMap;
+import com.github.nighttripperid.littleengine.model.scene.Scene;
 import com.github.nighttripperid.littleengine.model.graphics.Sprite;
 import com.github.nighttripperid.littleengine.model.tiles.AnimatedTile;
 import lombok.Getter;
@@ -41,33 +41,33 @@ import java.util.stream.Collectors;
 
 // TODO: flatten encapsulation. This is getting too bloated and complex. Needs a major redesign.
 @Slf4j
-public class GameStateUpdater {
+public class SceneUpdater {
 
     @Getter
     private final ScreenBufferUpdater screenBufferUpdater;
     @Getter
-    private final GameStateStackController gameStateStackController;
+    private final SceneStackController sceneStackController;
     private final CollisionResolver collisionResolver;
 
-    public GameStateUpdater(ScreenBufferUpdater screenBufferUpdater,
-                            GameStateStackController gameStateStackController,
-                            CollisionResolver collisionResolver) {
+    public SceneUpdater(ScreenBufferUpdater screenBufferUpdater,
+                        SceneStackController sceneStackController,
+                        CollisionResolver collisionResolver) {
         this.screenBufferUpdater = screenBufferUpdater;
-        this.gameStateStackController = gameStateStackController;
+        this.sceneStackController = sceneStackController;
         this.collisionResolver = collisionResolver;
     }
 
     public void update(double elapsedTime) {
         addPendingEntities();
-        GameState activeGameState = gameStateStackController.getActiveGameState();
-        GameMap gameMap = gameStateStackController.getActiveGameState().getGameMap();
-        activeGameState.getEntityData().getEntities()
+        Scene activeScene = sceneStackController.getActiveScene();
+        GameMap gameMap = sceneStackController.getActiveScene().getGameMap();
+        activeScene.getEntityData().getEntities()
         .forEach(entity -> {
             entity.getRenderTasks().clear();
             runBehaviorScript(entity, elapsedTime);
-            runEntityAnimation(entity, activeGameState.getEntityData().getSpriteMaps().getMap(entity.getGfxKey()));
+            runEntityAnimation(entity, activeScene.getEntityData().getSpriteMaps().getMap(entity.getGfxKey()));
             collisionResolver.runTileCollision(entity, gameMap, elapsedTime);
-            gameStateStackController.performGameStateTransition(entity.getGameStateTransition());
+            sceneStackController.performSceneTransition(entity.getSceneTransition());
         });
         gameMap.getTileset().getAnimatedTiles().forEach(animatedTile -> {
             runTileAnimation(animatedTile, gameMap.getTileset().getSpriteMaps().getMap(animatedTile.getGfxKey()));
@@ -78,8 +78,8 @@ public class GameStateUpdater {
     public void renderToScreenBuffer() {
         screenBufferUpdater.clearScreenBuffer();
 
-        GameMap gameMap = gameStateStackController.getActiveGameState().getGameMap();
-        List<Entity> entities = gameStateStackController.getActiveGameState().getEntityData().getEntities();
+        GameMap gameMap = sceneStackController.getActiveScene().getGameMap();
+        List<Entity> entities = sceneStackController.getActiveScene().getEntityData().getEntities();
 
         for (int i = 1; i <= gameMap.getTileMap().getNumLayers(); i++) {
             final int layer = i;
@@ -101,21 +101,21 @@ public class GameStateUpdater {
     // TODO: delegate entity methods to EntityProcessor (maybe)
     public void addEntity(Entity entity) {
         entity.onCreate();
-        gameStateStackController.getActiveGameState().getEntityData().getPendingEntities().add(entity);
+        sceneStackController.getActiveScene().getEntityData().getPendingEntities().add(entity);
     }
 
     private void addPendingEntities() {
-        gameStateStackController.getActiveGameState().getEntityData().getEntities()
-                .addAll(gameStateStackController.getActiveGameState().getEntityData().getPendingEntities());
-        gameStateStackController.getActiveGameState().getEntityData().getPendingEntities().clear();
+        sceneStackController.getActiveScene().getEntityData().getEntities()
+                .addAll(sceneStackController.getActiveScene().getEntityData().getPendingEntities());
+        sceneStackController.getActiveScene().getEntityData().getPendingEntities().clear();
     }
 
     private void removeMarkedEntities() {
-        for(int i = 0; i < gameStateStackController.getActiveGameState().getEntityData().getEntities().size(); i++) {
-            if(gameStateStackController.getActiveGameState().getEntityData().getEntities().get(i).isRemoved()) {
-                gameStateStackController.getActiveGameState().getEntityData().getEntities().get(i).onDestroy();
-                gameStateStackController.getActiveGameState().getEntityData().getEntities()
-                        .remove(gameStateStackController.getActiveGameState().getEntityData().getEntities().get(i--));
+        for(int i = 0; i < sceneStackController.getActiveScene().getEntityData().getEntities().size(); i++) {
+            if(sceneStackController.getActiveScene().getEntityData().getEntities().get(i).isRemoved()) {
+                sceneStackController.getActiveScene().getEntityData().getEntities().get(i).onDestroy();
+                sceneStackController.getActiveScene().getEntityData().getEntities()
+                        .remove(sceneStackController.getActiveScene().getEntityData().getEntities().get(i--));
             }
         }
     }
@@ -123,7 +123,7 @@ public class GameStateUpdater {
     private void runBehaviorScript(Entity entity, double timeElapsed) {
         // TODO: implement groovy integration for entity updates (maybe)
         if (entity.getBehaviorScript() != null)
-            entity.getBehaviorScript().run(gameStateStackController.getActiveGameState().getGameMap(), timeElapsed);
+            entity.getBehaviorScript().run(sceneStackController.getActiveScene().getGameMap(), timeElapsed);
     }
 
     private void runEntityAnimation(Entity entity, Map<Integer, Sprite> spriteMap) {

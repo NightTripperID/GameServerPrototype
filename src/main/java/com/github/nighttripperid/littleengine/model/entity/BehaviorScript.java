@@ -26,7 +26,7 @@
  */
 package com.github.nighttripperid.littleengine.model.entity;
 
-import com.github.nighttripperid.littleengine.model.gamestate.GameMap;
+import com.github.nighttripperid.littleengine.model.scene.GameMap;
 
 import java.util.function.BiConsumer;
 

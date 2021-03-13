@@ -27,7 +27,7 @@
 package com.github.nighttripperid.littleengine.staticutil;
 
 import com.github.nighttripperid.littleengine.model.entity.Entity;
-import com.github.nighttripperid.littleengine.model.gamestate.GameMap;
+import com.github.nighttripperid.littleengine.model.scene.GameMap;
 
 // TODO: finish find a broad-phase pass algorithm for tile collision and possibly entity collision
 public class CollisionResolver {

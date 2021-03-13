@@ -27,11 +27,9 @@
 package com.github.nighttripperid.littleengine.component;
 
 
-import com.github.nighttripperid.littleengine.model.gamestate.Intent;
+import com.github.nighttripperid.littleengine.model.scene.Intent;
 import com.github.nighttripperid.littleengine.model.graphics.ScreenBuffer;
 import lombok.extern.slf4j.Slf4j;
-
-import java.time.Clock;
 
 @Slf4j
 public final class Game {
@@ -41,7 +39,7 @@ public final class Game {
     private boolean running;
 
     private IOController ioController;
-    private final GameStateUpdater gameStateUpdater;
+    private final SceneUpdater sceneUpdater;
 
     public Game(int width, int height, int scale, String title) {
         this.title = title;
@@ -50,7 +48,7 @@ public final class Game {
         ScreenBufferUpdater screenBufferUpdater = new ScreenBufferUpdater(new RenderTaskHandler(),
                 new ScreenBuffer(width, height, scale));
 
-        gameStateUpdater = new GameStateUpdater(screenBufferUpdater, new GameStateStackController(),
+        sceneUpdater = new SceneUpdater(screenBufferUpdater, new SceneStackController(),
                 new CollisionResolver());
     }
 
@@ -72,16 +70,16 @@ public final class Game {
 
     private void update(double elapsedTime) {
         ioController.updateInput();
-        gameStateUpdater.update(elapsedTime);
-        gameStateUpdater.renderToScreenBuffer();
+        sceneUpdater.update(elapsedTime);
+        sceneUpdater.renderToScreenBuffer();
     }
 
     private void render() {
-        ioController.renderBufferToScreen(gameStateUpdater.getScreenBufferUpdater().getScreenBuffer());
+        ioController.renderBufferToScreen(sceneUpdater.getScreenBufferUpdater().getScreenBuffer());
     }
 
     public void start(Intent intent) {
-        gameStateUpdater.getGameStateStackController().pushGameState(intent);
+        sceneUpdater.getSceneStackController().pushScene(intent);
         start();
     }
 
