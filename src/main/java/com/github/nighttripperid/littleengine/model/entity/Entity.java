@@ -27,35 +27,21 @@
 package com.github.nighttripperid.littleengine.model.entity;
 
 import com.github.nighttripperid.littleengine.model.Eventable;
-import com.github.nighttripperid.littleengine.model.Rect;
-import com.github.nighttripperid.littleengine.model.graphics.AnimationReel;
-import com.github.nighttripperid.littleengine.model.graphics.Sprite;
+import com.github.nighttripperid.littleengine.model.GameObject;
 import lombok.Data;
-
-import java.util.ArrayList;
-import java.util.List;
+import lombok.EqualsAndHashCode;
 
 @Data
-public abstract class Entity implements Eventable, Comparable<Entity> {
+@EqualsAndHashCode(callSuper = true)
+public abstract class Entity extends GameObject implements Eventable, Comparable<Entity> {
 
-    private String gfxKey;
     private int renderPriority;
     private int renderLayer;
-    private Sprite sprite;
-    private AnimationReel animationReel = new AnimationReel();
-
-    private Rect hitBox = new Rect();
     private boolean removed;
-
-    private List<RenderTask> renderTasks = new ArrayList<>();
-    private BehaviorScript behaviorScript;
-    private Animation animation;
-    private InitGfxRoutine initGfxRoutine;
-    private SceneTransition sceneTransition;
 
     @Override
     public int compareTo(Entity entity) {
-        return (int) (this.hitBox.pos.y - entity.hitBox.pos.y);
+        return (int) (this.getHitBox().pos.y - entity.getHitBox().pos.y);
 //        return this.renderPriority - entity.renderPriority;
     }
 }

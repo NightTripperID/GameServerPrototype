@@ -28,7 +28,6 @@ package com.github.nighttripperid.littleengine.model.tiles;
 
 import com.github.nighttripperid.littleengine.model.entity.Animation;
 import com.github.nighttripperid.littleengine.model.entity.InitGfxRoutine;
-import com.github.nighttripperid.littleengine.model.graphics.AnimationReel;
 import com.github.nighttripperid.littleengine.staticutil.SpriteLoader;
 import com.github.nighttripperid.littleengine.staticutil.SpriteUtil;
 import lombok.Getter;
@@ -36,30 +35,26 @@ import lombok.Getter;
 @Getter
 public class AnimatedTile extends Tile {
 
-    private final AnimationReel animationReel;
-    private final Animation animation = setAnimation();
-    private final InitGfxRoutine initGfxRoutine = setInitGfxRoutine();
-    private final String gfxKey;
-
     public AnimatedTile(Tile tile, String gfxKey, String frameRate, String length) {
         super(tile);
-        this.gfxKey = gfxKey;
-        this.animationReel = new AnimationReel();
-        this.animationReel.frameRate = Integer.parseInt(frameRate);
-        this.animationReel.length = Integer.parseInt(length);
+        this.setGfxKey(gfxKey);
+        this.getAnimationReel().frameRate = Integer.parseInt(frameRate);
+        this.getAnimationReel().length = Integer.parseInt(length);
+        this.setAnimation(initAnimation());
+        this.setInitGfxRoutine(initGfxRoutine());
     }
 
-    private Animation setAnimation() {
+    private Animation initAnimation() {
         return new Animation(spriteMap -> {
-            SpriteUtil.updateAnimReel(this.animationReel);
-            this.setSprite(spriteMap.get(this.animationReel.frame));
+            SpriteUtil.updateAnimReel(this.getAnimationReel());
+            this.setSprite(spriteMap.get(this.getAnimationReel().frame));
         });
     }
 
-    private InitGfxRoutine setInitGfxRoutine() {
+    private InitGfxRoutine initGfxRoutine() {
         return new InitGfxRoutine(spriteMaps -> {
-            SpriteLoader.loadSpritesByColumns(this.gfxKey, this.getSprite().width, this.getSprite().height, spriteMaps);
-            this.setSprite(spriteMaps.getMap(this.gfxKey).get(this.animationReel.frame));
+            SpriteLoader.loadSpritesByColumns(this.getGfxKey(), this.getSprite().width, this.getSprite().height, spriteMaps);
+            this.setSprite(spriteMaps.getMap(this.getGfxKey()).get(this.getAnimationReel().frame));
         });
     }
 }

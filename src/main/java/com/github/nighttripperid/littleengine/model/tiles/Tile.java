@@ -26,33 +26,32 @@
  */
 package com.github.nighttripperid.littleengine.model.tiles;
 
+import com.github.nighttripperid.littleengine.model.GameObject;
 import com.github.nighttripperid.littleengine.model.PointDouble;
-import com.github.nighttripperid.littleengine.model.Rect;
 import com.github.nighttripperid.littleengine.model.graphics.Sprite;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Data
-public class Tile {
+@EqualsAndHashCode(callSuper = true)
+public class Tile extends GameObject {
 
     private int id;
-    private Sprite sprite;
-    private Rect rect;
     private List<String> attributes = new ArrayList<>();
 
     public Tile(int id, Sprite sprite, int width, int height) {
         this.id = id;
-        this.sprite = sprite;
-        this.rect = new Rect();
-        this.rect.size = new PointDouble((double) width, (double) height);
+        this.setSprite(sprite);
+        this.getHitBox().size = new PointDouble((double) width, (double) height);
     }
 
     public Tile (Tile tile) {
         this.id = tile.getId();
-        this.sprite = tile.getSprite();;
-        this.rect = tile.getRect();
+        this.setSprite(tile.getSprite());
+        this.setHitBox(tile.getHitBox());
         this.attributes = tile.getAttributes();
     }
 }

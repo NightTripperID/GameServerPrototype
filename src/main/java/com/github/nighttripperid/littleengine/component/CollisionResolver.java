@@ -23,16 +23,16 @@ public class CollisionResolver {
     public void runTileCollision(Entity entity, GameMap gameMap, double elapsedTime) {
         // broad phase pass
 
-        Rect rect = entity.getHitBox();
+        Rect hitBox = entity.getHitBox();
         // calculate 3 of 4 tile corners (the smallest entity can occupy from 1 to 4 bg tiles,
         // so any entity can occupy at the very least 4 tiles.
         // we only need to know 3 of the 4 corner tiles to get the perimeter tiles
-        PointInt currTile_TL = new PointInt((int) (rect.pos.x / gameMap.getTileSize().x), // top left corner
-                (int) (rect.pos.y / gameMap.getTileSize().y));
-        PointInt currTile_TR = new PointInt((int) ((rect.pos.x + rect.size.x - 1) / gameMap.getTileSize().x), // top right corner
-                (int) (rect.pos.y / gameMap.getTileSize().y));
-        PointInt currTile_BL = new PointInt((int) (rect.pos.x / gameMap.getTileSize().x),  // bottom left corner
-                (int) ((rect.pos.y + rect.size.y - 1) / gameMap.getTileSize().y));
+        PointInt currTile_TL = new PointInt((int) (hitBox.pos.x / gameMap.getTileSize().x), // top left corner
+                (int) (hitBox.pos.y / gameMap.getTileSize().y));
+        PointInt currTile_TR = new PointInt((int) ((hitBox.pos.x + hitBox.size.x - 1) / gameMap.getTileSize().x), // top right corner
+                (int) (hitBox.pos.y / gameMap.getTileSize().y));
+        PointInt currTile_BL = new PointInt((int) (hitBox.pos.x / gameMap.getTileSize().x),  // bottom left corner
+                (int) ((hitBox.pos.y + hitBox.size.y - 1) / gameMap.getTileSize().y));
 
         // get x,y coords of all tiles outside the perimeter. these are the tiles we want to check for collision.
         List<PointDouble> outerPoints = new ArrayList<>();
@@ -64,7 +64,7 @@ public class CollisionResolver {
                 if (tile != null && tile.getAttributes().contains("solid")) {
                     Rect r = new Rect();
                     r.pos = outerPoints.get(k).times(gameMap.getTileSize());
-                    r.size = tiles.get(k).getRect().size;
+                    r.size = tiles.get(k).getHitBox().size;
                     tileRects.add(r);
                 }
             }
