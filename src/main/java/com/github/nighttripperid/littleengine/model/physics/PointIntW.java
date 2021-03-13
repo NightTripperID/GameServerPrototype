@@ -24,21 +24,44 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.github.nighttripperid.littleengine.model.entity;
+package com.github.nighttripperid.littleengine.model.physics;
 
-import com.github.nighttripperid.littleengine.model.graphics.Sprite;
+public class PointIntW {
+    public NumWrap<Integer> x;
+    public NumWrap<Integer> y;
 
-import java.util.Map;
-import java.util.function.Consumer;
-
-public class Animation {
-    private final Consumer<Map<Integer, Sprite>> animation;
-
-    public Animation(Consumer<Map<Integer, Sprite>> animation) {
-        this.animation = animation;
+    public PointIntW(){
+        x = new NumWrap<>(0);
+        y = new NumWrap<>(0);
     }
 
-    public void run(Map<Integer, Sprite> spriteMap) {
-        animation.accept(spriteMap);
+    public PointIntW(int x, int y) {
+        this();
+        this.x.num = x;
+        this.y.num = y;
+    }
+
+    public PointIntW plus(PointIntW that) {
+        return new PointIntW(this.x.num + that.x.num, this.y.num + that.y.num);
+    }
+
+    public PointIntW minus(PointIntW that) {
+        return new PointIntW(this.x.num - that.x.num, this.y.num - that.y.num);
+    }
+
+    public PointIntW times(PointIntW that) {
+        return new PointIntW(this.x.num * that.x.num, this.y.num * that.y.num);
+    }
+
+    public PointIntW div(PointIntW that) {
+        return new PointIntW(that.x.num == 0 ? null : this.x.num / that.x.num, that.y.num == 0 ? null : this.y.num / that.y.num);
+    }
+
+    @Override
+    public boolean equals(Object p) {
+        if (this == p) return true;
+        if (p == null || getClass() != p.getClass()) return false;
+        PointIntW that = (PointIntW) p;
+        return that.x.num.equals(this.x.num) && that.y.num.equals(this.y.num);
     }
 }

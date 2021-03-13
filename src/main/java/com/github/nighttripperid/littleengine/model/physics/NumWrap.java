@@ -1,4 +1,4 @@
-package com.github.nighttripperid.littleengine.model;
+package com.github.nighttripperid.littleengine.model.physics;
 
 public class NumWrap<T extends Number> {
     public T num;

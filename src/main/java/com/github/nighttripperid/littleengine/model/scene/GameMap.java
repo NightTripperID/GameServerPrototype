@@ -26,7 +26,7 @@
  */
 package com.github.nighttripperid.littleengine.model.scene;
 
-import com.github.nighttripperid.littleengine.model.PointDouble;
+import com.github.nighttripperid.littleengine.model.physics.PointDouble;
 import com.github.nighttripperid.littleengine.model.tiles.TILED_TileMap;
 import com.github.nighttripperid.littleengine.model.tiles.TileMap;
 import com.github.nighttripperid.littleengine.model.tiles.Tileset;

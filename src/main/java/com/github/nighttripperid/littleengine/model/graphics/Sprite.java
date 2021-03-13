@@ -26,7 +26,7 @@
  */
 package com.github.nighttripperid.littleengine.model.graphics;
 
-import com.github.nighttripperid.littleengine.model.PointInt;
+import com.github.nighttripperid.littleengine.model.physics.PointInt;
 
 public class Sprite {
 

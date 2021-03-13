@@ -32,6 +32,6 @@ import lombok.Data;
 @Data
 public abstract class Scene implements Eventable {
     private Intent intent;
-    private EntityData entityData = new EntityData();
+    private ActorData actorData = new ActorData();
     private GameMap gameMap = new GameMap();
 }

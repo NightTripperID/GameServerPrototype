@@ -26,7 +26,7 @@
  */
 package com.github.nighttripperid.littleengine.model.graphics;
 
-import com.github.nighttripperid.littleengine.model.PointDouble;
+import com.github.nighttripperid.littleengine.model.physics.PointDouble;
 import lombok.Data;
 
 @Data

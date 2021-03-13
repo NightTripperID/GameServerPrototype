@@ -26,8 +26,8 @@
  */
 package com.github.nighttripperid.littleengine.component;
 
-import com.github.nighttripperid.littleengine.model.entity.Entity;
-import com.github.nighttripperid.littleengine.model.entity.RenderTask;
+import com.github.nighttripperid.littleengine.model.Actor;
+import com.github.nighttripperid.littleengine.model.script.RenderTask;
 import com.github.nighttripperid.littleengine.model.scene.GameMap;
 import com.github.nighttripperid.littleengine.model.graphics.ScreenBuffer;
 import com.github.nighttripperid.littleengine.model.graphics.Sprite;
@@ -46,12 +46,12 @@ public class ScreenBufferUpdater {
         this.renderTaskHandler.setScreenBuffer(this.screenBuffer);
     }
 
-    public void renderEntities(List<Entity> entities, GameMap gameMap) {
-        entities.sort(Entity::compareTo);
-        entities.forEach(entity -> {
-            if(entity.getSprite() != null ) {
-                renderSprite(entity.getHitBox().pos.x - gameMap.getScroll().x,
-                        entity.getHitBox().pos.y - gameMap.getScroll().y, entity.getSprite());
+    public void renderEntities(List<Actor> actors, GameMap gameMap) {
+        actors.sort(Actor::compareTo);
+        actors.forEach(actor -> {
+            if(actor.getSprite() != null ) {
+                renderSprite(actor.getHitBox().pos.x - gameMap.getScroll().x,
+                        actor.getHitBox().pos.y - gameMap.getScroll().y, actor.getSprite());
             }
         });
     }

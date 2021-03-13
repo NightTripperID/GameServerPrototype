@@ -26,8 +26,8 @@
  */
 package com.github.nighttripperid.littleengine.component;
 
-import com.github.nighttripperid.littleengine.model.entity.Entity;
-import com.github.nighttripperid.littleengine.model.entity.SceneTransition;
+import com.github.nighttripperid.littleengine.model.Actor;
+import com.github.nighttripperid.littleengine.model.script.SceneTransition;
 import com.github.nighttripperid.littleengine.model.scene.Scene;
 import com.github.nighttripperid.littleengine.model.scene.Intent;
 import lombok.Getter;
@@ -69,13 +69,13 @@ public class SceneStackController {
             Scene scene = intent.getSceneClass().newInstance();
             scene.setIntent(intent);
             scene.onCreate();
-            scene.getEntityData().getEntities().forEach(Entity::onCreate);
-            scene.getEntityData().getEntities().forEach(entity -> {
-                if (entity.getInitGfxRoutine() != null) {
-                    entity.getInitGfxRoutine().run(scene.getEntityData().getSpriteMaps());
+            scene.getActorData().getActors().forEach(Actor::onCreate);
+            scene.getActorData().getActors().forEach(actor -> {
+                if (actor.getInitGfxRoutine() != null) {
+                    actor.getInitGfxRoutine().run(scene.getActorData().getSpriteMaps());
                 }
             });
-            scene.getGameMap().getTileset().getAnimatedTiles().forEach(tile -> {
+            scene.getGameMap().getTileset().getDynamicTiles().forEach(tile -> {
                tile.getInitGfxRoutine().run(scene.getGameMap().getTileset().getSpriteMaps());
             });
             return scene;

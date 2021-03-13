@@ -24,37 +24,20 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.github.nighttripperid.littleengine.model.tiles;
+package com.github.nighttripperid.littleengine.model.script;
 
-import com.github.nighttripperid.littleengine.model.entity.Animation;
-import com.github.nighttripperid.littleengine.model.entity.InitGfxRoutine;
-import com.github.nighttripperid.littleengine.staticutil.SpriteLoader;
-import com.github.nighttripperid.littleengine.staticutil.SpriteUtil;
-import lombok.Getter;
+import com.github.nighttripperid.littleengine.model.scene.GameMap;
 
-@Getter
-public class AnimatedTile extends Tile {
+import java.util.function.BiConsumer;
 
-    public AnimatedTile(Tile tile, String gfxKey, String frameRate, String length) {
-        super(tile);
-        this.setGfxKey(gfxKey);
-        this.getAnimationReel().frameRate = Integer.parseInt(frameRate);
-        this.getAnimationReel().length = Integer.parseInt(length);
-        this.setAnimation(initAnimation());
-        this.setInitGfxRoutine(initGfxRoutine());
+public class BehaviorScript {
+    private final BiConsumer<GameMap, Double> script;
+
+    public BehaviorScript(BiConsumer<GameMap, Double> script) {
+        this.script = script;
     }
 
-    private Animation initAnimation() {
-        return new Animation(spriteMap -> {
-            SpriteUtil.updateAnimReel(this.getAnimationReel());
-            this.setSprite(spriteMap.get(this.getAnimationReel().frame));
-        });
-    }
-
-    private InitGfxRoutine initGfxRoutine() {
-        return new InitGfxRoutine(spriteMaps -> {
-            SpriteLoader.loadSpritesByColumns(this.getGfxKey(), this.getSprite().width, this.getSprite().height, spriteMaps);
-            this.setSprite(spriteMaps.getMap(this.getGfxKey()).get(this.getAnimationReel().frame));
-        });
+    public void run(GameMap gameMap, Double timeElapsed) {
+        script.accept(gameMap, timeElapsed);
     }
 }

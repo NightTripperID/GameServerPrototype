@@ -1,10 +1,10 @@
 package com.github.nighttripperid.littleengine.component;
 
-import com.github.nighttripperid.littleengine.model.NumWrap;
-import com.github.nighttripperid.littleengine.model.PointDouble;
-import com.github.nighttripperid.littleengine.model.PointInt;
-import com.github.nighttripperid.littleengine.model.Rect;
-import com.github.nighttripperid.littleengine.model.entity.Entity;
+import com.github.nighttripperid.littleengine.model.*;
+import com.github.nighttripperid.littleengine.model.physics.NumWrap;
+import com.github.nighttripperid.littleengine.model.physics.PointDouble;
+import com.github.nighttripperid.littleengine.model.physics.PointInt;
+import com.github.nighttripperid.littleengine.model.physics.Rect;
 import com.github.nighttripperid.littleengine.model.scene.GameMap;
 import com.github.nighttripperid.littleengine.model.tiles.Tile;
 import com.github.nighttripperid.littleengine.staticutil.VectorMath;
@@ -17,15 +17,15 @@ import java.util.stream.Collectors;
 
 public class CollisionResolver {
 
-    private void runEntityCollision(Entity entity, double elapsedTime) {
+    private void runActorCollision(Actor actor, double elapsedTime) {
     }
 
-    public void runTileCollision(Entity entity, GameMap gameMap, double elapsedTime) {
+    public void runTileCollision(Actor actor, GameMap gameMap, double elapsedTime) {
         // broad phase pass
 
-        Rect hitBox = entity.getHitBox();
-        // calculate 3 of 4 tile corners (the smallest entity can occupy from 1 to 4 bg tiles,
-        // so any entity can occupy at the very least 4 tiles.
+        Rect hitBox = actor.getHitBox();
+        // calculate 3 of 4 tile corners (the smallest actor can occupy from 1 to 4 bg tiles,
+        // so any actor can occupy at the very least 4 tiles.
         // we only need to know 3 of the 4 corner tiles to get the perimeter tiles
         PointInt currTile_TL = new PointInt((int) (hitBox.pos.x / gameMap.getTileSize().x), // top left corner
                 (int) (hitBox.pos.y / gameMap.getTileSize().y));
@@ -69,39 +69,39 @@ public class CollisionResolver {
                 }
             }
 
-            resolveTileCollision(entity, tileRects, elapsedTime);
+            resolveTileCollision(actor, tileRects, elapsedTime);
         }
 
-        if (entity.getHitBox().vel.x > 0) {
-            entity.getHitBox().pos.x += Math.ceil(entity.getHitBox().vel.x * elapsedTime);
+        if (actor.getHitBox().vel.x > 0) {
+            actor.getHitBox().pos.x += Math.ceil(actor.getHitBox().vel.x * elapsedTime);
         }
-        else if (entity.getHitBox().vel.x < 0) {
-            entity.getHitBox().pos.x += Math.floor(entity.getHitBox().vel.x * elapsedTime);
+        else if (actor.getHitBox().vel.x < 0) {
+            actor.getHitBox().pos.x += Math.floor(actor.getHitBox().vel.x * elapsedTime);
         }
 
-        if (entity.getHitBox().vel.y > 0) {
-            entity.getHitBox().pos.y += Math.ceil(entity.getHitBox().vel.y * elapsedTime);
+        if (actor.getHitBox().vel.y > 0) {
+            actor.getHitBox().pos.y += Math.ceil(actor.getHitBox().vel.y * elapsedTime);
         }
-        else if (entity.getHitBox().vel.y < 0) {
-            entity.getHitBox().pos.y += Math.floor(entity.getHitBox().vel.y * elapsedTime);
+        else if (actor.getHitBox().vel.y < 0) {
+            actor.getHitBox().pos.y += Math.floor(actor.getHitBox().vel.y * elapsedTime);
         }
     }
 
-    private void resolveTileCollision(Entity entity, List<Rect> sRects, double elapsedTime) {
+    private void resolveTileCollision(Actor actor, List<Rect> sRects, double elapsedTime) {
         for (int i = 0; i < sRects.size(); i++) {
             PointDouble cp = PointDouble.of(0.0);
             PointDouble cn = PointDouble.of(0.0);
             NumWrap<Double> ct = new NumWrap<>(0.0);
             List<AbstractMap.SimpleEntry<Integer, Double>> z = new ArrayList<>();
 
-            if (VectorMath.dynamicRectVsRect(entity.getHitBox(), elapsedTime, sRects.get(i), cp, cn, ct))
+            if (VectorMath.dynamicRectVsRect(actor.getHitBox(), elapsedTime, sRects.get(i), cp, cn, ct))
                 z.add(new AbstractMap.SimpleEntry<>(i, ct.num));
 
             z = z.stream()
                     .sorted(Map.Entry.<Integer, Double>comparingByValue().reversed())
                     .collect(Collectors.toList());
 
-            z.forEach(z1 -> VectorMath.resolveDynamicRectVsRect(entity.getHitBox(), elapsedTime, sRects.get(z1.getKey())));
+            z.forEach(z1 -> VectorMath.resolveDynamicRectVsRect(actor.getHitBox(), elapsedTime, sRects.get(z1.getKey())));
 
         }
     }

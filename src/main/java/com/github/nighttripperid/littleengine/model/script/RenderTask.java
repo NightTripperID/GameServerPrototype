@@ -24,20 +24,29 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.github.nighttripperid.littleengine.model.entity;
+package com.github.nighttripperid.littleengine.model.script;
 
-import com.github.nighttripperid.littleengine.model.graphics.SpriteMaps;
+import com.github.nighttripperid.littleengine.component.RenderTaskHandler;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 import java.util.function.Consumer;
 
-public class InitGfxRoutine {
-    private final Consumer<SpriteMaps> routine;
+@AllArgsConstructor
+public class RenderTask implements Comparable<RenderTask> {
+    @Getter
+    private final int renderLayer;
+    @Getter
+    private final int renderPriority;
 
-    public InitGfxRoutine(Consumer<SpriteMaps> routine) {
-        this.routine = routine;
+    private final Consumer<RenderTaskHandler> request;
+    
+    public void process(RenderTaskHandler processor) {
+        request.accept(processor);
     }
 
-    public void run(SpriteMaps spriteMaps) {
-        routine.accept(spriteMaps);
+    @Override
+    public int compareTo(RenderTask renderTask) {
+        return this.renderPriority - renderTask.renderPriority;
     }
 }

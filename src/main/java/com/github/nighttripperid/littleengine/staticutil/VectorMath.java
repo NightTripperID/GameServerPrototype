@@ -26,10 +26,10 @@
  */
 package com.github.nighttripperid.littleengine.staticutil;
 
-import com.github.nighttripperid.littleengine.model.NumWrap;
-import com.github.nighttripperid.littleengine.model.PointDouble;
-import com.github.nighttripperid.littleengine.model.PointDoubleW;
-import com.github.nighttripperid.littleengine.model.Rect;
+import com.github.nighttripperid.littleengine.model.physics.NumWrap;
+import com.github.nighttripperid.littleengine.model.physics.PointDouble;
+import com.github.nighttripperid.littleengine.model.physics.PointDoubleW;
+import com.github.nighttripperid.littleengine.model.physics.Rect;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j

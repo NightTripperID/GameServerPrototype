@@ -24,19 +24,21 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.github.nighttripperid.littleengine.staticutil;
+package com.github.nighttripperid.littleengine.model.script;
 
-import com.github.nighttripperid.littleengine.model.entity.Entity;
-import com.github.nighttripperid.littleengine.model.scene.GameMap;
+import com.github.nighttripperid.littleengine.model.graphics.Sprite;
 
-// TODO: finish find a broad-phase pass algorithm for tile collision and possibly entity collision
-public class CollisionResolver {
+import java.util.Map;
+import java.util.function.Consumer;
 
-    public static boolean resolveEntityCollision(Entity e1, Entity e2, double elapsedTime) {
-        return false;
+public class Animation {
+    private final Consumer<Map<Integer, Sprite>> animation;
+
+    public Animation(Consumer<Map<Integer, Sprite>> animation) {
+        this.animation = animation;
     }
 
-    public static boolean resolveTileCollision(GameMap gameMap, Entity entity, double xSpeed, double ySpeed) {
-        return false;
+    public void run(Map<Integer, Sprite> spriteMap) {
+        animation.accept(spriteMap);
     }
 }

@@ -1,8 +1,9 @@
 package com.github.nighttripperid.littleengine.staticutil;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.github.nighttripperid.littleengine.model.PointDouble;
-import com.github.nighttripperid.littleengine.model.PointInt;
+import com.github.nighttripperid.littleengine.model.physics.PointDouble;
+import com.github.nighttripperid.littleengine.model.physics.PointInt;
+import com.github.nighttripperid.littleengine.model.tiles.Tile;
 import com.github.nighttripperid.littleengine.model.scene.GameMap;
 import com.github.nighttripperid.littleengine.model.graphics.Sprite;
 import com.github.nighttripperid.littleengine.model.graphics.SpriteSheet;
@@ -33,7 +34,7 @@ public class GameMapBuilder {
         Map<Integer, Tile> tiles = new HashMap<>();
         for(int y = 0, i = 0; y < tilesetImage.sheetH_P / ts.y; y++) {
             for(int x = 0; x < tilesetImage.sheetW_P / ts.x; x++, i++) {
-                Tile t = new Tile(i, new Sprite(tilesetImage, ts.x, ts.y, x, y), ts.x, ts.y);
+                Tile t = new BasicTile(i, new Sprite(tilesetImage, ts.x, ts.y, x, y), ts.x, ts.y);
                 tiles.put(i, t);
             }
         }
@@ -59,7 +60,7 @@ public class GameMapBuilder {
                                 log.error("Error loading tileset attributes: {}", e.getMessage());
                             }
                             if (tiles.get(tiled_t.getId()).getAttributes().contains("animated")) {
-                                tiles.put(tiled_t.getId(), new AnimatedTile(tiles.get(tiled_t.getId()),
+                                tiles.put(tiled_t.getId(), new DynamicTile(tiles.get(tiled_t.getId()),
                                         properties.get("gfxKey"),
                                         properties.get("frameRate"),
                                         properties.get("length")));

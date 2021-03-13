@@ -24,44 +24,20 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.github.nighttripperid.littleengine.model;
+package com.github.nighttripperid.littleengine.model.script;
 
-public class PointIntW {
-    public NumWrap<Integer> x;
-    public NumWrap<Integer> y;
+import com.github.nighttripperid.littleengine.component.SceneStackController;
 
-    public PointIntW(){
-        x = new NumWrap<>(0);
-        y = new NumWrap<>(0);
+import java.util.function.Consumer;
+
+public class SceneTransition {
+    private final Consumer<SceneStackController> transition;
+
+    public SceneTransition(Consumer<SceneStackController> transition) {
+        this.transition = transition;
     }
 
-    public PointIntW(int x, int y) {
-        this();
-        this.x.num = x;
-        this.y.num = y;
-    }
-
-    public PointIntW plus(PointIntW that) {
-        return new PointIntW(this.x.num + that.x.num, this.y.num + that.y.num);
-    }
-
-    public PointIntW minus(PointIntW that) {
-        return new PointIntW(this.x.num - that.x.num, this.y.num - that.y.num);
-    }
-
-    public PointIntW times(PointIntW that) {
-        return new PointIntW(this.x.num * that.x.num, this.y.num * that.y.num);
-    }
-
-    public PointIntW div(PointIntW that) {
-        return new PointIntW(that.x.num == 0 ? null : this.x.num / that.x.num, that.y.num == 0 ? null : this.y.num / that.y.num);
-    }
-
-    @Override
-    public boolean equals(Object p) {
-        if (this == p) return true;
-        if (p == null || getClass() != p.getClass()) return false;
-        PointIntW that = (PointIntW) p;
-        return that.x.num.equals(this.x.num) && that.y.num.equals(this.y.num);
+    public void perform(SceneStackController sceneStackController) {
+        transition.accept(sceneStackController);
     }
 }

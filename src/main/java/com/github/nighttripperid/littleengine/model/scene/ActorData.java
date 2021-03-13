@@ -24,20 +24,18 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.github.nighttripperid.littleengine.model.entity;
+package com.github.nighttripperid.littleengine.model.scene;
 
-import com.github.nighttripperid.littleengine.component.SceneStackController;
+import com.github.nighttripperid.littleengine.model.Actor;
+import com.github.nighttripperid.littleengine.model.graphics.SpriteMaps;
+import lombok.Data;
 
-import java.util.function.Consumer;
+import java.util.ArrayList;
+import java.util.List;
 
-public class SceneTransition {
-    private final Consumer<SceneStackController> transition;
-
-    public SceneTransition(Consumer<SceneStackController> transition) {
-        this.transition = transition;
-    }
-
-    public void perform(SceneStackController sceneStackController) {
-        transition.accept(sceneStackController);
-    }
+@Data
+public class ActorData {
+    private SpriteMaps spriteMaps = new SpriteMaps();
+    private List<Actor> actors = new ArrayList<>();
+    private List<Actor> pendingActors = new ArrayList<>();
 }

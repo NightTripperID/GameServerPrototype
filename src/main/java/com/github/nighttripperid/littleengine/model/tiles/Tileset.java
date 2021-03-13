@@ -38,24 +38,24 @@ public class Tileset {
     public final Tile VOID_TILE;
 
     private final Map<Integer, Tile> tileset; // hashed by tile id
-    private final List<AnimatedTile> animatedTiles = new ArrayList<>();
+    private final List<DynamicTile> dynamicTiles = new ArrayList<>();
 
     @Getter
     private final SpriteMaps spriteMaps = new SpriteMaps();
 
     public Tileset(Map<Integer, Tile> tileset, int tileW, int tileH) {
-        VOID_TILE = new Tile(0, new Sprite(0xffff00ff, tileW, tileH), tileW, tileH);
+        VOID_TILE = new BasicTile(0, new Sprite(0xffff00ff, tileW, tileH), tileW, tileH);
         VOID_TILE.getAttributes().add("solid");
         this.tileset = tileset;
         this.tileset.values().forEach(tile -> {
-            if (tile instanceof AnimatedTile) {
-                animatedTiles.add((AnimatedTile) tile);
+            if ((tile instanceof DynamicTile)) {
+                dynamicTiles.add((DynamicTile) tile);
             }
         });
     }
 
-    public List<AnimatedTile> getAnimatedTiles() {
-        return new ArrayList<>(animatedTiles);
+    public List<DynamicTile> getDynamicTiles() {
+        return new ArrayList<>(dynamicTiles);
     }
 
     public Tile getTile(int tileId) {
