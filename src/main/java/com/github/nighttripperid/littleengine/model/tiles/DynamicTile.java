@@ -26,6 +26,7 @@
  */
 package com.github.nighttripperid.littleengine.model.tiles;
 
+import com.github.nighttripperid.littleengine.model.Eventable;
 import com.github.nighttripperid.littleengine.model.object.DynamicObject;
 import com.github.nighttripperid.littleengine.model.physics.Rect;
 import com.github.nighttripperid.littleengine.model.script.*;
@@ -38,7 +39,7 @@ import lombok.Getter;
 import java.util.List;
 
 @Getter
-public class DynamicTile implements Tile, DynamicObject {
+public class DynamicTile implements Tile, DynamicObject, Eventable {
     private int id;
     private Sprite sprite;
     private Rect hitBox;
@@ -50,17 +51,13 @@ public class DynamicTile implements Tile, DynamicObject {
     private Animation animation;
     private InitGfxRoutine initGfxRoutine;
     private SceneTransition sceneTransition;
+    private String frameRate;
+    private String length;
 
-    public DynamicTile(Tile tile, String gfxKey, String frameRate, String length) {
-        this.id = tile.getId();
-        this.sprite = tile.getSprite();
+    public DynamicTile(Tile tile) {
         this.hitBox = tile.getHitBox();
         this.attributes = tile.getAttributes();
-        this.gfxKey = gfxKey;
-        this.animationReel.frameRate = Integer.parseInt(frameRate);
-        this.animationReel.length = Integer.parseInt(length);
-        this.animation = initAnimation();
-        this.initGfxRoutine = initGfxRoutine();
+        this.sprite = tile.getSprite();
     }
 
     private Animation initAnimation() {
@@ -75,5 +72,17 @@ public class DynamicTile implements Tile, DynamicObject {
             SpriteLoader.loadSpritesByColumns(this.gfxKey, this.sprite.width, this.sprite.height, spriteMaps);
             this.sprite = spriteMaps.getMap(this.gfxKey).get(this.animationReel.frame);
         });
+    }
+
+    @Override
+    public void onCreate() {
+        this.animation = initAnimation();
+        this.initGfxRoutine = initGfxRoutine();
+        this.animationReel.length = Integer.parseInt(this.length);
+        this.animationReel.frameRate = Integer.parseInt(this.frameRate);
+    }
+
+    @Override
+    public void onDestroy() {
     }
 }

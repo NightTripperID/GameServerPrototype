@@ -36,6 +36,7 @@ import com.github.nighttripperid.littleengine.model.graphics.SpriteSheet;
 import com.github.nighttripperid.littleengine.model.tiles.*;
 import lombok.extern.slf4j.Slf4j;
 
+import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -82,14 +83,28 @@ public class GameMapBuilder {
                                 attributes.forEach(attribute ->
                                     tiles.get(tiled_t.getId()).getAttributes().add((String) attribute)
                                 );
+                                properties.remove("attributes");
                             } catch (JsonProcessingException e) {
                                 log.error("Error loading tileset attributes: {}", e.getMessage());
                             }
-                            if (tiles.get(tiled_t.getId()).getAttributes().contains("animated")) {
-                                tiles.put(tiled_t.getId(), new DynamicTile(tiles.get(tiled_t.getId()),
-                                        properties.get("gfxKey"),
-                                        properties.get("frameRate"),
-                                        properties.get("length")));
+                            if (tiles.get(tiled_t.getId()).getAttributes().contains("dynamic")) {
+                                DynamicTile dt = new DynamicTile(tiles.get(tiled_t.getId()));
+                                Class<?> clazz = dt.getClass();
+                                properties.keySet().forEach(fieldName -> {
+                                    try {
+                                        Field f = clazz.getDeclaredField(fieldName);
+                                        f.setAccessible(true);
+                                        f.set(dt, properties.get(fieldName));
+                                    } catch (NoSuchFieldException e) {
+                                        log.error("Could not find field \"{}\" in class \"{}\".",
+                                                fieldName, clazz.getName());
+                                    } catch (IllegalAccessException e) {
+                                        log.error("Error accessing Class to instantiate with name \"{}\". " +
+                                                "make sure class is public.", clazz.getName());
+                                    }
+                                });
+                                dt.onCreate();
+                                tiles.put(tiled_t.getId(), dt);
                             }
                         }
                     });
