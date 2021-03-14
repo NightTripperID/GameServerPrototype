@@ -32,7 +32,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class Xbox360Controller {
-    public static final ControllerManager controllerManager;
+    private static final ControllerManager controllerManager;
     public static ControllerState currState;
 
     static {
