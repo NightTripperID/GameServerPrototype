@@ -53,6 +53,7 @@ public class IOController extends Canvas {
         jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         jFrame.setLocationRelativeTo(null);
         jFrame.setVisible(true);
+        jFrame.addWindowListener(ExitListener.getInstance());
 
         addKeyListener(new Keyboard());
 
@@ -65,6 +66,7 @@ public class IOController extends Canvas {
     public void updateInput() {
         Keyboard.update();
         Mouse.update();
+        Xbox360Controller.update();
     }
 
     public void renderBufferToScreen(ScreenBuffer screenBuffer) {
