@@ -53,6 +53,9 @@ public class ActorDataHydrator {
                             Class<?> clazz = Class.forName(properties.get("class"));
                             Actor actor = (Actor) clazz.newInstance();
                             actor.getHitBox().pos = (new PointDouble((double) object.getX(), (double) object.getY()));
+                            actor.getHitBox().size = (
+                                    new PointDouble((double) object.getWidth(),
+                                                    (double) object.getHeight()));
                             properties.remove("class");
                             properties.keySet().forEach(fieldName -> injectField(actor.getClass(), actor,
                                     fieldName, properties.get(fieldName))
@@ -60,12 +63,15 @@ public class ActorDataHydrator {
                             actorData.getActors().add(actor);
                         } catch (ClassNotFoundException e) {
                             log.error("Error finding Class with name \"{}\". " +
-                                    "Make sure to use fully qualified class name.", properties.get("class"));
+                                    "Be sure to use a fully qualified class name: {}",
+                                    properties.get("class"), e.getMessage());
                         } catch (IllegalAccessException e) {
                             log.error("Error accessing Class to instantiate with name \"{}\". " +
-                                    "make sure class is public.", properties.get("class"));
+                                    "make sure class is public: {}",
+                                    properties.get("class"), e.getMessage());
                         } catch (InstantiationException e) {
-                            log.error("Error instantiating Class with name \"{}\"", properties.get("class"));
+                            log.error("Error instantiating Class with name \"{}\": {}",
+                                    properties.get("class"), e.getMessage());
                         }
                     });
                 });
@@ -84,9 +90,11 @@ public class ActorDataHydrator {
                         "will search superclass", fieldName, clazz.getName());
                 clazz = clazz.getSuperclass();
                 if (clazz == Object.class)
-                    log.error("Error finding field \"{}\" in class \"{}\"", fieldName, clazz.getName());
+                    log.error("Error finding field \"{}\" in class \"{}\": {}",
+                            fieldName, clazz.getName(), e.getMessage());
             } catch (IllegalAccessException e) {
-                log.error("Error accessing field \"{}\" in class \"{}\"", fieldName, clazz.getName());
+                log.error("Error accessing field \"{}\" in class \"{}\": {}",
+                        fieldName, clazz.getName(), e.getMessage());
             }
         }
     }
