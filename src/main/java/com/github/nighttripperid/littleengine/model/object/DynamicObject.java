@@ -24,37 +24,20 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.github.nighttripperid.littleengine.model.graphics;
+package com.github.nighttripperid.littleengine.model.object;
 
-import java.util.HashMap;
-import java.util.Map;
+import com.github.nighttripperid.littleengine.model.script.*;
+import com.github.nighttripperid.littleengine.model.graphics.AnimationReel;
 
-public class EntityGFX {
-    private final Map<String, Map<Integer, Sprite>> spriteMaps = new HashMap<>();
+import java.util.List;
 
-    public void addSpritesByColumns(String key, SpriteSheet spriteSheet) {
-        if(spriteMaps.get(key) != null)
-            return;
-        spriteMaps.put(key, new HashMap<>());
-        for (int x = 0, i = 0; x < spriteSheet.sheetW_P / spriteSheet.spriteW_P; x++) {
-            for (int y = 0; y < spriteSheet.sheetH_P / spriteSheet.spriteH_P; y++, i++)
-                spriteMaps.get(key).put(i, new Sprite(spriteSheet, spriteSheet.spriteW_P,
-                        spriteSheet.spriteH_P, x, y));
-        }
-    }
-
-    public void addSpritesByRows(String key, SpriteSheet spriteSheet) {
-        if(spriteMaps.get(key) != null)
-            return;
-        spriteMaps.put(key, new HashMap<>());
-        for (int y = 0, i = 0; y < spriteSheet.sheetH_P / spriteSheet.spriteH_P; y++) {
-            for (int x = 0; x < spriteSheet.sheetW_P / spriteSheet.spriteW_P; x++, i++)
-                spriteMaps.get(key).put(i, new Sprite(spriteSheet, spriteSheet.spriteW_P,
-                        spriteSheet.spriteH_P, x, y));
-        }
-    }
-
-    public Map<Integer, Sprite> getSpriteMap(String key) {
-        return spriteMaps.get(key);
-    }
+public interface DynamicObject extends BasicObject {
+    String getGfxKey();
+    AnimationReel getAnimationReel();
+    List<RenderTask> getRenderTasks();
+    BehaviorScript getBehaviorScript();
+    Animation getAnimation();
+    InitGfxRoutine getInitGfxRoutine();
+    SceneTransition getSceneTransition();
+    CollisionResult getCollisionResult();
 }

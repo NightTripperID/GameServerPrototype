@@ -24,23 +24,21 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.github.nighttripperid.littleengine.model.graphics;
+package com.github.nighttripperid.littleengine.model.script;
 
-import com.github.nighttripperid.littleengine.model.physics.PointDouble;
-import lombok.Data;
+import com.github.nighttripperid.littleengine.model.graphics.Sprite;
 
-@Data
-public class ScreenBuffer {
-    private int width;
-    private int height;
-    private int scale;
-    private int[] pixels;
-    private PointDouble scroll = new PointDouble(0.0d, 0.0d);
+import java.util.Map;
+import java.util.function.Consumer;
 
-    public ScreenBuffer(int width, int height, int scale) {
-        this.width = width;
-        this.height = height;
-        this.scale = scale;
-        this.pixels = new int[width * height];
+public class Animation {
+    private final Consumer<Map<Integer, Sprite>> animation;
+
+    public Animation(Consumer<Map<Integer, Sprite>> animation) {
+        this.animation = animation;
+    }
+
+    public void run(Map<Integer, Sprite> spriteMap) {
+        animation.accept(spriteMap);
     }
 }

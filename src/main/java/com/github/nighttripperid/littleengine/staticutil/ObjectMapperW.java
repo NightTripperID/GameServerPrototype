@@ -24,23 +24,18 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.github.nighttripperid.littleengine.model.graphics;
+package com.github.nighttripperid.littleengine.staticutil;
 
-import com.github.nighttripperid.littleengine.model.physics.PointDouble;
-import lombok.Data;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
-@Data
-public class ScreenBuffer {
-    private int width;
-    private int height;
-    private int scale;
-    private int[] pixels;
-    private PointDouble scroll = new PointDouble(0.0d, 0.0d);
-
-    public ScreenBuffer(int width, int height, int scale) {
-        this.width = width;
-        this.height = height;
-        this.scale = scale;
-        this.pixels = new int[width * height];
+public class ObjectMapperW {
+    private static ObjectMapper objectMapper;
+    private ObjectMapperW() {
+    }
+    public static ObjectMapper getObjectMapper() {
+        if (objectMapper == null)
+            objectMapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        return objectMapper;
     }
 }

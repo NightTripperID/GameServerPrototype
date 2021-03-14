@@ -24,20 +24,33 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.github.nighttripperid.littleengine.model.entity;
+package com.github.nighttripperid.littleengine.model.scene;
 
-import com.github.nighttripperid.littleengine.model.graphics.EntityGFX;
+import com.github.nighttripperid.littleengine.model.physics.PointDouble;
+import com.github.nighttripperid.littleengine.model.tiles.TILED_TileMap;
+import com.github.nighttripperid.littleengine.model.tiles.TileMap;
+import com.github.nighttripperid.littleengine.model.tiles.Tileset;
+import lombok.Data;
 
-import java.util.function.Consumer;
+@Data
+public class GameMap {
 
-public class InitGfxRoutine {
-    private final Consumer<EntityGFX> routine;
+    private PointDouble scroll = PointDouble.of(0.0);
+    private PointDouble tileSize;
 
-    public InitGfxRoutine(Consumer<EntityGFX> routine) {
-        this.routine = routine;
+    private int tileBitShift;
+
+    private Tileset tileset;
+    private TileMap tileMap;
+
+    private TILED_TileMap tiled_TileMap;
+
+    public void setScroll(PointDouble scroll) {
+        this.scroll.x = (scroll.x > 0) ? Math.ceil(scroll.x) : Math.floor(scroll.x);
+        this.scroll.y = (scroll.y > 0) ? Math.ceil(scroll.y) : Math.floor(scroll.y);
     }
 
-    public void run(EntityGFX entityGFX) {
-        routine.accept(entityGFX);
+    public PointDouble getScroll() {
+        return new PointDouble(scroll.x, scroll.y);
     }
 }

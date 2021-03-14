@@ -24,61 +24,67 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.github.nighttripperid.littleengine.model.tiles;
+package com.github.nighttripperid.littleengine.model.physics;
 
-import lombok.Getter;
-import lombok.Setter;
+public class PointDouble {
 
-import java.util.HashMap;
-import java.util.Map;
+    public Double x;
+    public Double y;
 
-public class TileMap {
-    @Setter
-    @Getter
-    private int width_T;
-    @Setter
-    @Getter
-    private int height_T;
-
-    private final Map<Integer, Integer[]> tileMap = new HashMap<>(); // hashed by layerId, returns a tileId
-
-        public Tile getTile(Tileset tileset, int layerId, int x_T, int y_T) {
-
-            if (    x_T < 0 ||
-                    y_T < 0 ||
-                    x_T >= width_T ||
-                    y_T >= height_T) {
-
-            return tileset.VOID_TILE;
-
-        } else {
-            return tileset.getTile(getTileId(layerId, x_T, y_T));
-        }
+    public PointDouble(Double x, Double y) {
+        this.x = x;
+        this.y = y;
     }
 
-    public Integer getTileId(int layerId, int x_T, int y_T) {
-
-        if (    x_T < 0 ||
-                y_T < 0 ||
-                x_T >= width_T ||
-                y_T >= height_T) {
-
-            return null;
-
-        } else {
-            return tileMap.get(layerId)[x_T + y_T * width_T] - 1;
-        }
+    public PointDouble plus(PointDouble that) {
+        return new PointDouble(this.x + that.x, this.y + that.y);
     }
 
-    public void putLayer(int layerId, Integer[] data) {
-            tileMap.put(layerId, data);
+    public PointDouble minus(PointDouble that) {
+        return new PointDouble(this.x - that.x, this.y - that.y);
     }
 
-    public int getNumLayers() {
-            return tileMap.size();
+    public PointDouble times(PointDouble that) {
+        return new PointDouble(this.x * that.x, this.y * that.y);
     }
 
-    public boolean hasLayer(int layerId) {
-            return tileMap.get(layerId) != null;
+    public PointDouble div(PointDouble that) {
+        return new PointDouble(this.x / that.x, this.y / that.y);
+    }
+
+    public void set(double x, double y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    public void set(PointDouble p) {
+        this.x = p.x;
+        this.y = p.y;
+    }
+
+    public void set(PointDoubleW p) {
+        this.x = p.x.num;
+        this.y = p.y.num;
+    }
+
+    public PointDoubleW wrap() {
+        return new PointDoubleW(this.x, this.y);
+    }
+
+    public Double mag() {
+        return Math.sqrt(x * x + y * y);
+    }
+
+    public Double mag2() {
+        return x * x + y * y;
+    }
+
+    public PointDouble norm() {
+        double r = 1 / mag();
+        return new PointDouble(x * r, y * r);
+    }
+
+    public static PointDouble of(Double num) {
+        return new PointDouble(num, num);
     }
 }

@@ -24,20 +24,27 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.github.nighttripperid.littleengine.model.entity;
+package com.github.nighttripperid.littleengine.model.physics;
 
-import com.github.nighttripperid.littleengine.model.gamestate.GameMap;
+import lombok.AllArgsConstructor;
 
-import java.util.function.BiConsumer;
+@AllArgsConstructor
+public class Rect {
+    public PointDouble pos;
+    public PointDouble size;
+    public PointDouble vel;
 
-public class BehaviorScript {
-    private final BiConsumer<GameMap, Double> script;
+    public Rect[] contact = new Rect[4];
 
-    public BehaviorScript(BiConsumer<GameMap, Double> script) {
-        this.script = script;
+    public Rect() {
+        pos = PointDouble.of(0.0d);
+        size = PointDouble.of(0.0d);
+        vel = PointDouble.of(0.0d);
     }
 
-    public void run(GameMap gameMap, Double timeElapsed) {
-        script.accept(gameMap, timeElapsed);
+    public Rect(PointDouble pos, PointDouble size) {
+        this.pos = pos;
+        this.size = size;
+        this.vel = PointDouble.of(0.0d);
     }
 }

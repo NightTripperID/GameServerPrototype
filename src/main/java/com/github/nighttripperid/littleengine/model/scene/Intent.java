@@ -24,23 +24,17 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.github.nighttripperid.littleengine.model.graphics;
+package com.github.nighttripperid.littleengine.model.scene;
 
-import com.github.nighttripperid.littleengine.model.physics.PointDouble;
-import lombok.Data;
+import lombok.Getter;
 
-@Data
-public class ScreenBuffer {
-    private int width;
-    private int height;
-    private int scale;
-    private int[] pixels;
-    private PointDouble scroll = new PointDouble(0.0d, 0.0d);
+public class Intent extends HashMaps {
 
-    public ScreenBuffer(int width, int height, int scale) {
-        this.width = width;
-        this.height = height;
-        this.scale = scale;
-        this.pixels = new int[width * height];
+    @Getter
+    private final Class<? extends Scene> sceneClass;
+
+    public Intent(Class<? extends Scene> sceneClass) {
+        this.sceneClass = sceneClass;
     }
+
 }

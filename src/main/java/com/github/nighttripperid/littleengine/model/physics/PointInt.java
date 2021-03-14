@@ -24,23 +24,36 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.github.nighttripperid.littleengine.model.graphics;
+package com.github.nighttripperid.littleengine.model.physics;
 
-import com.github.nighttripperid.littleengine.model.physics.PointDouble;
-import lombok.Data;
+public class PointInt {
+    public Integer x;
+    public Integer y;
 
-@Data
-public class ScreenBuffer {
-    private int width;
-    private int height;
-    private int scale;
-    private int[] pixels;
-    private PointDouble scroll = new PointDouble(0.0d, 0.0d);
+    public PointInt(){
+        x = 0;
+        y = 0;
+    }
 
-    public ScreenBuffer(int width, int height, int scale) {
-        this.width = width;
-        this.height = height;
-        this.scale = scale;
-        this.pixels = new int[width * height];
+    public PointInt(int x, int y) {
+        this();
+        this.x = x;
+        this.y = y;
+    }
+
+    public PointInt plus(PointInt that) {
+        return new PointInt(this.x + that.x, this.y + that.y);
+    }
+
+    public PointInt minus(PointInt that) {
+        return new PointInt(this.x - that.x, this.y - that.y);
+    }
+
+    public PointInt times(PointInt that) {
+        return new PointInt(this.x * that.x, this.y * that.y);
+    }
+    
+    public PointInt div(PointInt that) {
+        return new PointInt(that.x == 0 ? null : this.x / that.x, that.y == 0 ? null : this.y / that.y);
     }
 }

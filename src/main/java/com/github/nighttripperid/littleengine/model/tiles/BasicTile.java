@@ -24,18 +24,35 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.github.nighttripperid.littleengine.model.gamestate;
+package com.github.nighttripperid.littleengine.model.tiles;
 
-import com.github.nighttripperid.littleengine.model.entity.Entity;
-import com.github.nighttripperid.littleengine.model.graphics.EntityGFX;
+import com.github.nighttripperid.littleengine.model.object.BasicObject;
+import com.github.nighttripperid.littleengine.model.physics.PointDouble;
+import com.github.nighttripperid.littleengine.model.physics.Rect;
+import com.github.nighttripperid.littleengine.model.graphics.Sprite;
 import lombok.Data;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Data
-public class EntityData {
-    private EntityGFX entityGFX = new EntityGFX();
-    private List<Entity> entities = new ArrayList<>();
-    private List<Entity> pendingEntities = new ArrayList<>();
+public class BasicTile implements Tile, BasicObject {
+
+    private int id;
+    private List<String> attributes = new ArrayList<>();
+    private Rect hitBox = new Rect();
+    private Sprite sprite;
+
+    public BasicTile(int id, Sprite sprite, int width, int height) {
+        this.id = id;
+        this.sprite = sprite;
+        this.hitBox.size = new PointDouble((double) width, (double) height);
+    }
+
+    public BasicTile(Tile tile) {
+        this.id = tile.getId();
+        this.sprite = tile.getSprite();
+        this.hitBox = tile.getHitBox();
+        this.attributes = tile.getAttributes();
+    }
 }

@@ -24,19 +24,44 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.github.nighttripperid.littleengine.staticutil;
+package com.github.nighttripperid.littleengine.model.physics;
 
-import com.github.nighttripperid.littleengine.model.entity.Entity;
-import com.github.nighttripperid.littleengine.model.gamestate.GameMap;
+public class PointIntW {
+    public NumWrap<Integer> x;
+    public NumWrap<Integer> y;
 
-// TODO: finish find a broad-phase pass algorithm for tile collision and possibly entity collision
-public class CollisionResolver {
-
-    public static boolean resolveEntityCollision(Entity e1, Entity e2, double elapsedTime) {
-        return false;
+    public PointIntW(){
+        x = new NumWrap<>(0);
+        y = new NumWrap<>(0);
     }
 
-    public static boolean resolveTileCollision(GameMap gameMap, Entity entity, double xSpeed, double ySpeed) {
-        return false;
+    public PointIntW(int x, int y) {
+        this();
+        this.x.num = x;
+        this.y.num = y;
+    }
+
+    public PointIntW plus(PointIntW that) {
+        return new PointIntW(this.x.num + that.x.num, this.y.num + that.y.num);
+    }
+
+    public PointIntW minus(PointIntW that) {
+        return new PointIntW(this.x.num - that.x.num, this.y.num - that.y.num);
+    }
+
+    public PointIntW times(PointIntW that) {
+        return new PointIntW(this.x.num * that.x.num, this.y.num * that.y.num);
+    }
+
+    public PointIntW div(PointIntW that) {
+        return new PointIntW(that.x.num == 0 ? null : this.x.num / that.x.num, that.y.num == 0 ? null : this.y.num / that.y.num);
+    }
+
+    @Override
+    public boolean equals(Object p) {
+        if (this == p) return true;
+        if (p == null || getClass() != p.getClass()) return false;
+        PointIntW that = (PointIntW) p;
+        return that.x.num.equals(this.x.num) && that.y.num.equals(this.y.num);
     }
 }

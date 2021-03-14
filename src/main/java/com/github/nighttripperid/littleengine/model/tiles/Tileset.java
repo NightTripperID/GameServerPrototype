@@ -27,22 +27,38 @@
 package com.github.nighttripperid.littleengine.model.tiles;
 
 import com.github.nighttripperid.littleengine.model.graphics.Sprite;
-import com.github.nighttripperid.littleengine.model.graphics.SpriteSheet;
-import lombok.Data;
+import com.github.nighttripperid.littleengine.model.graphics.SpriteMaps;
+import lombok.Getter;
 
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
-@Data
 public class Tileset {
-    private final Map<Integer, Tile> tileset = new HashMap<>(); // hashed by tile id
-    public static final Tile VOID_TILE = new Tile(new Sprite(0xffff00ff, 16, 16), 16, 16);
+    public final Tile VOID_TILE;
 
-    public void setTileset(SpriteSheet spriteSheet, int tileW, int tileH) {
-        for(int y = 0, i = 0; y < spriteSheet.sheetH_P / tileH; y++) {
-            for(int x = 0; x < spriteSheet.sheetW_P / tileW; x++, i++) {
-                tileset.put(i, new Tile(new Sprite(spriteSheet, tileW, tileH, x, y), tileW, tileH));
+    private final Map<Integer, Tile> tileset; // hashed by tile id
+    private final List<DynamicTile> dynamicTiles = new ArrayList<>();
+
+    @Getter
+    private final SpriteMaps spriteMaps = new SpriteMaps();
+
+    public Tileset(Map<Integer, Tile> tileset, int tileW, int tileH) {
+        VOID_TILE = new BasicTile(0, new Sprite(0xffff00ff, tileW, tileH), tileW, tileH);
+        VOID_TILE.getAttributes().add("solid");
+        this.tileset = tileset;
+        this.tileset.values().forEach(tile -> {
+            if ((tile instanceof DynamicTile)) {
+                dynamicTiles.add((DynamicTile) tile);
             }
-        }
+        });
+    }
+
+    public List<DynamicTile> getDynamicTiles() {
+        return new ArrayList<>(dynamicTiles);
+    }
+
+    public Tile getTile(int tileId) {
+        return tileset.get(tileId);
     }
 }

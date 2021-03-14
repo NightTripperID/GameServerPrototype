@@ -24,36 +24,20 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.github.nighttripperid.littleengine.model;
+package com.github.nighttripperid.littleengine.model.script;
 
-public class PointInt {
-    public Integer x;
-    public Integer y;
+import com.github.nighttripperid.littleengine.model.scene.GameMap;
 
-    public PointInt(){
-        x = 0;
-        y = 0;
+import java.util.function.BiConsumer;
+
+public class BehaviorScript {
+    private final BiConsumer<GameMap, Double> script;
+
+    public BehaviorScript(BiConsumer<GameMap, Double> script) {
+        this.script = script;
     }
 
-    public PointInt(int x, int y) {
-        this();
-        this.x = x;
-        this.y = y;
-    }
-
-    public PointInt plus(PointInt that) {
-        return new PointInt(this.x + that.x, this.y + that.y);
-    }
-
-    public PointInt minus(PointInt that) {
-        return new PointInt(this.x - that.x, this.y - that.y);
-    }
-
-    public PointInt times(PointInt that) {
-        return new PointInt(this.x * that.x, this.y * that.y);
-    }
-    
-    public PointInt div(PointInt that) {
-        return new PointInt(that.x == 0 ? null : this.x / that.x, that.y == 0 ? null : this.y / that.y);
+    public void run(GameMap gameMap, Double timeElapsed) {
+        script.accept(gameMap, timeElapsed);
     }
 }

@@ -24,33 +24,37 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.github.nighttripperid.littleengine.model.gamestate;
+package com.github.nighttripperid.littleengine.model.graphics;
 
-import com.github.nighttripperid.littleengine.model.PointDouble;
-import com.github.nighttripperid.littleengine.model.tiles.TILED_TileMap;
-import com.github.nighttripperid.littleengine.model.tiles.TileMap;
-import com.github.nighttripperid.littleengine.model.tiles.Tileset;
-import lombok.Data;
+import java.util.HashMap;
+import java.util.Map;
 
-@Data
-public class GameMap {
+public class SpriteMaps {
+    private final Map<String, Map<Integer, Sprite>> spriteMaps = new HashMap<>();
 
-    private PointDouble scroll = PointDouble.of(0.0);
-    private PointDouble tileSize;
-
-    private int tileBitShift;
-
-    private Tileset tileset;
-    private TileMap tileMap;
-
-    private TILED_TileMap tiled_TileMap;
-
-    public void setScroll(PointDouble scroll) {
-        this.scroll.x = (scroll.x > 0) ? Math.ceil(scroll.x) : Math.floor(scroll.x);
-        this.scroll.y = (scroll.y > 0) ? Math.ceil(scroll.y) : Math.floor(scroll.y);
+    public void addSpritesByColumns(String key, SpriteSheet spriteSheet) {
+        if(spriteMaps.get(key) != null)
+            return;
+        spriteMaps.put(key, new HashMap<>());
+        for (int x = 0, i = 0; x < spriteSheet.sheetW_P / spriteSheet.spriteW_P; x++) {
+            for (int y = 0; y < spriteSheet.sheetH_P / spriteSheet.spriteH_P; y++, i++)
+                spriteMaps.get(key).put(i, new Sprite(spriteSheet, spriteSheet.spriteW_P,
+                        spriteSheet.spriteH_P, x, y));
+        }
     }
 
-    public PointDouble getScroll() {
-        return new PointDouble(scroll.x, scroll.y);
+    public void addSpritesByRows(String key, SpriteSheet spriteSheet) {
+        if(spriteMaps.get(key) != null)
+            return;
+        spriteMaps.put(key, new HashMap<>());
+        for (int y = 0, i = 0; y < spriteSheet.sheetH_P / spriteSheet.spriteH_P; y++) {
+            for (int x = 0; x < spriteSheet.sheetW_P / spriteSheet.spriteW_P; x++, i++)
+                spriteMaps.get(key).put(i, new Sprite(spriteSheet, spriteSheet.spriteW_P,
+                        spriteSheet.spriteH_P, x, y));
+        }
+    }
+
+    public Map<Integer, Sprite> getMap(String key) {
+        return spriteMaps.get(key);
     }
 }

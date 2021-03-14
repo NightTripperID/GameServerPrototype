@@ -27,13 +27,9 @@
 package com.github.nighttripperid.littleengine.component;
 
 
-import com.github.nighttripperid.littleengine.model.gamestate.Intent;
+import com.github.nighttripperid.littleengine.model.scene.Intent;
 import com.github.nighttripperid.littleengine.model.graphics.ScreenBuffer;
 import lombok.extern.slf4j.Slf4j;
-
-import java.time.Clock;
-import java.time.Duration;
-import java.time.Instant;
 
 @Slf4j
 public final class Game {
@@ -43,7 +39,7 @@ public final class Game {
     private boolean running;
 
     private IOController ioController;
-    private final GameStateUpdater gameStateUpdater;
+    private final SceneUpdater sceneUpdater;
 
     public Game(int width, int height, int scale, String title) {
         this.title = title;
@@ -52,7 +48,7 @@ public final class Game {
         ScreenBufferUpdater screenBufferUpdater = new ScreenBufferUpdater(new RenderTaskHandler(),
                 new ScreenBuffer(width, height, scale));
 
-        gameStateUpdater = new GameStateUpdater(screenBufferUpdater, new GameStateStackController(),
+        sceneUpdater = new SceneUpdater(screenBufferUpdater, new SceneStackController(),
                 new CollisionResolver());
     }
 
@@ -72,24 +68,37 @@ public final class Game {
         }
     }
 
-    Clock clock = Clock.systemDefaultZone();
+    private void update(double elapsedTime) {
+        ioController.updateInput();
+        sceneUpdater.update(elapsedTime);
+        sceneUpdater.renderToScreenBuffer();
+    }
 
+    private void render() {
+        ioController.renderBufferToScreen(sceneUpdater.getScreenBufferUpdater().getScreenBuffer());
+    }
+
+    public void start(Intent intent) {
+        sceneUpdater.getSceneStackController().pushScene(intent);
+        start();
+    }
 
     private final Runnable mainLoop = () -> {
+        ioController.requestFocus();
         long timer = System.currentTimeMillis();
         int frames = 0;
-        ioController.requestFocus();
-
-        Instant before;
-        Instant after = clock.instant();
-        Duration elapsed;
+        long lastLoopTime = System.nanoTime();
+        final int TARGET_FPS = 60;
+        final long OPTIMAL_TIME = 1000000000 / TARGET_FPS;
 
         while (running) {
-            before = clock.instant();
-            elapsed = Duration.between(after, before);
-            after = before;
+            long now = System.nanoTime();
+            long delta = now - lastLoopTime;
+            lastLoopTime = now;
 
-            update((double)(elapsed.toMillis()) / 1000);
+            double elapsed = delta / (double) OPTIMAL_TIME;
+
+            update(elapsed);
             render();
 
             frames++;
@@ -102,19 +111,4 @@ public final class Game {
         }
         stop();
     };
-
-    private void update(double elapsedTime) {
-        ioController.updateInput();
-        gameStateUpdater.update(elapsedTime);
-        gameStateUpdater.renderToScreenBuffer();
-    }
-
-    private void render() {
-        ioController.renderBufferToScreen(gameStateUpdater.getScreenBufferUpdater().getScreenBuffer());
-    }
-
-    public void start(Intent intent) {
-        gameStateUpdater.getGameStateStackController().pushGameState(intent);
-        start();
-    }
 }

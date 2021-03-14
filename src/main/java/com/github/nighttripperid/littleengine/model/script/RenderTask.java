@@ -24,23 +24,29 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.github.nighttripperid.littleengine.model.graphics;
+package com.github.nighttripperid.littleengine.model.script;
 
-import com.github.nighttripperid.littleengine.model.physics.PointDouble;
-import lombok.Data;
+import com.github.nighttripperid.littleengine.component.RenderTaskHandler;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
-@Data
-public class ScreenBuffer {
-    private int width;
-    private int height;
-    private int scale;
-    private int[] pixels;
-    private PointDouble scroll = new PointDouble(0.0d, 0.0d);
+import java.util.function.Consumer;
 
-    public ScreenBuffer(int width, int height, int scale) {
-        this.width = width;
-        this.height = height;
-        this.scale = scale;
-        this.pixels = new int[width * height];
+@AllArgsConstructor
+public class RenderTask implements Comparable<RenderTask> {
+    @Getter
+    private final int renderLayer;
+    @Getter
+    private final int renderPriority;
+
+    private final Consumer<RenderTaskHandler> request;
+    
+    public void process(RenderTaskHandler processor) {
+        request.accept(processor);
+    }
+
+    @Override
+    public int compareTo(RenderTask renderTask) {
+        return this.renderPriority - renderTask.renderPriority;
     }
 }

@@ -26,10 +26,10 @@
  */
 package com.github.nighttripperid.littleengine.staticutil;
 
-import com.github.nighttripperid.littleengine.model.NumWrap;
-import com.github.nighttripperid.littleengine.model.PointDouble;
-import com.github.nighttripperid.littleengine.model.PointDoubleW;
-import com.github.nighttripperid.littleengine.model.Rect;
+import com.github.nighttripperid.littleengine.model.physics.NumWrap;
+import com.github.nighttripperid.littleengine.model.physics.PointDouble;
+import com.github.nighttripperid.littleengine.model.physics.PointDoubleW;
+import com.github.nighttripperid.littleengine.model.physics.Rect;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -37,14 +37,18 @@ public class VectorMath {
     private VectorMath() {
     }
 
+    boolean pointVsRect(PointDouble p, Rect r) {
+        return (p.x >= r.pos.x && p.y >= r.pos.y && p.x < r.pos.x + r.size.x && p.y < r.pos.y + r.size.y);
+    }
+
     public static boolean rayVsRect(PointDouble rayOrigin, PointDouble rayDirection, Rect target,
                                     PointDouble contactPoint, PointDouble contactNormal, NumWrap<Double> tHitNear) {
 
-        contactPoint.set(0D, 0D);
-        contactNormal.set(0D, 0D);
+        contactPoint.set(0.0d, 0.0d);
+        contactNormal.set(0.0d, 0.0d);
 
         // Cache division
-        PointDouble invDir = new PointDouble(1D, 1D).div(rayDirection); // inverse direction
+        PointDouble invDir = new PointDouble(1.0d, 1.0d).div(rayDirection); // inverse direction
 
         // Calculate intersections with rectangle bounding axes
         PointDoubleW tNear = target.pos.minus(rayOrigin).times(invDir).wrap();
@@ -75,20 +79,27 @@ public class VectorMath {
 
         if (tNear.x.num > tNear.y.num)
             if (invDir.x < 0)
-                contactNormal.set(1D, 0D);
+                contactNormal.set(1.0d, 0.0d);
             else
-                contactNormal.set(-1D, 0D);
+                contactNormal.set(-1.0d, 0.0d);
         else if (tNear.x.num < tNear.y.num)
             if (invDir.y < 0)
-                contactNormal.set(0D, 1D);
+                contactNormal.set(0.0d, 1.0d);
             else
-                contactNormal.set(0D, -1D);
+                contactNormal.set(0.0d, -1.0d);
 
         // Note if t_near == t_far, collision is principally in a diagonal
         // so pointless to resolve. By returning a CN={0,0} even though it's
         // considered a hit, the resolver won't change anything.
         return true;
 
+    }
+
+    public static boolean RectVsRect(Rect r1, Rect r2) {
+        return (r1.pos.x < r2.pos.x + r2.size.x &&
+                r1.pos.x + r1.size.x > r2.pos.x &&
+                r1.pos.y < r2.pos.y + r2.size.y &&
+                r1.pos.y + r1.size.y > r2.pos.y);
     }
 
     public static boolean dynamicRectVsRect(Rect dynamicRect, double timeStep, Rect staticRect, PointDouble contactPoint,
@@ -101,26 +112,26 @@ public class VectorMath {
         // Expand target rectangle by source dimensions
         Rect expandedTarget = new Rect();
         // expandedTarget.pos = staticRect.pos - dynamicRect.size / 2
-        expandedTarget.pos.set(staticRect.pos.minus(dynamicRect.size.div(PointDouble.of(2D))));
+        expandedTarget.pos.set(staticRect.pos.minus(dynamicRect.size.div(PointDouble.of(2.0d))));
         // expandedTarget.size = staticRect.size + dynamicRect.size;
         expandedTarget.size.set(staticRect.size.plus(dynamicRect.size));
 
         // if (RayVsRect(r_dynamic->pos + r_dynamic->size / 2, r_dynamic->vel * fTimeStep, &expanded_target, contact_point, contact_normal, contact_time))
         //				return (contact_time >= 0.0f && contact_time < 1.0f);
-        if (rayVsRect(dynamicRect.pos.plus(dynamicRect.size.div(PointDouble.of(2D))),
+        if (rayVsRect(dynamicRect.pos.plus(dynamicRect.size.div(PointDouble.of(2.0d))),
                 dynamicRect.vel.times(PointDouble.of(timeStep)),
                 expandedTarget, contactPoint,
                 contactNormal, contactTime)) {
-            return(contactTime.num >= 0D && contactTime.num < 1D);
+            return(contactTime.num >= 0.0d && contactTime.num < 1.0d);
         } else {
             return false;
         }
     }
 
     public static boolean resolveDynamicRectVsRect(Rect dynamicRect, double timeStep, Rect staticRect) {
-        PointDouble contactPoint = PointDouble.of(0D);
-        PointDouble contactNormal = PointDouble.of(0D);
-        NumWrap<Double> contactTime = new NumWrap<>(0D);
+        PointDouble contactPoint = PointDouble.of(0.0d);
+        PointDouble contactNormal = PointDouble.of(0.0d);
+        NumWrap<Double> contactTime = new NumWrap<>(0.0d);
         if(dynamicRectVsRect(dynamicRect, timeStep, staticRect, contactPoint, contactNormal, contactTime)) {
             dynamicRect.contact[0] = (contactNormal.y > 0) ? staticRect : null;
             dynamicRect.contact[1] = (contactNormal.x < 0) ? staticRect : null;
@@ -131,7 +142,7 @@ public class VectorMath {
                     dynamicRect.vel.plus(
                             contactNormal
                                     .times(new PointDouble(Math.abs(dynamicRect.vel.x), Math.abs(dynamicRect.vel.y)))
-                                    .times(PointDouble.of(1D).minus(PointDouble.of(contactTime.num)))
+                                    .times(PointDouble.of(1.0d).minus(PointDouble.of(contactTime.num)))
                     ));
             return true;
         }

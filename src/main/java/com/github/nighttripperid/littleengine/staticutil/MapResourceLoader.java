@@ -30,7 +30,6 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.nighttripperid.littleengine.model.graphics.SpriteSheet;
 import com.github.nighttripperid.littleengine.model.tiles.TILED_TileMap;
-import com.github.nighttripperid.littleengine.model.tiles.Tileset;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.imageio.ImageIO;
@@ -42,9 +41,6 @@ import java.net.URL;
 @Slf4j
 public class MapResourceLoader {
 
-    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper()
-            .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-
     private MapResourceLoader() {
     }
 
@@ -54,7 +50,7 @@ public class MapResourceLoader {
         TILED_TileMap tiled_TileMap = null;
         try {
             log.info("Loading: {}{}", url.getPath(), "...");
-            tiled_TileMap = OBJECT_MAPPER.readValue(url, TILED_TileMap.class);
+            tiled_TileMap = ObjectMapperW.getObjectMapper().readValue(url, TILED_TileMap.class);
             log.info("Loading {} successful!", url.getPath());
         } catch (IOException e) {
             log.error("Loading: {} failed: {}: {}", url.getPath(), e.getClass().getSimpleName(), e.getMessage());
@@ -62,20 +58,17 @@ public class MapResourceLoader {
         return tiled_TileMap;
     }
 
-    public static Tileset fetchTileset(String pngPath, int tileW, int tileH) {
+    public static SpriteSheet fetchTilesetImage(String pngPath, int tileW, int tileH) {
         URL url = MapResourceLoader.class.getClassLoader().getResource(pngPath);
         assert url != null;
-        Tileset tileset = null;
         try {
             log.info("Loading: {}{}", url.getPath(), "...");
             BufferedImage image = ImageIO.read(url);
             log.info("Loading {} successful!", url.getPath());
-            SpriteSheet spriteSheet = new SpriteSheet(image, tileW, tileH);
-            tileset = new Tileset();
-            tileset.setTileset(spriteSheet, tileW, tileH);
+            return new SpriteSheet(image, tileW, tileH);
         } catch (IOException e) {
             log.error("Loading {} failed: {}", url.getPath(), e.getMessage());
         }
-        return tileset;
+        return null;
     }
 }

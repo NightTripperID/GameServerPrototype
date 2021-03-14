@@ -26,24 +26,11 @@
  */
 package com.github.nighttripperid.littleengine.model.tiles;
 
-import com.github.nighttripperid.littleengine.model.PointDouble;
-import com.github.nighttripperid.littleengine.model.Rect;
-import com.github.nighttripperid.littleengine.model.graphics.Sprite;
-import lombok.Data;
+import com.github.nighttripperid.littleengine.model.object.BasicObject;
 
-import java.util.ArrayList;
 import java.util.List;
 
-@Data
-public class Tile {
-
-    private Sprite sprite;
-    private Rect rect;
-    private List<String> attributes = new ArrayList<>();
-
-    public Tile(Sprite sprite, int width, int height) {
-        this.sprite = sprite;
-        this.rect = new Rect();
-        this.rect.size = new PointDouble((double) width, (double) height);
-    }
+public interface Tile extends BasicObject {
+    int getId();
+    List<String> getAttributes();
 }

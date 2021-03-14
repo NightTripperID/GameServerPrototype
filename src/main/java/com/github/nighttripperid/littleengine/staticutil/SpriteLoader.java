@@ -26,7 +26,7 @@
  */
 package com.github.nighttripperid.littleengine.staticutil;
 
-import com.github.nighttripperid.littleengine.model.graphics.EntityGFX;
+import com.github.nighttripperid.littleengine.model.graphics.SpriteMaps;
 import com.github.nighttripperid.littleengine.model.graphics.SpriteSheet;
 import lombok.extern.slf4j.Slf4j;
 
@@ -41,11 +41,11 @@ public class SpriteLoader {
     }
 
     public static void loadSpritesByColumns(String fileName, int spriteWidth, int spriteHeight,
-                                            EntityGFX entityGFX) {
+                                            SpriteMaps spriteMaps) {
         URL url = SpriteLoader.class.getClassLoader().getResource(fileName);
         assert(url != null);
         try {
-            if (entityGFX.getSpriteMap(fileName) != null) {
+            if (spriteMaps.getMap(fileName) != null) {
                 log.info("{} already loaded, skipping load process!", url.toString());
                 return;
             }
@@ -53,18 +53,18 @@ public class SpriteLoader {
             BufferedImage bufferedImage = ImageIO.read(url);
             log.info("Loading: {} successful!", url.toString());
             SpriteSheet spriteSheet = new SpriteSheet(bufferedImage, spriteWidth, spriteHeight);
-            entityGFX.addSpritesByColumns(fileName, spriteSheet);
+            spriteMaps.addSpritesByColumns(fileName, spriteSheet);
         } catch (IOException e) {
             log.error("Loading: {} failed!", url.toString());
         }
     }
 
     public static void loadSpritesByRows(String fileName, int spriteWidth, int spriteHeight,
-                                         EntityGFX entityGFX) {
+                                         SpriteMaps spriteMaps) {
         URL url = SpriteLoader.class.getClassLoader().getResource(fileName);
         assert(url != null);
         try {
-            if (entityGFX.getSpriteMap(fileName) != null) {
+            if (spriteMaps.getMap(fileName) != null) {
                 log.info("{} already loaded, skipping load process!", url.toString());
                 return;
             }
@@ -72,7 +72,7 @@ public class SpriteLoader {
             BufferedImage bufferedImage = ImageIO.read(url);
             log.info("Loading: {} successful!", url.toString());
             SpriteSheet spriteSheet = new SpriteSheet(bufferedImage, spriteWidth, spriteHeight);
-            entityGFX.addSpritesByRows(fileName, spriteSheet);
+            spriteMaps.addSpritesByRows(fileName, spriteSheet);
         } catch (IOException e) {
             log.error("Loading: {} failed!", url.toString());
         }

@@ -24,38 +24,18 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.github.nighttripperid.littleengine.model.entity;
+package com.github.nighttripperid.littleengine.model.script;
 
-import com.github.nighttripperid.littleengine.model.Eventable;
-import com.github.nighttripperid.littleengine.model.Rect;
-import com.github.nighttripperid.littleengine.model.graphics.AnimationReel;
-import com.github.nighttripperid.littleengine.model.graphics.Sprite;
-import lombok.Data;
+import com.github.nighttripperid.littleengine.model.Actor;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.function.Consumer;
 
-@Data
-public abstract class Entity implements Eventable, Comparable<Entity> {
-
-    private String gfxKey;
-    private int renderPriority;
-    private int renderLayer;
-    private Sprite sprite;
-    private AnimationReel animationReel = new AnimationReel();
-
-    private Rect body = new Rect();
-    private boolean removed;
-
-    private List<RenderTask> renderTasks = new ArrayList<>();
-    private BehaviorScript behaviorScript;
-    private AnimationScript animationScript;
-    private InitGfxRoutine initGfxRoutine;
-    private GameStateTransition gameStateTransition;
-
-    @Override
-    public int compareTo(Entity entity) {
-        return (int) (this.body.pos.y - entity.body.pos.y);
-//        return this.renderPriority - entity.renderPriority;
+public class CollisionResult {
+    private final Consumer<Actor> result;
+    public CollisionResult(Consumer<Actor> result) {
+        this.result = result;
+    }
+    public void run(Actor actor) {
+        this.result.accept(actor);
     }
 }

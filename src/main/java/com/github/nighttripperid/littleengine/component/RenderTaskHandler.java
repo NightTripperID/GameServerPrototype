@@ -28,9 +28,9 @@ package com.github.nighttripperid.littleengine.component;
 
 import com.github.nighttripperid.littleengine.constant.Font5x5;
 import com.github.nighttripperid.littleengine.constant.Font8x8;
-import com.github.nighttripperid.littleengine.model.PointDouble;
-import com.github.nighttripperid.littleengine.model.Rect;
-import com.github.nighttripperid.littleengine.model.entity.RenderTask;
+import com.github.nighttripperid.littleengine.model.physics.PointDouble;
+import com.github.nighttripperid.littleengine.model.physics.Rect;
+import com.github.nighttripperid.littleengine.model.script.RenderTask;
 import com.github.nighttripperid.littleengine.model.graphics.ScreenBuffer;
 import lombok.Setter;
 

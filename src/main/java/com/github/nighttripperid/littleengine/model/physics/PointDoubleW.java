@@ -24,44 +24,71 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.github.nighttripperid.littleengine.model;
+package com.github.nighttripperid.littleengine.model.physics;
 
-public class PointIntW {
-    public NumWrap<Integer> x;
-    public NumWrap<Integer> y;
+public class PointDoubleW {
 
-    public PointIntW(){
-        x = new NumWrap<>(0);
-        y = new NumWrap<>(0);
+    public NumWrap<Double> x;
+    public NumWrap<Double> y;
+
+    public PointDoubleW(){
+        x = new NumWrap<>(0.0d);
+        y = new NumWrap<>(0.0d);
     }
 
-    public PointIntW(int x, int y) {
+    public PointDoubleW(Double x, Double y) {
         this();
+        if (x == null) this.x = null;
+        else this.x.num = x;
+        if (y == null) this.y = null;
+        else this.y.num = y;
+    }
+
+    public PointDoubleW plus(PointDoubleW that) {
+        return new PointDoubleW(this.x.num + that.x.num, this.y.num + that.y.num);
+    }
+
+    public PointDoubleW minus(PointDoubleW that) {
+        return new PointDoubleW(this.x.num - that.x.num, this.y.num - that.y.num);
+    }
+
+    public PointDoubleW times(PointDoubleW that) {
+        return new PointDoubleW(this.x.num * that.x.num, this.y.num * that.y.num);
+    }
+
+    public PointDoubleW div(PointDoubleW that) {
+        return new PointDoubleW(this.x.num / that.x.num, this.y.num / that.y.num);
+    }
+
+    public void set(Double x, Double y) {
         this.x.num = x;
         this.y.num = y;
     }
 
-    public PointIntW plus(PointIntW that) {
-        return new PointIntW(this.x.num + that.x.num, this.y.num + that.y.num);
+    public void set(PointDouble p) {
+        this.x.num = p.x;
+        this.y.num = p.y;
     }
 
-    public PointIntW minus(PointIntW that) {
-        return new PointIntW(this.x.num - that.x.num, this.y.num - that.y.num);
+    public void set(PointDoubleW p) {
+        this.x.num = p.x.num;
+        this.y.num = p.y.num;
     }
 
-    public PointIntW times(PointIntW that) {
-        return new PointIntW(this.x.num * that.x.num, this.y.num * that.y.num);
+    public static PointDoubleW of (Double d) {
+        return new PointDoubleW(d, d);
     }
 
-    public PointIntW div(PointIntW that) {
-        return new PointIntW(that.x.num == 0 ? null : this.x.num / that.x.num, that.y.num == 0 ? null : this.y.num / that.y.num);
+
+    public PointDouble unwrap() {
+        return new PointDouble(x.num, y.num);
     }
 
     @Override
     public boolean equals(Object p) {
         if (this == p) return true;
         if (p == null || getClass() != p.getClass()) return false;
-        PointIntW that = (PointIntW) p;
-        return that.x.num.equals(this.x.num) && that.y.num.equals(this.y.num);
+        PointDoubleW that = (PointDoubleW) p;
+        return Double.compare(that.x.num, this.x.num) == 0 && Double.compare(that.y.num, this.y.num) == 0;
     }
 }
