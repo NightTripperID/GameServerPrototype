@@ -1,12 +1,11 @@
 feature backlog
-	Animated tiles
-	Trigger layer
 	Log configuration
 	Physics
 	Groovy integration
 	Game Pad support
 	Parallax scrolling
 	Multiplayer
+	GPU utilization
 
 tech debt backlog
 	Write javadocs
