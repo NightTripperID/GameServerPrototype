@@ -39,4 +39,5 @@ public interface DynamicObject extends BasicObject {
     Animation getAnimation();
     InitGfxRoutine getInitGfxRoutine();
     SceneTransition getSceneTransition();
+    CollisionResult getCollisionResult();
 }

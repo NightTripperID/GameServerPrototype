@@ -35,24 +35,30 @@ import com.github.nighttripperid.littleengine.model.graphics.Sprite;
 import com.github.nighttripperid.littleengine.staticutil.SpriteLoader;
 import com.github.nighttripperid.littleengine.staticutil.SpriteUtil;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
 
 @Getter
+@Setter
 public class DynamicTile implements Tile, DynamicObject, Eventable {
+
     private int id;
     private Sprite sprite;
     private Rect hitBox;
     private List<String> attributes;
+
     private String gfxKey;
+    private String frameRate;
+    private String length;
     private AnimationReel animationReel = new AnimationReel();
+
     private List<RenderTask> renderTasks;
     private BehaviorScript behaviorScript;
     private Animation animation;
     private InitGfxRoutine initGfxRoutine;
     private SceneTransition sceneTransition;
-    private String frameRate;
-    private String length;
+    private CollisionResult collisionResult;
 
     public DynamicTile(Tile tile) {
         this.hitBox = tile.getHitBox();

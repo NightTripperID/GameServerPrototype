@@ -47,6 +47,7 @@ public abstract class Actor implements Entity, DynamicObject, Eventable, Compara
     private Animation animation;
     private InitGfxRoutine initGfxRoutine;
     private SceneTransition sceneTransition;
+    private CollisionResult collisionResult;
     private int renderPriority;
     private int renderLayer;
     private boolean isRemoved;
