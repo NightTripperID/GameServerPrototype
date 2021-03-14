@@ -66,7 +66,7 @@ public class IOController extends Canvas {
     public void updateInput() {
         Keyboard.update();
         Mouse.update();
-        Xbox360Controller.update();
+        Xbox360Pad.update();
     }
 
     public void renderBufferToScreen(ScreenBuffer screenBuffer) {

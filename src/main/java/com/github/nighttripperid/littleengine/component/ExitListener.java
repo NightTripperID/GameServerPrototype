@@ -45,7 +45,7 @@ public class ExitListener extends WindowAdapter {
     @Override
     public void windowClosing(final WindowEvent e) {
         Game.receiveStopSignal();
-        Xbox360Controller.deInit();
+        Xbox360Pad.deInit();
         log.info("SHUTTING DOWN GAME ENGINE");
         e.getWindow().dispose();
     }

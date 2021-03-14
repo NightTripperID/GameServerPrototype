@@ -63,8 +63,7 @@ public class SpriteUtil {
 
     public static void updateAnimReel(AnimationReel animationReel) {
         if(++animationReel.time % animationReel.frameRate == 0) {
-            animationReel.frame += 1;
-            if (animationReel.frame == animationReel.length + animationReel.offset) {
+            if (++animationReel.frame == animationReel.length + animationReel.offset) {
                 animationReel.frame = animationReel.offset;
             }
         }
