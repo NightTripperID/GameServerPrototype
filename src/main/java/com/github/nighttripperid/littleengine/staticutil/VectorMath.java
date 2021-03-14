@@ -37,6 +37,10 @@ public class VectorMath {
     private VectorMath() {
     }
 
+    boolean pointVsRect(PointDouble p, Rect r) {
+        return (p.x >= r.pos.x && p.y >= r.pos.y && p.x < r.pos.x + r.size.x && p.y < r.pos.y + r.size.y);
+    }
+
     public static boolean rayVsRect(PointDouble rayOrigin, PointDouble rayDirection, Rect target,
                                     PointDouble contactPoint, PointDouble contactNormal, NumWrap<Double> tHitNear) {
 
@@ -89,6 +93,13 @@ public class VectorMath {
         // considered a hit, the resolver won't change anything.
         return true;
 
+    }
+
+    public static boolean RectVsRect(Rect r1, Rect r2) {
+        return (r1.pos.x < r2.pos.x + r2.size.x &&
+                r1.pos.x + r1.size.x > r2.pos.x &&
+                r1.pos.y < r2.pos.y + r2.size.y &&
+                r1.pos.y + r1.size.y > r2.pos.y);
     }
 
     public static boolean dynamicRectVsRect(Rect dynamicRect, double timeStep, Rect staticRect, PointDouble contactPoint,

@@ -43,7 +43,16 @@ import java.util.stream.Collectors;
 
 public class CollisionResolver {
 
-    private void runActorCollision(Actor actor, double elapsedTime) {
+    public void runActorCollision(Actor actor1, List<Actor> actors) {
+        actors.forEach(actor2 -> {
+            if(actor1.equals(actor2)) return;
+           if (VectorMath.RectVsRect(actor1.getHitBox(), actor2.getHitBox())) {
+               if (actor1.getCollisionResult() != null)
+                   actor1.getCollisionResult().run(actor2);
+               if (actor2.getCollisionResult() != null)
+                   actor2.getCollisionResult().run(actor1);
+           }
+        });
     }
 
     public void runTileCollision(Actor actor, GameMap gameMap, double elapsedTime) {

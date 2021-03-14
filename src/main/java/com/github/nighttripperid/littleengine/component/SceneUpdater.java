@@ -66,6 +66,7 @@ public class SceneUpdater {
             actor.getRenderTasks().clear();
             runBehaviorScript(actor, elapsedTime);
             runActorAnimation(actor, activeScene.getActorData().getSpriteMaps().getMap(actor.getGfxKey()));
+            collisionResolver.runActorCollision(actor, activeScene.getActorData().getActors());
             collisionResolver.runTileCollision(actor, gameMap, elapsedTime);
             sceneStackController.performSceneTransition(actor.getSceneTransition());
         });

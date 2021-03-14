@@ -27,12 +27,12 @@
 package com.github.nighttripperid.littleengine.staticutil;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.github.nighttripperid.littleengine.model.physics.PointDouble;
-import com.github.nighttripperid.littleengine.model.physics.PointInt;
-import com.github.nighttripperid.littleengine.model.tiles.Tile;
-import com.github.nighttripperid.littleengine.model.scene.GameMap;
 import com.github.nighttripperid.littleengine.model.graphics.Sprite;
 import com.github.nighttripperid.littleengine.model.graphics.SpriteSheet;
+import com.github.nighttripperid.littleengine.model.physics.PointDouble;
+import com.github.nighttripperid.littleengine.model.physics.PointInt;
+import com.github.nighttripperid.littleengine.model.scene.GameMap;
+import com.github.nighttripperid.littleengine.model.script.SceneTransition;
 import com.github.nighttripperid.littleengine.model.tiles.*;
 import lombok.extern.slf4j.Slf4j;
 
@@ -90,6 +90,20 @@ public class GameMapBuilder {
                             if (tiles.get(tiled_t.getId()).getAttributes().contains("dynamic")) {
                                 DynamicTile dt = new DynamicTile(tiles.get(tiled_t.getId()));
                                 Class<?> clazz = dt.getClass();
+                                if (properties.containsKey("sceneTransition")) {
+                                    try {
+                                        Class<?> stClazz = Class.forName(properties.get("sceneTransition"));
+                                        SceneTransition st = (SceneTransition) stClazz.newInstance();
+                                        dt.setSceneTransition(st);
+                                        properties.remove("sceneTransition");
+                                    } catch (ClassNotFoundException e) {
+                                        e.printStackTrace();
+                                    } catch (IllegalAccessException e) {
+                                        e.printStackTrace();
+                                    } catch (InstantiationException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
                                 properties.keySet().forEach(fieldName -> {
                                     try {
                                         Field f = clazz.getDeclaredField(fieldName);
