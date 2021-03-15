@@ -42,7 +42,7 @@ public class RenderTaskHandler {
     private ScreenBuffer screenBuffer;
 
     public void process(RenderTask renderTask) {
-        renderTask.process(this);
+        renderTask.handle(this);
     }
 
     public void fill(int col) {

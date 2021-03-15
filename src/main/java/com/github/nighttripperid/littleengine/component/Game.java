@@ -49,7 +49,7 @@ public final class Game {
         ScreenBufferUpdater screenBufferUpdater = new ScreenBufferUpdater(new RenderTaskHandler(),
                 new ScreenBuffer(width, height, scale));
 
-        sceneUpdater = new SceneUpdater(screenBufferUpdater, new SceneStackController(),
+        sceneUpdater = new SceneUpdater(screenBufferUpdater, new SceneController(),
                 new CollisionResolver());
     }
 
@@ -80,7 +80,7 @@ public final class Game {
     }
 
     public void start(Intent intent) {
-        sceneUpdater.getSceneStackController().pushScene(intent);
+        sceneUpdater.getSceneController().pushScene(intent);
         start();
     }
     private final Runnable mainLoop = () -> {

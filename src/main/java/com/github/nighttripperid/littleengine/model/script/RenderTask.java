@@ -39,10 +39,10 @@ public class RenderTask implements Comparable<RenderTask> {
     @Getter
     private final int renderPriority;
 
-    private final Consumer<RenderTaskHandler> request;
+    private final Consumer<RenderTaskHandler> task;
     
-    public void process(RenderTaskHandler processor) {
-        request.accept(processor);
+    public void handle(RenderTaskHandler handler) {
+        task.accept(handler);
     }
 
     @Override

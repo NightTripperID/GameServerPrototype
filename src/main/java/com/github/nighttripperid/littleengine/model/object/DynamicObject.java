@@ -35,7 +35,7 @@ public interface DynamicObject extends BasicObject {
     String getGfxKey();
     AnimationReel getAnimationReel();
     List<RenderTask> getRenderTasks();
-    BehaviorScript getBehaviorScript();
+    Behavior getBehavior();
     Animation getAnimation();
     InitGfxRoutine getInitGfxRoutine();
     SceneTransition getSceneTransition();

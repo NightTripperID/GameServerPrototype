@@ -30,14 +30,14 @@ import com.github.nighttripperid.littleengine.model.scene.GameMap;
 
 import java.util.function.BiConsumer;
 
-public class BehaviorScript {
-    private final BiConsumer<GameMap, Double> script;
+public class Behavior {
+    private final BiConsumer<GameMap, Double> behavior;
 
-    public BehaviorScript(BiConsumer<GameMap, Double> script) {
-        this.script = script;
+    public Behavior(BiConsumer<GameMap, Double> behavior) {
+        this.behavior = behavior;
     }
 
     public void run(GameMap gameMap, Double timeElapsed) {
-        script.accept(gameMap, timeElapsed);
+        behavior.accept(gameMap, timeElapsed);
     }
 }

@@ -26,18 +26,18 @@
  */
 package com.github.nighttripperid.littleengine.model.script;
 
-import com.github.nighttripperid.littleengine.component.SceneStackController;
+import com.github.nighttripperid.littleengine.component.SceneController;
 
 import java.util.function.Consumer;
 
 public class SceneTransition {
-    private final Consumer<SceneStackController> transition;
+    private final Consumer<SceneController> transition;
 
-    public SceneTransition(Consumer<SceneStackController> transition) {
+    public SceneTransition(Consumer<SceneController> transition) {
         this.transition = transition;
     }
 
-    public void perform(SceneStackController sceneStackController) {
-        transition.accept(sceneStackController);
+    public void perform(SceneController sceneController) {
+        transition.accept(sceneController);
     }
 }

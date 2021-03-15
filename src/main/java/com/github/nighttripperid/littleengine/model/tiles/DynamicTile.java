@@ -54,7 +54,7 @@ public class DynamicTile implements Tile, DynamicObject, Eventable {
     private AnimationReel animationReel = new AnimationReel();
 
     private List<RenderTask> renderTasks;
-    private BehaviorScript behaviorScript;
+    private Behavior behavior;
     private Animation animation;
     private InitGfxRoutine initGfxRoutine;
     private SceneTransition sceneTransition;

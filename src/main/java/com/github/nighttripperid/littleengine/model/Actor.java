@@ -43,7 +43,7 @@ public abstract class Actor implements Entity, DynamicObject, Eventable, Compara
     private AnimationReel animationReel = new AnimationReel();
     private Rect hitBox = new Rect();
     private List<RenderTask> renderTasks = new ArrayList<>();
-    private BehaviorScript behaviorScript;
+    private Behavior behavior;
     private Animation animation;
     private InitGfxRoutine initGfxRoutine;
     private SceneTransition sceneTransition;

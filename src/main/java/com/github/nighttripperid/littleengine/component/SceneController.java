@@ -36,7 +36,7 @@ import lombok.extern.slf4j.Slf4j;
 import java.util.Stack;
 
 @Slf4j
-public class SceneStackController {
+public class SceneController {
     private final Stack<Scene> sceneStack = new Stack<>();
     @Getter
     private Scene activeScene;
