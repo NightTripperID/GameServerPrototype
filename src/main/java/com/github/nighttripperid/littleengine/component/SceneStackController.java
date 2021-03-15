@@ -53,8 +53,8 @@ public class SceneStackController {
     }
 
     public final void swapScene(Intent intent) {
-        Scene scene = buildScene(intent);
         sceneStack.pop().onDestroy();
+        Scene scene = buildScene(intent);
         sceneStack.push(scene);
         activeScene = sceneStack.peek();
     }
