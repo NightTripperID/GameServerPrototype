@@ -45,7 +45,7 @@ public class ExitListener extends WindowAdapter {
     @Override
     public void windowClosing(final WindowEvent e) {
         Game.receiveStopSignal();
-        GamePad.deInit();
+        GamePadManager.deInit();
         log.info("SHUTTING DOWN GAME ENGINE");
         e.getWindow().dispose();
     }

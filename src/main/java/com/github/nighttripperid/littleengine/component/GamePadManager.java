@@ -28,102 +28,88 @@ package com.github.nighttripperid.littleengine.component;
 
 import com.studiohartman.jamepad.ControllerManager;
 import com.studiohartman.jamepad.ControllerState;
-import lombok.AllArgsConstructor;
+import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.*;
 
 @Slf4j
-public class GamePad {
-    private static final ControllerManager controllerManager;
-    private static final List<Pad> pads = new ArrayList<>();
+public class GamePadManager {
+    private static final ControllerManager controllerManager = new ControllerManager();
+    private static final Map<UUID, GamePad> gamePads = new HashMap<>();
+    private static final Map<UUID, GamePad> availablePads = new HashMap<>();
     public static final float CALIBRATION = 0.15f;
 
-    static {
-        controllerManager = new ControllerManager();
-        log.info("Initializing GamePad controller manager");
+    public GamePadManager() {
+        log.info("initializing GamePadManager");
         controllerManager.initSDLGamepad();
-        log.info("Controller manager successfully initialized.");
-        for (int i = 0; i < controllerManager.getNumControllers(); i++)
-            pads.add(new Pad(controllerManager.getState(i)));
-
-        log.info("Number of controllers is: {}", controllerManager.getNumControllers());
-        log.info("Controller types are:");
-        for (int i = 0; i < controllerManager.getNumControllers(); i++)
-            log.info(pads.get(i).state.controllerType);
-
-        pads.forEach(pad -> {
-            new ArrayList<>(Arrays.asList(Button.values())).forEach(value -> {
-                pad.buttonsPressed.put(value, false);
-                pad.buttonsHeld.put(value, false);
-                pad.buttonsLast.put(value, false);
-                pad.buttonsReleased.put(value, false);
-            });
-            new ArrayList<>(Arrays.asList(Analog.values())).forEach(value -> {
-                pad.analogLast.put(value, 0.0f);
-                pad.analogHeld.put(value, 0.0f);
-            });
-
-            new ArrayList<>(Arrays.asList(AnalogStarted.values())).forEach(value ->
-                    pad.analogStarted.put(value, false));
-        });
-
-    }
-    private GamePad() {
-    }
-
-    public static void update() {
+        log.info("GamePadManager successfully initialized.");
         for (int i = 0; i < controllerManager.getNumControllers(); i++) {
-            Pad pad = pads.get(i);
-
-            pad.state = controllerManager.getState(i);
-
-            for (Analog analog : pad.analogHeld.keySet())
-                pad.analogLast.put(analog, pad.analogHeld.get(analog));
-
-            updateAnalogHeld(pad.analogHeld, pad.state);
-            updateAnalogStarted(pad.analogStarted, pad.analogLast, pad.state);
-
-            for (Button button : pad.buttonsHeld.keySet())
-                pad.buttonsLast.put(button, pad.buttonsHeld.get(button));
-
-            updateButtonMap(pad.buttonsHeld, pad.state);
-
-            for (Button button : pad.buttonsHeld.keySet()) {
-                pad.buttonsPressed.put(button, pad.buttonsHeld.get(button) && !pad.buttonsLast.get(button));
-                pad.buttonsReleased.put(button, !pad.buttonsHeld.get(button) && pad.buttonsLast.get(button));
-            }
+            GamePad gamePad = new GamePad(UUID.randomUUID(), i, controllerManager.getState(i));
+            gamePads.put(gamePad.getId(), gamePad);
+            availablePads.put(gamePad.getId(), gamePad);
         }
+
+        log.info("number of game pads is: {}", controllerManager.getNumControllers());
+        gamePads.values().forEach(gamePad ->
+                log.info("game pad {}: {}", gamePad.getId(), gamePad.state.controllerType));
+
+        if (gamePads.isEmpty()) {
+            log.info("no game pads found");
+        }
+        gamePads.values().forEach(GamePad::initialize);
     }
 
-    public static boolean pressed(int padNum, Button button) {
-        return pads.get(padNum).buttonsPressed.get(button);
+    public  void update() {
+        gamePads.values().forEach(gamePad -> {
+            gamePad.state = controllerManager.getState(gamePad.index);
+
+            for (Analog analog : gamePad.analogHeld.keySet())
+                gamePad.analogLast.put(analog, gamePad.analogHeld.get(analog));
+
+            updateAnalogHeld(gamePad.analogHeld, gamePad.state);
+            updateAnalogStarted(gamePad.analogStarted, gamePad.analogLast, gamePad.state);
+
+            for (Button button : gamePad.buttonsHeld.keySet())
+                gamePad.buttonsLast.put(button, gamePad.buttonsHeld.get(button));
+
+            updateButtonMap(gamePad.buttonsHeld, gamePad.state);
+
+            for (Button button : gamePad.buttonsHeld.keySet()) {
+                gamePad.buttonsPressed.put(button, gamePad.buttonsHeld.get(button) && !gamePad.buttonsLast.get(button));
+                gamePad.buttonsReleased.put(button, !gamePad.buttonsHeld.get(button) && gamePad.buttonsLast.get(button));
+            }
+        });
     }
 
-    public static boolean released(int padNum, Button button) {
-        return pads.get(padNum).buttonsReleased.get(button);
+    public static void doVibration(String padId, float leftMagnitude, float rightMagnitude, int duration_ms) {
+        controllerManager.doVibration(gamePads.get(padId).index, leftMagnitude, rightMagnitude, duration_ms);
     }
 
-    public static boolean held(int padNum, Button button) {
-        return pads.get(padNum).buttonsHeld.get(button);
+    GamePad checkOutGamePad() {
+        Map.Entry<UUID, GamePad> entry = availablePads.entrySet().iterator().next();
+        GamePad gamePad = entry.getValue();
+        availablePads.remove(entry.getKey());
+        return gamePad;
     }
 
-    public static boolean analogStarted(int padNum, AnalogStarted as) {
-        return pads.get(padNum).analogStarted.get(as);
+    void returnGamePad(GamePad gamePad) {
+        // create a new GamePad with a fresh id so caller's reference to GamePad id is no longer valid
+        GamePad newGamePad = new GamePad(UUID.randomUUID(), gamePad.index,  gamePad.state);
+        newGamePad.initialize();
+
+        // set this to null to forcibly eliminate caller's reference to ControllerState.
+        // this will (hopefully) ensure that a controller is not accidentally referenced by multiple objects
+        gamePad.state = null;
+
+        gamePads.remove(gamePad.id);
+        gamePads.put(newGamePad.id, newGamePad);
+        availablePads.put(newGamePad.id, newGamePad);
     }
 
-    public static float analog(int padNum, Analog analog) {
-        return pads.get(padNum).analogLast.get(analog);
-    }
-
-    public static boolean doVibration(int padNum, float leftMagnitude, float rightMagnitude, int duration_ms) {
-        return controllerManager.doVibration(padNum, leftMagnitude, rightMagnitude, duration_ms);
-    }
-
-    public static void deInit() {
-        log.info("De-initializing GamePad controller manager");
+    static void deInit() {
+        log.info("de-initializing GamePadManager");
         controllerManager.quitSDLGamepad();
-        log.info("GamePad controller manager successfully de-initialized");
     }
 
     public static enum Button {
@@ -217,7 +203,10 @@ public class GamePad {
     }
 
     @AllArgsConstructor
-    private static class Pad {
+    public static class GamePad {
+        @Getter
+        private final UUID id;
+        private final int index;
         private final Map<Button, Boolean> buttonsLast = new EnumMap<>(Button.class);
         private final Map<Button, Boolean> buttonsHeld = new EnumMap<>(Button.class);
         private final Map<Button, Boolean> buttonsPressed = new EnumMap<>(Button.class);
@@ -226,5 +215,36 @@ public class GamePad {
         private final Map<Analog, Float> analogHeld = new EnumMap<>(Analog.class);
         private final Map<AnalogStarted, Boolean> analogStarted = new EnumMap<>(AnalogStarted.class);
         private ControllerState state;
+
+        public void initialize() {
+            new ArrayList<>(Arrays.asList(Button.values())).forEach(value -> {
+                this.buttonsPressed.put(value, false);
+                this.buttonsHeld.put(value, false);
+                this.buttonsLast.put(value, false);
+                this.buttonsReleased.put(value, false);
+            });
+            new ArrayList<>(Arrays.asList(Analog.values())).forEach(value -> {
+                this.analogLast.put(value, 0.0f);
+                this.analogHeld.put(value, 0.0f);
+            });
+            new ArrayList<>(Arrays.asList(AnalogStarted.values())).forEach(value ->
+                    this.analogStarted.put(value, false));
+        }
+
+        public boolean pressed(Button button) {
+            return buttonsPressed.get(button);
+        }
+        public boolean released(Button button) {
+            return buttonsReleased.get(button);
+        }
+        public boolean held(Button button) {
+            return buttonsHeld.get(button);
+        }
+        public boolean analogStarted(AnalogStarted as) {
+            return analogStarted.get(as);
+        }
+        public float analog(Analog analog) {
+            return analogLast.get(analog);
+        }
     }
 }

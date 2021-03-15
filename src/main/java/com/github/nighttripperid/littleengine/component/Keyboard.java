@@ -40,7 +40,7 @@ public class Keyboard implements KeyListener {
     public Keyboard() {
     }
 
-    public static void update() {
+    public void update() {
         System.arraycopy(keysHeld, 0, keysLast, 0, keysHeld.length);
         System.arraycopy(keys, 0, keysHeld, 0, keys.length);
 
