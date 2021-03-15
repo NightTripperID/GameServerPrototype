@@ -57,7 +57,6 @@ public class GamePadManager {
         if (gamePads.isEmpty()) {
             log.info("no game pads found");
         }
-        gamePads.values().forEach(GamePad::initialize);
     }
 
     public  void update() {
@@ -73,12 +72,10 @@ public class GamePadManager {
             for (Button button : gamePad.buttonsHeld.keySet())
                 gamePad.buttonsLast.put(button, gamePad.buttonsHeld.get(button));
 
-            updateButtonMap(gamePad.buttonsHeld, gamePad.state);
+            updateButtonsHeld(gamePad.buttonsHeld, gamePad.state);
+            updateButtonsPressed(gamePad.buttonsPressed, gamePad.state);
 
-            for (Button button : gamePad.buttonsHeld.keySet()) {
-                gamePad.buttonsPressed.put(button, gamePad.buttonsHeld.get(button) && !gamePad.buttonsLast.get(button));
-                gamePad.buttonsReleased.put(button, !gamePad.buttonsHeld.get(button) && gamePad.buttonsLast.get(button));
-            }
+            gamePad.buttonsReleased.replaceAll((b, v) -> !gamePad.buttonsHeld.get(b) && gamePad.buttonsLast.get(b));
         });
     }
 
@@ -96,10 +93,9 @@ public class GamePadManager {
     void returnGamePad(GamePad gamePad) {
         // create a new GamePad with a fresh id so caller's reference to GamePad id is no longer valid
         GamePad newGamePad = new GamePad(UUID.randomUUID(), gamePad.index,  gamePad.state);
-        newGamePad.initialize();
 
-        // set this to null to forcibly eliminate caller's reference to ControllerState.
-        // this will (hopefully) ensure that a controller is not accidentally referenced by multiple objects
+        // set state to null to forcibly eliminate caller's reference to ControllerState.
+        // this ensures that a controller state is not accidentally referenced by multiple objects
         gamePad.state = null;
 
         gamePads.remove(gamePad.id);
@@ -157,7 +153,7 @@ public class GamePadManager {
         RT;
     }
 
-    private static void updateButtonMap(Map<Button, Boolean> buttonMap, ControllerState controllerState) {
+    private static void updateButtonsHeld(Map<Button, Boolean> buttonMap, ControllerState controllerState) {
         buttonMap.put(Button.LS_CLICK, controllerState.leftStickClick);
         buttonMap.put(Button.RS_CLICK, controllerState.rightStickClick);
         buttonMap.put(Button.A, controllerState.a);
@@ -172,6 +168,23 @@ public class GamePadManager {
         buttonMap.put(Button.DPAD_D, controllerState.dpadDown);
         buttonMap.put(Button.DPAD_L, controllerState.dpadLeft);
         buttonMap.put(Button.DPAD_R, controllerState.dpadRight);
+    }
+
+    private static void updateButtonsPressed(Map<Button, Boolean> buttonMap, ControllerState controllerState) {
+        buttonMap.put(Button.LS_CLICK, controllerState.leftStickJustClicked);
+        buttonMap.put(Button.RS_CLICK, controllerState.rightStickJustClicked);
+        buttonMap.put(Button.A, controllerState.aJustPressed);
+        buttonMap.put(Button.B, controllerState.bJustPressed);
+        buttonMap.put(Button.X, controllerState.xJustPressed);
+        buttonMap.put(Button.Y, controllerState.yJustPressed);
+        buttonMap.put(Button.LB, controllerState.lbJustPressed);
+        buttonMap.put(Button.RB, controllerState.rbJustPressed);
+        buttonMap.put(Button.START, controllerState.startJustPressed);
+        buttonMap.put(Button.BACK, controllerState.backJustPressed);
+        buttonMap.put(Button.DPAD_U, controllerState.dpadUpJustPressed);
+        buttonMap.put(Button.DPAD_D, controllerState.dpadDownJustPressed);
+        buttonMap.put(Button.DPAD_L, controllerState.dpadLeftJustPressed);
+        buttonMap.put(Button.DPAD_R, controllerState.dpadRightJustPressed);
     }
 
     private static void updateAnalogHeld(Map<Analog, Float> analogHeld, ControllerState controllerState) {
@@ -202,7 +215,6 @@ public class GamePadManager {
         analogStarted.put(AnalogStarted.RT, ((controllerState.rightTrigger > 0.0f) && (analogLast.get(Analog.RT) == 0.0f)));
     }
 
-    @AllArgsConstructor
     public static class GamePad {
         @Getter
         private final UUID id;
@@ -216,7 +228,11 @@ public class GamePadManager {
         private final Map<AnalogStarted, Boolean> analogStarted = new EnumMap<>(AnalogStarted.class);
         private ControllerState state;
 
-        public void initialize() {
+        private GamePad(UUID id, int index, ControllerState state) {
+            this.id = id;
+            this.index = index;
+            this.state = state;
+
             new ArrayList<>(Arrays.asList(Button.values())).forEach(value -> {
                 this.buttonsPressed.put(value, false);
                 this.buttonsHeld.put(value, false);
