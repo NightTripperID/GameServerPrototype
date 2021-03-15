@@ -82,7 +82,7 @@ public class GamePadManager {
         });
     }
 
-    public static void doVibration(String padId, float leftMagnitude, float rightMagnitude, int duration_ms) {
+    public static void doVibration(UUID padId, float leftMagnitude, float rightMagnitude, int duration_ms) {
         controllerManager.doVibration(gamePads.get(padId).index, leftMagnitude, rightMagnitude, duration_ms);
     }
 
