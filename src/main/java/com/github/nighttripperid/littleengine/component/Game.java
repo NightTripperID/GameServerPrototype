@@ -40,6 +40,7 @@ public final class Game {
 
     private IOController ioController;
     private final SceneUpdater sceneUpdater;
+    static boolean stopSignalReceived = false;
 
     public Game(int width, int height, int scale, String title) {
         this.title = title;
@@ -82,7 +83,6 @@ public final class Game {
         sceneUpdater.getSceneStackController().pushScene(intent);
         start();
     }
-
     private final Runnable mainLoop = () -> {
         ioController.requestFocus();
         long timer = System.currentTimeMillis();
@@ -92,6 +92,10 @@ public final class Game {
         final long OPTIMAL_TIME = 1000000000 / TARGET_FPS;
 
         while (running) {
+            if (stopSignalReceived) {
+                stop();
+                return;
+            }
             long now = System.nanoTime();
             long delta = now - lastLoopTime;
             lastLoopTime = now;
@@ -111,4 +115,8 @@ public final class Game {
         }
         stop();
     };
+
+    static void receiveStopSignal() {
+        stopSignalReceived = true;
+    }
 }

@@ -26,7 +26,7 @@
  */
 package com.github.nighttripperid.littleengine.component;
 
-import com.github.nighttripperid.littleengine.model.*;
+import com.github.nighttripperid.littleengine.model.Actor;
 import com.github.nighttripperid.littleengine.model.physics.NumWrap;
 import com.github.nighttripperid.littleengine.model.physics.PointDouble;
 import com.github.nighttripperid.littleengine.model.physics.PointInt;

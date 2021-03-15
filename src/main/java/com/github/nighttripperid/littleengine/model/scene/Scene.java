@@ -26,6 +26,7 @@
  */
 package com.github.nighttripperid.littleengine.model.scene;
 
+import com.github.nighttripperid.littleengine.model.Actor;
 import com.github.nighttripperid.littleengine.model.Eventable;
 import lombok.Data;
 
@@ -34,4 +35,9 @@ public abstract class Scene implements Eventable {
     private Intent intent;
     private ActorData actorData = new ActorData();
     private GameMap gameMap = new GameMap();
+
+    @Override
+    public void onDestroy() {
+        actorData.getActors().forEach(Actor::onDestroy);
+    }
 }

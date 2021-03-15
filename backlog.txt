@@ -2,7 +2,6 @@ feature backlog
 	Log configuration
 	Physics
 	Groovy integration
-	Game Pad support
 	Parallax scrolling
 	Multiplayer
 	GPU utilization

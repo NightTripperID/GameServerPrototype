@@ -50,7 +50,7 @@ public class Mouse extends MouseAdapter {
         this.screenScale = screenScale;
     }
 
-    public static void update() {
+    public void update() {
 
         boolean button1Last, button2Last, button3Last;
 

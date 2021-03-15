@@ -27,6 +27,7 @@
 package com.github.nighttripperid.littleengine.component;
 
 import com.github.nighttripperid.littleengine.model.graphics.ScreenBuffer;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.swing.*;
 import java.awt.*;
@@ -34,13 +35,18 @@ import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
 
+@Slf4j
 public class IOController extends Canvas {
 
     private final BufferedImage bufferedImage;
     private final int[] pixels;
     private final JFrame jFrame;
 
-    public IOController(int width, int height, int scale) {
+    private static final Keyboard keyboard = new Keyboard();
+    private static Mouse mouse;
+    private static final GamePadManager gamePadManager = new GamePadManager();
+
+     IOController(int width, int height, int scale) {
         bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         pixels = ((DataBufferInt) bufferedImage.getRaster().getDataBuffer()).getData();
 
@@ -53,21 +59,23 @@ public class IOController extends Canvas {
         jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         jFrame.setLocationRelativeTo(null);
         jFrame.setVisible(true);
+        jFrame.addWindowListener(ExitListener.getInstance());
 
-        addKeyListener(new Keyboard());
+        addKeyListener(keyboard);
 
-        Mouse mouse = new Mouse(scale);
+        mouse = new Mouse(scale);
         addMouseListener(mouse);
         addMouseMotionListener(mouse);
         addMouseWheelListener(mouse);
     }
 
-    public void updateInput() {
-        Keyboard.update();
-        Mouse.update();
+     void updateInput() {
+        keyboard.update();
+        mouse.update();
+        gamePadManager.update();
     }
 
-    public void renderBufferToScreen(ScreenBuffer screenBuffer) {
+     void renderBufferToScreen(ScreenBuffer screenBuffer) {
         BufferStrategy bufferStrategy = getBufferStrategy();
 
         if (bufferStrategy == null) {
@@ -87,7 +95,24 @@ public class IOController extends Canvas {
         bufferStrategy.show();
     }
 
-    public void setTitle(String title) {
+     void setTitle(String title) {
         jFrame.setTitle(title);
+    }
+
+    public static GamePadManager.GamePad requestGamePad() {
+         log.info("processing GamePad checkout request...");
+        GamePadManager.GamePad gamePad = gamePadManager.checkOutGamePad();
+        if (gamePad == null) {
+            log.error("error fulfilling GamePad checkout request: there are none available!");
+        } else {
+            log.info("GamePad checkout successful: checked out GamePad {}", gamePad.getId());
+        }
+        return gamePad;
+    }
+
+    public static void returnGamePad(GamePadManager.GamePad gamePad) {
+         log.info("returning GamePad {}", gamePad.getId());
+         gamePadManager.returnGamePad(gamePad);
+         log.info("GamePad {} returned", gamePad.getId());
     }
 }
