@@ -29,7 +29,7 @@ package com.github.nighttripperid.littleengine.model.tiles;
 import com.github.nighttripperid.littleengine.model.Eventable;
 import com.github.nighttripperid.littleengine.model.object.DynamicObject;
 import com.github.nighttripperid.littleengine.model.physics.Rect;
-import com.github.nighttripperid.littleengine.model.script.*;
+import com.github.nighttripperid.littleengine.model.behavior.*;
 import com.github.nighttripperid.littleengine.model.graphics.AnimationReel;
 import com.github.nighttripperid.littleengine.model.graphics.Sprite;
 import com.github.nighttripperid.littleengine.staticutil.SpriteLoader;
@@ -56,7 +56,7 @@ public class DynamicTile implements Tile, DynamicObject, Eventable {
     private List<RenderTask> renderTasks;
     private Behavior behavior;
     private Animation animation;
-    private InitGfxRoutine initGfxRoutine;
+    private GfxInitializer gfxInitializer;
     private SceneTransition sceneTransition;
     private CollisionResult collisionResult;
 
@@ -73,8 +73,8 @@ public class DynamicTile implements Tile, DynamicObject, Eventable {
         });
     }
 
-    private InitGfxRoutine initGfxRoutine() {
-        return new InitGfxRoutine(spriteMaps -> {
+    private GfxInitializer initGfx() {
+        return new GfxInitializer(spriteMaps -> {
             SpriteLoader.loadSpritesByColumns(this.gfxKey, this.sprite.width, this.sprite.height, spriteMaps);
             this.sprite = spriteMaps.getMap(this.gfxKey).get(this.animationReel.frame);
         });
@@ -83,12 +83,13 @@ public class DynamicTile implements Tile, DynamicObject, Eventable {
     @Override
     public void onCreate() {
         this.animation = initAnimation();
-        this.initGfxRoutine = initGfxRoutine();
+        this.gfxInitializer = initGfx();
         this.animationReel.length = Integer.parseInt(this.length);
         this.animationReel.frameRate = Integer.parseInt(this.frameRate);
     }
 
     @Override
     public void onDestroy() {
+
     }
 }

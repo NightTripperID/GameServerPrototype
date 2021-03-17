@@ -24,29 +24,22 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.github.nighttripperid.littleengine.model.script;
+package com.github.nighttripperid.littleengine.model.behavior;
 
-import com.github.nighttripperid.littleengine.component.RenderTaskHandler;
+import com.github.nighttripperid.littleengine.model.graphics.Sprite;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+import java.util.Map;
 import java.util.function.Consumer;
 
 @AllArgsConstructor
-public class RenderTask implements Comparable<RenderTask> {
-    @Getter
-    private final int renderLayer;
-    @Getter
-    private final int renderPriority;
-
-    private final Consumer<RenderTaskHandler> task;
-    
-    public void handle(RenderTaskHandler handler) {
-        task.accept(handler);
-    }
-
-    @Override
-    public int compareTo(RenderTask renderTask) {
-        return this.renderPriority - renderTask.renderPriority;
+@NoArgsConstructor
+public class Animation {
+    @Setter
+    private Consumer<Map<Integer, Sprite>> animation;
+    public void run(Map<Integer, Sprite> spriteMap) {
+        animation.accept(spriteMap);
     }
 }

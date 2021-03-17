@@ -24,18 +24,21 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.github.nighttripperid.littleengine.model.script;
+package com.github.nighttripperid.littleengine.model.behavior;
 
-import com.github.nighttripperid.littleengine.model.Actor;
+import com.github.nighttripperid.littleengine.model.graphics.SpriteMaps;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.function.Consumer;
 
-public class CollisionResult {
-    private final Consumer<Actor> result;
-    public CollisionResult(Consumer<Actor> result) {
-        this.result = result;
-    }
-    public void run(Actor actor) {
-        this.result.accept(actor);
+@AllArgsConstructor
+@NoArgsConstructor
+public class GfxInitializer {
+    @Setter
+    private Consumer<SpriteMaps> initializer;
+    public void init(SpriteMaps spriteMaps) {
+        initializer.accept(spriteMaps);
     }
 }

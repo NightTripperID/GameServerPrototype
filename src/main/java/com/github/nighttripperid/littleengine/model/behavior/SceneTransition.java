@@ -24,20 +24,17 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.github.nighttripperid.littleengine.model.script;
+package com.github.nighttripperid.littleengine.model.behavior;
 
-import com.github.nighttripperid.littleengine.model.scene.GameMap;
+import com.github.nighttripperid.littleengine.component.SceneController;
+import lombok.AllArgsConstructor;
 
-import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
-public class Behavior {
-    private final BiConsumer<GameMap, Double> behavior;
-
-    public Behavior(BiConsumer<GameMap, Double> behavior) {
-        this.behavior = behavior;
-    }
-
-    public void run(GameMap gameMap, Double timeElapsed) {
-        behavior.accept(gameMap, timeElapsed);
+@AllArgsConstructor
+public class SceneTransition {
+    private final Consumer<SceneController> transition;
+    public void perform(SceneController sceneController) {
+        transition.accept(sceneController);
     }
 }

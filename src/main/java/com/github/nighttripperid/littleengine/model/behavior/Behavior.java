@@ -24,21 +24,21 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.github.nighttripperid.littleengine.model.script;
+package com.github.nighttripperid.littleengine.model.behavior;
 
-import com.github.nighttripperid.littleengine.model.graphics.Sprite;
+import com.github.nighttripperid.littleengine.model.scene.GameMap;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-import java.util.Map;
-import java.util.function.Consumer;
+import java.util.function.BiConsumer;
 
-public class Animation {
-    private final Consumer<Map<Integer, Sprite>> animation;
-
-    public Animation(Consumer<Map<Integer, Sprite>> animation) {
-        this.animation = animation;
-    }
-
-    public void run(Map<Integer, Sprite> spriteMap) {
-        animation.accept(spriteMap);
+@NoArgsConstructor
+@AllArgsConstructor
+public class Behavior {
+    @Setter
+    private BiConsumer<GameMap, Double> script;
+    public void run(GameMap gameMap, Double timeElapsed) {
+        script.accept(gameMap, timeElapsed);
     }
 }

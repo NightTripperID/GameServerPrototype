@@ -32,7 +32,7 @@ import com.github.nighttripperid.littleengine.model.graphics.SpriteSheet;
 import com.github.nighttripperid.littleengine.model.physics.PointDouble;
 import com.github.nighttripperid.littleengine.model.physics.PointInt;
 import com.github.nighttripperid.littleengine.model.scene.GameMap;
-import com.github.nighttripperid.littleengine.model.script.SceneTransition;
+import com.github.nighttripperid.littleengine.model.behavior.SceneTransition;
 import com.github.nighttripperid.littleengine.model.tiles.*;
 import lombok.extern.slf4j.Slf4j;
 

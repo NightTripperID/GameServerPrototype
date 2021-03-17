@@ -26,7 +26,7 @@
  */
 package com.github.nighttripperid.littleengine.model.object;
 
-import com.github.nighttripperid.littleengine.model.script.*;
+import com.github.nighttripperid.littleengine.model.behavior.*;
 import com.github.nighttripperid.littleengine.model.graphics.AnimationReel;
 
 import java.util.List;
@@ -37,7 +37,7 @@ public interface DynamicObject extends BasicObject {
     List<RenderTask> getRenderTasks();
     Behavior getBehavior();
     Animation getAnimation();
-    InitGfxRoutine getInitGfxRoutine();
+    GfxInitializer getGfxInitializer();
     SceneTransition getSceneTransition();
     CollisionResult getCollisionResult();
 }

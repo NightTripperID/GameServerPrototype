@@ -27,7 +27,7 @@
 package com.github.nighttripperid.littleengine.component;
 
 import com.github.nighttripperid.littleengine.model.Actor;
-import com.github.nighttripperid.littleengine.model.script.RenderTask;
+import com.github.nighttripperid.littleengine.model.behavior.RenderTask;
 import com.github.nighttripperid.littleengine.model.scene.GameMap;
 import com.github.nighttripperid.littleengine.model.scene.Scene;
 import com.github.nighttripperid.littleengine.model.graphics.Sprite;
@@ -58,7 +58,7 @@ public class SceneUpdater {
     }
 
     public void update(double elapsedTime) {
-        addPendingEntities();
+        addPendingActors();
         Scene activeScene = sceneController.getActiveScene();
         GameMap gameMap = sceneController.getActiveScene().getGameMap();
         activeScene.getActorData().getActors()
@@ -73,7 +73,7 @@ public class SceneUpdater {
         gameMap.getTileset().getDynamicTiles().forEach(dynamicTile -> {
             runTileAnimation(dynamicTile, gameMap.getTileset().getSpriteMaps().getMap(dynamicTile.getGfxKey()));
         });
-        removeMarkedEntities();
+        removeMarkedActors();
     }
 
     public void renderToScreenBuffer() {
@@ -105,13 +105,13 @@ public class SceneUpdater {
         sceneController.getActiveScene().getActorData().getPendingActors().add(actor);
     }
 
-    private void addPendingEntities() {
+    private void addPendingActors() {
         sceneController.getActiveScene().getActorData().getActors()
                 .addAll(sceneController.getActiveScene().getActorData().getPendingActors());
         sceneController.getActiveScene().getActorData().getPendingActors().clear();
     }
 
-    private void removeMarkedEntities() {
+    private void removeMarkedActors() {
         for(int i = 0; i < sceneController.getActiveScene().getActorData().getActors().size(); i++) {
             if(sceneController.getActiveScene().getActorData().getActors().get(i).isRemoved()) {
                 sceneController.getActiveScene().getActorData().getActors().get(i).onDestroy();

@@ -27,7 +27,7 @@
 package com.github.nighttripperid.littleengine.component;
 
 import com.github.nighttripperid.littleengine.model.Actor;
-import com.github.nighttripperid.littleengine.model.script.SceneTransition;
+import com.github.nighttripperid.littleengine.model.behavior.SceneTransition;
 import com.github.nighttripperid.littleengine.model.scene.Scene;
 import com.github.nighttripperid.littleengine.model.scene.Intent;
 import lombok.Getter;
@@ -71,12 +71,12 @@ public class SceneController {
             scene.onCreate();
             scene.getActorData().getActors().forEach(Actor::onCreate);
             scene.getActorData().getActors().forEach(actor -> {
-                if (actor.getInitGfxRoutine() != null) {
-                    actor.getInitGfxRoutine().run(scene.getActorData().getSpriteMaps());
+                if (actor.getGfxInitializer() != null) {
+                    actor.getGfxInitializer().init(scene.getActorData().getSpriteMaps());
                 }
             });
             scene.getGameMap().getTileset().getDynamicTiles().forEach(tile -> {
-               tile.getInitGfxRoutine().run(scene.getGameMap().getTileset().getSpriteMaps());
+               tile.getGfxInitializer().init(scene.getGameMap().getTileset().getSpriteMaps());
             });
             return scene;
         } catch (InstantiationException | IllegalAccessException e) {
