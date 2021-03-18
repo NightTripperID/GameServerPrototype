@@ -57,7 +57,7 @@ public class CollisionResolver {
 
     public void runTileCollision(Actor actor, GameMap gameMap, float elapsedTime) {
         // broad phase pass
-
+        // TODO: fix scanning algorithm to properly detect edges when hitbox is equal to or smaller than tile size
         Rect hitBox = actor.getHitBox();
         // calculate 3 of 4 tile corners (the smallest actor can occupy from 1 to 4 bg tiles,
         // so any actor can occupy at the very least 4 tiles.
