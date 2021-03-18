@@ -28,9 +28,9 @@ package com.github.nighttripperid.littleengine.component;
 
 import com.github.nighttripperid.littleengine.model.Actor;
 import com.github.nighttripperid.littleengine.model.behavior.RenderTask;
+import com.github.nighttripperid.littleengine.model.graphics.Sprite;
 import com.github.nighttripperid.littleengine.model.scene.GameMap;
 import com.github.nighttripperid.littleengine.model.scene.Scene;
-import com.github.nighttripperid.littleengine.model.graphics.Sprite;
 import com.github.nighttripperid.littleengine.model.tiles.DynamicTile;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -66,6 +66,7 @@ public class SceneUpdater {
             actor.getRenderTasks().clear();
             runBehaviorScript(actor, elapsedTime);
             runActorAnimation(actor, activeScene.getActorData().getSpriteMaps().getMap(actor.getGfxKey()));
+            runSpawn(actor);
             collisionResolver.runActorCollision(actor, activeScene.getActorData().getActors());
             collisionResolver.runTileCollision(actor, gameMap, elapsedTime);
             sceneController.performSceneTransition(actor.getSceneTransition());
@@ -106,8 +107,14 @@ public class SceneUpdater {
     }
 
     private void addPendingActors() {
+        List<Actor> pendingActors = sceneController.getActiveScene().getActorData().getPendingActors();
         sceneController.getActiveScene().getActorData().getActors()
-                .addAll(sceneController.getActiveScene().getActorData().getPendingActors());
+                .addAll(pendingActors);
+        pendingActors.forEach(actor -> {
+            actor.onCreate();
+            if (actor.getGfxInitializer() != null)
+                actor.getGfxInitializer().init(sceneController.getActiveScene().getActorData().getSpriteMaps());
+        });
         sceneController.getActiveScene().getActorData().getPendingActors().clear();
     }
 
@@ -134,5 +141,12 @@ public class SceneUpdater {
 
     private void runTileAnimation(DynamicTile tile, Map<Integer, Sprite> spriteMap) {
         tile.getAnimation().run(spriteMap);
+    }
+
+    private void runSpawn(Actor actor) {
+        if (actor.getSpawn() != null) {
+            actor.getSpawn().spawn(sceneController.getActiveScene().getActorData().getPendingActors());
+            actor.setSpawn(null);
+        }
     }
 }

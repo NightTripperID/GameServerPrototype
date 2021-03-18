@@ -66,7 +66,7 @@ public class TileMap {
             return null;
 
         } else {
-            return tileMap.get(layerId)[x_T + y_T * width_T] - 1;
+            return tileMap.get(layerId)[x_T + y_T * width_T];
         }
     }
 

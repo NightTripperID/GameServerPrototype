@@ -69,11 +69,10 @@ public class SceneController {
             Scene scene = intent.getSceneClass().newInstance();
             scene.setIntent(intent);
             scene.onCreate();
-            scene.getActorData().getActors().forEach(Actor::onCreate);
             scene.getActorData().getActors().forEach(actor -> {
-                if (actor.getGfxInitializer() != null) {
+                actor.onCreate();
+                if (actor.getGfxInitializer() != null)
                     actor.getGfxInitializer().init(scene.getActorData().getSpriteMaps());
-                }
             });
             scene.getGameMap().getTileset().getDynamicTiles().forEach(tile -> {
                tile.getGfxInitializer().init(scene.getGameMap().getTileset().getSpriteMaps());
