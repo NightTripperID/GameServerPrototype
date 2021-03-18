@@ -27,10 +27,10 @@
 package com.github.nighttripperid.littleengine.component;
 
 import com.github.nighttripperid.littleengine.model.Actor;
-import com.github.nighttripperid.littleengine.model.script.RenderTask;
+import com.github.nighttripperid.littleengine.model.behavior.RenderTask;
+import com.github.nighttripperid.littleengine.model.graphics.Sprite;
 import com.github.nighttripperid.littleengine.model.scene.GameMap;
 import com.github.nighttripperid.littleengine.model.scene.Scene;
-import com.github.nighttripperid.littleengine.model.graphics.Sprite;
 import com.github.nighttripperid.littleengine.model.tiles.DynamicTile;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -46,41 +46,42 @@ public class SceneUpdater {
     @Getter
     private final ScreenBufferUpdater screenBufferUpdater;
     @Getter
-    private final SceneStackController sceneStackController;
+    private final SceneController sceneController;
     private final CollisionResolver collisionResolver;
 
     public SceneUpdater(ScreenBufferUpdater screenBufferUpdater,
-                        SceneStackController sceneStackController,
+                        SceneController sceneController,
                         CollisionResolver collisionResolver) {
         this.screenBufferUpdater = screenBufferUpdater;
-        this.sceneStackController = sceneStackController;
+        this.sceneController = sceneController;
         this.collisionResolver = collisionResolver;
     }
 
     public void update(double elapsedTime) {
-        addPendingEntities();
-        Scene activeScene = sceneStackController.getActiveScene();
-        GameMap gameMap = sceneStackController.getActiveScene().getGameMap();
+        addPendingActors();
+        Scene activeScene = sceneController.getActiveScene();
+        GameMap gameMap = sceneController.getActiveScene().getGameMap();
         activeScene.getActorData().getActors()
         .forEach(actor -> {
             actor.getRenderTasks().clear();
             runBehaviorScript(actor, elapsedTime);
             runActorAnimation(actor, activeScene.getActorData().getSpriteMaps().getMap(actor.getGfxKey()));
+            runSpawn(actor);
             collisionResolver.runActorCollision(actor, activeScene.getActorData().getActors());
             collisionResolver.runTileCollision(actor, gameMap, elapsedTime);
-            sceneStackController.performSceneTransition(actor.getSceneTransition());
+            sceneController.performSceneTransition(actor.getSceneTransition());
         });
         gameMap.getTileset().getDynamicTiles().forEach(dynamicTile -> {
             runTileAnimation(dynamicTile, gameMap.getTileset().getSpriteMaps().getMap(dynamicTile.getGfxKey()));
         });
-        removeMarkedEntities();
+        removeMarkedActors();
     }
 
     public void renderToScreenBuffer() {
         screenBufferUpdater.clearScreenBuffer();
 
-        GameMap gameMap = sceneStackController.getActiveScene().getGameMap();
-        List<Actor> actors = sceneStackController.getActiveScene().getActorData().getActors();
+        GameMap gameMap = sceneController.getActiveScene().getGameMap();
+        List<Actor> actors = sceneController.getActiveScene().getActorData().getActors();
 
         for (int i = 1; i <= gameMap.getTileMap().getNumLayers(); i++) {
             final int layer = i;
@@ -102,29 +103,35 @@ public class SceneUpdater {
     // TODO: delegate actor methods to ActorProcessor (maybe)
     public void addActor(Actor actor) {
         actor.onCreate();
-        sceneStackController.getActiveScene().getActorData().getPendingActors().add(actor);
+        sceneController.getActiveScene().getActorData().getPendingActors().add(actor);
     }
 
-    private void addPendingEntities() {
-        sceneStackController.getActiveScene().getActorData().getActors()
-                .addAll(sceneStackController.getActiveScene().getActorData().getPendingActors());
-        sceneStackController.getActiveScene().getActorData().getPendingActors().clear();
+    private void addPendingActors() {
+        List<Actor> pendingActors = sceneController.getActiveScene().getActorData().getPendingActors();
+        sceneController.getActiveScene().getActorData().getActors()
+                .addAll(pendingActors);
+        pendingActors.forEach(actor -> {
+            actor.onCreate();
+            if (actor.getGfxInitializer() != null)
+                actor.getGfxInitializer().init(sceneController.getActiveScene().getActorData().getSpriteMaps());
+        });
+        sceneController.getActiveScene().getActorData().getPendingActors().clear();
     }
 
-    private void removeMarkedEntities() {
-        for(int i = 0; i < sceneStackController.getActiveScene().getActorData().getActors().size(); i++) {
-            if(sceneStackController.getActiveScene().getActorData().getActors().get(i).isRemoved()) {
-                sceneStackController.getActiveScene().getActorData().getActors().get(i).onDestroy();
-                sceneStackController.getActiveScene().getActorData().getActors()
-                        .remove(sceneStackController.getActiveScene().getActorData().getActors().get(i--));
+    private void removeMarkedActors() {
+        for(int i = 0; i < sceneController.getActiveScene().getActorData().getActors().size(); i++) {
+            if(sceneController.getActiveScene().getActorData().getActors().get(i).isRemoved()) {
+                sceneController.getActiveScene().getActorData().getActors().get(i).onDestroy();
+                sceneController.getActiveScene().getActorData().getActors()
+                        .remove(sceneController.getActiveScene().getActorData().getActors().get(i--));
             }
         }
     }
 
     private void runBehaviorScript(Actor actor, double timeElapsed) {
         // TODO: implement groovy integration for actor updates (maybe)
-        if (actor.getBehaviorScript() != null)
-            actor.getBehaviorScript().run(sceneStackController.getActiveScene().getGameMap(), timeElapsed);
+        if (actor.getBehavior() != null)
+            actor.getBehavior().run(sceneController.getActiveScene().getGameMap(), timeElapsed);
     }
 
     private void runActorAnimation(Actor actor, Map<Integer, Sprite> spriteMap) {
@@ -134,5 +141,12 @@ public class SceneUpdater {
 
     private void runTileAnimation(DynamicTile tile, Map<Integer, Sprite> spriteMap) {
         tile.getAnimation().run(spriteMap);
+    }
+
+    private void runSpawn(Actor actor) {
+        if (actor.getSpawn() != null) {
+            actor.getSpawn().spawn(sceneController.getActiveScene().getActorData().getPendingActors());
+            actor.setSpawn(null);
+        }
     }
 }

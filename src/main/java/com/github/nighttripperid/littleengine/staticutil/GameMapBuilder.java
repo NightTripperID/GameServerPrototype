@@ -32,7 +32,7 @@ import com.github.nighttripperid.littleengine.model.graphics.SpriteSheet;
 import com.github.nighttripperid.littleengine.model.physics.PointDouble;
 import com.github.nighttripperid.littleengine.model.physics.PointInt;
 import com.github.nighttripperid.littleengine.model.scene.GameMap;
-import com.github.nighttripperid.littleengine.model.script.SceneTransition;
+import com.github.nighttripperid.littleengine.model.behavior.SceneTransition;
 import com.github.nighttripperid.littleengine.model.tiles.*;
 import lombok.extern.slf4j.Slf4j;
 
@@ -90,20 +90,6 @@ public class GameMapBuilder {
                             if (tiles.get(tiled_t.getId()).getAttributes().contains("dynamic")) {
                                 DynamicTile dt = new DynamicTile(tiles.get(tiled_t.getId()));
                                 Class<?> clazz = dt.getClass();
-                                if (properties.containsKey("sceneTransition")) {
-                                    try {
-                                        Class<?> stClazz = Class.forName(properties.get("sceneTransition"));
-                                        SceneTransition st = (SceneTransition) stClazz.newInstance();
-                                        dt.setSceneTransition(st);
-                                        properties.remove("sceneTransition");
-                                    } catch (ClassNotFoundException e) {
-                                        e.printStackTrace();
-                                    } catch (IllegalAccessException e) {
-                                        e.printStackTrace();
-                                    } catch (InstantiationException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
                                 properties.keySet().forEach(fieldName -> {
                                     try {
                                         Field f = clazz.getDeclaredField(fieldName);
@@ -134,7 +120,12 @@ public class GameMapBuilder {
         tileMap.setWidth_T(tiled_tileMap.getWidth());
         tileMap.setHeight_T(tiled_tileMap.getHeight());
         tiled_tileMap.getLayers().stream().filter(layer -> layer.getType().equals("tilelayer"))
-                .collect(Collectors.toList()).forEach(layer -> tileMap.putLayer(layer.getId(), layer.getData())
+                .collect(Collectors.toList()).forEach(layer -> {
+                    for (int i = 0; i < layer.getData().length; i++) {
+                        layer.getData()[i] = Math.max(0, layer.getData()[i] - 1);
+                    }
+                    tileMap.putLayer(layer.getId(), layer.getData());
+                }
         );
         return tileMap;
     }

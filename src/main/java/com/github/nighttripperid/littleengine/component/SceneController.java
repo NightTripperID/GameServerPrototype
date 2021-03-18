@@ -27,7 +27,7 @@
 package com.github.nighttripperid.littleengine.component;
 
 import com.github.nighttripperid.littleengine.model.Actor;
-import com.github.nighttripperid.littleengine.model.script.SceneTransition;
+import com.github.nighttripperid.littleengine.model.behavior.SceneTransition;
 import com.github.nighttripperid.littleengine.model.scene.Scene;
 import com.github.nighttripperid.littleengine.model.scene.Intent;
 import lombok.Getter;
@@ -36,7 +36,7 @@ import lombok.extern.slf4j.Slf4j;
 import java.util.Stack;
 
 @Slf4j
-public class SceneStackController {
+public class SceneController {
     private final Stack<Scene> sceneStack = new Stack<>();
     @Getter
     private Scene activeScene;
@@ -69,14 +69,13 @@ public class SceneStackController {
             Scene scene = intent.getSceneClass().newInstance();
             scene.setIntent(intent);
             scene.onCreate();
-            scene.getActorData().getActors().forEach(Actor::onCreate);
             scene.getActorData().getActors().forEach(actor -> {
-                if (actor.getInitGfxRoutine() != null) {
-                    actor.getInitGfxRoutine().run(scene.getActorData().getSpriteMaps());
-                }
+                actor.onCreate();
+                if (actor.getGfxInitializer() != null)
+                    actor.getGfxInitializer().init(scene.getActorData().getSpriteMaps());
             });
             scene.getGameMap().getTileset().getDynamicTiles().forEach(tile -> {
-               tile.getInitGfxRoutine().run(scene.getGameMap().getTileset().getSpriteMaps());
+               tile.getGfxInitializer().init(scene.getGameMap().getTileset().getSpriteMaps());
             });
             return scene;
         } catch (InstantiationException | IllegalAccessException e) {

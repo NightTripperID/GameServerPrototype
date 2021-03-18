@@ -30,7 +30,7 @@ import com.github.nighttripperid.littleengine.constant.Font5x5;
 import com.github.nighttripperid.littleengine.constant.Font8x8;
 import com.github.nighttripperid.littleengine.model.physics.PointDouble;
 import com.github.nighttripperid.littleengine.model.physics.Rect;
-import com.github.nighttripperid.littleengine.model.script.RenderTask;
+import com.github.nighttripperid.littleengine.model.behavior.RenderTask;
 import com.github.nighttripperid.littleengine.model.graphics.ScreenBuffer;
 import lombok.Setter;
 
@@ -42,7 +42,7 @@ public class RenderTaskHandler {
     private ScreenBuffer screenBuffer;
 
     public void process(RenderTask renderTask) {
-        renderTask.process(this);
+        renderTask.handle(this);
     }
 
     public void fill(int col) {
@@ -50,7 +50,7 @@ public class RenderTaskHandler {
     }
 
     // source: https://stackoverflow.com/questions/8113629/simplified-bresenhams-line-algorithm-what-does-it-exactly-do
-    public void drawLine(PointDouble start, PointDouble end, int col, ScreenBuffer screenBuffer) {
+    public void drawLine(PointDouble start, PointDouble end, int col) {
         int x1 = (int)(double) start.x;
         int x2 = (int)(double) end.x;
         int y1 = (int)(double) start.y;

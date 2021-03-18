@@ -45,7 +45,10 @@ public class Tileset {
 
     public Tileset(Map<Integer, Tile> tileset, int tileW, int tileH) {
         VOID_TILE = new BasicTile(0, new Sprite(0xffff00ff, tileW, tileH), tileW, tileH);
-        VOID_TILE.getAttributes().add("solid");
+        VOID_TILE.getAttributes().add("solidTopEdge");
+        VOID_TILE.getAttributes().add("solidBottomEdge");
+        VOID_TILE.getAttributes().add("solidLeftEdge");
+        VOID_TILE.getAttributes().add("solidRightEdge");
         this.tileset = tileset;
         this.tileset.values().forEach(tile -> {
             if ((tile instanceof DynamicTile)) {

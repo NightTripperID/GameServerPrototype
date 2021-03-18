@@ -70,22 +70,32 @@ public class CollisionResolver {
                 (int) ((hitBox.pos.y + hitBox.size.y - 1) / gameMap.getTileSize().y));
 
         // get x,y coords of all tiles outside the perimeter. these are the tiles we want to check for collision.
+        // scan only the rows and columns that are relevant to the current velocity vector.
+        // e.g., if velocity.x < 0 and velocity y > 0, then scan only the left column and bottom row
         List<PointDouble> outerPoints = new ArrayList<>();
         // top row of perimeter
-        for (int x = currTile_TL.x - 1; x <= currTile_TR.x + 1; x++)
-            outerPoints.add(new PointDouble((double) x, (double) currTile_TL.y - 1));
+        if (hitBox.vel.y < 0) {
+            for (int x = currTile_TL.x - 1; x <= currTile_TR.x + 1; x++)
+                outerPoints.add(new PointDouble((double) x, (double) currTile_TL.y - 1));
+        }
 
         // bottom row of perimeter
-        for (int x = currTile_TL.x - 1; x <= currTile_TR.x + 1; x++)
-            outerPoints.add(new PointDouble((double) x, (double) currTile_BL.y + 1));
+        if (hitBox.vel.y > 0) {
+            for (int x = currTile_TL.x - 1; x <= currTile_TR.x + 1; x++)
+                outerPoints.add(new PointDouble((double) x, (double) currTile_BL.y + 1));
+        }
 
         // left column of perimeter
-        for (int y = currTile_TL.y - 1; y <= currTile_BL.y + 1; y++)
-            outerPoints.add(new PointDouble((double) currTile_TL.x - 1, (double) y));
+        if (hitBox.vel.x < 0) {
+            for (int y = currTile_TL.y - 1; y <= currTile_BL.y + 1; y++)
+                outerPoints.add(new PointDouble((double) currTile_TL.x - 1, (double) y));
+        }
 
         // right column of perimeter
-        for (int y = currTile_TL.y - 1; y <= currTile_BL.y + 1; y++)
-            outerPoints.add(new PointDouble((double) currTile_TR.x + 1,  (double) y));
+        if (hitBox.vel.x > 0) {
+            for (int y = currTile_TL.y - 1; y <= currTile_BL.y + 1; y++)
+                outerPoints.add(new PointDouble((double) currTile_TR.x + 1, (double) y));
+        }
 
         for (int i = 1; i <= gameMap.getTileMap().getNumLayers(); i++) {
             List<Tile> tiles = new ArrayList<>();
@@ -96,11 +106,15 @@ public class CollisionResolver {
             List<Rect> tileRects = new ArrayList<>();
             for (int k = 0; k < tiles.size(); k++) {
                 Tile tile = tiles.get(k);
-                if (tile != null && tile.getAttributes().contains("solid")) {
-                    Rect r = new Rect();
-                    r.pos = outerPoints.get(k).times(gameMap.getTileSize());
-                    r.size = tiles.get(k).getHitBox().size;
-                    tileRects.add(r);
+                if (tile != null &&
+                    (tile.getAttributes().contains("solidTopEdge") && hitBox.vel.y > 0) ||
+                    (tile.getAttributes().contains("solidBottomEdge") && hitBox.vel.y < 0) ||
+                    (tile.getAttributes().contains("solidLeftEdge") && hitBox.vel.x > 0) ||
+                    (tile.getAttributes().contains("solidRightEdge") && hitBox.vel.x < 0)) {
+                        Rect r = new Rect();
+                        r.pos = outerPoints.get(k).times(gameMap.getTileSize());
+                        r.size = tiles.get(k).getHitBox().size;
+                        tileRects.add(r);
                 }
             }
 

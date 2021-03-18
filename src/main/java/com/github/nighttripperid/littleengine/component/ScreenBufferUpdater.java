@@ -27,7 +27,7 @@
 package com.github.nighttripperid.littleengine.component;
 
 import com.github.nighttripperid.littleengine.model.Actor;
-import com.github.nighttripperid.littleengine.model.script.RenderTask;
+import com.github.nighttripperid.littleengine.model.behavior.RenderTask;
 import com.github.nighttripperid.littleengine.model.scene.GameMap;
 import com.github.nighttripperid.littleengine.model.graphics.ScreenBuffer;
 import com.github.nighttripperid.littleengine.model.graphics.Sprite;
@@ -58,6 +58,7 @@ public class ScreenBufferUpdater {
 
     public void renderTileLayer(GameMap gameMap, int layerId) {
 
+        if (!gameMap.getTileMap().hasLayer(layerId)) return;
         screenBuffer.setScroll(gameMap.getScroll());
 
         int x0 = (int) (double) gameMap.getScroll().x >> gameMap.getTileBitShift();
@@ -69,11 +70,13 @@ public class ScreenBufferUpdater {
 
         for (int y = y0; y < y1; y++) {
             for (int x = x0; x < x1; x++) {
-                if (gameMap.getTileMap().hasLayer(layerId)) {
-                    renderSprite((x << gameMap.getTileBitShift()) - screenBuffer.getScroll().x,
-                            (y << gameMap.getTileBitShift()) - screenBuffer.getScroll().y,
-                            gameMap.getTileMap().getTile(gameMap.getTileset(), layerId, x, y).getSprite());
+                if (gameMap.getTileMap().getTileId(layerId, x, y) == null ||
+                        gameMap.getTileMap().getTileId(layerId, x, y) == 0) {
+                    continue;
                 }
+                renderSprite((x << gameMap.getTileBitShift()) - screenBuffer.getScroll().x,
+                        (y << gameMap.getTileBitShift()) - screenBuffer.getScroll().y,
+                        gameMap.getTileMap().getTile(gameMap.getTileset(), layerId, x, y).getSprite());
             }
         }
     }

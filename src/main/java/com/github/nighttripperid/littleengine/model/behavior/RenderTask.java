@@ -24,20 +24,26 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.github.nighttripperid.littleengine.model.script;
+package com.github.nighttripperid.littleengine.model.behavior;
 
-import com.github.nighttripperid.littleengine.model.scene.GameMap;
+import com.github.nighttripperid.littleengine.component.RenderTaskHandler;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
-import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
-public class BehaviorScript {
-    private final BiConsumer<GameMap, Double> script;
-
-    public BehaviorScript(BiConsumer<GameMap, Double> script) {
-        this.script = script;
+@AllArgsConstructor
+public class RenderTask implements Comparable<RenderTask> {
+    @Getter
+    private final int renderLayer;
+    @Getter
+    private final int renderPriority;
+    private final Consumer<RenderTaskHandler> task;
+    public void handle(RenderTaskHandler handler) {
+        task.accept(handler);
     }
-
-    public void run(GameMap gameMap, Double timeElapsed) {
-        script.accept(gameMap, timeElapsed);
+    @Override
+    public int compareTo(RenderTask renderTask) {
+        return this.renderPriority - renderTask.renderPriority;
     }
 }

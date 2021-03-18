@@ -27,7 +27,7 @@
 package com.github.nighttripperid.littleengine.model;
 
 import com.github.nighttripperid.littleengine.model.physics.Rect;
-import com.github.nighttripperid.littleengine.model.script.*;
+import com.github.nighttripperid.littleengine.model.behavior.*;
 import com.github.nighttripperid.littleengine.model.graphics.AnimationReel;
 import com.github.nighttripperid.littleengine.model.graphics.Sprite;
 import com.github.nighttripperid.littleengine.model.object.DynamicObject;
@@ -43,12 +43,18 @@ public abstract class Actor implements Entity, DynamicObject, Eventable, Compara
     private AnimationReel animationReel = new AnimationReel();
     private Rect hitBox = new Rect();
     private List<RenderTask> renderTasks = new ArrayList<>();
-    private BehaviorScript behaviorScript;
+    private Behavior behavior;
     private Animation animation;
-    private InitGfxRoutine initGfxRoutine;
+    private GfxInitializer gfxInitializer;
     private SceneTransition sceneTransition;
     private CollisionResult collisionResult;
+    private Spawn spawn;
     private int renderPriority;
     private int renderLayer;
     private boolean isRemoved;
+
+    @Override
+    public int compareTo(Actor actor) {
+        return (int)(this.getHitBox().pos.y  - actor.getHitBox().pos.y);
+    }
 }
