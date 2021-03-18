@@ -57,7 +57,7 @@ public class SceneUpdater {
         this.collisionResolver = collisionResolver;
     }
 
-    public void update(double elapsedTime) {
+    public void update(float elapsedTime) {
         addPendingActors();
         Scene activeScene = sceneController.getActiveScene();
         GameMap gameMap = sceneController.getActiveScene().getGameMap();
@@ -128,7 +128,7 @@ public class SceneUpdater {
         }
     }
 
-    private void runBehaviorScript(Actor actor, double timeElapsed) {
+    private void runBehaviorScript(Actor actor, float timeElapsed) {
         // TODO: implement groovy integration for actor updates (maybe)
         if (actor.getBehavior() != null)
             actor.getBehavior().run(sceneController.getActiveScene().getGameMap(), timeElapsed);

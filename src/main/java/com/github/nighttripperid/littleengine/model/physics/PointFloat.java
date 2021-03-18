@@ -26,65 +26,65 @@
  */
 package com.github.nighttripperid.littleengine.model.physics;
 
-public class PointDouble {
+public class PointFloat {
 
-    public Double x;
-    public Double y;
+    public Float x;
+    public Float y;
 
-    public PointDouble(Double x, Double y) {
+    public PointFloat(Float x, Float y) {
         this.x = x;
         this.y = y;
     }
 
-    public PointDouble plus(PointDouble that) {
-        return new PointDouble(this.x + that.x, this.y + that.y);
+    public PointFloat plus(PointFloat that) {
+        return new PointFloat(this.x + that.x, this.y + that.y);
     }
 
-    public PointDouble minus(PointDouble that) {
-        return new PointDouble(this.x - that.x, this.y - that.y);
+    public PointFloat minus(PointFloat that) {
+        return new PointFloat(this.x - that.x, this.y - that.y);
     }
 
-    public PointDouble times(PointDouble that) {
-        return new PointDouble(this.x * that.x, this.y * that.y);
+    public PointFloat times(PointFloat that) {
+        return new PointFloat(this.x * that.x, this.y * that.y);
     }
 
-    public PointDouble div(PointDouble that) {
-        return new PointDouble(this.x / that.x, this.y / that.y);
+    public PointFloat div(PointFloat that) {
+        return new PointFloat(this.x / that.x, this.y / that.y);
     }
 
-    public void set(double x, double y) {
+    public void set(float x, float y) {
         this.x = x;
         this.y = y;
     }
 
-    public void set(PointDouble p) {
+    public void set(PointFloat p) {
         this.x = p.x;
         this.y = p.y;
     }
 
-    public void set(PointDoubleW p) {
+    public void set(PointFloatW p) {
         this.x = p.x.num;
         this.y = p.y.num;
     }
 
-    public PointDoubleW wrap() {
-        return new PointDoubleW(this.x, this.y);
+    public PointFloatW wrap() {
+        return new PointFloatW(this.x, this.y);
     }
 
-    public Double mag() {
-        return Math.sqrt(x * x + y * y);
+    public Float mag() {
+        return (float) Math.sqrt(x * x + y * y);
     }
 
-    public Double mag2() {
+    public Float mag2() {
         return x * x + y * y;
     }
 
-    public PointDouble norm() {
-        double r = 1 / mag();
-        return new PointDouble(x * r, y * r);
+    public PointFloat norm() {
+        float r = 1 / mag();
+        return new PointFloat(x * r, y * r);
     }
 
-    public static PointDouble of(Double num) {
-        return new PointDouble(num, num);
+    public static PointFloat of(Float num) {
+        return new PointFloat(num, num);
     }
 }

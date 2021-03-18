@@ -27,7 +27,7 @@
 package com.github.nighttripperid.littleengine.model.tiles;
 
 import com.github.nighttripperid.littleengine.model.object.BasicObject;
-import com.github.nighttripperid.littleengine.model.physics.PointDouble;
+import com.github.nighttripperid.littleengine.model.physics.PointFloat;
 import com.github.nighttripperid.littleengine.model.physics.Rect;
 import com.github.nighttripperid.littleengine.model.graphics.Sprite;
 import lombok.Data;
@@ -46,7 +46,7 @@ public class BasicTile implements Tile, BasicObject {
     public BasicTile(int id, Sprite sprite, int width, int height) {
         this.id = id;
         this.sprite = sprite;
-        this.hitBox.size = new PointDouble((double) width, (double) height);
+        this.hitBox.size = new PointFloat((float) width, (float) height);
     }
 
     public BasicTile(Tile tile) {

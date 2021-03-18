@@ -55,6 +55,6 @@ public abstract class Actor implements Entity, DynamicObject, Eventable, Compara
 
     @Override
     public int compareTo(Actor actor) {
-        return (int)(this.getHitBox().pos.y  - actor.getHitBox().pos.y);
+        return ((int)(float)this.getHitBox().pos.y  - (int)(float)actor.getHitBox().pos.y);
     }
 }

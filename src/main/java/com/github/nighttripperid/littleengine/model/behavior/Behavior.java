@@ -37,8 +37,8 @@ import java.util.function.BiConsumer;
 @AllArgsConstructor
 public class Behavior {
     @Setter
-    private BiConsumer<GameMap, Double> script;
-    public void run(GameMap gameMap, Double timeElapsed) {
+    private BiConsumer<GameMap, Float> script;
+    public void run(GameMap gameMap, Float timeElapsed) {
         script.accept(gameMap, timeElapsed);
     }
 }

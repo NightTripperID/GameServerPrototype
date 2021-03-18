@@ -37,7 +37,7 @@ public abstract class HashMaps {
 
     private Map<String, Byte> byteExtras;
     private Map<String, Character> characterExtras;
-    private Map<String, Double> doubleExtras;
+    private Map<String, Float> doubleExtras;
     private Map<String, Float> floatExtras;
     private Map<String, Integer> integerExtras;
     private Map<String, Long> longExtras;
@@ -46,7 +46,7 @@ public abstract class HashMaps {
 
     private Map<String, Byte[]> byteArrayExtras;
     private Map<String, Character[]> characterArrayExtras;
-    private Map<String, Double[]> doubleArrayExtras;
+    private Map<String, Float[]> doubleArrayExtras;
     private Map<String, Float[]> floatArrayExtras;
     private Map<String, Integer[]> integerArrayExtras;
     private Map<String, Long[]> longArrayExtras;
@@ -66,16 +66,10 @@ public abstract class HashMaps {
         characterExtras.put(key, value);
     }
 
-    public final void putExtra(String key, double value) {
+    public final void putExtra(String key, float value) {
         if (doubleExtras == null)
             doubleExtras = new HashMap<>();
         doubleExtras.put(key, value);
-    }
-
-    public final void putExtra(String key, float value) {
-        if (floatExtras == null)
-            floatExtras = new HashMap<>();
-        floatExtras.put(key, value);
     }
 
     public final void putExtra(String key, int value) {
@@ -122,13 +116,6 @@ public abstract class HashMaps {
         characterArrayExtras.put(key, result);
     }
 
-    public final void putExtra(String key, double[] value) {
-        if (doubleArrayExtras == null)
-            doubleArrayExtras = new HashMap<>();
-        Double[] result = DoubleStream.of(value).boxed().toArray(Double[]::new);
-        doubleArrayExtras.put(key, result);
-    }
-
     public final void putExtra(String key, float[] value) {
         if (floatArrayExtras == null)
             floatArrayExtras = new HashMap<>();
@@ -173,7 +160,7 @@ public abstract class HashMaps {
         return characterExtras.get(key);
     }
 
-    public final double getDoubleExtra(String key) {
+    public final float getDoubleExtra(String key) {
         return doubleExtras.get(key);
     }
 
@@ -215,10 +202,6 @@ public abstract class HashMaps {
         for (Character c : boxed)
             unboxed[index++] = c;
         return unboxed;
-    }
-
-    public final double[] getDoubleArrayExtra(String key) {
-        return Arrays.stream(doubleArrayExtras.get(key)).mapToDouble(Double::doubleValue).toArray();
     }
 
     public final float[] getFloatArrayExtra(String key) {

@@ -28,7 +28,7 @@ package com.github.nighttripperid.littleengine.component;
 
 import com.github.nighttripperid.littleengine.model.Actor;
 import com.github.nighttripperid.littleengine.model.physics.NumWrap;
-import com.github.nighttripperid.littleengine.model.physics.PointDouble;
+import com.github.nighttripperid.littleengine.model.physics.PointFloat;
 import com.github.nighttripperid.littleengine.model.physics.PointInt;
 import com.github.nighttripperid.littleengine.model.physics.Rect;
 import com.github.nighttripperid.littleengine.model.scene.GameMap;
@@ -55,7 +55,7 @@ public class CollisionResolver {
         });
     }
 
-    public void runTileCollision(Actor actor, GameMap gameMap, double elapsedTime) {
+    public void runTileCollision(Actor actor, GameMap gameMap, float elapsedTime) {
         // broad phase pass
 
         Rect hitBox = actor.getHitBox();
@@ -72,82 +72,70 @@ public class CollisionResolver {
         // get x,y coords of all tiles outside the perimeter. these are the tiles we want to check for collision.
         // scan only the rows and columns that are relevant to the current velocity vector.
         // e.g., if velocity.x < 0 and velocity y > 0, then scan only the left column and bottom row
-        List<PointDouble> outerPoints = new ArrayList<>();
+        List<PointFloat> outerPoints = new ArrayList<>();
         // top row of perimeter
-        if (hitBox.vel.y < 0) {
+        if (hitBox.vel.y < 0.0f) {
             for (int x = currTile_TL.x - 1; x <= currTile_TR.x + 1; x++)
-                outerPoints.add(new PointDouble((double) x, (double) currTile_TL.y - 1));
+                outerPoints.add(new PointFloat((float) x, (float) currTile_TL.y - 1));
         }
 
         // bottom row of perimeter
-        if (hitBox.vel.y > 0) {
+        if (hitBox.vel.y > 0.0f) {
             for (int x = currTile_TL.x - 1; x <= currTile_TR.x + 1; x++)
-                outerPoints.add(new PointDouble((double) x, (double) currTile_BL.y + 1));
+                outerPoints.add(new PointFloat((float) x, (float) currTile_BL.y + 1));
         }
 
         // left column of perimeter
-        if (hitBox.vel.x < 0) {
+        if (hitBox.vel.x < 0.0f) {
             for (int y = currTile_TL.y - 1; y <= currTile_BL.y + 1; y++)
-                outerPoints.add(new PointDouble((double) currTile_TL.x - 1, (double) y));
+                outerPoints.add(new PointFloat((float) currTile_TL.x - 1, (float) y));
         }
 
         // right column of perimeter
-        if (hitBox.vel.x > 0) {
+        if (hitBox.vel.x > 0.0f) {
             for (int y = currTile_TL.y - 1; y <= currTile_BL.y + 1; y++)
-                outerPoints.add(new PointDouble((double) currTile_TR.x + 1, (double) y));
+                outerPoints.add(new PointFloat((float) currTile_TR.x + 1, (float) y));
         }
 
         for (int i = 1; i <= gameMap.getTileMap().getNumLayers(); i++) {
             List<Tile> tiles = new ArrayList<>();
             final int layer = i;
             outerPoints.forEach(outerPoint -> tiles.add(gameMap.getTileMap().getTile(gameMap.getTileset(), layer,
-                    (int) (double) outerPoint.x, (int) (double) outerPoint.y)));
+                    (int) (float) outerPoint.x, (int) (float) outerPoint.y)));
 
             List<Rect> tileRects = new ArrayList<>();
             for (int k = 0; k < tiles.size(); k++) {
                 Tile tile = tiles.get(k);
                 if (tile != null &&
-                    (tile.getAttributes().contains("solidTopEdge") && hitBox.vel.y > 0) ||
-                    (tile.getAttributes().contains("solidBottomEdge") && hitBox.vel.y < 0) ||
-                    (tile.getAttributes().contains("solidLeftEdge") && hitBox.vel.x > 0) ||
-                    (tile.getAttributes().contains("solidRightEdge") && hitBox.vel.x < 0)) {
+                    (tile.getAttributes().contains("solidTopEdge") && hitBox.vel.y > 0.0f) ||
+                    (tile.getAttributes().contains("solidBottomEdge") && hitBox.vel.y < 0.0f) ||
+                    (tile.getAttributes().contains("solidLeftEdge") && hitBox.vel.x > 0.0f) ||
+                    (tile.getAttributes().contains("solidRightEdge") && hitBox.vel.x < 0.0f)) {
                         Rect r = new Rect();
                         r.pos = outerPoints.get(k).times(gameMap.getTileSize());
                         r.size = tiles.get(k).getHitBox().size;
                         tileRects.add(r);
                 }
             }
-
             resolveTileCollision(actor, tileRects, elapsedTime);
         }
 
-        if (actor.getHitBox().vel.x > 0) {
-            actor.getHitBox().pos.x += Math.ceil(actor.getHitBox().vel.x * elapsedTime);
-        }
-        else if (actor.getHitBox().vel.x < 0) {
-            actor.getHitBox().pos.x += Math.floor(actor.getHitBox().vel.x * elapsedTime);
-        }
-
-        if (actor.getHitBox().vel.y > 0) {
-            actor.getHitBox().pos.y += Math.ceil(actor.getHitBox().vel.y * elapsedTime);
-        }
-        else if (actor.getHitBox().vel.y < 0) {
-            actor.getHitBox().pos.y += Math.floor(actor.getHitBox().vel.y * elapsedTime);
-        }
+            actor.getHitBox().pos
+                    .set(actor.getHitBox().pos.plus(actor.getHitBox().vel.times(PointFloat.of(elapsedTime))));
     }
 
-    private void resolveTileCollision(Actor actor, List<Rect> sRects, double elapsedTime) {
+    private void resolveTileCollision(Actor actor, List<Rect> sRects, float elapsedTime) {
         for (int i = 0; i < sRects.size(); i++) {
-            PointDouble cp = PointDouble.of(0.0);
-            PointDouble cn = PointDouble.of(0.0);
-            NumWrap<Double> ct = new NumWrap<>(0.0);
-            List<AbstractMap.SimpleEntry<Integer, Double>> z = new ArrayList<>();
+            PointFloat cp = PointFloat.of(0.0f);
+            PointFloat cn = PointFloat.of(0.0f);
+            NumWrap<Float> ct = new NumWrap<>(0.0f);
+            List<AbstractMap.SimpleEntry<Integer, Float>> z = new ArrayList<>();
 
             if (VectorMath.dynamicRectVsRect(actor.getHitBox(), elapsedTime, sRects.get(i), cp, cn, ct))
                 z.add(new AbstractMap.SimpleEntry<>(i, ct.num));
 
             z = z.stream()
-                    .sorted(Map.Entry.<Integer, Double>comparingByValue().reversed())
+                    .sorted(Map.Entry.<Integer, Float>comparingByValue().reversed())
                     .collect(Collectors.toList());
 
             z.forEach(z1 -> VectorMath.resolveDynamicRectVsRect(actor.getHitBox(), elapsedTime, sRects.get(z1.getKey())));

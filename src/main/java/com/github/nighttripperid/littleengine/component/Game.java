@@ -69,13 +69,13 @@ public final class Game {
         }
     }
 
-    private void update(double elapsedTime) {
+    private void update(float elapsedTime) {
         ioController.updateInput();
         sceneUpdater.update(elapsedTime);
-        sceneUpdater.renderToScreenBuffer();
     }
 
     private void render() {
+        sceneUpdater.renderToScreenBuffer();
         ioController.renderBufferToScreen(sceneUpdater.getScreenBufferUpdater().getScreenBuffer());
     }
 
@@ -83,7 +83,42 @@ public final class Game {
         sceneUpdater.getSceneController().pushScene(intent);
         start();
     }
-    private final Runnable mainLoop = () -> {
+
+
+    static void receiveStopSignal() {
+        stopSignalReceived = true;
+    }
+
+    private final Runnable loop1 = () -> {
+        ioController.requestFocus();
+        long timer = System.currentTimeMillis();
+        int frames = 0;
+        long lastLoopTime = System.nanoTime();
+        ioController.setTitle(title + " | " + frames + " fps");
+        while (running) {
+            if (stopSignalReceived) {
+                stop();
+                return;
+            }
+            long now = System.nanoTime();
+            float delta = (now - lastLoopTime) / 1000000000.0f;
+            lastLoopTime = now;
+
+            update(Math.min(delta, 1.0f/250.0f));
+            render();
+
+            frames++;
+
+            if(System.currentTimeMillis() - timer > 1000) {
+                timer += 1000;
+                ioController.setTitle(title + " | " + frames + " fps");
+                frames = 0;
+            }
+        }
+        stop();
+    };
+
+    private final Runnable loop2 = () -> {
         ioController.requestFocus();
         long timer = System.currentTimeMillis();
         int frames = 0;
@@ -100,7 +135,7 @@ public final class Game {
             long delta = now - lastLoopTime;
             lastLoopTime = now;
 
-            double elapsed = delta / (double) OPTIMAL_TIME;
+            float elapsed = delta / (float) OPTIMAL_TIME;
 
             update(elapsed);
             render();
@@ -116,7 +151,5 @@ public final class Game {
         stop();
     };
 
-    static void receiveStopSignal() {
-        stopSignalReceived = true;
-    }
+    private final Runnable mainLoop = loop1;
 }

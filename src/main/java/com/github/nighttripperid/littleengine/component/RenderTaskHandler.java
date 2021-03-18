@@ -28,7 +28,7 @@ package com.github.nighttripperid.littleengine.component;
 
 import com.github.nighttripperid.littleengine.constant.Font5x5;
 import com.github.nighttripperid.littleengine.constant.Font8x8;
-import com.github.nighttripperid.littleengine.model.physics.PointDouble;
+import com.github.nighttripperid.littleengine.model.physics.PointFloat;
 import com.github.nighttripperid.littleengine.model.physics.Rect;
 import com.github.nighttripperid.littleengine.model.behavior.RenderTask;
 import com.github.nighttripperid.littleengine.model.graphics.ScreenBuffer;
@@ -50,11 +50,11 @@ public class RenderTaskHandler {
     }
 
     // source: https://stackoverflow.com/questions/8113629/simplified-bresenhams-line-algorithm-what-does-it-exactly-do
-    public void drawLine(PointDouble start, PointDouble end, int col) {
-        int x1 = (int)(double) start.x;
-        int x2 = (int)(double) end.x;
-        int y1 = (int)(double) start.y;
-        int y2 = (int)(double) end.y;
+    public void drawLine(PointFloat start, PointFloat end, int col) {
+        int x1 = (int)(float) start.x;
+        int x2 = (int)(float) end.x;
+        int y1 = (int)(float) start.y;
+        int y2 = (int)(float) end.y;
         int dx = Math.abs(x2 - x1);
         int dy = Math.abs(y2 - y1);
 
@@ -81,34 +81,34 @@ public class RenderTaskHandler {
     }
 
     public void drawRect(Rect rect, int col) {
-        for (int y = (int)(double) rect.pos.y; y < (int)(double) rect.pos.y + rect.size.y; y++) {
+        for (int y = (int)(float) rect.pos.y; y < (int)(float) rect.pos.y + rect.size.y; y++) {
             if (y < 0 || y >= screenBuffer.getHeight())
                 continue;
-            for (int x = (int)(double)rect.pos.x; x < (int)(double) rect.pos.x + rect.size.x; x++) {
+            for (int x = (int)(float)rect.pos.x; x < (int)(float) rect.pos.x + rect.size.x; x++) {
                 if (x < 0 || x >= screenBuffer.getWidth())
                     continue;
-                if (x == (int)(double) rect.pos.x || x == (int)(double) rect.pos.x + rect.size.x - 1 ||
-                        y == (int)(double) rect.pos.y || y == (int)(double) rect.pos.y + rect.size.y - 1)
+                if (x == (int)(float) rect.pos.x || x == (int)(float) rect.pos.x + rect.size.x - 1 ||
+                        y == (int)(float) rect.pos.y || y == (int)(float) rect.pos.y + rect.size.y - 1)
                     screenBuffer.getPixels()[x + y * screenBuffer.getWidth()] = col;
             }
         }
     }
 
-    public void drawRect(PointDouble pos, PointDouble size, int col) {
-        for (int y = (int)(double) pos.y; y < (int)(double) pos.y + size.y; y++) {
+    public void drawRect(PointFloat pos, PointFloat size, int col) {
+        for (int y = (int)(float) pos.y; y < (int)(float) pos.y + size.y; y++) {
             if (y < 0 || y >= screenBuffer.getHeight())
                 continue;
-            for (int x = (int)(double)pos.x; x < (int)(double) pos.x + size.x; x++) {
+            for (int x = (int)(float)pos.x; x < (int)(float) pos.x + size.x; x++) {
                 if (x < 0 || x >= screenBuffer.getWidth())
                     continue;
-                if (x == (int)(double) pos.x || x == (int)(double) pos.x + size.x - 1 ||
-                        y == (int)(double) pos.y || y == (int)(double) pos.y + size.y - 1)
+                if (x == (int)(float) pos.x || x == (int)(float) pos.x + size.x - 1 ||
+                        y == (int)(float) pos.y || y == (int)(float) pos.y + size.y - 1)
                     screenBuffer.getPixels()[x + y * screenBuffer.getWidth()] = col;
             }
         }
     }
 
-    public void drawRect(double x, double y, int width, int height, int col) {
+    public void drawRect(float x, float y, int width, int height, int col) {
         for (int yy = (int) y; yy < (int) y + height; yy++) {
             if (yy < 0 || yy >= screenBuffer.getHeight())
                 continue;
@@ -122,10 +122,10 @@ public class RenderTaskHandler {
     }
 
     public void fillRect(Rect rect, int col) {
-        for (int y = (int)(double) rect.pos.y; y < (int)(double) rect.pos.y + rect.size.y; y++) {
+        for (int y = (int)(float) rect.pos.y; y < (int)(float) rect.pos.y + rect.size.y; y++) {
             if (y < 0 || y >= screenBuffer.getHeight())
                 continue;
-            for (int x = (int)(double)rect.pos.x; x < (int)(double) rect.pos.x + rect.size.x; x++) {
+            for (int x = (int)(float)rect.pos.x; x < (int)(float) rect.pos.x + rect.size.x; x++) {
                 if (x < 0 || x >= screenBuffer.getWidth())
                     continue;
                 screenBuffer.getPixels()[x + y * screenBuffer.getWidth()] = col;
@@ -133,11 +133,11 @@ public class RenderTaskHandler {
         }
     }
 
-    public void fillRect(PointDouble pos, PointDouble size, int col) {
-        for (int y = (int)(double) pos.y; y < (int)(double) pos.y + size.y; y++) {
+    public void fillRect(PointFloat pos, PointFloat size, int col) {
+        for (int y = (int)(float) pos.y; y < (int)(float) pos.y + size.y; y++) {
             if (y < 0 || y >= screenBuffer.getHeight())
                 continue;
-            for (int x = (int)(double)pos.x; x < (int)(double) pos.x + size.x; x++) {
+            for (int x = (int)(float)pos.x; x < (int)(float) pos.x + size.x; x++) {
                 if (x < 0 || x >= screenBuffer.getWidth())
                     continue;
                 screenBuffer.getPixels()[x + y * screenBuffer.getWidth()] = col;
@@ -145,7 +145,7 @@ public class RenderTaskHandler {
         }
     }
 
-    public void fillRect(double x, double y, int width, int height, int col) {
+    public void fillRect(float x, float y, int width, int height, int col) {
         for (int yy = (int) y; yy < (int) y + height; yy++) {
             if (yy < 0 || yy >= screenBuffer.getHeight())
                 continue;
@@ -157,26 +157,26 @@ public class RenderTaskHandler {
         }
     }
 
-    private void renderChar8x8(double x, double y, int col, Character[] character) {
+    private void renderChar8x8(float x, float y, int col, Character[] character) {
         for (int yy = 0; yy < 8; yy++)
             for (int xx = 0; xx < 8; xx++)
                 if (character[xx + (yy << 3)] == '#')
                     renderPixel(x + xx, y + yy, col);
     }
 
-    private void renderChar5x5(double x, double y, int col, Character[] character) {
+    private void renderChar5x5(float x, float y, int col, Character[] character) {
         for (int yy = 0; yy < 5; yy++)
             for (int xx = 0; xx < 5; xx++)
                 if (character[xx + yy * 5] == '#')
                     renderPixel(x + xx, y + yy, col);
     }
 
-    public void renderString8x8(double x, double y, int col, String string) {
+    public void renderString8x8(float x, float y, int col, String string) {
         for (int i = 0; i < string.length(); i++)
             renderChar8x8(x + (i << 3), y, col, Font8x8.getChar(string.charAt(i)));
     }
 
-    public void renderString5x5(double x, double y, int col, String string) {
+    public void renderString5x5(float x, float y, int col, String string) {
         for (int i = 0; i < string.length(); i++)
             renderChar5x5(x + (i * 5), y, col, Font5x5.getChar(string.charAt(i)));
     }
@@ -195,7 +195,7 @@ public class RenderTaskHandler {
         screenBuffer.getPixels()[index] = col;
     }
 
-    public void renderPixel(double x, double y, int col) {
+    public void renderPixel(float x, float y, int col) {
         if (x < 0 || x >= screenBuffer.getWidth() || y < 0 || y >= screenBuffer.getHeight())
             return;
 

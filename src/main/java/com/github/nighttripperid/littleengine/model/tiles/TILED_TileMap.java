@@ -77,7 +77,7 @@ public class TILED_TileMap {
         private int width;
         private int height;
         private boolean visible;
-        private double rotation;
+        private float rotation;
         private List<Property> properties;
     }
     @Data

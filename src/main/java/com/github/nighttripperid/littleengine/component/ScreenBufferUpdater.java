@@ -61,11 +61,11 @@ public class ScreenBufferUpdater {
         if (!gameMap.getTileMap().hasLayer(layerId)) return;
         screenBuffer.setScroll(gameMap.getScroll());
 
-        int x0 = (int) (double) gameMap.getScroll().x >> gameMap.getTileBitShift();
-        int x1 = (((int) (double) gameMap.getScroll().x + screenBuffer.getWidth()) + (int) (double) gameMap.getTileSize().x)
+        int x0 = (int) (float) gameMap.getScroll().x >> gameMap.getTileBitShift();
+        int x1 = (((int) (float) gameMap.getScroll().x + screenBuffer.getWidth()) + (int) (float) gameMap.getTileSize().x)
                 >> gameMap.getTileBitShift();
-        int y0 = (int) (double) gameMap.getScroll().y >> gameMap.getTileBitShift();
-        int y1 = (((int) (double) gameMap.getScroll().y + screenBuffer.getHeight()) + (int) (double) gameMap.getTileSize().y)
+        int y0 = (int) (float) gameMap.getScroll().y >> gameMap.getTileBitShift();
+        int y1 = (((int) (float) gameMap.getScroll().y + screenBuffer.getHeight()) + (int) (float) gameMap.getTileSize().y)
                 >> gameMap.getTileBitShift();
 
         for (int y = y0; y < y1; y++) {
@@ -85,7 +85,7 @@ public class ScreenBufferUpdater {
         Arrays.fill(screenBuffer.getPixels(), 0x00008b);
     }
 
-    public void renderSprite(double x, double y, Sprite sprite) {
+    public void renderSprite(float x, float y, Sprite sprite) {
         for (int yy = 0; yy < sprite.height; yy++) {
             if (yy + y < 0 || yy + y >= this.screenBuffer.getHeight())
                 continue;
@@ -99,7 +99,7 @@ public class ScreenBufferUpdater {
         }
     }
 
-    public void renderSprite(double x, double y, int scale, Sprite sprite) {
+    public void renderSprite(float x, float y, int scale, Sprite sprite) {
         for (int yy = 0; yy < sprite.height * scale; yy += scale) {
             for (int xx = 0; xx < sprite.width * scale; xx += scale) {
                 for (int yyy = yy; yyy < yy + scale; yyy++) {

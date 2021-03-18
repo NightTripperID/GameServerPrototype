@@ -30,21 +30,21 @@ import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 public class Rect {
-    public PointDouble pos;
-    public PointDouble size;
-    public PointDouble vel;
+    public PointFloat pos;
+    public PointFloat size;
+    public PointFloat vel;
 
     public Rect[] contact = new Rect[4];
 
     public Rect() {
-        pos = PointDouble.of(0.0d);
-        size = PointDouble.of(0.0d);
-        vel = PointDouble.of(0.0d);
+        pos = PointFloat.of(0.0f);
+        size = PointFloat.of(0.0f);
+        vel = PointFloat.of(0.0f);
     }
 
-    public Rect(PointDouble pos, PointDouble size) {
+    public Rect(PointFloat pos, PointFloat size) {
         this.pos = pos;
         this.size = size;
-        this.vel = PointDouble.of(0.0d);
+        this.vel = PointFloat.of(0.0f);
     }
 }

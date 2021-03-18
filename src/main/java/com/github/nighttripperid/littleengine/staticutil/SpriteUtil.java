@@ -57,7 +57,7 @@ public class SpriteUtil {
         return sprites;
     }
 
-    public static Sprite rotate(Sprite sprite, double angle){
+    public static Sprite rotate(Sprite sprite, float angle){
         return new Sprite(rotate(sprite.pixels, sprite.width, sprite.height, angle), sprite.width, sprite.height);
     }
 
@@ -69,20 +69,20 @@ public class SpriteUtil {
         }
     }
 
-    private static int[] rotate(int[] pixels, int width, int height, double angle) {
+    private static int[] rotate(int[] pixels, int width, int height, float angle) {
         int[] result = new int[width * height];
 
-        double nx_x = rot_x(-angle, 1.0, 0.0);
-        double nx_y = rot_y(-angle, 1.0, 0.0);
-        double ny_x = rot_x(-angle, 0.0, 1.0);
-        double ny_y = rot_y(-angle, 0.0, 1.0);
+        float nx_x = rot_x(-angle, 1.0f, 0.0f);
+        float nx_y = rot_y(-angle, 1.0f, 0.0f);
+        float ny_x = rot_x(-angle, 0.0f, 1.0f);
+        float ny_y = rot_y(-angle, 0.0f, 1.0f);
 
-        double x0 = rot_x(-angle, -width / 2.0, -height / 2.0) + width / 2.0;
-        double y0 = rot_y(-angle, -width / 2.0, -height / 2.0) + height / 2.0;
+        float x0 = rot_x(-angle, -width / 2.0f, -height / 2.0f) + width / 2.0f;
+        float y0 = rot_y(-angle, -width / 2.0f, -height / 2.0f) + height / 2.0f;
 
         for (int y = 0; y < height; y++) {
-            double x1 = x0;
-            double y1 = y0;
+            float x1 = x0;
+            float y1 = y0;
             for (int x = 0; x < width; x++) {
                 int xx = (int) x1;
                 int yy = (int) y1;
@@ -102,15 +102,15 @@ public class SpriteUtil {
         return result;
     }
 
-    private static double rot_x(double angle, double x, double y) {
-        double cos = Math.cos(angle-Math.PI / 2);
-        double sin = Math.sin(angle- Math.PI / 2);
+    private static float rot_x(float angle, float x, float y) {
+        float cos = (float) Math.cos(angle-Math.PI / 2);
+        float sin = (float) Math.sin(angle- Math.PI / 2);
         return x * cos + y * -sin;
     }
 
-    private static double rot_y(double angle, double x, double y) {
-        double cos = Math.cos(angle-Math.PI / 2);
-        double sin = Math.sin(angle-Math.PI / 2);
+    private static float rot_y(float angle, float x, float y) {
+        float cos = (float) Math.cos(angle-Math.PI / 2);
+        float sin = (float) Math.sin(angle-Math.PI / 2);
         return x * sin + y * cos;
     }
 

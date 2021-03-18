@@ -27,8 +27,8 @@
 package com.github.nighttripperid.littleengine.staticutil;
 
 import com.github.nighttripperid.littleengine.model.physics.NumWrap;
-import com.github.nighttripperid.littleengine.model.physics.PointDouble;
-import com.github.nighttripperid.littleengine.model.physics.PointDoubleW;
+import com.github.nighttripperid.littleengine.model.physics.PointFloat;
+import com.github.nighttripperid.littleengine.model.physics.PointFloatW;
 import com.github.nighttripperid.littleengine.model.physics.Rect;
 import lombok.extern.slf4j.Slf4j;
 
@@ -37,25 +37,25 @@ public class VectorMath {
     private VectorMath() {
     }
 
-    boolean pointVsRect(PointDouble p, Rect r) {
+    boolean pointVsRect(PointFloat p, Rect r) {
         return (p.x >= r.pos.x && p.y >= r.pos.y && p.x < r.pos.x + r.size.x && p.y < r.pos.y + r.size.y);
     }
 
-    public static boolean rayVsRect(PointDouble rayOrigin, PointDouble rayDirection, Rect target,
-                                    PointDouble contactPoint, PointDouble contactNormal, NumWrap<Double> tHitNear) {
+    public static boolean rayVsRect(PointFloat rayOrigin, PointFloat rayDirection, Rect target,
+                                    PointFloat contactPoint, PointFloat contactNormal, NumWrap<Float> tHitNear) {
 
-        contactPoint.set(0.0d, 0.0d);
-        contactNormal.set(0.0d, 0.0d);
+        contactPoint.set(0.0f, 0.0f);
+        contactNormal.set(0.0f, 0.0f);
 
         // Cache division
-        PointDouble invDir = new PointDouble(1.0d, 1.0d).div(rayDirection); // inverse direction
+        PointFloat invDir = new PointFloat(1.0f, 1.0f).div(rayDirection); // inverse direction
 
         // Calculate intersections with rectangle bounding axes
-        PointDoubleW tNear = target.pos.minus(rayOrigin).times(invDir).wrap();
-        PointDoubleW tFar = target.pos.plus(target.size).minus(rayOrigin).times(invDir).wrap();
+        PointFloatW tNear = target.pos.minus(rayOrigin).times(invDir).wrap();
+        PointFloatW tFar = target.pos.plus(target.size).minus(rayOrigin).times(invDir).wrap();
 
-        if (Double.isNaN(tFar.y.num) || Double.isNaN(tFar.x.num)) return false;
-        if (Double.isNaN(tNear.y.num) || Double.isNaN(tNear.x.num)) return false;
+        if (Float.isNaN(tFar.y.num) || Float.isNaN(tFar.x.num)) return false;
+        if (Float.isNaN(tNear.y.num) || Float.isNaN(tNear.x.num)) return false;
 
         // Sort distances
         if (tNear.x.num > tFar.x.num) NumWrap.swap(tNear.x, tFar.x);
@@ -68,25 +68,25 @@ public class VectorMath {
         tHitNear.num = Math.max(tNear.x.num, tNear.y.num);
 
         // Furthest 'time' is contact on opposite side of target
-        double tHitFar = Math.min(tFar.x.num, tFar.y.num);
+        float tHitFar = Math.min(tFar.x.num, tFar.y.num);
 
         // Reject if ray direction is pointing away from object
         if (tHitFar < 0) return false;
 
         // Contact point of collision from parametric line equation
         // contact_point = ray_origin + t_hit_near * ray_dir
-        contactPoint.set(rayOrigin.plus(PointDouble.of(tHitNear.num).times(rayDirection)));
+        contactPoint.set(rayOrigin.plus(PointFloat.of(tHitNear.num).times(rayDirection)));
 
         if (tNear.x.num > tNear.y.num)
             if (invDir.x < 0)
-                contactNormal.set(1.0d, 0.0d);
+                contactNormal.set(1.0f, 0.0f);
             else
-                contactNormal.set(-1.0d, 0.0d);
+                contactNormal.set(-1.0f, 0.0f);
         else if (tNear.x.num < tNear.y.num)
             if (invDir.y < 0)
-                contactNormal.set(0.0d, 1.0d);
+                contactNormal.set(0.0f, 1.0f);
             else
-                contactNormal.set(0.0d, -1.0d);
+                contactNormal.set(0.0f, -1.0f);
 
         // Note if t_near == t_far, collision is principally in a diagonal
         // so pointless to resolve. By returning a CN={0,0} even though it's
@@ -102,8 +102,8 @@ public class VectorMath {
                 r1.pos.y + r1.size.y > r2.pos.y);
     }
 
-    public static boolean dynamicRectVsRect(Rect dynamicRect, double timeStep, Rect staticRect, PointDouble contactPoint,
-                                            PointDouble contactNormal, NumWrap<Double> contactTime) {
+    public static boolean dynamicRectVsRect(Rect dynamicRect, float timeStep, Rect staticRect, PointFloat contactPoint,
+                                            PointFloat contactNormal, NumWrap<Float> contactTime) {
 
         // Check if dynamic rectangle is actually moving - we assume rectangles are NOT in collision to start
         if (dynamicRect.vel.x == 0 && dynamicRect.vel.y == 0)
@@ -112,37 +112,37 @@ public class VectorMath {
         // Expand target rectangle by source dimensions
         Rect expandedTarget = new Rect();
         // expandedTarget.pos = staticRect.pos - dynamicRect.size / 2
-        expandedTarget.pos.set(staticRect.pos.minus(dynamicRect.size.div(PointDouble.of(2.0d))));
+        expandedTarget.pos.set(staticRect.pos.minus(dynamicRect.size.div(PointFloat.of(2.0f))));
         // expandedTarget.size = staticRect.size + dynamicRect.size;
         expandedTarget.size.set(staticRect.size.plus(dynamicRect.size));
 
         // if (RayVsRect(r_dynamic->pos + r_dynamic->size / 2, r_dynamic->vel * fTimeStep, &expanded_target, contact_point, contact_normal, contact_time))
         //				return (contact_time >= 0.0f && contact_time < 1.0f);
-        if (rayVsRect(dynamicRect.pos.plus(dynamicRect.size.div(PointDouble.of(2.0d))),
-                dynamicRect.vel.times(PointDouble.of(timeStep)),
+        if (rayVsRect(dynamicRect.pos.plus(dynamicRect.size.div(PointFloat.of(2.0f))),
+                dynamicRect.vel.times(PointFloat.of(timeStep)),
                 expandedTarget, contactPoint,
                 contactNormal, contactTime)) {
-            return(contactTime.num >= 0.0d && contactTime.num < 1.0d);
+            return(contactTime.num >= 0.0f && contactTime.num < 1.0f);
         } else {
             return false;
         }
     }
 
-    public static boolean resolveDynamicRectVsRect(Rect dynamicRect, double timeStep, Rect staticRect) {
-        PointDouble contactPoint = PointDouble.of(0.0d);
-        PointDouble contactNormal = PointDouble.of(0.0d);
-        NumWrap<Double> contactTime = new NumWrap<>(0.0d);
+    public static boolean resolveDynamicRectVsRect(Rect dynamicRect, float timeStep, Rect staticRect) {
+        PointFloat contactPoint = PointFloat.of(0.0f);
+        PointFloat contactNormal = PointFloat.of(0.0f);
+        NumWrap<Float> contactTime = new NumWrap<>(0.0f);
         if(dynamicRectVsRect(dynamicRect, timeStep, staticRect, contactPoint, contactNormal, contactTime)) {
             dynamicRect.contact[0] = (contactNormal.y > 0) ? staticRect : null;
             dynamicRect.contact[1] = (contactNormal.x < 0) ? staticRect : null;
             dynamicRect.contact[2] = (contactNormal.y < 0) ? staticRect : null;
-            dynamicRect.contact[3] = (contactNormal.y < 0) ? staticRect : null;
+            dynamicRect.contact[3] = (contactNormal.x > 0) ? staticRect : null;
 
             dynamicRect.vel.set(
                     dynamicRect.vel.plus(
                             contactNormal
-                                    .times(new PointDouble(Math.abs(dynamicRect.vel.x), Math.abs(dynamicRect.vel.y)))
-                                    .times(PointDouble.of(1.0d).minus(PointDouble.of(contactTime.num)))
+                                    .times(new PointFloat(Math.abs(dynamicRect.vel.x), Math.abs(dynamicRect.vel.y)))
+                                    .times(PointFloat.of(1.0f).minus(PointFloat.of(contactTime.num)))
                     ));
             return true;
         }
