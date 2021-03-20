@@ -104,7 +104,7 @@ public final class Game {
             float delta = (now - lastLoopTime) / 1000000000.0f;
             lastLoopTime = now;
 
-            update(Math.min(delta, 1.0f/250.0f));
+            update(delta);
             render();
 
             frames++;
