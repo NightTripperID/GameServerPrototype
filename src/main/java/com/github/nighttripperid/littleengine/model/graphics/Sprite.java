@@ -26,7 +26,7 @@
  */
 package com.github.nighttripperid.littleengine.model.graphics;
 
-import com.github.nighttripperid.littleengine.model.physics.PointInt;
+import com.github.nighttripperid.littleengine.model.physics.VectorI2D;
 
 public class Sprite {
 
@@ -45,14 +45,14 @@ public class Sprite {
         this.width = width;
         this.height = height;
         pixels = new int[width * height];
-        load(spriteSheet, new PointInt(xOfs * width, yOfs * height));
+        load(spriteSheet, new VectorI2D(xOfs * width, yOfs * height));
     }
 
     public Sprite(SpriteSheet spriteSheet, int size, int xOfs, int yOfs) {
         this.width = size;
         this.height = size;
         pixels = new int[size * size];
-        load(spriteSheet, new PointInt(xOfs * size, yOfs * size));
+        load(spriteSheet, new VectorI2D(xOfs * size, yOfs * size));
     }
 
     public Sprite(int col, int width, int height) {
@@ -62,7 +62,7 @@ public class Sprite {
         setColor(col);
     }
 
-    private void load(SpriteSheet spriteSheet, PointInt offset) {
+    private void load(SpriteSheet spriteSheet, VectorI2D offset) {
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
                 pixels[x + y * width] = spriteSheet.pixelBuffer[(x + offset.x) + (y + offset.y) * spriteSheet.sheetW_P];

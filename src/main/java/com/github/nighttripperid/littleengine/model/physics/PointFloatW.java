@@ -65,7 +65,7 @@ public class PointFloatW {
         this.y.num = y;
     }
 
-    public void set(PointFloat p) {
+    public void set(VectorF2D p) {
         this.x.num = p.x;
         this.y.num = p.y;
     }
@@ -80,15 +80,7 @@ public class PointFloatW {
     }
 
 
-    public PointFloat unwrap() {
-        return new PointFloat(x.num, y.num);
-    }
-
-    @Override
-    public boolean equals(Object p) {
-        if (this == p) return true;
-        if (p == null || getClass() != p.getClass()) return false;
-        PointFloatW that = (PointFloatW) p;
-        return Float.compare(that.x.num, this.x.num) == 0 && Float.compare(that.y.num, this.y.num) == 0;
+    public VectorF2D unwrap() {
+        return new VectorF2D(x.num, y.num);
     }
 }

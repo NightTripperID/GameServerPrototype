@@ -26,7 +26,7 @@
  */
 package com.github.nighttripperid.littleengine.model.graphics;
 
-import com.github.nighttripperid.littleengine.model.physics.PointFloat;
+import com.github.nighttripperid.littleengine.model.physics.VectorF2D;
 import lombok.Data;
 
 @Data
@@ -35,7 +35,7 @@ public class ScreenBuffer {
     private int height;
     private int scale;
     private int[] pixels;
-    private PointFloat scroll = new PointFloat(0.0f, 0.0f);
+    private VectorF2D scroll = new VectorF2D(0.0f, 0.0f);
 
     public ScreenBuffer(int width, int height, int scale) {
         this.width = width;

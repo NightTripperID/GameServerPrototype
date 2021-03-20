@@ -27,7 +27,7 @@
 package com.github.nighttripperid.littleengine.staticutil;
 
 import com.github.nighttripperid.littleengine.model.Actor;
-import com.github.nighttripperid.littleengine.model.physics.PointFloat;
+import com.github.nighttripperid.littleengine.model.physics.VectorF2D;
 import com.github.nighttripperid.littleengine.model.scene.ActorData;
 import com.github.nighttripperid.littleengine.model.tiles.TILED_TileMap;
 import lombok.extern.slf4j.Slf4j;
@@ -52,9 +52,9 @@ public class ActorDataHydrator {
                         try {
                             Class<?> clazz = Class.forName(properties.get("class"));
                             Actor actor = (Actor) clazz.newInstance();
-                            actor.getHitBox().pos = (new PointFloat((float) object.getX(), (float) object.getY()));
-                            actor.getHitBox().size = (
-                                    new PointFloat((float) object.getWidth(),
+                            actor.getPhysBody().pos = (new VectorF2D((float) object.getX(), (float) object.getY()));
+                            actor.getPhysBody().size = (
+                                    new VectorF2D((float) object.getWidth(),
                                                     (float) object.getHeight()));
                             properties.remove("class");
                             properties.keySet().forEach(fieldName -> injectField(actor.getClass(), actor,

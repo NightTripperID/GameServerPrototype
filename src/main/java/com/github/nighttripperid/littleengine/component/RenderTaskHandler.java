@@ -28,7 +28,7 @@ package com.github.nighttripperid.littleengine.component;
 
 import com.github.nighttripperid.littleengine.constant.Font5x5;
 import com.github.nighttripperid.littleengine.constant.Font8x8;
-import com.github.nighttripperid.littleengine.model.physics.PointFloat;
+import com.github.nighttripperid.littleengine.model.physics.VectorF2D;
 import com.github.nighttripperid.littleengine.model.physics.Rect;
 import com.github.nighttripperid.littleengine.model.behavior.RenderTask;
 import com.github.nighttripperid.littleengine.model.graphics.ScreenBuffer;
@@ -50,7 +50,7 @@ public class RenderTaskHandler {
     }
 
     // source: https://stackoverflow.com/questions/8113629/simplified-bresenhams-line-algorithm-what-does-it-exactly-do
-    public void drawLine(PointFloat start, PointFloat end, int col) {
+    public void drawLine(VectorF2D start, VectorF2D end, int col) {
         int x1 = (int)(float) start.x;
         int x2 = (int)(float) end.x;
         int y1 = (int)(float) start.y;
@@ -94,7 +94,7 @@ public class RenderTaskHandler {
         }
     }
 
-    public void drawRect(PointFloat pos, PointFloat size, int col) {
+    public void drawRect(VectorF2D pos, VectorF2D size, int col) {
         for (int y = (int)(float) pos.y; y < (int)(float) pos.y + size.y; y++) {
             if (y < 0 || y >= screenBuffer.getHeight())
                 continue;
@@ -133,7 +133,7 @@ public class RenderTaskHandler {
         }
     }
 
-    public void fillRect(PointFloat pos, PointFloat size, int col) {
+    public void fillRect(VectorF2D pos, VectorF2D size, int col) {
         for (int y = (int)(float) pos.y; y < (int)(float) pos.y + size.y; y++) {
             if (y < 0 || y >= screenBuffer.getHeight())
                 continue;

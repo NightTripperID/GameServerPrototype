@@ -41,7 +41,8 @@ public abstract class Actor implements Entity, DynamicObject, Eventable, Compara
     private String gfxKey;
     private Sprite sprite;
     private AnimationReel animationReel = new AnimationReel();
-    private Rect hitBox = new Rect();
+    private Rect physBody = new Rect();
+    private Rect gfxBody = new Rect();
     private List<RenderTask> renderTasks = new ArrayList<>();
     private Behavior behavior;
     private Animation animation;
@@ -55,6 +56,6 @@ public abstract class Actor implements Entity, DynamicObject, Eventable, Compara
 
     @Override
     public int compareTo(Actor actor) {
-        return ((int)(float)this.getHitBox().pos.y  - (int)(float)actor.getHitBox().pos.y);
+        return ((int)(float)this.getPhysBody().pos.y  - (int)(float)actor.getPhysBody().pos.y);
     }
 }

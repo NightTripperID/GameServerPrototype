@@ -26,30 +26,30 @@
  */
 package com.github.nighttripperid.littleengine.model.physics;
 
-public class PointFloat {
+public class VectorF2D {
 
     public Float x;
     public Float y;
 
-    public PointFloat(Float x, Float y) {
+    public VectorF2D(Float x, Float y) {
         this.x = x;
         this.y = y;
     }
 
-    public PointFloat plus(PointFloat that) {
-        return new PointFloat(this.x + that.x, this.y + that.y);
+    public VectorF2D plus(VectorF2D that) {
+        return new VectorF2D(this.x + that.x, this.y + that.y);
     }
 
-    public PointFloat minus(PointFloat that) {
-        return new PointFloat(this.x - that.x, this.y - that.y);
+    public VectorF2D minus(VectorF2D that) {
+        return new VectorF2D(this.x - that.x, this.y - that.y);
     }
 
-    public PointFloat times(PointFloat that) {
-        return new PointFloat(this.x * that.x, this.y * that.y);
+    public VectorF2D times(VectorF2D that) {
+        return new VectorF2D(this.x * that.x, this.y * that.y);
     }
 
-    public PointFloat div(PointFloat that) {
-        return new PointFloat(this.x / that.x, this.y / that.y);
+    public VectorF2D div(VectorF2D that) {
+        return new VectorF2D(this.x / that.x, this.y / that.y);
     }
 
     public void set(float x, float y) {
@@ -57,7 +57,7 @@ public class PointFloat {
         this.y = y;
     }
 
-    public void set(PointFloat p) {
+    public void set(VectorF2D p) {
         this.x = p.x;
         this.y = p.y;
     }
@@ -79,12 +79,12 @@ public class PointFloat {
         return x * x + y * y;
     }
 
-    public PointFloat norm() {
+    public VectorF2D norm() {
         float r = 1 / mag();
-        return new PointFloat(x * r, y * r);
+        return new VectorF2D(x * r, y * r);
     }
 
-    public static PointFloat of(Float num) {
-        return new PointFloat(num, num);
+    public static VectorF2D of(Float num) {
+        return new VectorF2D(num, num);
     }
 }

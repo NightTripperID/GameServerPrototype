@@ -30,6 +30,6 @@ import com.github.nighttripperid.littleengine.model.physics.Rect;
 import com.github.nighttripperid.littleengine.model.graphics.Sprite;
 
 public interface BasicObject {
-    Rect getHitBox();
+    Rect getPhysBody();
     Sprite getSprite();
 }

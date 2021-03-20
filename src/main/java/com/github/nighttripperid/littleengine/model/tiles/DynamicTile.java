@@ -45,7 +45,7 @@ public class DynamicTile implements Tile, DynamicObject, Eventable {
 
     private int id;
     private Sprite sprite;
-    private Rect hitBox;
+    private Rect physBody;
     private List<String> attributes;
 
     private String gfxKey;
@@ -61,7 +61,7 @@ public class DynamicTile implements Tile, DynamicObject, Eventable {
     private CollisionResult collisionResult;
 
     public DynamicTile(Tile tile) {
-        this.hitBox = tile.getHitBox();
+        this.physBody = tile.getPhysBody();
         this.attributes = tile.getAttributes();
         this.sprite = tile.getSprite();
     }

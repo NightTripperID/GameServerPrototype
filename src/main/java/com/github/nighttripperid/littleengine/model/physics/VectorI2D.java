@@ -26,34 +26,34 @@
  */
 package com.github.nighttripperid.littleengine.model.physics;
 
-public class PointInt {
+public class VectorI2D {
     public Integer x;
     public Integer y;
 
-    public PointInt(){
+    public VectorI2D(){
         x = 0;
         y = 0;
     }
 
-    public PointInt(int x, int y) {
+    public VectorI2D(int x, int y) {
         this();
         this.x = x;
         this.y = y;
     }
 
-    public PointInt plus(PointInt that) {
-        return new PointInt(this.x + that.x, this.y + that.y);
+    public VectorI2D plus(VectorI2D that) {
+        return new VectorI2D(this.x + that.x, this.y + that.y);
     }
 
-    public PointInt minus(PointInt that) {
-        return new PointInt(this.x - that.x, this.y - that.y);
+    public VectorI2D minus(VectorI2D that) {
+        return new VectorI2D(this.x - that.x, this.y - that.y);
     }
 
-    public PointInt times(PointInt that) {
-        return new PointInt(this.x * that.x, this.y * that.y);
+    public VectorI2D times(VectorI2D that) {
+        return new VectorI2D(this.x * that.x, this.y * that.y);
     }
     
-    public PointInt div(PointInt that) {
-        return new PointInt(that.x == 0 ? null : this.x / that.x, that.y == 0 ? null : this.y / that.y);
+    public VectorI2D div(VectorI2D that) {
+        return new VectorI2D(that.x == 0 ? null : this.x / that.x, that.y == 0 ? null : this.y / that.y);
     }
 }

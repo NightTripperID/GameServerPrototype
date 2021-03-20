@@ -64,7 +64,7 @@ public class SceneUpdater {
         activeScene.getActorData().getActors()
         .forEach(actor -> {
             actor.getRenderTasks().clear();
-            runBehaviorScript(actor, elapsedTime);
+            runBehaviorScript(actor);
             runActorAnimation(actor, activeScene.getActorData().getSpriteMaps().getMap(actor.getGfxKey()));
             runSpawn(actor);
             collisionResolver.runActorCollision(actor, activeScene.getActorData().getActors());
@@ -128,10 +128,11 @@ public class SceneUpdater {
         }
     }
 
-    private void runBehaviorScript(Actor actor, float timeElapsed) {
+    private void runBehaviorScript(Actor actor) {
         // TODO: implement groovy integration for actor updates (maybe)
         if (actor.getBehavior() != null)
-            actor.getBehavior().run(sceneController.getActiveScene().getGameMap(), timeElapsed);
+            actor.getBehavior().run(sceneController.getActiveScene().getGameMap(),
+                    sceneController.getActiveScene().getActorData().getActors());
     }
 
     private void runActorAnimation(Actor actor, Map<Integer, Sprite> spriteMap) {
