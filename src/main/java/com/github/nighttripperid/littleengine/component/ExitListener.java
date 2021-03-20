@@ -26,6 +26,7 @@
  */
 package com.github.nighttripperid.littleengine.component;
 
+import com.github.kuusisto.tinysound.TinySound;
 import lombok.extern.slf4j.Slf4j;
 
 import java.awt.event.WindowAdapter;
@@ -46,6 +47,7 @@ public class ExitListener extends WindowAdapter {
     public void windowClosing(final WindowEvent e) {
         Game.receiveStopSignal();
         GamePadManager.deInit();
+        TinySound.shutdown();
         log.info("SHUTTING DOWN GAME ENGINE");
         e.getWindow().dispose();
     }
