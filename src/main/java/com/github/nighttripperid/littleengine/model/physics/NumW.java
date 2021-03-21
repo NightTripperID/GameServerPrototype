@@ -26,42 +26,19 @@
  */
 package com.github.nighttripperid.littleengine.model.physics;
 
-public class PointIntW {
-    public NumWrap<Integer> x;
-    public NumWrap<Integer> y;
+public class NumW<T extends Number> {
+    public T num;
 
-    public PointIntW(){
-        x = new NumWrap<>(0);
-        y = new NumWrap<>(0);
+    public NumW() {
+    }
+    public NumW(T num) {
+        this.num = num;
     }
 
-    public PointIntW(int x, int y) {
-        this();
-        this.x.num = x;
-        this.y.num = y;
-    }
-
-    public PointIntW plus(PointIntW that) {
-        return new PointIntW(this.x.num + that.x.num, this.y.num + that.y.num);
-    }
-
-    public PointIntW minus(PointIntW that) {
-        return new PointIntW(this.x.num - that.x.num, this.y.num - that.y.num);
-    }
-
-    public PointIntW times(PointIntW that) {
-        return new PointIntW(this.x.num * that.x.num, this.y.num * that.y.num);
-    }
-
-    public PointIntW div(PointIntW that) {
-        return new PointIntW(that.x.num == 0 ? null : this.x.num / that.x.num, that.y.num == 0 ? null : this.y.num / that.y.num);
-    }
-
-    @Override
-    public boolean equals(Object p) {
-        if (this == p) return true;
-        if (p == null || getClass() != p.getClass()) return false;
-        PointIntW that = (PointIntW) p;
-        return that.x.num.equals(this.x.num) && that.y.num.equals(this.y.num);
+    public static <T extends Number> void swap(NumW<T> n1, NumW<T> n2) {
+        NumW<T> temp = new NumW<>();
+        temp.num = n1.num;
+        n1.num = n2.num;
+        n2.num = temp.num;
     }
 }

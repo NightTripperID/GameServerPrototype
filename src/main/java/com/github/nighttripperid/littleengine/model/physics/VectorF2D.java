@@ -62,13 +62,13 @@ public class VectorF2D {
         this.y = p.y;
     }
 
-    public void set(PointFloatW p) {
+    public void set(VectorF2DW p) {
         this.x = p.x.num;
         this.y = p.y.num;
     }
 
-    public PointFloatW wrap() {
-        return new PointFloatW(this.x, this.y);
+    public VectorF2DW wrap() {
+        return new VectorF2DW(this.x, this.y);
     }
 
     public Float mag() {

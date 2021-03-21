@@ -26,9 +26,9 @@
  */
 package com.github.nighttripperid.littleengine.staticutil;
 
-import com.github.nighttripperid.littleengine.model.physics.NumWrap;
+import com.github.nighttripperid.littleengine.model.physics.NumW;
 import com.github.nighttripperid.littleengine.model.physics.VectorF2D;
-import com.github.nighttripperid.littleengine.model.physics.PointFloatW;
+import com.github.nighttripperid.littleengine.model.physics.VectorF2DW;
 import com.github.nighttripperid.littleengine.model.physics.Rect;
 import lombok.extern.slf4j.Slf4j;
 
@@ -42,7 +42,7 @@ public class VectorMath {
     }
 
     public static boolean rayVsRect(VectorF2D rayOrigin, VectorF2D rayDirection, Rect target,
-                                    VectorF2D contactPoint, VectorF2D contactNormal, NumWrap<Float> tHitNear) {
+                                    VectorF2D contactPoint, VectorF2D contactNormal, NumW<Float> tHitNear) {
 
         contactPoint.set(0.0f, 0.0f);
         contactNormal.set(0.0f, 0.0f);
@@ -51,15 +51,15 @@ public class VectorMath {
         VectorF2D invDir = new VectorF2D(1.0f, 1.0f).div(rayDirection); // inverse direction
 
         // Calculate intersections with rectangle bounding axes
-        PointFloatW tNear = target.pos.minus(rayOrigin).times(invDir).wrap();
-        PointFloatW tFar = target.pos.plus(target.size).minus(rayOrigin).times(invDir).wrap();
+        VectorF2DW tNear = target.pos.minus(rayOrigin).times(invDir).wrap();
+        VectorF2DW tFar = target.pos.plus(target.size).minus(rayOrigin).times(invDir).wrap();
 
         if (Float.isNaN(tFar.y.num) || Float.isNaN(tFar.x.num)) return false;
         if (Float.isNaN(tNear.y.num) || Float.isNaN(tNear.x.num)) return false;
 
         // Sort distances
-        if (tNear.x.num > tFar.x.num) NumWrap.swap(tNear.x, tFar.x);
-        if (tNear.y.num > tFar.y.num) NumWrap.swap(tNear.y, tFar.y);
+        if (tNear.x.num > tFar.x.num) NumW.swap(tNear.x, tFar.x);
+        if (tNear.y.num > tFar.y.num) NumW.swap(tNear.y, tFar.y);
 
         // Early rejection
         if (tNear.x.num > tFar.y.num || tNear.y.num > tFar.x.num) return false;
@@ -103,7 +103,7 @@ public class VectorMath {
     }
 
     public static boolean dynamicRectVsRect(Rect dynamicRect, float timeStep, Rect staticRect, VectorF2D contactPoint,
-                                            VectorF2D contactNormal, NumWrap<Float> contactTime) {
+                                            VectorF2D contactNormal, NumW<Float> contactTime) {
 
         // Check if dynamic rectangle is actually moving - we assume rectangles are NOT in collision to start
         if (dynamicRect.vel.x == 0 && dynamicRect.vel.y == 0)
@@ -131,7 +131,7 @@ public class VectorMath {
     public static boolean resolveDynamicRectVsRect(Rect dynamicRect, float timeStep, Rect staticRect) {
         VectorF2D contactPoint = VectorF2D.of(0.0f);
         VectorF2D contactNormal = VectorF2D.of(0.0f);
-        NumWrap<Float> contactTime = new NumWrap<>(0.0f);
+        NumW<Float> contactTime = new NumW<>(0.0f);
         if(dynamicRectVsRect(dynamicRect, timeStep, staticRect, contactPoint, contactNormal, contactTime)) {
             dynamicRect.contact[0] = (contactNormal.y > 0) ? staticRect : null;
             dynamicRect.contact[1] = (contactNormal.x < 0) ? staticRect : null;

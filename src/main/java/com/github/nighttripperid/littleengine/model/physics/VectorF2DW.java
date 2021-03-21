@@ -26,19 +26,61 @@
  */
 package com.github.nighttripperid.littleengine.model.physics;
 
-public class NumWrap<T extends Number> {
-    public T num;
+public class VectorF2DW {
 
-    public NumWrap() {
-    }
-    public NumWrap(T num) {
-        this.num = num;
+    public NumW<Float> x;
+    public NumW<Float> y;
+
+    public VectorF2DW(){
+        x = new NumW<>(0.0f);
+        y = new NumW<>(0.0f);
     }
 
-    public static <T extends Number> void swap(NumWrap<T> n1, NumWrap<T> n2) {
-        NumWrap<T> temp = new NumWrap<>();
-        temp.num = n1.num;
-        n1.num = n2.num;
-        n2.num = temp.num;
+    public VectorF2DW(Float x, Float y) {
+        this();
+        if (x == null) this.x = null;
+        else this.x.num = x;
+        if (y == null) this.y = null;
+        else this.y.num = y;
+    }
+
+    public VectorF2DW plus(VectorF2DW that) {
+        return new VectorF2DW(this.x.num + that.x.num, this.y.num + that.y.num);
+    }
+
+    public VectorF2DW minus(VectorF2DW that) {
+        return new VectorF2DW(this.x.num - that.x.num, this.y.num - that.y.num);
+    }
+
+    public VectorF2DW times(VectorF2DW that) {
+        return new VectorF2DW(this.x.num * that.x.num, this.y.num * that.y.num);
+    }
+
+    public VectorF2DW div(VectorF2DW that) {
+        return new VectorF2DW(this.x.num / that.x.num, this.y.num / that.y.num);
+    }
+
+    public void set(Float x, Float y) {
+        this.x.num = x;
+        this.y.num = y;
+    }
+
+    public void set(VectorF2D p) {
+        this.x.num = p.x;
+        this.y.num = p.y;
+    }
+
+    public void set(VectorF2DW p) {
+        this.x.num = p.x.num;
+        this.y.num = p.y.num;
+    }
+
+    public static VectorF2DW of (Float d) {
+        return new VectorF2DW(d, d);
+    }
+
+
+    public VectorF2D unwrap() {
+        return new VectorF2D(x.num, y.num);
     }
 }

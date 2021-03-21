@@ -26,61 +26,42 @@
  */
 package com.github.nighttripperid.littleengine.model.physics;
 
-public class PointFloatW {
+public class VectorI2DW {
+    public NumW<Integer> x;
+    public NumW<Integer> y;
 
-    public NumWrap<Float> x;
-    public NumWrap<Float> y;
-
-    public PointFloatW(){
-        x = new NumWrap<>(0.0f);
-        y = new NumWrap<>(0.0f);
+    public VectorI2DW(){
+        x = new NumW<>(0);
+        y = new NumW<>(0);
     }
 
-    public PointFloatW(Float x, Float y) {
+    public VectorI2DW(int x, int y) {
         this();
-        if (x == null) this.x = null;
-        else this.x.num = x;
-        if (y == null) this.y = null;
-        else this.y.num = y;
-    }
-
-    public PointFloatW plus(PointFloatW that) {
-        return new PointFloatW(this.x.num + that.x.num, this.y.num + that.y.num);
-    }
-
-    public PointFloatW minus(PointFloatW that) {
-        return new PointFloatW(this.x.num - that.x.num, this.y.num - that.y.num);
-    }
-
-    public PointFloatW times(PointFloatW that) {
-        return new PointFloatW(this.x.num * that.x.num, this.y.num * that.y.num);
-    }
-
-    public PointFloatW div(PointFloatW that) {
-        return new PointFloatW(this.x.num / that.x.num, this.y.num / that.y.num);
-    }
-
-    public void set(Float x, Float y) {
         this.x.num = x;
         this.y.num = y;
     }
 
-    public void set(VectorF2D p) {
-        this.x.num = p.x;
-        this.y.num = p.y;
+    public VectorI2DW plus(VectorI2DW that) {
+        return new VectorI2DW(this.x.num + that.x.num, this.y.num + that.y.num);
     }
 
-    public void set(PointFloatW p) {
-        this.x.num = p.x.num;
-        this.y.num = p.y.num;
+    public VectorI2DW minus(VectorI2DW that) {
+        return new VectorI2DW(this.x.num - that.x.num, this.y.num - that.y.num);
     }
 
-    public static PointFloatW of (Float d) {
-        return new PointFloatW(d, d);
+    public VectorI2DW times(VectorI2DW that) {
+        return new VectorI2DW(this.x.num * that.x.num, this.y.num * that.y.num);
     }
 
+    public VectorI2DW div(VectorI2DW that) {
+        return new VectorI2DW(that.x.num == 0 ? null : this.x.num / that.x.num, that.y.num == 0 ? null : this.y.num / that.y.num);
+    }
 
-    public VectorF2D unwrap() {
-        return new VectorF2D(x.num, y.num);
+    @Override
+    public boolean equals(Object p) {
+        if (this == p) return true;
+        if (p == null || getClass() != p.getClass()) return false;
+        VectorI2DW that = (VectorI2DW) p;
+        return that.x.num.equals(this.x.num) && that.y.num.equals(this.y.num);
     }
 }
