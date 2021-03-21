@@ -36,7 +36,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
-public class BasicTile implements Tile, BasicObject {
+public class BasicTile implements Tile {
 
     private int id;
     private List<String> attributes = new ArrayList<>();

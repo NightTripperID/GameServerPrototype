@@ -27,7 +27,7 @@
 package com.github.nighttripperid.littleengine.component;
 
 import com.github.nighttripperid.littleengine.model.Actor;
-import com.github.nighttripperid.littleengine.model.physics.NumWrap;
+import com.github.nighttripperid.littleengine.model.physics.NumW;
 import com.github.nighttripperid.littleengine.model.physics.VectorF2D;
 import com.github.nighttripperid.littleengine.model.physics.VectorI2D;
 import com.github.nighttripperid.littleengine.model.physics.Rect;
@@ -128,7 +128,7 @@ public class CollisionResolver {
         for (int i = 0; i < sRects.size(); i++) {
             VectorF2D cp = VectorF2D.of(0.0f);
             VectorF2D cn = VectorF2D.of(0.0f);
-            NumWrap<Float> ct = new NumWrap<>(0.0f);
+            NumW<Float> ct = new NumW<>(0.0f);
             List<AbstractMap.SimpleEntry<Integer, Float>> z = new ArrayList<>();
 
             if (VectorMath.dynamicRectVsRect(actor.getPhysBody(), elapsedTime, sRects.get(i), cp, cn, ct))
