@@ -56,4 +56,12 @@ public class VectorI2D {
     public VectorI2D div(VectorI2D that) {
         return new VectorI2D(that.x == 0 ? null : this.x / that.x, that.y == 0 ? null : this.y / that.y);
     }
+
+    public VectorI2DW wrap() {
+        return new VectorI2DW(this.x, this.y);
+    }
+
+    public static VectorI2D of(Integer num) {
+        return new VectorI2D(num, num);
+    }
 }
