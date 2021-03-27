@@ -75,7 +75,7 @@ public class DynamicTile implements Tile, DynamicObject, Eventable {
 
     private GfxInitializer initGfx() {
         return new GfxInitializer(spriteMaps -> {
-            SpriteLoader.loadSpritesByColumns(this.gfxKey, this.sprite.width, this.sprite.height, spriteMaps);
+            SpriteLoader.loadSpritesByColumns(this.gfxKey, this.sprite.size.x, this.sprite.size.y, spriteMaps);
             this.sprite = spriteMaps.getMap(this.gfxKey).get(this.animationReel.frame);
         });
     }

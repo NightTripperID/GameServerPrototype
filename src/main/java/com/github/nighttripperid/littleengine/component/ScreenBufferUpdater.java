@@ -86,31 +86,31 @@ public class ScreenBufferUpdater {
     }
 
     public void renderSprite(float x, float y, Sprite sprite) {
-        for (int yy = 0; yy < sprite.height; yy++) {
+        for (int yy = 0; yy < sprite.size.y; yy++) {
             if (yy + y < 0 || yy + y >= this.screenBuffer.getHeight())
                 continue;
-            for (int xx = 0; xx < sprite.width; xx++) {
+            for (int xx = 0; xx < sprite.size.x; xx++) {
                 if (xx + x < 0 || xx + x >= this.screenBuffer.getWidth())
                     continue;
-                if (sprite.pixels[xx + yy * sprite.width] != 0xffff00ff)
+                if (sprite.pixels[xx + yy * sprite.size.x] != 0xffff00ff)
                     screenBuffer.getPixels()[xx + (int) x + (yy + (int) y) * screenBuffer.getWidth()]
-                            = sprite.pixels[xx + yy * sprite.width];
+                            = sprite.pixels[xx + yy * sprite.size.x];
             }
         }
     }
 
     public void renderSprite(float x, float y, int scale, Sprite sprite) {
-        for (int yy = 0; yy < sprite.height * scale; yy += scale) {
-            for (int xx = 0; xx < sprite.width * scale; xx += scale) {
+        for (int yy = 0; yy < sprite.size.y * scale; yy += scale) {
+            for (int xx = 0; xx < sprite.size.x * scale; xx += scale) {
                 for (int yyy = yy; yyy < yy + scale; yyy++) {
                     if (yyy + y < 0 || yyy + y >= screenBuffer.getHeight())
                         continue;
                     for (int xxx = xx; xxx < xx + scale; xxx++) {
                         if (xxx + x < 0 || xxx + x >= screenBuffer.getWidth())
                             continue;
-                        if (sprite.pixels[(xx / scale) + (yy / scale) * sprite.width] != 0xffff00ff)
+                        if (sprite.pixels[(xx / scale) + (yy / scale) * sprite.size.x] != 0xffff00ff)
                             screenBuffer.getPixels()[xxx + (int) x + (yyy + (int) y) * screenBuffer.getWidth()]
-                                    = sprite.pixels[(xx / scale) + (yy / scale) * sprite.width];
+                                    = sprite.pixels[(xx / scale) + (yy / scale) * sprite.size.x];
                     }
                 }
             }

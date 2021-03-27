@@ -58,7 +58,7 @@ public class SpriteUtil {
     }
 
     public static Sprite rotate(Sprite sprite, float angle){
-        return new Sprite(rotate(sprite.pixels, sprite.width, sprite.height, angle), sprite.width, sprite.height);
+        return new Sprite(rotate(sprite.pixels, sprite.size.x, sprite.size.y, angle), sprite.size.x, sprite.size.y);
     }
 
     public static void updateAnimReel(AnimationReel animationReel) {
