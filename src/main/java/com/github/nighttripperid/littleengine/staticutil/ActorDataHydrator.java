@@ -52,8 +52,8 @@ public class ActorDataHydrator {
                         try {
                             Class<?> clazz = Class.forName(properties.get("class"));
                             Actor actor = (Actor) clazz.newInstance();
-                            actor.getPhysBody().pos = (new VectorF2D((float) object.getX(), (float) object.getY()));
-                            actor.getPhysBody().size = (
+                            actor.getCollisionBody().pos = (new VectorF2D((float) object.getX(), (float) object.getY()));
+                            actor.getCollisionBody().size = (
                                     new VectorF2D((float) object.getWidth(),
                                                     (float) object.getHeight()));
                             properties.remove("class");

@@ -26,11 +26,14 @@
  */
 package com.github.nighttripperid.littleengine.model.tiles;
 
-import com.github.nighttripperid.littleengine.model.object.BasicObject;
+import com.github.nighttripperid.littleengine.model.graphics.Sprite;
+import com.github.nighttripperid.littleengine.model.physics.Rect;
 
 import java.util.List;
 
-public interface Tile extends BasicObject {
+public interface Tile {
     int getId();
+    Sprite getSprite();
+    Rect getArea();
     List<String> getAttributes();
 }

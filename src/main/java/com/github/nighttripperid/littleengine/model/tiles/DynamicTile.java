@@ -27,8 +27,7 @@
 package com.github.nighttripperid.littleengine.model.tiles;
 
 import com.github.nighttripperid.littleengine.model.Eventable;
-import com.github.nighttripperid.littleengine.model.object.DynamicObject;
-import com.github.nighttripperid.littleengine.model.physics.Rect;
+import com.github.nighttripperid.littleengine.model.physics.CollisionBody;
 import com.github.nighttripperid.littleengine.model.behavior.*;
 import com.github.nighttripperid.littleengine.model.graphics.AnimationReel;
 import com.github.nighttripperid.littleengine.model.graphics.Sprite;
@@ -41,11 +40,11 @@ import java.util.List;
 
 @Getter
 @Setter
-public class DynamicTile implements Tile, DynamicObject, Eventable {
+public class DynamicTile implements Tile, Eventable {
 
     private int id;
     private Sprite sprite;
-    private Rect physBody;
+    private CollisionBody area;
     private List<String> attributes;
 
     private String gfxKey;
@@ -59,9 +58,10 @@ public class DynamicTile implements Tile, DynamicObject, Eventable {
     private GfxInitializer gfxInitializer;
     private SceneTransition sceneTransition;
     private CollisionResult collisionResult;
+    private Spawn spawn;
 
     public DynamicTile(Tile tile) {
-        this.physBody = tile.getPhysBody();
+        this.area = new CollisionBody(tile.getArea());
         this.attributes = tile.getAttributes();
         this.sprite = tile.getSprite();
     }

@@ -50,8 +50,8 @@ public class ScreenBufferUpdater {
         actors.sort(Actor::compareTo);
         actors.forEach(actor -> {
             if(actor.getSprite() != null ) {
-                renderSprite(actor.getPhysBody().pos.x - gameMap.getScroll().x,
-                        actor.getPhysBody().pos.y - gameMap.getScroll().y, actor.getSprite());
+                renderSprite(actor.getCollisionBody().pos.x - gameMap.getScroll().x,
+                        actor.getCollisionBody().pos.y - gameMap.getScroll().y, actor.getSprite());
             }
         });
     }

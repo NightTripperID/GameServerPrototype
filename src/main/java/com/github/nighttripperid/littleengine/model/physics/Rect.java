@@ -26,25 +26,18 @@
  */
 package com.github.nighttripperid.littleengine.model.physics;
 
-import lombok.AllArgsConstructor;
 
-@AllArgsConstructor
 public class Rect {
     public VectorF2D pos;
     public VectorF2D size;
-    public VectorF2D vel;
-
-    public Rect[] contact = new Rect[4];
 
     public Rect() {
         pos = VectorF2D.of(0.0f);
         size = VectorF2D.of(0.0f);
-        vel = VectorF2D.of(0.0f);
     }
 
     public Rect(VectorF2D pos, VectorF2D size) {
         this.pos = pos;
         this.size = size;
-        this.vel = VectorF2D.of(0.0f);
     }
 }

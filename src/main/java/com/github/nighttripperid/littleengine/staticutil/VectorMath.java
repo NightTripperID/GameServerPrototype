@@ -26,10 +26,7 @@
  */
 package com.github.nighttripperid.littleengine.staticutil;
 
-import com.github.nighttripperid.littleengine.model.physics.NumW;
-import com.github.nighttripperid.littleengine.model.physics.VectorF2D;
-import com.github.nighttripperid.littleengine.model.physics.VectorF2DW;
-import com.github.nighttripperid.littleengine.model.physics.Rect;
+import com.github.nighttripperid.littleengine.model.physics.*;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -102,24 +99,24 @@ public class VectorMath {
                 r1.pos.y + r1.size.y > r2.pos.y);
     }
 
-    public static boolean dynamicRectVsRect(Rect dynamicRect, float timeStep, Rect staticRect, VectorF2D contactPoint,
-                                            VectorF2D contactNormal, NumW<Float> contactTime) {
+    public static boolean collisionBodyVsRect(CollisionBody collisionBody, float timeStep, Rect staticRect, VectorF2D contactPoint,
+                                              VectorF2D contactNormal, NumW<Float> contactTime) {
 
         // Check if dynamic rectangle is actually moving - we assume rectangles are NOT in collision to start
-        if (dynamicRect.vel.x == 0 && dynamicRect.vel.y == 0)
+        if (collisionBody.vel.x == 0 && collisionBody.vel.y == 0)
             return false;
 
         // Expand target rectangle by source dimensions
         Rect expandedTarget = new Rect();
         // expandedTarget.pos = staticRect.pos - dynamicRect.size / 2
-        expandedTarget.pos.set(staticRect.pos.minus(dynamicRect.size.div(VectorF2D.of(2.0f))));
+        expandedTarget.pos.set(staticRect.pos.minus(collisionBody.size.div(VectorF2D.of(2.0f))));
         // expandedTarget.size = staticRect.size + dynamicRect.size;
-        expandedTarget.size.set(staticRect.size.plus(dynamicRect.size));
+        expandedTarget.size.set(staticRect.size.plus(collisionBody.size));
 
         // if (RayVsRect(r_dynamic->pos + r_dynamic->size / 2, r_dynamic->vel * fTimeStep, &expanded_target, contact_point, contact_normal, contact_time))
         //				return (contact_time >= 0.0f && contact_time < 1.0f);
-        if (rayVsRect(dynamicRect.pos.plus(dynamicRect.size.div(VectorF2D.of(2.0f))),
-                dynamicRect.vel.times(VectorF2D.of(timeStep)),
+        if (rayVsRect(collisionBody.pos.plus(collisionBody.size.div(VectorF2D.of(2.0f))),
+                collisionBody.vel.times(VectorF2D.of(timeStep)),
                 expandedTarget, contactPoint,
                 contactNormal, contactTime)) {
             return(contactTime.num >= 0.0f && contactTime.num < 1.0f);
@@ -128,20 +125,20 @@ public class VectorMath {
         }
     }
 
-    public static boolean resolveDynamicRectVsRect(Rect dynamicRect, float timeStep, Rect staticRect) {
+    public static boolean resolveDynamicRectVsRect(CollisionBody collisionBody, float timeStep, Rect staticRect) {
         VectorF2D contactPoint = VectorF2D.of(0.0f);
         VectorF2D contactNormal = VectorF2D.of(0.0f);
         NumW<Float> contactTime = new NumW<>(0.0f);
-        if(dynamicRectVsRect(dynamicRect, timeStep, staticRect, contactPoint, contactNormal, contactTime)) {
-            dynamicRect.contact[0] = (contactNormal.y > 0) ? staticRect : null;
-            dynamicRect.contact[1] = (contactNormal.x < 0) ? staticRect : null;
-            dynamicRect.contact[2] = (contactNormal.y < 0) ? staticRect : null;
-            dynamicRect.contact[3] = (contactNormal.x > 0) ? staticRect : null;
+        if(collisionBodyVsRect(collisionBody, timeStep, staticRect, contactPoint, contactNormal, contactTime)) {
+            collisionBody.contacts[0] = (contactNormal.y > 0) ? staticRect : null;
+            collisionBody.contacts[1] = (contactNormal.x < 0) ? staticRect : null;
+            collisionBody.contacts[2] = (contactNormal.y < 0) ? staticRect : null;
+            collisionBody.contacts[3] = (contactNormal.x > 0) ? staticRect : null;
 
-            dynamicRect.vel.set(
-                    dynamicRect.vel.plus(
+            collisionBody.vel.set(
+                    collisionBody.vel.plus(
                             contactNormal
-                                    .times(new VectorF2D(Math.abs(dynamicRect.vel.x), Math.abs(dynamicRect.vel.y)))
+                                    .times(new VectorF2D(Math.abs(collisionBody.vel.x), Math.abs(collisionBody.vel.y)))
                                     .times(VectorF2D.of(1.0f).minus(VectorF2D.of(contactTime.num)))
                     ));
             return true;

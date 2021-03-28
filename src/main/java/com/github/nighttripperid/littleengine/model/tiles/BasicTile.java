@@ -26,7 +26,6 @@
  */
 package com.github.nighttripperid.littleengine.model.tiles;
 
-import com.github.nighttripperid.littleengine.model.object.BasicObject;
 import com.github.nighttripperid.littleengine.model.physics.VectorF2D;
 import com.github.nighttripperid.littleengine.model.physics.Rect;
 import com.github.nighttripperid.littleengine.model.graphics.Sprite;
@@ -40,19 +39,19 @@ public class BasicTile implements Tile {
 
     private int id;
     private List<String> attributes = new ArrayList<>();
-    private Rect physBody = new Rect();
+    private Rect area = new Rect();
     private Sprite sprite;
 
     public BasicTile(int id, Sprite sprite, int width, int height) {
         this.id = id;
         this.sprite = sprite;
-        this.physBody.size = new VectorF2D((float) width, (float) height);
+        this.area.size = new VectorF2D((float) width, (float) height);
     }
 
     public BasicTile(Tile tile) {
         this.id = tile.getId();
         this.sprite = tile.getSprite();
-        this.physBody = tile.getPhysBody();
+        this.area = tile.getArea();
         this.attributes = tile.getAttributes();
     }
 }
