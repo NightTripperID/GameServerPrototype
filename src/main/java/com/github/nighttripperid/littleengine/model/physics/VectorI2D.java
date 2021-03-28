@@ -26,42 +26,42 @@
  */
 package com.github.nighttripperid.littleengine.model.physics;
 
-public class PointIntW {
-    public NumWrap<Integer> x;
-    public NumWrap<Integer> y;
+public class VectorI2D {
+    public Integer x;
+    public Integer y;
 
-    public PointIntW(){
-        x = new NumWrap<>(0);
-        y = new NumWrap<>(0);
+    public VectorI2D(){
+        x = 0;
+        y = 0;
     }
 
-    public PointIntW(int x, int y) {
+    public VectorI2D(int x, int y) {
         this();
-        this.x.num = x;
-        this.y.num = y;
+        this.x = x;
+        this.y = y;
     }
 
-    public PointIntW plus(PointIntW that) {
-        return new PointIntW(this.x.num + that.x.num, this.y.num + that.y.num);
+    public VectorI2D plus(VectorI2D that) {
+        return new VectorI2D(this.x + that.x, this.y + that.y);
     }
 
-    public PointIntW minus(PointIntW that) {
-        return new PointIntW(this.x.num - that.x.num, this.y.num - that.y.num);
+    public VectorI2D minus(VectorI2D that) {
+        return new VectorI2D(this.x - that.x, this.y - that.y);
     }
 
-    public PointIntW times(PointIntW that) {
-        return new PointIntW(this.x.num * that.x.num, this.y.num * that.y.num);
+    public VectorI2D times(VectorI2D that) {
+        return new VectorI2D(this.x * that.x, this.y * that.y);
+    }
+    
+    public VectorI2D div(VectorI2D that) {
+        return new VectorI2D(that.x == 0 ? null : this.x / that.x, that.y == 0 ? null : this.y / that.y);
     }
 
-    public PointIntW div(PointIntW that) {
-        return new PointIntW(that.x.num == 0 ? null : this.x.num / that.x.num, that.y.num == 0 ? null : this.y.num / that.y.num);
+    public VectorI2DW wrap() {
+        return new VectorI2DW(this.x, this.y);
     }
 
-    @Override
-    public boolean equals(Object p) {
-        if (this == p) return true;
-        if (p == null || getClass() != p.getClass()) return false;
-        PointIntW that = (PointIntW) p;
-        return that.x.num.equals(this.x.num) && that.y.num.equals(this.y.num);
+    public static VectorI2D of(Integer num) {
+        return new VectorI2D(num, num);
     }
 }

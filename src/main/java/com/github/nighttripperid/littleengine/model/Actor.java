@@ -26,22 +26,21 @@
  */
 package com.github.nighttripperid.littleengine.model;
 
-import com.github.nighttripperid.littleengine.model.physics.Rect;
 import com.github.nighttripperid.littleengine.model.behavior.*;
 import com.github.nighttripperid.littleengine.model.graphics.AnimationReel;
-import com.github.nighttripperid.littleengine.model.graphics.Sprite;
-import com.github.nighttripperid.littleengine.model.object.DynamicObject;
+import com.github.nighttripperid.littleengine.model.graphics.GfxBody;
+import com.github.nighttripperid.littleengine.model.physics.CollisionBody;
 import lombok.Data;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Data
-public abstract class Actor implements Entity, DynamicObject, Eventable, Comparable<Actor> {
+public abstract class Actor implements Entity, Eventable, Comparable<Actor> {
     private String gfxKey;
-    private Sprite sprite;
+    private GfxBody gfxBody = new GfxBody();
     private AnimationReel animationReel = new AnimationReel();
-    private Rect hitBox = new Rect();
+    private CollisionBody collisionBody = new CollisionBody();
     private List<RenderTask> renderTasks = new ArrayList<>();
     private Behavior behavior;
     private Animation animation;
@@ -55,6 +54,6 @@ public abstract class Actor implements Entity, DynamicObject, Eventable, Compara
 
     @Override
     public int compareTo(Actor actor) {
-        return (int)(this.getHitBox().pos.y  - actor.getHitBox().pos.y);
+        return ((int)(float)this.getGfxBody().pos.y  - (int)(float)actor.getGfxBody().pos.y);
     }
 }

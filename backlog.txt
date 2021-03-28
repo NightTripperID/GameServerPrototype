@@ -9,3 +9,12 @@ feature backlog
 tech debt backlog
 	Write javadocs
 	data encapsulation audit
+
+
+problems
+    Actors are not aware of each other, which makes finding other actors hard
+    Behaviors are not generic, resulting in a cluttered behavior interface api
+
+things to consider
+    Node based structure for game objects
+    Merging Scene and Actor into one object

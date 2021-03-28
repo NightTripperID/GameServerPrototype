@@ -27,7 +27,7 @@
 package com.github.nighttripperid.littleengine.staticutil;
 
 import com.github.nighttripperid.littleengine.model.Actor;
-import com.github.nighttripperid.littleengine.model.physics.PointDouble;
+import com.github.nighttripperid.littleengine.model.physics.VectorF2D;
 import com.github.nighttripperid.littleengine.model.scene.ActorData;
 import com.github.nighttripperid.littleengine.model.tiles.TILED_TileMap;
 import lombok.extern.slf4j.Slf4j;
@@ -39,7 +39,8 @@ import java.util.stream.Collectors;
 
 @Slf4j
 public class ActorDataHydrator {
-
+    private ActorDataHydrator() {
+    }
     public static ActorData hydrate(TILED_TileMap tiled_tileMap) {
         ActorData actorData = new ActorData();
         tiled_tileMap.getLayers().stream().filter(layer -> layer.getType().equals("objectgroup"))
@@ -52,10 +53,14 @@ public class ActorDataHydrator {
                         try {
                             Class<?> clazz = Class.forName(properties.get("class"));
                             Actor actor = (Actor) clazz.newInstance();
-                            actor.getHitBox().pos = (new PointDouble((double) object.getX(), (double) object.getY()));
-                            actor.getHitBox().size = (
-                                    new PointDouble((double) object.getWidth(),
-                                                    (double) object.getHeight()));
+                            actor.getCollisionBody().pos = (new VectorF2D((float) object.getX(), (float) object.getY()));
+                            actor.getCollisionBody().size = (
+                                    new VectorF2D((float) object.getWidth(),
+                                                    (float) object.getHeight()));
+                            actor.getGfxBody().pos = (new VectorF2D((float) object.getX(), (float) object.getY()));
+                            actor.getGfxBody().size = (
+                                    new VectorF2D((float) object.getWidth(),
+                                            (float) object.getHeight()));
                             properties.remove("class");
                             properties.keySet().forEach(fieldName -> injectField(actor.getClass(), actor,
                                     fieldName, properties.get(fieldName))
@@ -78,6 +83,7 @@ public class ActorDataHydrator {
         return actorData;
     }
 
+    // TODO: implement complex object injection capabilities
     private static void injectField(Class<?> clazz, Actor actor, String fieldName, Object value) {
         while (clazz != Object.class) {
             try {

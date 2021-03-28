@@ -29,22 +29,22 @@ package com.github.nighttripperid.littleengine.staticutil;
 public class TimeConverter {
     private TimeConverter() {
     }
-    public static double secondsToFrames(double seconds) {
+    public static float secondsToFrames(float seconds) {
         return seconds * 60;
     }
-    public static double minutesToFrames(double minutes) {
+    public static float minutesToFrames(float minutes) {
         return minutes * 3600;
     }
-    public static double hoursToFrames(double hours) {
+    public static float hoursToFrames(float hours) {
         return hours * 216000;
     }
-    public static double framesToSeconds(int frames) {
-        return frames / 60.0d;
+    public static float framesToSeconds(int frames) {
+        return frames / 60.0f;
     }
-    public static double framesToMinutes(int frames) {
-        return frames / 3600.0d;
+    public static float framesToMinutes(int frames) {
+        return frames / 3600.0f;
     }
-    public static double framesToHours(int frames) {
-        return frames /216000.0d;
+    public static float framesToHours(int frames) {
+        return frames /216000.0f;
     }
 }

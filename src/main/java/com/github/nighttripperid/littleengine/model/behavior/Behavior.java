@@ -26,19 +26,21 @@
  */
 package com.github.nighttripperid.littleengine.model.behavior;
 
+import com.github.nighttripperid.littleengine.model.Actor;
 import com.github.nighttripperid.littleengine.model.scene.GameMap;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
 import java.util.function.BiConsumer;
 
 @NoArgsConstructor
 @AllArgsConstructor
 public class Behavior {
     @Setter
-    private BiConsumer<GameMap, Double> script;
-    public void run(GameMap gameMap, Double timeElapsed) {
-        script.accept(gameMap, timeElapsed);
+    private BiConsumer<GameMap, List<Actor>> script;
+    public void run(GameMap gameMap, List<Actor> actors) {
+        script.accept(gameMap, actors);
     }
 }

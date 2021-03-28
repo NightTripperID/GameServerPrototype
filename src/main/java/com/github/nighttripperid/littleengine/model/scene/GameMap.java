@@ -26,7 +26,7 @@
  */
 package com.github.nighttripperid.littleengine.model.scene;
 
-import com.github.nighttripperid.littleengine.model.physics.PointDouble;
+import com.github.nighttripperid.littleengine.model.physics.VectorF2D;
 import com.github.nighttripperid.littleengine.model.tiles.TILED_TileMap;
 import com.github.nighttripperid.littleengine.model.tiles.TileMap;
 import com.github.nighttripperid.littleengine.model.tiles.Tileset;
@@ -35,8 +35,8 @@ import lombok.Data;
 @Data
 public class GameMap {
 
-    private PointDouble scroll = PointDouble.of(0.0);
-    private PointDouble tileSize;
+    private VectorF2D scroll = VectorF2D.of(0.0f);
+    private VectorF2D tileSize;
 
     private int tileBitShift;
 
@@ -45,12 +45,12 @@ public class GameMap {
 
     private TILED_TileMap tiled_TileMap;
 
-    public void setScroll(PointDouble scroll) {
-        this.scroll.x = (scroll.x > 0) ? Math.ceil(scroll.x) : Math.floor(scroll.x);
-        this.scroll.y = (scroll.y > 0) ? Math.ceil(scroll.y) : Math.floor(scroll.y);
+    public void setScroll(VectorF2D scroll) {
+        this.scroll.x = (scroll.x > 0.0f) ? (float) Math.ceil(scroll.x) : (float) Math.floor(scroll.x);
+        this.scroll.y = (scroll.y > 0.0f) ? (float) Math.ceil(scroll.y) : (float) Math.floor(scroll.y);
     }
 
-    public PointDouble getScroll() {
-        return new PointDouble(scroll.x, scroll.y);
+    public VectorF2D getScroll() {
+        return new VectorF2D(scroll.x, scroll.y);
     }
 }

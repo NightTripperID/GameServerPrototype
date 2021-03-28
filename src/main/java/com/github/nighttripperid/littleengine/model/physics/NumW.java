@@ -24,20 +24,21 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.github.nighttripperid.littleengine.model.object;
+package com.github.nighttripperid.littleengine.model.physics;
 
-import com.github.nighttripperid.littleengine.model.behavior.*;
-import com.github.nighttripperid.littleengine.model.graphics.AnimationReel;
+public class NumW<T extends Number> {
+    public T num;
 
-import java.util.List;
+    public NumW() {
+    }
+    public NumW(T num) {
+        this.num = num;
+    }
 
-public interface DynamicObject extends BasicObject {
-    String getGfxKey();
-    AnimationReel getAnimationReel();
-    List<RenderTask> getRenderTasks();
-    Behavior getBehavior();
-    Animation getAnimation();
-    GfxInitializer getGfxInitializer();
-    SceneTransition getSceneTransition();
-    CollisionResult getCollisionResult();
+    public static <T extends Number> void swap(NumW<T> n1, NumW<T> n2) {
+        NumW<T> temp = new NumW<>();
+        temp.num = n1.num;
+        n1.num = n2.num;
+        n2.num = temp.num;
+    }
 }

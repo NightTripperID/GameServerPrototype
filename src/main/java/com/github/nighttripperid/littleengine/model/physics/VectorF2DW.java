@@ -26,34 +26,61 @@
  */
 package com.github.nighttripperid.littleengine.model.physics;
 
-public class PointInt {
-    public Integer x;
-    public Integer y;
+public class VectorF2DW {
 
-    public PointInt(){
-        x = 0;
-        y = 0;
+    public NumW<Float> x;
+    public NumW<Float> y;
+
+    public VectorF2DW(){
+        x = new NumW<>(0.0f);
+        y = new NumW<>(0.0f);
     }
 
-    public PointInt(int x, int y) {
+    public VectorF2DW(Float x, Float y) {
         this();
-        this.x = x;
-        this.y = y;
+        if (x == null) this.x = null;
+        else this.x.num = x;
+        if (y == null) this.y = null;
+        else this.y.num = y;
     }
 
-    public PointInt plus(PointInt that) {
-        return new PointInt(this.x + that.x, this.y + that.y);
+    public VectorF2DW plus(VectorF2DW that) {
+        return new VectorF2DW(this.x.num + that.x.num, this.y.num + that.y.num);
     }
 
-    public PointInt minus(PointInt that) {
-        return new PointInt(this.x - that.x, this.y - that.y);
+    public VectorF2DW minus(VectorF2DW that) {
+        return new VectorF2DW(this.x.num - that.x.num, this.y.num - that.y.num);
     }
 
-    public PointInt times(PointInt that) {
-        return new PointInt(this.x * that.x, this.y * that.y);
+    public VectorF2DW times(VectorF2DW that) {
+        return new VectorF2DW(this.x.num * that.x.num, this.y.num * that.y.num);
     }
-    
-    public PointInt div(PointInt that) {
-        return new PointInt(that.x == 0 ? null : this.x / that.x, that.y == 0 ? null : this.y / that.y);
+
+    public VectorF2DW div(VectorF2DW that) {
+        return new VectorF2DW(this.x.num / that.x.num, this.y.num / that.y.num);
+    }
+
+    public void set(Float x, Float y) {
+        this.x.num = x;
+        this.y.num = y;
+    }
+
+    public void set(VectorF2D p) {
+        this.x.num = p.x;
+        this.y.num = p.y;
+    }
+
+    public void set(VectorF2DW p) {
+        this.x.num = p.x.num;
+        this.y.num = p.y.num;
+    }
+
+    public static VectorF2DW of (Float d) {
+        return new VectorF2DW(d, d);
+    }
+
+
+    public VectorF2D unwrap() {
+        return new VectorF2D(x.num, y.num);
     }
 }

@@ -24,12 +24,67 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.github.nighttripperid.littleengine.model.object;
+package com.github.nighttripperid.littleengine.model.physics;
 
-import com.github.nighttripperid.littleengine.model.physics.Rect;
-import com.github.nighttripperid.littleengine.model.graphics.Sprite;
+public class VectorF2D {
 
-public interface BasicObject {
-    Rect getHitBox();
-    Sprite getSprite();
+    public Float x;
+    public Float y;
+
+    public VectorF2D(Float x, Float y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    public VectorF2D plus(VectorF2D that) {
+        return new VectorF2D(this.x + that.x, this.y + that.y);
+    }
+
+    public VectorF2D minus(VectorF2D that) {
+        return new VectorF2D(this.x - that.x, this.y - that.y);
+    }
+
+    public VectorF2D times(VectorF2D that) {
+        return new VectorF2D(this.x * that.x, this.y * that.y);
+    }
+
+    public VectorF2D div(VectorF2D that) {
+        return new VectorF2D(this.x / that.x, this.y / that.y);
+    }
+
+    public void set(float x, float y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    public void set(VectorF2D p) {
+        this.x = p.x;
+        this.y = p.y;
+    }
+
+    public void set(VectorF2DW p) {
+        this.x = p.x.num;
+        this.y = p.y.num;
+    }
+
+    public VectorF2DW wrap() {
+        return new VectorF2DW(this.x, this.y);
+    }
+
+    public Float mag() {
+        return (float) Math.sqrt(x * x + y * y);
+    }
+
+    public Float mag2() {
+        return x * x + y * y;
+    }
+
+    public VectorF2D norm() {
+        float r = 1 / mag();
+        return new VectorF2D(x * r, y * r);
+    }
+
+    public static VectorF2D of(Float num) {
+        return new VectorF2D(num, num);
+    }
 }

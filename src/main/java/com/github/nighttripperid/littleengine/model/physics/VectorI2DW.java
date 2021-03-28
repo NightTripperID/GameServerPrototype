@@ -26,69 +26,42 @@
  */
 package com.github.nighttripperid.littleengine.model.physics;
 
-public class PointDoubleW {
+public class VectorI2DW {
+    public NumW<Integer> x;
+    public NumW<Integer> y;
 
-    public NumWrap<Double> x;
-    public NumWrap<Double> y;
-
-    public PointDoubleW(){
-        x = new NumWrap<>(0.0d);
-        y = new NumWrap<>(0.0d);
+    public VectorI2DW(){
+        x = new NumW<>(0);
+        y = new NumW<>(0);
     }
 
-    public PointDoubleW(Double x, Double y) {
+    public VectorI2DW(int x, int y) {
         this();
-        if (x == null) this.x = null;
-        else this.x.num = x;
-        if (y == null) this.y = null;
-        else this.y.num = y;
-    }
-
-    public PointDoubleW plus(PointDoubleW that) {
-        return new PointDoubleW(this.x.num + that.x.num, this.y.num + that.y.num);
-    }
-
-    public PointDoubleW minus(PointDoubleW that) {
-        return new PointDoubleW(this.x.num - that.x.num, this.y.num - that.y.num);
-    }
-
-    public PointDoubleW times(PointDoubleW that) {
-        return new PointDoubleW(this.x.num * that.x.num, this.y.num * that.y.num);
-    }
-
-    public PointDoubleW div(PointDoubleW that) {
-        return new PointDoubleW(this.x.num / that.x.num, this.y.num / that.y.num);
-    }
-
-    public void set(Double x, Double y) {
         this.x.num = x;
         this.y.num = y;
     }
 
-    public void set(PointDouble p) {
-        this.x.num = p.x;
-        this.y.num = p.y;
+    public VectorI2DW plus(VectorI2DW that) {
+        return new VectorI2DW(this.x.num + that.x.num, this.y.num + that.y.num);
     }
 
-    public void set(PointDoubleW p) {
-        this.x.num = p.x.num;
-        this.y.num = p.y.num;
+    public VectorI2DW minus(VectorI2DW that) {
+        return new VectorI2DW(this.x.num - that.x.num, this.y.num - that.y.num);
     }
 
-    public static PointDoubleW of (Double d) {
-        return new PointDoubleW(d, d);
+    public VectorI2DW times(VectorI2DW that) {
+        return new VectorI2DW(this.x.num * that.x.num, this.y.num * that.y.num);
     }
 
-
-    public PointDouble unwrap() {
-        return new PointDouble(x.num, y.num);
+    public VectorI2DW div(VectorI2DW that) {
+        return new VectorI2DW(that.x.num == 0 ? null : this.x.num / that.x.num, that.y.num == 0 ? null : this.y.num / that.y.num);
     }
 
     @Override
     public boolean equals(Object p) {
         if (this == p) return true;
         if (p == null || getClass() != p.getClass()) return false;
-        PointDoubleW that = (PointDoubleW) p;
-        return Double.compare(that.x.num, this.x.num) == 0 && Double.compare(that.y.num, this.y.num) == 0;
+        VectorI2DW that = (VectorI2DW) p;
+        return that.x.num.equals(this.x.num) && that.y.num.equals(this.y.num);
     }
 }
