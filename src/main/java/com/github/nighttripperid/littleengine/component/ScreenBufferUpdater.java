@@ -49,9 +49,11 @@ public class ScreenBufferUpdater {
     public void renderEntities(List<Actor> actors, GameMap gameMap) {
         actors.sort(Actor::compareTo);
         actors.forEach(actor -> {
-            if(actor.getSprite() != null ) {
-                renderSprite(actor.getCollisionBody().pos.x - gameMap.getScroll().x,
-                        actor.getCollisionBody().pos.y - gameMap.getScroll().y, actor.getSprite());
+            if(actor.getGfxBody().getSprite() != null ) {
+                actor.getGfxBody().pos.x = actor.getCollisionBody().pos.x + actor.getGfxBody().getOffset().x;
+                actor.getGfxBody().pos.y = actor.getCollisionBody().pos.y + actor.getGfxBody().getOffset().y;
+                renderSprite(actor.getGfxBody().pos.x - gameMap.getScroll().x,
+                        actor.getGfxBody().pos.y - gameMap.getScroll().y, actor.getGfxBody().getSprite());
             }
         });
     }

@@ -39,7 +39,8 @@ import java.util.stream.Collectors;
 
 @Slf4j
 public class ActorDataHydrator {
-
+    private ActorDataHydrator() {
+    }
     public static ActorData hydrate(TILED_TileMap tiled_tileMap) {
         ActorData actorData = new ActorData();
         tiled_tileMap.getLayers().stream().filter(layer -> layer.getType().equals("objectgroup"))
@@ -56,6 +57,10 @@ public class ActorDataHydrator {
                             actor.getCollisionBody().size = (
                                     new VectorF2D((float) object.getWidth(),
                                                     (float) object.getHeight()));
+                            actor.getGfxBody().pos = (new VectorF2D((float) object.getX(), (float) object.getY()));
+                            actor.getGfxBody().size = (
+                                    new VectorF2D((float) object.getWidth(),
+                                            (float) object.getHeight()));
                             properties.remove("class");
                             properties.keySet().forEach(fieldName -> injectField(actor.getClass(), actor,
                                     fieldName, properties.get(fieldName))
@@ -78,6 +83,7 @@ public class ActorDataHydrator {
         return actorData;
     }
 
+    // TODO: implement complex object injection capabilities
     private static void injectField(Class<?> clazz, Actor actor, String fieldName, Object value) {
         while (clazz != Object.class) {
             try {
