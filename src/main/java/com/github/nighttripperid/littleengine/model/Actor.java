@@ -30,13 +30,20 @@ import com.github.nighttripperid.littleengine.model.behavior.*;
 import com.github.nighttripperid.littleengine.model.graphics.AnimationReel;
 import com.github.nighttripperid.littleengine.model.graphics.GfxBody;
 import com.github.nighttripperid.littleengine.model.physics.CollisionBody;
+import lombok.AccessLevel;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Data
 public abstract class Actor implements Entity, Eventable, Comparable<Actor> {
+    @Getter(AccessLevel.NONE)
+    @Setter(AccessLevel.NONE)
+    private static long idTracker;
+    public final long id = idTracker++;
     private String gfxKey;
     private GfxBody gfxBody = new GfxBody();
     private AnimationReel animationReel = new AnimationReel();
