@@ -29,9 +29,9 @@ package com.github.nighttripperid.littleengine.model;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
-import com.github.nighttripperid.littleengine.exception.DuplicateTopicException;
+import com.github.nighttripperid.littleengine.exception.DuplicateEventException;
 import com.github.nighttripperid.littleengine.exception.DuplicateSubscriberException;
-import com.github.nighttripperid.littleengine.exception.TopicNotFoundException;
+import com.github.nighttripperid.littleengine.exception.EventNotFoundException;
 import com.github.nighttripperid.littleengine.exception.SubscriberNotFoundException;
 import com.github.nighttripperid.littleengine.model.behavior.*;
 import com.github.nighttripperid.littleengine.model.graphics.AnimationReel;
@@ -48,12 +48,13 @@ import java.util.*;
 
 @Data
 public abstract class Actor implements Entity, Eventable, Comparable<Actor> {
-    private static MessageBus messageBus = new MessageBus();
+    private static EventBus eventBus = new EventBus();
     private String gfxKey;
     private GfxBody gfxBody = new GfxBody();
     private AnimationReel animationReel = new AnimationReel();
     private CollisionBody collisionBody = new CollisionBody();
     private List<RenderTask> renderTasks = new ArrayList<>();
+    private List<String> notifications = new ArrayList<>();
     private Behavior behavior;
     private Animation animation;
     private GfxInitializer gfxInitializer;
@@ -69,80 +70,82 @@ public abstract class Actor implements Entity, Eventable, Comparable<Actor> {
         return ((int)(float)this.getGfxBody().pos.y - (int)(float)actor.getGfxBody().pos.y);
     }
 
-    public static MessageBus getMessageBus() {
-        return messageBus;
+    public static EventBus getEventBus() {
+        return eventBus;
     }
 
     @Slf4j
-    protected static class MessageBus {
-        private static List<String> topics;
+    protected static class EventBus {
+        private static List<String> events;
         private static Map<String, List<Actor>> registries = new HashMap<>();
 
         static {
-            Logger logger = LoggerFactory.getLogger(MessageBus.class);
-            try (InputStream inputStream = MessageBus.class.getResourceAsStream("/topics.yml")) {
+            Logger logger = LoggerFactory.getLogger(EventBus.class);
+            try (InputStream inputStream = EventBus.class.getResourceAsStream("/events.yml")) {
                 if (inputStream != null) {
                     try {
                         List<String> values = new ObjectMapper(new YAMLFactory()).readValue(inputStream,
                                 new TypeReference<List<String>>(){});
-                        topics = Collections.unmodifiableList(values);
+                        events = Collections.unmodifiableList(values);
                     } catch (IOException e) {
-                        logger.error("error loading topics.yml from inputStream.");
+                        logger.error("error loading events.yml from inputStream.");
                     }
                 } else {
-                    logger.info("topics.yml not found. skipping registry initialization.");
+                    logger.info("events.yml not found. skipping registry initialization.");
                 }
             } catch (IOException e) {
-                logger.error("error getting inputStream from topics.yml.");
+                logger.error("error getting inputStream from events.yml.");
             }
         }
 
-        private MessageBus() {
-            if (topics != null) {
-                topics.forEach(this::register);
+        private EventBus() {
+            if (events != null) {
+                events.forEach(this::register);
             }
         }
 
         public List<String> getTopics() {
-            return topics;
+            return events;
         }
 
-        private void register(String topic) {
-            if (registries.get(topic) != null) {
-                log.error("error registering topic: duplicate entry \"{}\" found in topic list.", topic);
-                throw new DuplicateTopicException("error registering topic: duplicate topic entry found " +
-                        "in topic list.");
+        private void register(String event) {
+            if (registries.get(event) != null) {
+                log.error("error registering event: duplicate entry \"{}\" found in event list.", event);
+                throw new DuplicateEventException("error registering event: duplicate event entry found " +
+                        "in event list.");
             } else {
-                registries.put(topic, new ArrayList<>());
+                registries.put(event, new ArrayList<>());
             }
         }
 
-        public void subscribe(Actor subscriber, String topic) {
-            if (registries.get(topic) == null) {
-                log.error("error subscribing to topic \"{}\": topic not found.", topic);
-                throw new TopicNotFoundException("error subscribing to topic: topic not found");
-            } else if (registries.get(topic).contains(subscriber)) {
-                log.error("error subscribing to topic \"{}\": subscriber already present.", topic);
-                throw new DuplicateSubscriberException("error subscribing to topic: subscriber already present.");
+        public void subscribe(Actor subscriber, String event) {
+            if (registries.get(event) == null) {
+                log.error("error subscribing to event \"{}\": event not found.", event);
+                throw new EventNotFoundException("error subscribing to event: event not found");
+            } else if (registries.get(event).contains(subscriber)) {
+                log.error("error subscribing to event \"{}\": subscriber already present.", event);
+                throw new DuplicateSubscriberException("error subscribing to event: subscriber already present.");
             } else {
-                registries.get(topic).add(subscriber);
+                registries.get(event).add(subscriber);
             }
         }
 
-        public void unsubscribe(Actor subscriber, String topic) {
-            if (registries.get(topic) == null) {
-                log.error("error unsubscribing actor from topic \"{}\": topic not found.", topic);
-                throw new TopicNotFoundException("error unsubscribing from topic: topic not found");
-            } else if (!registries.get(topic).contains(subscriber)) {
-                log.error("error unsubscribing from topic \"{}\": subscriber not found.", topic);
-                throw new SubscriberNotFoundException("error unsubscribing from topic: subscriber not found");
+        public void unsubscribe(Actor subscriber, String event) {
+            if (registries.get(event) == null) {
+                log.error("error unsubscribing actor from event \"{}\": event not found.", event);
+                throw new EventNotFoundException("error unsubscribing from event: event not found");
+            } else if (!registries.get(event).contains(subscriber)) {
+                log.error("error unsubscribing from event \"{}\": subscriber not found.", event);
+                throw new SubscriberNotFoundException("error unsubscribing from event: subscriber not found");
             } else {
-                registries.get(topic).remove(subscriber);
+                registries.get(event).remove(subscriber);
             }
         }
 
-        public void publishToTopic(String topicName, Topic topic) {
-            registries.get(topicName).forEach(topic::publishTo);
+        public void notifySubscribers(String event) {
+            registries.get(event).forEach(subscriber ->
+                    subscriber.getNotifications().add(event)
+            );
         }
     }
 }
