@@ -29,13 +29,15 @@ package com.github.nighttripperid.littleengine.model;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import com.github.nighttripperid.littleengine.exception.DuplicateTopicException;
+import com.github.nighttripperid.littleengine.exception.DuplicateSubscriberException;
+import com.github.nighttripperid.littleengine.exception.TopicNotFoundException;
+import com.github.nighttripperid.littleengine.exception.SubscriberNotFoundException;
 import com.github.nighttripperid.littleengine.model.behavior.*;
 import com.github.nighttripperid.littleengine.model.graphics.AnimationReel;
 import com.github.nighttripperid.littleengine.model.graphics.GfxBody;
 import com.github.nighttripperid.littleengine.model.physics.CollisionBody;
-import lombok.AccessLevel;
 import lombok.Data;
-import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,14 +48,12 @@ import java.util.*;
 
 @Data
 public abstract class Actor implements Entity, Eventable, Comparable<Actor> {
-    @Setter(AccessLevel.NONE)
-    private MessageBus messageBus = new MessageBus();
+    private static MessageBus messageBus = new MessageBus();
     private String gfxKey;
     private GfxBody gfxBody = new GfxBody();
     private AnimationReel animationReel = new AnimationReel();
     private CollisionBody collisionBody = new CollisionBody();
     private List<RenderTask> renderTasks = new ArrayList<>();
-    private List<Publisher> publishers = new ArrayList<>();
     private Behavior behavior;
     private Animation animation;
     private GfxInitializer gfxInitializer;
@@ -69,72 +69,80 @@ public abstract class Actor implements Entity, Eventable, Comparable<Actor> {
         return ((int)(float)this.getGfxBody().pos.y - (int)(float)actor.getGfxBody().pos.y);
     }
 
+    public static MessageBus getMessageBus() {
+        return messageBus;
+    }
+
     @Slf4j
     protected static class MessageBus {
-        private static List<String> publishers;
+        private static List<String> topics;
         private static Map<String, List<Actor>> registries = new HashMap<>();
 
         static {
             Logger logger = LoggerFactory.getLogger(MessageBus.class);
-            try (InputStream inputStream = MessageBus.class.getResourceAsStream("/publishers.yml")) {
+            try (InputStream inputStream = MessageBus.class.getResourceAsStream("/topics.yml")) {
                 if (inputStream != null) {
                     try {
-                        List<String> values = new ObjectMapper(new YAMLFactory()).readValue(inputStream, new TypeReference<List<String>>(){});
-                        publishers = Collections.unmodifiableList(values);
+                        List<String> values = new ObjectMapper(new YAMLFactory()).readValue(inputStream,
+                                new TypeReference<List<String>>(){});
+                        topics = Collections.unmodifiableList(values);
                     } catch (IOException e) {
-                        logger.error("error loading publishers.properties from inputStream.");
+                        logger.error("error loading topics.yml from inputStream.");
                     }
                 } else {
-                    logger.info("publishers.properties not found. skipping publisherId map initialization.");
+                    logger.info("topics.yml not found. skipping registry initialization.");
                 }
             } catch (IOException e) {
-                logger.error("error getting inputStream from publishers.properties.");
+                logger.error("error getting inputStream from topics.yml.");
             }
         }
 
         private MessageBus() {
-            if (publishers != null) {
-                publishers.forEach(this::register);
+            if (topics != null) {
+                topics.forEach(this::register);
             }
         }
 
-        public List<String> getPublishers() {
-            return publishers;
+        public List<String> getTopics() {
+            return topics;
         }
 
-        private void register(String publisher) {
-            if (registries.get(publisher) != null) {
-                log.error("error registering: publisher's registry already exists.");
-            }
-            registries.put(publisher, new ArrayList<>());
-        }
-
-        public void subscribe(Actor subscriber, String publisher) {
-            if (registries.get(publisher) == null) {
-                log.error("error subscribing actor {} to publisher {}: publisher's registry not found.",
-                        subscriber, publisher);
-            } else if (registries.get(publisher).contains(subscriber)) {
-                log.error("error subscribing actor {} to publisher {}: subscriber already in publisher's registry.",
-                        subscriber, publisher);
+        private void register(String topic) {
+            if (registries.get(topic) != null) {
+                log.error("error registering topic: duplicate entry \"{}\" found in topic list.", topic);
+                throw new DuplicateTopicException("error registering topic: duplicate topic entry found " +
+                        "in topic list.");
             } else {
-                registries.get(publisher).add(subscriber);
+                registries.put(topic, new ArrayList<>());
             }
         }
 
-        public void unsubscribe(Actor subscriber, String publisher) {
-            if (registries.get(publisher) == null) {
-                log.error("error unsubscribing actor {} from publisher {}: publisher's registry not found.",
-                        subscriber, publisher);
-            } else if (!registries.get(publisher).contains(subscriber)) {
-                log.error("error unsubscribing actor {} from publisher {}: subscriber not in publisher's registry.",
-                        subscriber, publisher);
+        public void subscribe(Actor subscriber, String topic) {
+            if (registries.get(topic) == null) {
+                log.error("error subscribing to topic \"{}\": topic not found.", topic);
+                throw new TopicNotFoundException("error subscribing to topic: topic not found");
+            } else if (registries.get(topic).contains(subscriber)) {
+                log.error("error subscribing to topic \"{}\": subscriber already present.", topic);
+                throw new DuplicateSubscriberException("error subscribing to topic: subscriber already present.");
             } else {
-                registries.get(publisher).remove(subscriber);
+                registries.get(topic).add(subscriber);
             }
         }
 
-        public void publishToSubscribers(String publisherName, Publisher publisher) {
-            registries.get(publisherName).forEach(publisher::publishTo);
+        public void unsubscribe(Actor subscriber, String topic) {
+            if (registries.get(topic) == null) {
+                log.error("error unsubscribing actor from topic \"{}\": topic not found.", topic);
+                throw new TopicNotFoundException("error unsubscribing from topic: topic not found");
+            } else if (!registries.get(topic).contains(subscriber)) {
+                log.error("error unsubscribing from topic \"{}\": subscriber not found.", topic);
+                throw new SubscriberNotFoundException("error unsubscribing from topic: subscriber not found");
+            } else {
+                registries.get(topic).remove(subscriber);
+            }
+        }
+
+        public void publishToTopic(String topicName, Topic topic) {
+            registries.get(topicName).forEach(topic::publishTo);
         }
     }
 }

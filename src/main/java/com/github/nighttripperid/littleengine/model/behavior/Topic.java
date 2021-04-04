@@ -8,9 +8,9 @@ import java.util.function.Consumer;
 
 @AllArgsConstructor
 @NoArgsConstructor
-public class Publisher {
-    private Consumer<Actor> publisher;
+public class Topic {
+    private Consumer<Actor> topic;
     public void publishTo(Actor subscriber) {
-        publisher.accept(subscriber);
+        topic.accept(subscriber);
     }
 }
