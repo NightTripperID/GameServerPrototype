@@ -42,7 +42,6 @@ import java.util.stream.Collectors;
 // TODO: flatten encapsulation. This is getting too bloated and complex. Needs a major redesign.
 @Slf4j
 public class SceneUpdater {
-
     @Getter
     private final ScreenBufferUpdater screenBufferUpdater;
     @Getter
@@ -98,12 +97,6 @@ public class SceneUpdater {
                     .collect(Collectors.toList());
             screenBufferUpdater.processRenderTasks(renderTasks);
         }
-    }
-
-    // TODO: delegate actor methods to ActorProcessor (maybe)
-    public void addActor(Actor actor) {
-        actor.onCreate();
-        sceneController.getActiveScene().getActorData().getPendingActors().add(actor);
     }
 
     private void addPendingActors() {

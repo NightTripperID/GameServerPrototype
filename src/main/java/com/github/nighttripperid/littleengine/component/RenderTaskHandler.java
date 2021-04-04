@@ -176,9 +176,17 @@ public class RenderTaskHandler {
             renderChar8x8(x + (i << 3), y, col, Font8x8.getChar(string.charAt(i)));
     }
 
+    public void renderString8x8(VectorF2D pos, int col, String string) {
+        renderString8x8(pos.x, pos.y, col, string);
+    }
+
     public void renderString5x5(float x, float y, int col, String string) {
         for (int i = 0; i < string.length(); i++)
             renderChar5x5(x + (i * 5), y, col, Font5x5.getChar(string.charAt(i)));
+    }
+
+    public void renderString5x5(VectorF2D pos, int col, String string) {
+        renderString5x5(pos.x, pos.y, col, string);
     }
 
     public void renderPixels(int[] pixels) {
